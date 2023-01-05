@@ -1,0 +1,30 @@
+//#include <Windows.h>
+#include "ClayEngine.h"
+
+
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
+{
+	ClayEngine engine;
+	if (engine.Initialize(hInstance, "title", "myWindowClass", 720, 576))
+	{
+		while (engine.ProcessMessages() == true)
+		{
+			engine.Update();
+			engine.RenderFrame();
+		}
+	}
+
+
+	HRESULT hr = S_OK;
+
+	if (FAILED(hr))
+	{
+		ErrorLogger::Log(hr, "Test Error"); // EXAMPLE ERROR CHECK
+	}
+	if (SUCCEEDED(hr))
+	{
+		MessageBoxA(NULL, "success", "Yay", NULL);
+	}
+
+	return 0;
+}
