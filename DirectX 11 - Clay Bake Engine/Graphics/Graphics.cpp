@@ -116,7 +116,7 @@ bool Graphics::InitializeShaders()
 		{
 			#ifdef _DEBUG //Debug Mode
 			#ifdef _WIN64 //x64
-		s		haderfolder = L"..\\x64\\Debug\\";
+				shaderfolder = L"..\\x64\\Debug\\";
 			#else  //x86 (Win32)
 				shaderfolder = L"..\\Debug\\";
 			#endif
