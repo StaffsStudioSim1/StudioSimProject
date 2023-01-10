@@ -14,9 +14,9 @@ protected:
 
 public:
 	KeyboardClass();
-	bool KeyIsPressed(const unsigned char keycode);
-	bool KeyBufferIsEmpty();
-	bool CharBufferIsEmpty();
+	bool IsKeyPressed(const unsigned char keycode);
+	bool IsKeyBufferEmpty();
+	bool IsCharBufferEmpty();
 	KeyboardEvent ReadKey();
 	unsigned char ReadChar();
 	void OnKeyPressed(const unsigned char key);

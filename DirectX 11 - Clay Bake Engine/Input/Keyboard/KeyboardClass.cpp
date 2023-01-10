@@ -3,22 +3,20 @@
 KeyboardClass::KeyboardClass()
 {
 	for (int i = 0; i < 256; i++)
-	{
 		this->keyStates[i] = false;
-	}
 }
 
-bool KeyboardClass::KeyIsPressed(const unsigned char keycode)
+bool KeyboardClass::IsKeyPressed(const unsigned char keycode)
 {
 	return this->keyStates[keycode];
 }
 
-bool KeyboardClass::KeyBufferIsEmpty()
+bool KeyboardClass::IsKeyBufferEmpty()
 {
 	return this->keyBuffer.empty();
 }
 
-bool KeyboardClass::CharBufferIsEmpty()
+bool KeyboardClass::IsCharBufferEmpty()
 {
 	return this->charBuffer.empty();
 }
@@ -60,7 +58,7 @@ void KeyboardClass::OnKeyPressed(const unsigned char key)
 
 void KeyboardClass::OnKeyReleased(const unsigned char key)
 {
-	this->keyStates[key] = true;
+	this->keyStates[key] = false;
 	this->keyBuffer.push(KeyboardEvent(KeyboardEvent::EventType::Release, key));
 }
 
