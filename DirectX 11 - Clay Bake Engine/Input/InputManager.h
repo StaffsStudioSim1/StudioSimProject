@@ -1,10 +1,8 @@
 #pragma once
 #include "Keyboard/KeyboardClass.h"
 #include "Mouse/MouseClass.h"
-#include "ActionMap.h"
+#include "PlayerInput.h"
 #include <windows.h>
-
-enum DeviceType { KeyboardLeft, KeyboardRight, Controller };
 
 class InputManager
 {
@@ -23,6 +21,7 @@ public:
 	LRESULT WindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	void Debug();
+	PlayerInput* GetNewPlayerInput();
 	// Update ActionMaps
 	void PollInput();
 private:
@@ -32,6 +31,6 @@ private:
 	KeyboardClass _keyboard;
 	MouseClass _mouse;
 
-	std::vector<ActionMap> _actionMaps;
+	std::vector<PlayerInput*> _inputs;
 };
 

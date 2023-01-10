@@ -81,8 +81,8 @@
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Input\ActionMap.cpp">
-      <Filter>Source Files\Input</Filter>
+    <ClCompile Include="Input\PlayerInput.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,8 +128,11 @@
     <ClInclude Include="Input\InputManager.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Input\ActionMap.h">
+    <ClInclude Include="Input\PlayerInput.h">
       <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\ActionMap.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

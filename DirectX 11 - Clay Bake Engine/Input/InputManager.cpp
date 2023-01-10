@@ -10,6 +10,9 @@ InputManager::InputManager()
 
 InputManager::~InputManager()
 {
+	for (PlayerInput* input : _inputs)
+		delete input;
+	_inputs.clear();
 }
 
 LRESULT InputManager::WindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -19,6 +22,7 @@ LRESULT InputManager::WindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 	{
 		unsigned char keycode = static_cast<unsigned char>(wParam);
+		unsigned int scanCode = (lParam >> 16) & 0xff;
 		if (_keyboard.IsKeyAutoRepeat())
 			_keyboard.OnKeyPressed(keycode);
 		else
@@ -164,10 +168,26 @@ void InputManager::Debug()
 	}
 }
 
+PlayerInput* InputManager::GetNewPlayerInput()
+{
+	PlayerInput* playerInput = new PlayerInput();
+	_inputs.push_back(playerInput);
+	return playerInput;
+}
+
 void InputManager::PollInput()
 {
-	for (ActionMap map : _actionMaps)
+	for (PlayerInput* map : _inputs)
 	{
-
+		switch (map->GetDeviceType())
+		{
+		case DeviceType::KeyboardLeft:
+		case DeviceType::KeyboardRight:
+			map->PollInput(_keyboard);
+			break;
+		case DeviceType::Unassigned:
+		case DeviceType::Controller:
+			break;
+		}
 	}
 }

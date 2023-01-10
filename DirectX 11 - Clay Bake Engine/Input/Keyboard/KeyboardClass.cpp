@@ -1,4 +1,5 @@
-#include"KeyboardClass.h"
+#include "KeyboardClass.h"
+#include <Windows.h>
 
 KeyboardClass::KeyboardClass()
 {
@@ -6,9 +7,11 @@ KeyboardClass::KeyboardClass()
 		this->keyStates[i] = false;
 }
 
-bool KeyboardClass::IsKeyPressed(const unsigned char keycode)
+bool KeyboardClass::IsKeyPressed(const unsigned int scanCode)
 {
-	return this->keyStates[keycode];
+	if (scanCode < 0)
+		return false;
+	return this->keyStates[scanCode];
 }
 
 bool KeyboardClass::IsKeyBufferEmpty()
@@ -23,7 +26,6 @@ bool KeyboardClass::IsCharBufferEmpty()
 
 KeyboardEvent KeyboardClass::ReadKey()
 {
-
 	if (this->keyBuffer.empty()) // if no key is read
 	{
 		return KeyboardEvent(); // return empty keyboard event
@@ -52,13 +54,13 @@ unsigned char KeyboardClass::ReadChar()
 
 void KeyboardClass::OnKeyPressed(const unsigned char key)
 {
-	this->keyStates[key] = true;
+	this->keyStates[OemKeyScan(key) & 0x0ff] = true;
 	this->keyBuffer.push(KeyboardEvent(KeyboardEvent::EventType::Press, key));
 }
 
 void KeyboardClass::OnKeyReleased(const unsigned char key)
 {
-	this->keyStates[key] = false;
+	this->keyStates[OemKeyScan(key) & 0x0ff] = false;
 	this->keyBuffer.push(KeyboardEvent(KeyboardEvent::EventType::Release, key));
 }
 
