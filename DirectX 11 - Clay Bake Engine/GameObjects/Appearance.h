@@ -6,16 +6,16 @@
 #include <wrl/client.h>
 
 // For loaded models
-//struct Geometry
-//{
-//	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
-//	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
-//
-//	int numOfIndices = 0;
-//
-//	UINT vertexBufferStride = 0;
-//	UINT vertexBufferOffset = 0;
-//};
+struct Geometry
+{
+	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
+
+	int numOfIndices = 0;
+
+	UINT vertexBufferStride = 0;
+	UINT vertexBufferOffset = 0;
+};
 
 class Appearance
 {
@@ -24,8 +24,8 @@ public:
 	~Appearance() {}
 
 	// For loaded models
-	//Geometry GetGeometryData() const noexcept { return _geometry; }
-	//void SetGeometryData(Geometry geometry) { _geometry = geometry; }
+	Geometry GetGeometryData() const noexcept { return _geometry; }
+	void SetGeometryData(Geometry geometry) { _geometry = geometry; }
 
 	// Object texture
 	bool HasTexture() const noexcept { return _pTextureRV ? true : false; }
@@ -34,7 +34,7 @@ public:
 
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext>& context);
 private:
-	//Geometry _geometry;
+	Geometry _geometry;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _pTextureRV;
 };

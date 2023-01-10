@@ -3,6 +3,9 @@
 #include "Shaders.h"
 #include "Vertex.h"
 
+#include "../GameObjects/GameObject.h"
+#include "../Includes/DDSTextureLoader.h"
+
 class Graphics
 {
 public:
@@ -22,6 +25,10 @@ private:
 							PixelShader					pixelshader;
 
 	Microsoft::WRL::ComPtr <ID3D11Buffer>				vertexBuffer;
+	Microsoft::WRL::ComPtr <ID3D11Buffer>				indexBuffer;
 
+	Geometry											squareGeometryData;
 
+	GameObject* pTestObject;
+	ID3D11ShaderResourceView* testTexture = nullptr;
 };

@@ -11,6 +11,17 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 		return false;
 	}
 	// place to init scene's ect 
+	InitializeScene();
+
+	if (FAILED(DirectX::CreateDDSTextureFromFile(this->device.Get(), L"Test.dds", nullptr, &this->testTexture)))
+		exit(-1);
+
+	pTestObject = new GameObject(0);
+	pTestObject->AddAppearance(new Appearance);
+	pTestObject->AddTransform(new Transform);
+	pTestObject->GetAppearance()->SetGeometryData(squareGeometryData);
+	pTestObject->GetAppearance()->SetTexture(this->testTexture);
+
 	return true;
 }
 
@@ -130,10 +141,10 @@ bool Graphics::InitializeShaders()
 	}
 
 
-	D3D11_INPUT_ELEMENT_DESC layout[] =
-	{
-		{"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
-
+		D3D11_INPUT_ELEMENT_DESC layout[] =
+		{
+			{"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{"TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
 	UINT numElements = ARRAYSIZE(layout);
@@ -155,11 +166,15 @@ bool Graphics::InitializeScene()
 {
 	Vertex v[] =
 	{
-		Vertex(0.0f, -0.11f), // center
-		Vertex(-0.11f, 0.0f), // left
-		Vertex(0.11f, 0.0f), // right
-		Vertex(0.0f, 0.11f), // top
+		//Vertex(0.0f, -0.11f), // center
+		//Vertex(-0.11f, 0.0f), // left
+		//Vertex(0.11f, 0.0f), // right
+		//Vertex(0.0f, 0.11f), // top
 
+		Vertex(-0.1f, 0.1f),
+		Vertex(0.1f, 0.1f),
+		Vertex(-0.1f, -0.1f),
+		Vertex(0.1f, -0.1f)
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
@@ -182,7 +197,34 @@ bool Graphics::InitializeScene()
 		return false;
 	}
 
-		return true;
+	WORD indices[] =
+	{
+		3, 0, 1,
+		2, 0, 3,
+	};
+
+	D3D11_BUFFER_DESC indexBufferDesc;
+	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
+
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof(WORD) * ARRAYSIZE(indices);
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA indexBufferData;
+	ZeroMemory(&indexBufferData, sizeof(indexBufferData));
+	indexBufferData.pSysMem = indices;
+	hr = this->device->CreateBuffer(&indexBufferDesc, &indexBufferData, this->indexBuffer.GetAddressOf());
+
+	this->deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	squareGeometryData.indexBuffer = this->indexBuffer;
+	squareGeometryData.numOfIndices = ARRAYSIZE(indices);
+	squareGeometryData.vertexBuffer = this->vertexBuffer;
+	squareGeometryData.vertexBufferOffset = 0;
+	squareGeometryData.vertexBufferStride = sizeof(Vertex);
+
+	return true;
 }
 
 void Graphics::RenderFrame()
@@ -191,16 +233,15 @@ void Graphics::RenderFrame()
 	//this->deviceContext->OMSetRenderTargets(1, this->renderTargertView.GetAddressOf(), NULL);
 	this->deviceContext->ClearRenderTargetView(this->renderTargertView.Get(), bgcolor);
 	this->deviceContext->IASetInputLayout(this->vertexshader.GetInputLayout());
-	this->deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	this->deviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
 	this->deviceContext->PSSetShader(pixelshader.GetShader(), NULL, 0);
 
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-	this->deviceContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+	this->deviceContext->PSSetShaderResources(0, 1, &testTexture);
 
-	this->deviceContext->Draw(3, 0);
+	//pTestObject->GetTransform()->SetPositionChange(1.0f, 0.0f);
+	//pTestObject->Update();
+	pTestObject->Render(this->deviceContext);
 
 	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }

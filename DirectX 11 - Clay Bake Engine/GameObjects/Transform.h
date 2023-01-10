@@ -23,6 +23,7 @@ public:
 	void SetScale(float x, float y) { _scale.x = x; _scale.y = y; }
 	void SetScaleChange(DirectX::XMFLOAT2 change) { _scale.x += change.x; _scale.y += change.y; }
 	void SetScaleChange(float x, float y) { _scale.x += x; _scale.y += y; }
+	// Add way to keep aspect ratio/link x and y scale
 
 	DirectX::XMMATRIX GetWorldMatrix() const noexcept { return DirectX::XMLoadFloat4x4(&_world); }
 
