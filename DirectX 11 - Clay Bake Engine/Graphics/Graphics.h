@@ -6,6 +6,13 @@
 #include "../GameObjects/GameObject.h"
 #include "../Includes/DDSTextureLoader.h"
 
+struct ConstantBufferStruct
+{
+	DirectX::XMMATRIX mWorld;
+	DirectX::XMMATRIX mView;
+	DirectX::XMMATRIX mProjection;
+};
+
 class Graphics
 {
 public:
@@ -26,6 +33,12 @@ private:
 
 	Microsoft::WRL::ComPtr <ID3D11Buffer>				vertexBuffer;
 	Microsoft::WRL::ComPtr <ID3D11Buffer>				indexBuffer;
+
+	Microsoft::WRL::ComPtr <ID3D11Buffer>				_constantBuffer;
+
+	DirectX::XMFLOAT4X4									_world;
+	DirectX::XMFLOAT4X4									_view;
+	DirectX::XMFLOAT4X4									_projection;
 
 	Geometry											squareGeometryData;
 
