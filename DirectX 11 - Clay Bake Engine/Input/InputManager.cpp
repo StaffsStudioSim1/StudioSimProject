@@ -10,8 +10,6 @@ InputManager::InputManager()
 
 InputManager::~InputManager()
 {
-	for (PlayerInput* input : _inputs)
-		delete input;
 	_inputs.clear();
 }
 
@@ -168,11 +166,14 @@ void InputManager::Debug()
 	}
 }
 
-PlayerInput* InputManager::GetNewPlayerInput()
+void InputManager::RegisterPlayerInput(PlayerInput* playerInput)
 {
-	PlayerInput* playerInput = new PlayerInput();
 	_inputs.push_back(playerInput);
-	return playerInput;
+}
+
+void InputManager::DeregisterPlayerInput(PlayerInput* playerInput)
+{
+	_inputs.erase(std::remove(_inputs.begin(), _inputs.end(), playerInput), _inputs.end());
 }
 
 void InputManager::PollInput()

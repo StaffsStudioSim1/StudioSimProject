@@ -21,7 +21,8 @@ public:
 	LRESULT WindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	void Debug();
-	PlayerInput* GetNewPlayerInput();
+	void RegisterPlayerInput(PlayerInput* playerInput);
+	void DeregisterPlayerInput(PlayerInput* playerInput);
 	// Update ActionMaps
 	void PollInput();
 private:

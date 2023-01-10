@@ -9,8 +9,8 @@ enum Action { Movement, Jump, Interact, Magnet, Pause };
 class PlayerInput
 {
 public:
-	// Do not create by yourself - instead use InputManager::GetInstance().GetNewPlayerInput();
 	PlayerInput();
+	~PlayerInput();
 
 	void PollInput(KeyboardClass keyboard);
 	//void PollInput(ControllerClass keyboard); // TODO

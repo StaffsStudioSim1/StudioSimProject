@@ -1,10 +1,17 @@
 #include "PlayerInput.h"
+#include "InputManager.h"
 
 PlayerInput::PlayerInput()
 {
+	InputManager::GetInstance().RegisterPlayerInput(this);
 	FillButtonMap(_actionDown);
 	FillButtonMap(_actionHeld);
 	SetDeviceType(Unassigned);
+}
+
+PlayerInput::~PlayerInput()
+{
+	InputManager::GetInstance().DeregisterPlayerInput(this);
 }
 
 void PlayerInput::PollInput(KeyboardClass keyboard)
