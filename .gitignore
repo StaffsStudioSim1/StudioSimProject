@@ -213,3 +213,6 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 *.opendb
+
+!DirectX 11 - Clay Bake Engine/Libs/
+!DirectX 11 - Clay Bake Engine/Libs/*
