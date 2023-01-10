@@ -31,6 +31,75 @@ void PlayerInput::PollInput(KeyboardClass keyboard)
 			SetValue(_actionHeld, Jump, false);
 		}
 	}
+
+	// Interact
+	if (_deviceType == KeyboardLeft || _deviceType == KeyboardRight)
+	{
+		if (keyboard.IsKeyPressed(_actionMap.interactKeyCode))
+		{
+			if (!GetValue(_actionHeld, Interact))
+			{
+				SetValue(_actionHeld, Interact, GetValue(_actionDown, Interact));
+				SetValue(_actionDown, Interact, true);
+			}
+		}
+		else if (GetValue(_actionDown, Interact))
+		{
+			SetValue(_actionDown, Interact, false);
+			SetValue(_actionHeld, Interact, true);
+		}
+		else
+		{
+			SetValue(_actionDown, Interact, false);
+			SetValue(_actionHeld, Interact, false);
+		}
+	}
+
+	// Magnet
+	if (_deviceType == KeyboardLeft || _deviceType == KeyboardRight)
+	{
+		if (keyboard.IsKeyPressed(_actionMap.magnetKeyCode))
+		{
+			if (!GetValue(_actionHeld, Magnet))
+			{
+				SetValue(_actionHeld, Magnet, GetValue(_actionDown, Magnet));
+				SetValue(_actionDown, Magnet, true);
+			}
+		}
+		else if (GetValue(_actionDown, Magnet))
+		{
+			SetValue(_actionDown, Magnet, false);
+			SetValue(_actionHeld, Magnet, true);
+		}
+		else
+		{
+			SetValue(_actionDown, Magnet, false);
+			SetValue(_actionHeld, Magnet, false);
+		}
+	}
+
+	// Pause
+	if (_deviceType == KeyboardLeft || _deviceType == KeyboardRight)
+	{
+		if (keyboard.IsKeyPressed(_actionMap.pauseKeyCode))
+		{
+			if (!GetValue(_actionHeld, Pause))
+			{
+				SetValue(_actionHeld, Pause, GetValue(_actionDown, Pause));
+				SetValue(_actionDown, Pause, true);
+			}
+		}
+		else if (GetValue(_actionDown, Pause))
+		{
+			SetValue(_actionDown, Pause, false);
+			SetValue(_actionHeld, Pause, true);
+		}
+		else
+		{
+			SetValue(_actionDown, Pause, false);
+			SetValue(_actionHeld, Pause, false);
+		}
+	}
 }
 
 bool PlayerInput::IsActionDown(Action action)

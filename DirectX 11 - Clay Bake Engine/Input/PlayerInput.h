@@ -13,9 +13,13 @@ public:
 	PlayerInput();
 
 	void PollInput(KeyboardClass keyboard);
+	//void PollInput(ControllerClass keyboard); // TODO
 
+	// Returns true on the first frame the Action is pressed
 	bool IsActionDown(Action action);
+	// Returns true on the second and following frames the Action is held down
 	bool IsActionHeld(Action action);
+	// Returns true on the frame the Action is released
 	bool IsActionUp(Action action);
 
 	DeviceType GetDeviceType();
