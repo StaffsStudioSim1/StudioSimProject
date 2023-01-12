@@ -14,8 +14,6 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 
 	// Guarantee InputManager is initialised at this point
 	InputManager::GetInstance();
-	_testInput = new PlayerInput();
-	_testInput->SetDeviceType(KeyboardLeft);
 
 	// initialise graphics here
 
@@ -25,7 +23,7 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 
 void ClayEngine::Destroy()
 {
-	delete _testInput;
+
 }
 
 LRESULT ClayEngine::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -48,12 +46,6 @@ void ClayEngine::Update()
 {
 	InputManager::GetInstance().PollInput();
 	//InputManager::GetInstance().Debug();
-	if (_testInput->IsActionDown(Jump))
-		OutputDebugStringA("Jump Pressed\n");
-	if (_testInput->IsActionHeld(Jump))
-		OutputDebugStringA("Jump Held\n");
-	if (_testInput->IsActionUp(Jump))
-		OutputDebugStringA("Jump Released\n");
 }
 
 void ClayEngine::RenderFrame()

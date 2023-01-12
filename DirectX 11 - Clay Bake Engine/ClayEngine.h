@@ -1,6 +1,5 @@
 #pragma once
 #include "WindowContainer.h"
-#include "Input/PlayerInput.h"
 class ClayEngine : WindowContainer
 {
 
@@ -14,6 +13,5 @@ public:
 protected:
 
 private:
-	PlayerInput* _testInput;
 	bool _initialised = false;
 };
