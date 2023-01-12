@@ -20,20 +20,26 @@ void PlayerInput::PollInput(KeyboardClass keyboard)
 		return;
 
 	// Jump
+	// Is the button down?
 	if (keyboard.IsKeyPressed(_actionMap.jumpKeyCode))
 	{
+		// Is the button not being held?
 		if (!GetValue(_actionHeld, Jump))
 		{
+			// This code sets Held to true the second frame the button is down
 			SetValue(_actionHeld, Jump, GetValue(_actionDown, Jump));
 			SetValue(_actionDown, Jump, true);
 		}
 	}
+	// Was the button down last frame?
 	else if (GetValue(_actionDown, Jump))
 	{
+		// Set the state so that IsActionUp will return true
 		SetValue(_actionDown, Jump, false);
 		SetValue(_actionHeld, Jump, true);
 	}
-	else
+	// Is the button in IsActionUp state?
+	else if (GetValue(_actionHeld, Jump))
 	{
 		SetValue(_actionDown, Jump, false);
 		SetValue(_actionHeld, Jump, false);
@@ -53,7 +59,7 @@ void PlayerInput::PollInput(KeyboardClass keyboard)
 		SetValue(_actionDown, Interact, false);
 		SetValue(_actionHeld, Interact, true);
 	}
-	else
+	else if (GetValue(_actionHeld, Interact))
 	{
 		SetValue(_actionDown, Interact, false);
 		SetValue(_actionHeld, Interact, false);
@@ -73,7 +79,7 @@ void PlayerInput::PollInput(KeyboardClass keyboard)
 		SetValue(_actionDown, Magnet, false);
 		SetValue(_actionHeld, Magnet, true);
 	}
-	else
+	else if (GetValue(_actionHeld, Magnet))
 	{
 		SetValue(_actionDown, Magnet, false);
 		SetValue(_actionHeld, Magnet, false);
@@ -93,7 +99,7 @@ void PlayerInput::PollInput(KeyboardClass keyboard)
 		SetValue(_actionDown, Pause, false);
 		SetValue(_actionHeld, Pause, true);
 	}
-	else
+	else if (GetValue(_actionHeld, Pause))
 	{
 		SetValue(_actionDown, Pause, false);
 		SetValue(_actionHeld, Pause, false);

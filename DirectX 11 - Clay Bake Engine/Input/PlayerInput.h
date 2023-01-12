@@ -12,7 +12,9 @@ public:
 	PlayerInput();
 	~PlayerInput();
 
+	// Only call from InputManager
 	void PollInput(KeyboardClass keyboard);
+	// Only call from InputManager
 	//void PollInput(ControllerClass keyboard); // TODO
 
 	// Returns true on the first frame the Action is pressed
@@ -22,7 +24,9 @@ public:
 	// Returns true on the frame the Action is released
 	bool IsActionUp(Action action);
 
+	// Get the DeviceType this is bound to
 	DeviceType GetDeviceType();
+	// Bind this to the specified DeviceType
 	void SetDeviceType(DeviceType deviceType);
 private:
 	DeviceType _deviceType;
