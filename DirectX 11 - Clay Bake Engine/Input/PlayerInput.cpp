@@ -16,96 +16,87 @@ PlayerInput::~PlayerInput()
 
 void PlayerInput::PollInput(KeyboardClass keyboard)
 {
+	if (_deviceType != KeyboardLeft && _deviceType != KeyboardRight)
+		return;
+
 	// Jump
-	if (_deviceType == KeyboardLeft || _deviceType == KeyboardRight)
+	if (keyboard.IsKeyPressed(_actionMap.jumpKeyCode))
 	{
-		if (keyboard.IsKeyPressed(_actionMap.jumpKeyCode))
+		if (!GetValue(_actionHeld, Jump))
 		{
-			if (!GetValue(_actionHeld, Jump))
-			{
-				SetValue(_actionHeld, Jump, GetValue(_actionDown, Jump));
-				SetValue(_actionDown, Jump, true);
-			}
+			SetValue(_actionHeld, Jump, GetValue(_actionDown, Jump));
+			SetValue(_actionDown, Jump, true);
 		}
-		else if (GetValue(_actionDown, Jump))
-		{
-			SetValue(_actionDown, Jump, false);
-			SetValue(_actionHeld, Jump, true);
-		}
-		else
-		{
-			SetValue(_actionDown, Jump, false);
-			SetValue(_actionHeld, Jump, false);
-		}
+	}
+	else if (GetValue(_actionDown, Jump))
+	{
+		SetValue(_actionDown, Jump, false);
+		SetValue(_actionHeld, Jump, true);
+	}
+	else
+	{
+		SetValue(_actionDown, Jump, false);
+		SetValue(_actionHeld, Jump, false);
 	}
 
 	// Interact
-	if (_deviceType == KeyboardLeft || _deviceType == KeyboardRight)
+	if (keyboard.IsKeyPressed(_actionMap.interactKeyCode))
 	{
-		if (keyboard.IsKeyPressed(_actionMap.interactKeyCode))
+		if (!GetValue(_actionHeld, Interact))
 		{
-			if (!GetValue(_actionHeld, Interact))
-			{
-				SetValue(_actionHeld, Interact, GetValue(_actionDown, Interact));
-				SetValue(_actionDown, Interact, true);
-			}
+			SetValue(_actionHeld, Interact, GetValue(_actionDown, Interact));
+			SetValue(_actionDown, Interact, true);
 		}
-		else if (GetValue(_actionDown, Interact))
-		{
-			SetValue(_actionDown, Interact, false);
-			SetValue(_actionHeld, Interact, true);
-		}
-		else
-		{
-			SetValue(_actionDown, Interact, false);
-			SetValue(_actionHeld, Interact, false);
-		}
+	}
+	else if (GetValue(_actionDown, Interact))
+	{
+		SetValue(_actionDown, Interact, false);
+		SetValue(_actionHeld, Interact, true);
+	}
+	else
+	{
+		SetValue(_actionDown, Interact, false);
+		SetValue(_actionHeld, Interact, false);
 	}
 
 	// Magnet
-	if (_deviceType == KeyboardLeft || _deviceType == KeyboardRight)
+	if (keyboard.IsKeyPressed(_actionMap.magnetKeyCode))
 	{
-		if (keyboard.IsKeyPressed(_actionMap.magnetKeyCode))
+		if (!GetValue(_actionHeld, Magnet))
 		{
-			if (!GetValue(_actionHeld, Magnet))
-			{
-				SetValue(_actionHeld, Magnet, GetValue(_actionDown, Magnet));
-				SetValue(_actionDown, Magnet, true);
-			}
+			SetValue(_actionHeld, Magnet, GetValue(_actionDown, Magnet));
+			SetValue(_actionDown, Magnet, true);
 		}
-		else if (GetValue(_actionDown, Magnet))
-		{
-			SetValue(_actionDown, Magnet, false);
-			SetValue(_actionHeld, Magnet, true);
-		}
-		else
-		{
-			SetValue(_actionDown, Magnet, false);
-			SetValue(_actionHeld, Magnet, false);
-		}
+	}
+	else if (GetValue(_actionDown, Magnet))
+	{
+		SetValue(_actionDown, Magnet, false);
+		SetValue(_actionHeld, Magnet, true);
+	}
+	else
+	{
+		SetValue(_actionDown, Magnet, false);
+		SetValue(_actionHeld, Magnet, false);
 	}
 
 	// Pause
-	if (_deviceType == KeyboardLeft || _deviceType == KeyboardRight)
+	if (keyboard.IsKeyPressed(_actionMap.pauseKeyCode))
 	{
-		if (keyboard.IsKeyPressed(_actionMap.pauseKeyCode))
+		if (!GetValue(_actionHeld, Pause))
 		{
-			if (!GetValue(_actionHeld, Pause))
-			{
-				SetValue(_actionHeld, Pause, GetValue(_actionDown, Pause));
-				SetValue(_actionDown, Pause, true);
-			}
+			SetValue(_actionHeld, Pause, GetValue(_actionDown, Pause));
+			SetValue(_actionDown, Pause, true);
 		}
-		else if (GetValue(_actionDown, Pause))
-		{
-			SetValue(_actionDown, Pause, false);
-			SetValue(_actionHeld, Pause, true);
-		}
-		else
-		{
-			SetValue(_actionDown, Pause, false);
-			SetValue(_actionHeld, Pause, false);
-		}
+	}
+	else if (GetValue(_actionDown, Pause))
+	{
+		SetValue(_actionDown, Pause, false);
+		SetValue(_actionHeld, Pause, true);
+	}
+	else
+	{
+		SetValue(_actionDown, Pause, false);
+		SetValue(_actionHeld, Pause, false);
 	}
 }
 
@@ -159,7 +150,7 @@ void PlayerInput::SetDeviceType(DeviceType deviceType)
 	case Controller:
 		_actionMap.leftKeyCode = -1;
 		_actionMap.rightKeyCode = -1;
-		_actionMap.jumpKeyCode =-1;
+		_actionMap.jumpKeyCode = -1;
 		_actionMap.interactKeyCode = -1;
 		_actionMap.magnetKeyCode = -1;
 		_actionMap.pauseKeyCode = -1;
