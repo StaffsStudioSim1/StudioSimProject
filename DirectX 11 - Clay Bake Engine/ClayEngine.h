@@ -1,5 +1,6 @@
 #pragma once
 #include "WindowContainer.h"
+#include "Examples.h"
 class ClayEngine : WindowContainer
 {
 
@@ -14,4 +15,6 @@ protected:
 
 private:
 	bool _initialised = false;
+
+	Examples* _ex;
 };
