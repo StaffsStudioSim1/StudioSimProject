@@ -4,7 +4,7 @@
 #include "Vertex.h"
 
 #include "../GameObjects/GameObject.h"
-#include "../Includes/DDSTextureLoader.h"
+#include <DDSTextureLoader.h>
 
 struct ConstantBufferStruct
 {
