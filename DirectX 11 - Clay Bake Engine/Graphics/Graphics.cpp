@@ -225,14 +225,6 @@ bool Graphics::InitializeShaders()
 bool Graphics::InitializeScene()
 {
 	// Create a primitive square
-	//Vertex v[] =
-	//{
-	//	Vertex(-0.1f, 0.1f),
-	//	Vertex(0.1f, 0.1f),
-	//	Vertex(-0.1f, -0.1f),
-	//	Vertex(0.1f, -0.1f)
-	//};
-
 	SimpleVertex v[] =
 	{
 		{ DirectX::XMFLOAT3(-0.1f, 0.1f, 0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) },

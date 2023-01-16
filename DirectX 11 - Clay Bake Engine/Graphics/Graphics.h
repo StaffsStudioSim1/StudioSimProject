@@ -1,7 +1,6 @@
 #pragma once
 #include "AdapterReader.h"
 #include "Shaders.h"
-#include "Vertex.h"
 
 #include "../GameObjects/GameObject.h"
 #include "../Includes/DDSTextureLoader.h"

@@ -173,7 +173,6 @@
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />
     <ClInclude Include="StringConverter.h" />
-    <ClInclude Include="Graphics\Vertex.h" />
     <ClInclude Include="GameObjects\Transform.h" />
     <ClInclude Include="WindowContainer.h" />
   </ItemGroup>
