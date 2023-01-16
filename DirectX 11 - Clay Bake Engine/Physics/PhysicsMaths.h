@@ -1,7 +1,9 @@
 #pragma once
 #include <d3d11.h>
+//#include <math.h>
 #include<DirectXMath.h>
 #include"PhysicsStructs.h"
+#include"Vectors.h"
 #define FORCE_0F_GRAVITY_PER_KG = 9.80665
 
 class PhysicsMaths
@@ -16,17 +18,18 @@ public:
 	GravityDirectinalProperties GetGravityDirection() { return CurrentGravityDirection; }
 
 	void SetGravityActive();
-	void SetGravityTrue();
 	bool GravityisActive() { return GravityActive; }
-	bool GravityIsTrue() { return GravityActive; }
 
 	DirectinalGravity GetGravityValue() { return GravityValue; }
 
 	void SetObjectWeight(float Weight);
 	float GetObjectWeight();
-	int GetObjectIntegerWeigt();
+//	int GetObjectIntegerWeight();
 
+	void CreateMass();
+	float GetMass();
 
+	//bool AABBvsAABB(AxisAlignedBoundingBox a, AxisAlignedBoundingBox b);// axis bound based box collision 
 
 
 

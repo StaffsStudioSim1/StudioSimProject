@@ -148,30 +148,41 @@
     <ClCompile Include="Graphics\Graphics.cpp" />
     <ClCompile Include="Keyboard\KeyboardClass.cpp" />
     <ClCompile Include="Keyboard\KeyboardEvent.cpp" />
+    <ClCompile Include="Physics\PhysicsSystem.cpp" />
+    <ClCompile Include="Physics\Matrices.cpp" />
     <ClCompile Include="Mouse\MouseClass.cpp" />
     <ClCompile Include="Mouse\MouseEvent.cpp" />
     <ClCompile Include="Physics\PhysicsMaths.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
+    <ClCompile Include="Physics\Rigidbody.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="StringConverter.cpp" />
+    <ClCompile Include="Physics\Vectors.cpp" />
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Physics\Geometry2D.h" />
+    <ClInclude Include="Physics\Geometry3D.h" />
+    <ClInclude Include="Physics\PhysicsSystem.h" />
+    <ClInclude Include="Physics\Compare.h" />
     <ClInclude Include="Graphics\AdapterReader.h" />
     <ClInclude Include="ClayEngine.h" />
     <ClInclude Include="ErrorLogger.h" />
     <ClInclude Include="Graphics\Graphics.h" />
     <ClInclude Include="Keyboard\KeyboardClass.h" />
     <ClInclude Include="Keyboard\KeyBoardEvent.h" />
+    <ClInclude Include="Physics\Matrices.h" />
     <ClInclude Include="Mouse\MouseClass.h" />
     <ClInclude Include="Mouse\MouseEvent.h" />
     <ClInclude Include="Physics\PhysicsStructs.h" />
     <ClInclude Include="Physics\PhysicsMaths.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />
+    <ClInclude Include="Physics\Rigidbody.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="Graphics\Vertex.h" />
+    <ClInclude Include="Physics\Vectors.h" />
     <ClInclude Include="WindowContainer.h" />
   </ItemGroup>
   <ItemGroup>

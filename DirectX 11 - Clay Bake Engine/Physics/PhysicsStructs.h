@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 enum GravityDirectinalProperties
 {
 	DEFAULT,
@@ -26,21 +28,9 @@ struct DirectinalGravity
 	float SpeedY;
 };
 
-typedef struct vec2 
-{
-	union 
-	{
-		struct
-		{
-			float x;
-			float y;
-		};
-		float asArray[2];
-	};
 
-	float& operator[](int i)
-	{
-		return asArray[i];
-	}
-
-} vec2;
+//struct AxisAlignedBoundingBox
+//{
+//	Vector2 min;
+//	Vector2 max;
+//};

@@ -27,6 +27,9 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		if (adapters.size() >= 2)
 		{
 			// use this to add a thing to chose gpu's over cpu virtal gpu if available otherwise is set to default 1st gpu available 
+		}else
+		{ 
+			// this will be for if only 1 renderer is availbe if toggle stuff is set up
 		}
 
 		DXGI_SWAP_CHAIN_DESC scd;
@@ -202,6 +205,6 @@ void Graphics::RenderFrame()
 
 	this->deviceContext->Draw(3, 0);
 
-	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
+	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON | 0 = VYSNC OFF 
 }
 
