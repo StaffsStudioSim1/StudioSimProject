@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Audio\AudioManager.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Graphics\AdapterReader.cpp" />
     <ClCompile Include="ClayEngine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
@@ -157,12 +158,15 @@
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
     <ClCompile Include="Audio\SoundEffect.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="StringConverter.cpp" />
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio\AudioManager.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input\PlayerInput.h" />
     <ClInclude Include="Graphics\AdapterReader.h" />
     <ClInclude Include="ClayEngine.h" />
@@ -175,9 +179,12 @@
     <ClInclude Include="Input\Mouse\MouseClass.h" />
     <ClInclude Include="Input\Mouse\MouseEvent.h" />
     <ClInclude Include="Examples.h" />
+    <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />
     <ClInclude Include="Audio\SoundEffect.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="Graphics\Vertex.h" />
     <ClInclude Include="WindowContainer.h" />

@@ -1,6 +1,7 @@
 #include "ClayEngine.h"
 #include "Input/InputManager.h"
 #include "Audio/AudioManager.h"
+#include "SceneManager.h"
 
 bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
 {
@@ -53,10 +54,20 @@ bool ClayEngine::ProcessMessages()
 void ClayEngine::Update()
 {
 	InputManager::GetInstance().PollInput();
-	//InputManager::GetInstance().Debug();
 	AudioManager::GetInstance().Update();
 
 	_ex->Update();
+	if (_scene != nullptr)
+		_scene->Update();
+	// TODO Update Colliders
+
+	if (SceneManager::GetInstance().ShouldSceneChange())
+	{
+		if (_scene != nullptr)
+			_scene->Stop();
+		_scene = SceneManager::GetInstance().ReadScene();
+		_scene->Start();
+	}
 }
 
 void ClayEngine::RenderFrame()

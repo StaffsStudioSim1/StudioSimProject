@@ -1,6 +1,7 @@
 #pragma once
 #include "WindowContainer.h"
 #include "Examples.h"
+#include "Scene.h"
 class ClayEngine : WindowContainer
 {
 
@@ -16,5 +17,6 @@ protected:
 private:
 	bool _initialised = false;
 
+	Scene* _scene = nullptr;
 	Examples* _ex;
 };
