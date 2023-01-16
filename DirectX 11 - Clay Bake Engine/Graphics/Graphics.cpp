@@ -57,6 +57,19 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 			// use this to add a thing to chose gpu's over cpu virtal gpu if available otherwise is set to default 1st gpu available 
 		}
 
+		D3D11_TEXTURE2D_DESC depthStencilDesc;
+		depthStencilDesc.Width = width;
+		depthStencilDesc.Height = height;
+		depthStencilDesc.MipLevels = 1;
+		depthStencilDesc.ArraySize = 1;
+		depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthStencilDesc.SampleDesc.Count = 1;
+		depthStencilDesc.SampleDesc.Quality = 0;
+		depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+		depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		depthStencilDesc.CPUAccessFlags = 0;
+		depthStencilDesc.MiscFlags = 0;
+
 		DXGI_SWAP_CHAIN_DESC scd;
 		ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 		
@@ -109,12 +122,16 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 			return false;
 		}
 		hr = this->device->CreateRenderTargetView(backBuffer.Get(), NULL, this->renderTargertView.GetAddressOf());
+		backBuffer->Release();
 		if (FAILED(hr))
 		{
 			ErrorLogger::Log(hr, "Failed to create render target view\n");
 			return false;
 		}
-		this->deviceContext->OMSetRenderTargets(1,this->renderTargertView.GetAddressOf(), NULL); // null value is render stencil view to be setup 
+
+		this->device->CreateTexture2D(&depthStencilDesc, nullptr, _depthStencilBuffer.GetAddressOf());
+		this->device->CreateDepthStencilView(_depthStencilBuffer.Get(), nullptr, _depthStencilView.GetAddressOf());
+		this->deviceContext->OMSetRenderTargets(1, this->renderTargertView.GetAddressOf(), _depthStencilView.Get()); // null value is render stencil view to be setup 
 			
 		//create viewport
 		D3D11_VIEWPORT viewport;
@@ -141,6 +158,20 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		this->device->CreateSamplerState(&sampDesc, &_samplerState);
 
 		this->deviceContext->PSSetSamplers(0, 1, &_samplerState);
+
+		D3D11_RASTERIZER_DESC rasterDesc0;
+		ZeroMemory(&rasterDesc0, sizeof(D3D11_RASTERIZER_DESC));
+		rasterDesc0.FillMode = D3D11_FILL_WIREFRAME;
+		rasterDesc0.CullMode = D3D11_CULL_NONE;
+		this->device->CreateRasterizerState(&rasterDesc0, &_wireframeRasterState);
+
+		D3D11_RASTERIZER_DESC rasterDesc1;
+		ZeroMemory(&rasterDesc1, sizeof(D3D11_RASTERIZER_DESC));
+		rasterDesc1.FillMode = D3D11_FILL_SOLID;
+		rasterDesc1.CullMode = D3D11_CULL_BACK;
+		this->device->CreateRasterizerState(&rasterDesc1, &_solidRasterState);
+
+		this->deviceContext->RSSetState(_solidRasterState.Get());
 
 		return true;
 	}															
@@ -187,6 +218,8 @@ bool Graphics::InitializeShaders()
 	{
 		return false;
 	}
+
+	this->deviceContext->IASetInputLayout(this->vertexshader.GetInputLayout());
 	
 	return true;
 }
@@ -232,8 +265,8 @@ bool Graphics::InitializeScene()
 
 	WORD indices[] =
 	{
-		3,0,1,
-		2,0,3,
+		3, 0, 1,
+		2, 0, 3,
 	};
 
 	D3D11_BUFFER_DESC indexBufferDesc;
@@ -249,7 +282,7 @@ bool Graphics::InitializeScene()
 	indexBufferData.pSysMem = indices;
 	hr = this->device->CreateBuffer(&indexBufferDesc, &indexBufferData, this->indexBuffer.GetAddressOf());
 
-	this->deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	this->deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// Constant buffer
 	D3D11_BUFFER_DESC bd;
@@ -258,7 +291,7 @@ bool Graphics::InitializeScene()
 	bd.ByteWidth = sizeof(ConstantBufferStruct);
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
-	this->device->CreateBuffer(&bd, nullptr, &_constantBuffer);
+	this->device->CreateBuffer(&bd, nullptr, _constantBuffer.GetAddressOf());
 
 	// Save the square shape data
 	squareGeometryData.indexBuffer = this->indexBuffer;
@@ -275,7 +308,7 @@ void Graphics::RenderFrame()
 	float bgcolor[] = {1.0f, 0.0f, 1.0f, 1.0f};
 	//this->deviceContext->OMSetRenderTargets(1, this->renderTargertView.GetAddressOf(), NULL);
 	this->deviceContext->ClearRenderTargetView(this->renderTargertView.Get(), bgcolor);
-	this->deviceContext->IASetInputLayout(this->vertexshader.GetInputLayout());
+	this->deviceContext->ClearDepthStencilView(this->_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	DirectX::XMMATRIX worldMatrix = XMLoadFloat4x4(&_world);
 	DirectX::XMMATRIX viewMatrix = XMLoadFloat4x4(&_view);
@@ -295,8 +328,6 @@ void Graphics::RenderFrame()
 
 	this->deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 	this->deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
-
-	this->deviceContext->PSSetShaderResources(0, 1, &testTexture);
 
 	//pTestObject->GetTransform()->SetPositionChange(0.001f, 0.0f);
 	//pTestObject->GetTransform()->SetRotationChange(0.01f);

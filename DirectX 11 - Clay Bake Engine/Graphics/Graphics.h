@@ -43,7 +43,12 @@ private:
 
 	Microsoft::WRL::ComPtr <ID3D11Buffer>				_constantBuffer;
 
+	Microsoft::WRL::ComPtr <ID3D11Texture2D>			_depthStencilBuffer;
+	Microsoft::WRL::ComPtr <ID3D11DepthStencilView>		_depthStencilView;
+
 	Microsoft::WRL::ComPtr <ID3D11SamplerState>			_samplerState;
+	Microsoft::WRL::ComPtr <ID3D11RasterizerState>		_wireframeRasterState;
+	Microsoft::WRL::ComPtr <ID3D11RasterizerState>		_solidRasterState;
 
 	DirectX::XMFLOAT4X4									_world;
 	DirectX::XMFLOAT4X4									_view;
