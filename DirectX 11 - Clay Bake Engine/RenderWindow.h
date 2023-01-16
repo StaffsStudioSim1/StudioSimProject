@@ -13,7 +13,7 @@ public:
 private:
 	void RegisterWindowClass();
 	HWND handle = NULL;			// window handle
-	HINSTANCE hInstance = NULL; // application instance handle 
+	HINSTANCE hInstance = NULL; // application instance handle
 	std::string window_title = ""; 
 	std::wstring window_title_wide = L"";// wide ver for windows interaction 
 	std::string window_class = ""; 
