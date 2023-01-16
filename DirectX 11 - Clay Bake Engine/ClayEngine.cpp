@@ -1,8 +1,9 @@
 #include "ClayEngine.h"
+#include "Input/InputManager.h"
+#include "Audio/AudioManager.h"
 
 bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
 {
-	Keyboard.EnableAutoRepeatChars(); // ENABLES char auto repeat for output example of default class use 
 	if (!this->render_window.Initialize(this, hInstance, window_title, window_class, width, height))
 	{
 		return false;
@@ -12,8 +13,36 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 		return false;
 	}
 
+	// Guarantee InputManager is initialised at this point
+	InputManager::GetInstance();
+
+	// Initialise Audio Engine
+	AudioManager::GetInstance();
+
+	_ex = new Examples();
+
+	// initialise graphics here
+
+	_initialised = true;
 	return true;
-	// initialise graphics here 
+}
+
+void ClayEngine::Destroy()
+{
+	delete _ex;
+}
+
+LRESULT ClayEngine::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	if (!_initialised)
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+
+	LRESULT result = InputManager::GetInstance().WindowProc(uMsg, wParam, lParam);
+
+	if (result != -1)
+		return result;
+
+	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
 bool ClayEngine::ProcessMessages()
@@ -23,43 +52,11 @@ bool ClayEngine::ProcessMessages()
 
 void ClayEngine::Update()
 {
+	InputManager::GetInstance().PollInput();
+	//InputManager::GetInstance().Debug();
+	AudioManager::GetInstance().Update();
 
-	while (!Keyboard.CharBufferIsEmpty())
-	{	// way to output current char pressed	shows just letter pressed
-		unsigned char ch = Keyboard.ReadChar();	 // read key
-		std::string outmsg = "char: "; outmsg += ch; outmsg += "\n"; // compile complete string 
-		OutputDebugStringA(outmsg.c_str());	// output string 
-	}
-	while (!Keyboard.KeyBufferIsEmpty())
-	{	// way to output current Key pressed shows key event of down / up
-		KeyboardEvent kbe = Keyboard.ReadKey(); // read keyboard event
-		unsigned char keycode = kbe.GetKeyCode();	// get key pressed
-		std::string outmsg = "key: "; outmsg += keycode; outmsg += "\n"; // compile string for output
-		OutputDebugStringA(outmsg.c_str()); // output string 
-	}
-
-	while (!mouse.EventBufferIsEmpty())
-	{
-		MouseEvent me = mouse.ReadEvent(); // read mouse event the mouse moment here is just basic pos on screen 
-		std::string outmsg = "X:"; outmsg += std::to_string(me.GetPosX()); outmsg += ", Y: "; outmsg += std::to_string(me.GetPosY()); outmsg += "\n";	// read mouse event the mouse moment here is
-		OutputDebugStringA(outmsg.c_str()); // output string																					//  just basic pos on screen then compile mouse string for output
-		if(me.GetType() == MouseEvent::EventType::WheelUp)
-		{
-			OutputDebugStringA("mouse wheel up.\n");
-		}
-		if (me.GetType() == MouseEvent::EventType::WheelDown) // scroll wheel examples
-		{
-			OutputDebugStringA("mouse wheel down.\n");
-		}
-
-		if (me.GetType() == MouseEvent::EventType::RAW_MOVE)
-		{
-			std::string outmsg = "X: "; outmsg += std::to_string(me.GetPosX()); outmsg += ", Y: "; outmsg += std::to_string(me.GetPosY()); outmsg += "\n"; // this string settup uses raw mouse movment
-			OutputDebugStringA(outmsg.c_str());
-		}
-
-	}
-
+	_ex->Update();
 }
 
 void ClayEngine::RenderFrame()

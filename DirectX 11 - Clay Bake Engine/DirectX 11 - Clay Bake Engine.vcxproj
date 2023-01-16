@@ -144,16 +144,21 @@
   <ItemGroup>
     <ClCompile Include="GameObjects\Appearance.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
+    <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="Graphics\AdapterReader.cpp" />
     <ClCompile Include="ClayEngine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
     <ClCompile Include="Graphics\Graphics.cpp" />
-    <ClCompile Include="Keyboard\KeyboardClass.cpp" />
-    <ClCompile Include="Keyboard\KeyboardEvent.cpp" />
-    <ClCompile Include="Mouse\MouseClass.cpp" />
-    <ClCompile Include="Mouse\MouseEvent.cpp" />
+    <ClCompile Include="Input\PlayerInput.cpp" />
+    <ClCompile Include="Input\InputManager.cpp" />
+    <ClCompile Include="Input\Keyboard\KeyboardClass.cpp" />
+    <ClCompile Include="Input\Keyboard\KeyboardEvent.cpp" />
+    <ClCompile Include="Input\Mouse\MouseClass.cpp" />
+    <ClCompile Include="Input\Mouse\MouseEvent.cpp" />
+    <ClCompile Include="Examples.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
+    <ClCompile Include="Audio\SoundEffect.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="StringConverter.cpp" />
     <ClCompile Include="GameObjects\Transform.cpp" />
@@ -162,16 +167,22 @@
   <ItemGroup>
     <ClInclude Include="GameObjects\Appearance.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
+    <ClInclude Include="Audio\AudioManager.h" />
+    <ClInclude Include="Input\PlayerInput.h" />
     <ClInclude Include="Graphics\AdapterReader.h" />
     <ClInclude Include="ClayEngine.h" />
     <ClInclude Include="ErrorLogger.h" />
     <ClInclude Include="Graphics\Graphics.h" />
-    <ClInclude Include="Keyboard\KeyboardClass.h" />
-    <ClInclude Include="Keyboard\KeyBoardEvent.h" />
-    <ClInclude Include="Mouse\MouseClass.h" />
-    <ClInclude Include="Mouse\MouseEvent.h" />
+    <ClInclude Include="Input\ActionMap.h" />
+    <ClInclude Include="Input\InputManager.h" />
+    <ClInclude Include="Input\Keyboard\KeyboardClass.h" />
+    <ClInclude Include="Input\Keyboard\KeyBoardEvent.h" />
+    <ClInclude Include="Input\Mouse\MouseClass.h" />
+    <ClInclude Include="Input\Mouse\MouseEvent.h" />
+    <ClInclude Include="Examples.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />
+    <ClInclude Include="Audio\SoundEffect.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="GameObjects\Transform.h" />
     <ClInclude Include="WindowContainer.h" />
@@ -202,7 +213,17 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\directxtk_desktop_win10.2022.12.16.1\build\native\directxtk_desktop_win10.targets" Condition="Exists('..\packages\directxtk_desktop_win10.2022.12.16.1\build\native\directxtk_desktop_win10.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\directxtk_desktop_win10.2022.12.16.1\build\native\directxtk_desktop_win10.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk_desktop_win10.2022.12.16.1\build\native\directxtk_desktop_win10.targets'))" />
+  </Target>
 </Project>
