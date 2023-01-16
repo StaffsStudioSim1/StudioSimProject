@@ -35,6 +35,8 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	pTestObject->AddTransform(new Transform);
 	pTestObject->GetAppearance()->SetGeometryData(squareGeometryData);
 	pTestObject->GetAppearance()->SetTexture(this->testTexture);
+	//pTestObject->GetTransform()->SetPosition(0.33f, 0.33f);
+	//pTestObject->GetTransform()->SetScale(5.0f, 5.0f);
 
 	return true;
 }
@@ -125,6 +127,20 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		//set viewport
 		this->deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
 		
+		// Create sampler state
+		D3D11_SAMPLER_DESC sampDesc;
+		ZeroMemory(&sampDesc, sizeof(sampDesc));
+		sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+		sampDesc.MinLOD = 0;
+		sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+		this->device->CreateSamplerState(&sampDesc, &_samplerState);
+
+		this->deviceContext->PSSetSamplers(0, 1, &_samplerState);
+
 		return true;
 	}															
 	return false;
@@ -156,8 +172,8 @@ bool Graphics::InitializeShaders()
 
 		D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
-			{"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{"TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{"TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
 	UINT numElements = ARRAYSIZE(layout);
@@ -176,24 +192,28 @@ bool Graphics::InitializeShaders()
 
 bool Graphics::InitializeScene()
 {
-	Vertex v[] =
-	{
-		//Vertex(0.0f, -0.11f), // center
-		//Vertex(-0.11f, 0.0f), // left
-		//Vertex(0.11f, 0.0f), // right
-		//Vertex(0.0f, 0.11f), // top
+	// Create a primitive square
+	//Vertex v[] =
+	//{
+	//	Vertex(-0.1f, 0.1f),
+	//	Vertex(0.1f, 0.1f),
+	//	Vertex(-0.1f, -0.1f),
+	//	Vertex(0.1f, -0.1f)
+	//};
 
-		Vertex(-0.1f, 0.1f),
-		Vertex(0.1f, 0.1f),
-		Vertex(-0.1f, -0.1f),
-		Vertex(0.1f, -0.1f)
+	SimpleVertex v[] =
+	{
+		{ DirectX::XMFLOAT2(-0.1f, 0.1f), DirectX::XMFLOAT2(0.0f, 0.0f) },
+		{ DirectX::XMFLOAT2(0.1f, 0.1f), DirectX::XMFLOAT2(1.0f, 0.0f) },
+		{ DirectX::XMFLOAT2(-0.1f, -0.1f), DirectX::XMFLOAT2(0.0f, 1.0f) },
+		{ DirectX::XMFLOAT2(0.1f, -0.1f), DirectX::XMFLOAT2(1.0f, 1.0f) },
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
 
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex) * ARRAYSIZE(v);
+	vertexBufferDesc.ByteWidth = sizeof(SimpleVertex) * ARRAYSIZE(v);
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -211,8 +231,8 @@ bool Graphics::InitializeScene()
 
 	WORD indices[] =
 	{
-		3, 0, 1,
-		2, 0, 3,
+		3,0,1,
+		2,0,3,
 	};
 
 	D3D11_BUFFER_DESC indexBufferDesc;
@@ -230,6 +250,7 @@ bool Graphics::InitializeScene()
 
 	this->deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	// Constant buffer
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -238,11 +259,12 @@ bool Graphics::InitializeScene()
 	bd.CPUAccessFlags = 0;
 	this->device->CreateBuffer(&bd, nullptr, &_constantBuffer);
 
+	// Save the square shape data
 	squareGeometryData.indexBuffer = this->indexBuffer;
 	squareGeometryData.numOfIndices = ARRAYSIZE(indices);
 	squareGeometryData.vertexBuffer = this->vertexBuffer;
 	squareGeometryData.vertexBufferOffset = 0;
-	squareGeometryData.vertexBufferStride = sizeof(Vertex);
+	squareGeometryData.vertexBufferStride = sizeof(SimpleVertex);
 
 	return true;
 }
@@ -254,6 +276,7 @@ void Graphics::RenderFrame()
 	this->deviceContext->ClearRenderTargetView(this->renderTargertView.Get(), bgcolor);
 	this->deviceContext->IASetInputLayout(this->vertexshader.GetInputLayout());
 
+	DirectX::XMMATRIX worldMatrix = XMLoadFloat4x4(&_world);
 	DirectX::XMMATRIX viewMatrix = XMLoadFloat4x4(&_view);
 	DirectX::XMMATRIX projectionMatrix = XMLoadFloat4x4(&_projection);
 
@@ -262,14 +285,21 @@ void Graphics::RenderFrame()
 	cb.mView = DirectX::XMMatrixTranspose(viewMatrix);
 	cb.mProjection = DirectX::XMMatrixTranspose(projectionMatrix);
 
+	cb.mTexCoord = pTestObject->GetAppearance()->GetTexMatrix();
+
 	this->deviceContext->UpdateSubresource(_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
 
 	this->deviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
 	this->deviceContext->PSSetShader(pixelshader.GetShader(), NULL, 0);
 
+	this->deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
+	this->deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
+
 	this->deviceContext->PSSetShaderResources(0, 1, &testTexture);
 
-	//pTestObject->GetTransform()->SetPositionChange(1.0f, 0.0f);
+	//pTestObject->GetTransform()->SetPositionChange(0.001f, 0.0f);
+	//pTestObject->GetTransform()->SetRotationChange(0.01f);
+	//pTestObject->GetAppearance()->SetTexCoords(1.0f, 1.0f, 0.0f, 0.0f);
 	pTestObject->Update();
 	pTestObject->Render(this->deviceContext);
 

@@ -32,10 +32,24 @@ public:
 	ID3D11ShaderResourceView* GetTexture() const noexcept { return _pTextureRV.Get(); }
 	void SetTexture(ID3D11ShaderResourceView* textureRV) { _pTextureRV = textureRV; }
 
+	DirectX::XMFLOAT4X4 GetTexMatrix() const noexcept { return _texMatrix; }
+	DirectX::XMFLOAT4 GetTexCoords() const noexcept { return _texCoords; }
+	void SetTexCoords(float width, float height, float x, float y);
+
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext>& context);
 private:
 	Geometry _geometry;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _pTextureRV;
+
+	DirectX::XMFLOAT4X4 _texMatrix =
+	{
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f
+	};
+
+	DirectX::XMFLOAT4 _texCoords = { 1.0f, 1.0f, 0.0f, 0.0f };
 };
 

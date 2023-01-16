@@ -11,6 +11,13 @@ struct ConstantBufferStruct
 	DirectX::XMMATRIX mWorld;
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
+	DirectX::XMFLOAT4X4 mTexCoord;
+};
+
+struct SimpleVertex
+{
+	DirectX::XMFLOAT2 Pos;
+	DirectX::XMFLOAT2 TexC;
 };
 
 class Graphics
@@ -35,6 +42,8 @@ private:
 	Microsoft::WRL::ComPtr <ID3D11Buffer>				indexBuffer;
 
 	Microsoft::WRL::ComPtr <ID3D11Buffer>				_constantBuffer;
+
+	Microsoft::WRL::ComPtr <ID3D11SamplerState>			_samplerState;
 
 	DirectX::XMFLOAT4X4									_world;
 	DirectX::XMFLOAT4X4									_view;
