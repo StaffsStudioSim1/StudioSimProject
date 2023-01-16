@@ -50,6 +50,14 @@ void AudioManager::AddLoopingSound(SoundEffect* sound)
 	_loopingSounds.push_back(sound);
 }
 
+void AudioManager::RemoveLoopingSound(SoundEffect* sound)
+{
+	if (!IsLooping(sound))
+		return;
+
+	_loopingSounds.erase(std::remove(_loopingSounds.begin(), _loopingSounds.end(), sound), _loopingSounds.end());
+}
+
 bool AudioManager::IsLooping(SoundEffect* sound)
 {
 	return std::count(_loopingSounds.begin(), _loopingSounds.end(), sound);

@@ -13,7 +13,8 @@ SoundEffect::SoundEffect(std::string filePath, bool loop)
 
 SoundEffect::~SoundEffect()
 {
-
+	if (_loop)
+		AudioManager::GetInstance().RemoveLoopingSound(this);
 }
 
 void SoundEffect::Play()
@@ -24,7 +25,7 @@ void SoundEffect::Play()
 		_loopingSfx->SetVolume(_volume);
 		_loopingSfx->SetPitch(_pitch);
 		_loopingSfx->SetPan(_pan);
-		_loopingSfx->Play();
+		_loopingSfx->Play(true);
 	}
 	else
 		_sfx->Play(_volume, _pitch, _pan);

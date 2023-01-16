@@ -18,6 +18,7 @@ public:
 	void Update();
 
 	void AddLoopingSound(SoundEffect* sound);
+	void RemoveLoopingSound(SoundEffect* sound);
 	bool IsLooping(SoundEffect* sound);
 
 	std::unique_ptr<DirectX::SoundEffect> GetSoundEffect(std::string filePath);
