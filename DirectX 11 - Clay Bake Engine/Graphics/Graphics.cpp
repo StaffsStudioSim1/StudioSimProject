@@ -24,7 +24,7 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	DirectX::XMStoreFloat4x4(&_view, DirectX::XMMatrixLookAtLH(eye, at, up));
 
 	// Projection matrix
-	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, 1280.0f / 720.0f, 0.01f, 100.0f));
+	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, 16.0f / 9.0f, 0.01f, 100.0f));
 
 
 	if (FAILED(DirectX::CreateDDSTextureFromFile(this->device.Get(), L"Test.dds", nullptr, &this->testTexture)))
@@ -35,6 +35,7 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	pTestObject->AddTransform(new Transform);
 	pTestObject->GetAppearance()->SetGeometryData(squareGeometryData);
 	pTestObject->GetAppearance()->SetTexture(this->testTexture);
+	//pTestObject->GetAppearance()->SetTexCoords(10.0f, 10.0f, 0.0f, 0.0f);
 	//pTestObject->GetTransform()->SetPosition(0.33f, 0.33f);
 	//pTestObject->GetTransform()->SetScale(5.0f, 5.0f);
 
@@ -120,9 +121,9 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
 
 		viewport.TopLeftX = 0;
-		viewport.TopLeftY = 0;
+		viewport.TopLeftY = -height / 2.5f;
 		viewport.Width = width;
-		viewport.Height = height;
+		viewport.Height = width;
 
 		//set viewport
 		this->deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
@@ -299,7 +300,6 @@ void Graphics::RenderFrame()
 
 	//pTestObject->GetTransform()->SetPositionChange(0.001f, 0.0f);
 	//pTestObject->GetTransform()->SetRotationChange(0.01f);
-	//pTestObject->GetAppearance()->SetTexCoords(1.0f, 1.0f, 0.0f, 0.0f);
 	pTestObject->Update();
 	pTestObject->Render(this->deviceContext);
 
