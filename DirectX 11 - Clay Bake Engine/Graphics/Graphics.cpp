@@ -35,9 +35,7 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	pTestObject->AddTransform(new Transform);
 	pTestObject->GetAppearance()->SetGeometryData(squareGeometryData);
 	pTestObject->GetAppearance()->SetTexture(this->testTexture);
-	//pTestObject->GetAppearance()->SetTexCoords(10.0f, 10.0f, 0.0f, 0.0f);
-	//pTestObject->GetTransform()->SetPosition(0.33f, 0.33f);
-	//pTestObject->GetTransform()->SetScale(5.0f, 5.0f);
+	pTestObject->GetAppearance()->SetTexCoords(1.0f, 1.0f, 0.0f, 0.0f);
 
 	return true;
 }
@@ -148,16 +146,16 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		// Create sampler state
 		D3D11_SAMPLER_DESC sampDesc;
 		ZeroMemory(&sampDesc, sizeof(sampDesc));
-		sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 		sampDesc.MinLOD = 0;
 		sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-		this->device->CreateSamplerState(&sampDesc, &_samplerState);
+		this->device->CreateSamplerState(&sampDesc, _samplerState.GetAddressOf());
 
-		this->deviceContext->PSSetSamplers(0, 1, &_samplerState);
+		this->deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
 
 		D3D11_RASTERIZER_DESC rasterDesc0;
 		ZeroMemory(&rasterDesc0, sizeof(D3D11_RASTERIZER_DESC));
@@ -237,10 +235,10 @@ bool Graphics::InitializeScene()
 
 	SimpleVertex v[] =
 	{
-		{ DirectX::XMFLOAT2(-0.1f, 0.1f), DirectX::XMFLOAT2(0.0f, 0.0f) },
-		{ DirectX::XMFLOAT2(0.1f, 0.1f), DirectX::XMFLOAT2(1.0f, 0.0f) },
-		{ DirectX::XMFLOAT2(-0.1f, -0.1f), DirectX::XMFLOAT2(0.0f, 1.0f) },
-		{ DirectX::XMFLOAT2(0.1f, -0.1f), DirectX::XMFLOAT2(1.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(-0.1f, 0.1f, 0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) },
+		{ DirectX::XMFLOAT3(0.1f, 0.1f, 0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) },
+		{ DirectX::XMFLOAT3(-0.1f, -0.1f, 0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(0.1f, -0.1f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) },
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
@@ -329,8 +327,6 @@ void Graphics::RenderFrame()
 	this->deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 	this->deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
-	//pTestObject->GetTransform()->SetPositionChange(0.001f, 0.0f);
-	//pTestObject->GetTransform()->SetRotationChange(0.01f);
 	pTestObject->Update();
 	pTestObject->Render(this->deviceContext);
 
