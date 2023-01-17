@@ -171,7 +171,7 @@ void InputManager::RegisterPlayerInput(PlayerInput* playerInput)
 	_inputs.push_back(playerInput);
 }
 
-void InputManager::DeregisterPlayerInput(PlayerInput* playerInput)
+void InputManager::UnregisterPlayerInput(PlayerInput* playerInput)
 {
 	_inputs.erase(std::remove(_inputs.begin(), _inputs.end(), playerInput), _inputs.end());
 }

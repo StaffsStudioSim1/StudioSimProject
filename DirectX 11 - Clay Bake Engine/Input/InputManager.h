@@ -23,7 +23,6 @@ public:
 	void Debug();
 	void RegisterPlayerInput(PlayerInput* playerInput);
 	void UnregisterPlayerInput(PlayerInput* playerInput);
-	// Update ActionMaps
 	void PollInput();
 private:
 	InputManager();
