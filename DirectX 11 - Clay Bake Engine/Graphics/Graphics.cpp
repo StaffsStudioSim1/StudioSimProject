@@ -24,7 +24,7 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	DirectX::XMStoreFloat4x4(&_view, DirectX::XMMatrixLookAtLH(eye, at, up));
 
 	// Projection matrix
-	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, 16.0f / 9.0f, 0.01f, 100.0f));
+	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixOrthographicLH(width, height, 0.01f, 100.0f));
 
 	if (FAILED(DirectX::CreateDDSTextureFromFile(this->device.Get(), L"Test.dds", nullptr, &this->testTexture)))
 		exit(-1);
@@ -32,11 +32,9 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	_pObjectHandler.AddTextureToMap("Test", this->testTexture);
 	_pObjectHandler.SetSquareGeometry(squareGeometryData);
 
-	_pObjectHandler.CreateGameObject("TestObject", { 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test"); // Render bottom
-
-	_pObjectHandler.CreateGameObject("TestObject2", { 0.25f, 0.0f, 2.0f }, { 2.0f, 2.0f }, 0.1f, false, "Test"); // Render middle
-
-	_pObjectHandler.CreateGameObject("TestObject3", { -0.2f, 0.0f, 0.0f }, { 1.5f, 1.5f }, -0.1f, false, "Test"); // Render top
+	_pObjectHandler.CreateGameObject("ObjectTest", { 0.0f, 0.0f, 2.0f }, { 2.0f, 2.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
+	_pObjectHandler.CreateGameObject("ObjectTest2", { 0.0f, 0.0f, 1.0f }, { 1.5f, 1.5f }, 3.141f, false, "Test", {1.0f, 1.0f, 0.0f, 0.0f});
+	_pObjectHandler.CreateGameObject("ObjectTest3", { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test", {1.0f, 1.0f, 0.0f, 0.0f});
 
 	return true;
 }
@@ -97,7 +95,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		hr =D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
 			D3D_DRIVER_TYPE_UNKNOWN,							// Graphics device
 			NULL,												// software driver type 
-			NULL,												// feature lvls array
+			D3D11_CREATE_DEVICE_DEBUG,							// feature lvls array
 			NULL,												// flags for^runtime layers 
 			0,													// num feature levels in array
 			D3D11_SDK_VERSION,									// direct 3d sdk ver
@@ -122,7 +120,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 			return false;
 		}
 		hr = this->device->CreateRenderTargetView(backBuffer.Get(), NULL, this->renderTargertView.GetAddressOf());
-		backBuffer->Release();
+
 		if (FAILED(hr))
 		{
 			ErrorLogger::Log(hr, "Failed to create render target view\n");
@@ -138,7 +136,10 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
 
 		viewport.TopLeftX = 0;
-		viewport.TopLeftY = -height / 2.5f;
+		if (width > height)
+			viewport.TopLeftY = -height / 2.5f;
+		else
+			viewport.TopLeftY = 0;
 		viewport.Width = width;
 		viewport.Height = width;
 
@@ -147,24 +148,12 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		
 		// Create stencil state
 		D3D11_DEPTH_STENCIL_DESC stencilDesc;
-		ZeroMemory(&stencilDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+		ZeroMemory(&stencilDesc, sizeof(stencilDesc));
 		stencilDesc.DepthEnable = true;
 		stencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		stencilDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
+		stencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 
-		stencilDesc.StencilEnable = true;
-		stencilDesc.StencilReadMask = 0xFF;
-		stencilDesc.StencilWriteMask = 0xFF;
-
-		stencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		stencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-		stencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		stencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		stencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		stencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-		stencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		stencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		stencilDesc.StencilEnable = false;
 
 		this->device->CreateDepthStencilState(&stencilDesc, _stencilState.GetAddressOf());
 		this->deviceContext->OMSetDepthStencilState(_stencilState.Get(), 1);
@@ -183,14 +172,18 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		this->deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
 
-		D3D11_RASTERIZER_DESC rasterDesc0;
+		D3D11_RASTERIZER_DESC rasterDesc0 = CD3D11_RASTERIZER_DESC(CD3D11_DEFAULT{});
 		ZeroMemory(&rasterDesc0, sizeof(D3D11_RASTERIZER_DESC));
+		rasterDesc0.MultisampleEnable = true;
+		rasterDesc0.AntialiasedLineEnable = true;
 		rasterDesc0.FillMode = D3D11_FILL_WIREFRAME;
 		rasterDesc0.CullMode = D3D11_CULL_NONE;
 		this->device->CreateRasterizerState(&rasterDesc0, &_wireframeRasterState);
 
-		D3D11_RASTERIZER_DESC rasterDesc1;
+		D3D11_RASTERIZER_DESC rasterDesc1 = CD3D11_RASTERIZER_DESC(CD3D11_DEFAULT{});
 		ZeroMemory(&rasterDesc1, sizeof(D3D11_RASTERIZER_DESC));
+		rasterDesc1.MultisampleEnable = true;
+		rasterDesc1.AntialiasedLineEnable = true;
 		rasterDesc1.FillMode = D3D11_FILL_SOLID;
 		rasterDesc1.CullMode = D3D11_CULL_BACK;
 		this->device->CreateRasterizerState(&rasterDesc1, &_solidRasterState);
@@ -342,12 +335,12 @@ void Graphics::RenderFrame()
 
 	for (std::pair<std::string, GameObject*> object : _pObjectHandler.GetAllObjects())
 	{
+		object.second->Update();
 		cb.mWorld = DirectX::XMMatrixTranspose(object.second->GetTransform()->GetWorldMatrix());
 		cb.mTexCoord = object.second->GetAppearance()->GetTexMatrix();
 
 		this->deviceContext->UpdateSubresource(_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
 
-		object.second->Update();
 		object.second->Render(this->deviceContext);
 	}
 
