@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "GameObject.h"
+#include "GameObjects/GameObject.h"
 class Scene
 {
 public:
@@ -9,7 +9,8 @@ public:
 	~Scene();
 
 	void Start();
-	void Update();
+	void Update(float deltaTime);
+	void FixedUpdate(float timeStep);
 	void Stop();
 private:
 	std::vector<GameObject*> _children;

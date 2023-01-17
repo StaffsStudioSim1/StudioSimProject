@@ -53,13 +53,44 @@ bool ClayEngine::ProcessMessages()
 
 void ClayEngine::Update()
 {
-	InputManager::GetInstance().PollInput();
 	AudioManager::GetInstance().Update();
+
+	static float deltaTime = 0.0f;
+	static DWORD dwTimeStart = 0;
+
+	static float deltaTimeFixed = 0.0f;
+	static DWORD dwTimeStartFixed = 0;
+
+	DWORD dwTimeCur = GetTickCount64();
+
+	if (dwTimeStart == 0)
+		dwTimeStart = dwTimeCur;
+	if (dwTimeStartFixed == 0)
+		dwTimeStartFixed = dwTimeCur;
+
+	deltaTime = (dwTimeCur - dwTimeStart) / 1000.0f;
+	deltaTimeFixed = (dwTimeCur - dwTimeStartFixed) / 1000.0f;
+
+	if (deltaTimeFixed >= FIXED_TIMESTEP)
+	{
+		while (deltaTimeFixed >= FIXED_TIMESTEP)
+		{
+			if (_scene != nullptr)
+				_scene->FixedUpdate(FIXED_TIMESTEP);
+
+			deltaTimeFixed -= FIXED_TIMESTEP;
+		}
+
+		dwTimeStartFixed = dwTimeCur;
+	}
+
+	if (deltaTime < FPS_CAP)
+		return;
+	InputManager::GetInstance().PollInput();
 
 	_ex->Update();
 	if (_scene != nullptr)
-		_scene->Update();
-	// TODO Update Colliders
+		_scene->Update(deltaTime);
 
 	if (SceneManager::GetInstance().ShouldSceneChange())
 	{
@@ -68,6 +99,8 @@ void ClayEngine::Update()
 		_scene = SceneManager::GetInstance().ReadScene();
 		_scene->Start();
 	}
+
+	dwTimeStart = dwTimeCur;
 }
 
 void ClayEngine::RenderFrame()

@@ -142,10 +142,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObjects\Component.cpp" />
     <ClCompile Include="GameObjects\Appearance.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="Audio\AudioManager.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Graphics\AdapterReader.cpp" />
     <ClCompile Include="ClayEngine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
@@ -168,10 +168,10 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObjects\Component.h" />
     <ClInclude Include="GameObjects\Appearance.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="Audio\AudioManager.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input\PlayerInput.h" />
     <ClInclude Include="Graphics\AdapterReader.h" />
     <ClInclude Include="ClayEngine.h" />

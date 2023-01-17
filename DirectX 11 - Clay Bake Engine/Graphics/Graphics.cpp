@@ -327,7 +327,7 @@ void Graphics::RenderFrame()
 	this->deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 	this->deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
-	pTestObject->Update();
+	pTestObject->Update(0.0f);
 	pTestObject->Render(this->deviceContext);
 
 	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 

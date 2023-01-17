@@ -1,8 +1,11 @@
 #include "GameObject.h"
 
-GameObject::GameObject(int type)
+GameObject::GameObject()
 {
-	_name = "";
+}
+
+GameObject::GameObject(json json)
+{
 }
 
 GameObject::~GameObject()
@@ -14,9 +17,30 @@ GameObject::~GameObject()
 	_pAppearance = nullptr;
 }
 
-void GameObject::Update()
+void GameObject::Start()
+{
+	for (Component* component : _components)
+		component->Start();
+}
+
+void GameObject::Update(float deltaTime)
 {
 	_pTransform->Update();
+
+	for (Component* component : _components)
+		component->Update(deltaTime);
+}
+
+void GameObject::FixedUpdate(float timeStep)
+{
+	for (Component* component : _components)
+		component->FixedUpdate(timeStep);
+}
+
+void GameObject::Stop()
+{
+	for (Component* component : _components)
+		component->Stop();
 }
 
 void GameObject::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context)

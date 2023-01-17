@@ -28,10 +28,16 @@ void Scene::Start()
 		obj->Start();
 }
 
-void Scene::Update()
+void Scene::Update(float deltaTime)
 {
 	for (GameObject* obj : _children)
-		obj->Update();
+		obj->Update(deltaTime);
+}
+
+void Scene::FixedUpdate(float timeStep)
+{
+	for (GameObject* obj : _children)
+		obj->FixedUpdate(timeStep);
 }
 
 void Scene::Stop()
