@@ -96,6 +96,9 @@
     <ClCompile Include="Physics\Geometry2D.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\FixedFunctionPrimatives.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StringConverter.h">
@@ -162,6 +165,9 @@
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Geometry2D.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\FixedFunctionPrimitives.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>

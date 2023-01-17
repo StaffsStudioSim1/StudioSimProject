@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Physics\FixedFunctionPrimatives.cpp" />
     <ClCompile Include="Physics\Geometry2D.cpp" />
     <ClCompile Include="Graphics\AdapterReader.cpp" />
     <ClCompile Include="ClayEngine.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Physics\FixedFunctionPrimitives.h" />
     <ClInclude Include="Physics\Geometry2D.h" />
     <ClInclude Include="Physics\Geometry3D.h" />
     <ClInclude Include="Physics\PhysicsSystem.h" />

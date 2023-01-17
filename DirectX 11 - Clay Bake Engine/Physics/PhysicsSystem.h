@@ -3,7 +3,10 @@
 
 #include "Rigidbody.h"
 #include "Vectors.h"
+#include "FixedFunctionPrimitives.h"
 
+
+#define FORCE_OF_GRAVITY float(9.80665f)
 
 struct objectData 
 {
@@ -39,9 +42,9 @@ protected:
 public:
 	PhysicsSystem();
 
-	float LinearProjectionPercent; // [0.2 to 0.8], Smaller = less jitter / more penetration
-	float PenetrationSlack; // [0.01 to 0.1],  Samller = more accurate
-	int ImpulseIteration;
+	//float LinearProjectionPercent; // [0.2 to 0.8], Smaller = less jitter / more penetration
+	//float PenetrationSlack; // [0.01 to 0.1],  Samller = more accurate
+	//int ImpulseIteration;
 
 	// need to add func to switch between types of hitboxes for the 2d collisions 
 	
@@ -58,6 +61,7 @@ public:
 	void ApplyForce(Vector2* froce);
 
 	bool CheckForCollison(objectData* objData1, objectData* objData2);
+
 
 	bool IsObjectStatic();
 
