@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{c7b938f2-1452-45c0-9623-26383123a89e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObjects">
+      <UniqueIdentifier>{056e41aa-952b-4889-b444-4537261d9217}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObject">
+      <UniqueIdentifier>{d6a64ab4-98b4-49f2-ac37-36f5e33602cf}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{c1dc05b9-99c3-426f-b25a-8de067167ff4}</UniqueIdentifier>
     </Filter>
@@ -90,6 +96,15 @@
     <ClCompile Include="Graphics\Shaders.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\GameObject.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Transform.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Appearance.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
@@ -154,6 +169,15 @@
     </ClInclude>
     <ClInclude Include="Graphics\Shaders.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\GameObject.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Transform.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Appearance.h">
+      <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Input\InputManager.h">
       <Filter>Header Files\Input</Filter>

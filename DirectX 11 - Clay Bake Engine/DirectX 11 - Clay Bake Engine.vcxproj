@@ -142,6 +142,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObjects\Appearance.cpp" />
+    <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Graphics\AdapterReader.cpp" />
@@ -162,9 +164,12 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="StringConverter.cpp" />
+    <ClCompile Include="GameObjects\Transform.cpp" />
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObjects\Appearance.h" />
+    <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="Audio\AudioManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input\PlayerInput.h" />
@@ -187,6 +192,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="Graphics\Vertex.h" />
+    <ClInclude Include="GameObjects\Transform.h" />
     <ClInclude Include="WindowContainer.h" />
   </ItemGroup>
   <ItemGroup>

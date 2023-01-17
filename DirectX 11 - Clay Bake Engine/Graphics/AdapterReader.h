@@ -1,6 +1,6 @@
 #pragma once
 #pragma comment(lib, "d3d11.lib")
-//#pragma comment(lib, "DirectXtk.lib") // Commented out due to github removing the lib
+#pragma comment(lib, "DirectXtk.lib") 
 #pragma comment(lib, "DXGI.lib")
 #include"..\\ErrorLogger.h"
 #include<d3d11.h>
