@@ -26,16 +26,17 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	// Projection matrix
 	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, 16.0f / 9.0f, 0.01f, 100.0f));
 
-
 	if (FAILED(DirectX::CreateDDSTextureFromFile(this->device.Get(), L"Test.dds", nullptr, &this->testTexture)))
 		exit(-1);
 
-	pTestObject = new GameObject(0);
-	pTestObject->AddAppearance(new Appearance);
-	pTestObject->AddTransform(new Transform);
-	pTestObject->GetAppearance()->SetGeometryData(squareGeometryData);
-	pTestObject->GetAppearance()->SetTexture(this->testTexture);
-	pTestObject->GetAppearance()->SetTexCoords(1.0f, 1.0f, 0.0f, 0.0f);
+	_pObjectHandler.AddTextureToMap("Test", this->testTexture);
+	_pObjectHandler.SetSquareGeometry(squareGeometryData);
+
+	_pObjectHandler.CreateGameObject("TestObject", { 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test"); // Render bottom
+
+	_pObjectHandler.CreateGameObject("TestObject2", { 0.25f, 0.0f, 2.0f }, { 2.0f, 2.0f }, 0.1f, false, "Test"); // Render middle
+
+	_pObjectHandler.CreateGameObject("TestObject3", { -0.2f, 0.0f, 0.0f }, { 1.5f, 1.5f }, -0.1f, false, "Test"); // Render top
 
 	return true;
 }
@@ -68,6 +69,8 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		depthStencilDesc.CPUAccessFlags = 0;
 		depthStencilDesc.MiscFlags = 0;
 
+		HRESULT hr;
+
 		DXGI_SWAP_CHAIN_DESC scd;
 		ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 		
@@ -90,7 +93,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
-		HRESULT hr;
 
 		hr =D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
 			D3D_DRIVER_TYPE_UNKNOWN,							// Graphics device
@@ -129,7 +131,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		this->device->CreateTexture2D(&depthStencilDesc, nullptr, _depthStencilBuffer.GetAddressOf());
 		this->device->CreateDepthStencilView(_depthStencilBuffer.Get(), nullptr, _depthStencilView.GetAddressOf());
-		this->deviceContext->OMSetRenderTargets(1, this->renderTargertView.GetAddressOf(), _depthStencilView.Get()); // null value is render stencil view to be setup 
+		this->deviceContext->OMSetRenderTargets(1, this->renderTargertView.GetAddressOf(), _depthStencilView.Get());
 			
 		//create viewport
 		D3D11_VIEWPORT viewport;
@@ -143,6 +145,30 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		//set viewport
 		this->deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
 		
+		// Create stencil state
+		D3D11_DEPTH_STENCIL_DESC stencilDesc;
+		ZeroMemory(&stencilDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+		stencilDesc.DepthEnable = true;
+		stencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		stencilDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
+
+		stencilDesc.StencilEnable = true;
+		stencilDesc.StencilReadMask = 0xFF;
+		stencilDesc.StencilWriteMask = 0xFF;
+
+		stencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		stencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+		stencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		stencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		stencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		stencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+		stencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		stencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		this->device->CreateDepthStencilState(&stencilDesc, _stencilState.GetAddressOf());
+		this->deviceContext->OMSetDepthStencilState(_stencilState.Get(), 1);
+
 		// Create sampler state
 		D3D11_SAMPLER_DESC sampDesc;
 		ZeroMemory(&sampDesc, sizeof(sampDesc));
@@ -305,13 +331,8 @@ void Graphics::RenderFrame()
 	DirectX::XMMATRIX projectionMatrix = XMLoadFloat4x4(&_projection);
 
 	ConstantBufferStruct cb;
-	cb.mWorld = DirectX::XMMatrixTranspose(pTestObject->GetTransform()->GetWorldMatrix());
 	cb.mView = DirectX::XMMatrixTranspose(viewMatrix);
 	cb.mProjection = DirectX::XMMatrixTranspose(projectionMatrix);
-
-	cb.mTexCoord = pTestObject->GetAppearance()->GetTexMatrix();
-
-	this->deviceContext->UpdateSubresource(_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
 
 	this->deviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
 	this->deviceContext->PSSetShader(pixelshader.GetShader(), NULL, 0);
@@ -319,8 +340,16 @@ void Graphics::RenderFrame()
 	this->deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 	this->deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
-	pTestObject->Update();
-	pTestObject->Render(this->deviceContext);
+	for (std::pair<std::string, GameObject*> object : _pObjectHandler.GetAllObjects())
+	{
+		cb.mWorld = DirectX::XMMatrixTranspose(object.second->GetTransform()->GetWorldMatrix());
+		cb.mTexCoord = object.second->GetAppearance()->GetTexMatrix();
+
+		this->deviceContext->UpdateSubresource(_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
+
+		object.second->Update();
+		object.second->Render(this->deviceContext);
+	}
 
 	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }

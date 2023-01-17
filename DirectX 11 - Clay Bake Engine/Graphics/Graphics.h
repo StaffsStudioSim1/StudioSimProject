@@ -2,7 +2,7 @@
 #include "AdapterReader.h"
 #include "Shaders.h"
 
-#include "../GameObjects/GameObject.h"
+#include "../GameObjects/ObjectHandler.h"
 #include <DDSTextureLoader.h>
 
 struct ConstantBufferStruct
@@ -46,6 +46,7 @@ private:
 	Microsoft::WRL::ComPtr <ID3D11DepthStencilView>		_depthStencilView;
 
 	Microsoft::WRL::ComPtr <ID3D11SamplerState>			_samplerState;
+	Microsoft::WRL::ComPtr <ID3D11DepthStencilState>	_stencilState;
 	Microsoft::WRL::ComPtr <ID3D11RasterizerState>		_wireframeRasterState;
 	Microsoft::WRL::ComPtr <ID3D11RasterizerState>		_solidRasterState;
 
@@ -57,4 +58,6 @@ private:
 
 	GameObject* pTestObject;
 	ID3D11ShaderResourceView* testTexture = nullptr;
+
+	ObjectHandler										_pObjectHandler;
 };

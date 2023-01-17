@@ -17,6 +17,9 @@ GameObject::~GameObject()
 void GameObject::Update()
 {
 	_pTransform->Update();
+
+	if (_pPhysics)
+		_pPhysics->Update();
 }
 
 void GameObject::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context)

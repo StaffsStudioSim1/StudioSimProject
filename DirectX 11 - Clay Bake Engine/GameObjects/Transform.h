@@ -9,10 +9,14 @@ public:
 	~Transform() {}
 
 	DirectX::XMFLOAT2 GetPosition() const noexcept { return _position; }
-	void SetPosition(DirectX::XMFLOAT2 position) { _position = position; }
+	void SetPosition(DirectX::XMFLOAT3 position) { _position.x = position.x; _position.y = position.y; _depthPos = position.z; }
+	void SetPosition(DirectX::XMFLOAT2 position) { _position.x = position.x; _position.y = position.y; }
 	void SetPosition(float x, float y) { _position.x = x; _position.y = y; }
 	void SetPositionChange(DirectX::XMFLOAT2 change) { _position.x += change.x; _position.y += change.y; }
 	void SetPositionChange(float x, float y) { _position.x += x; _position.y += y; }
+
+	float GetDepthPos() const noexcept { return _depthPos; }
+	void SetDepthPos(float depth) { _depthPos = depth; }
 
 	float GetRotation() const noexcept { return _rotation; }
 	void SetRotation(float rotation) { _rotation = rotation; }
@@ -33,7 +37,7 @@ public:
 	void Update();
 private:
 	DirectX::XMFLOAT2 _position, _scale;
-	float _rotation;
+	float _rotation, _depthPos;
 
 	Transform* _pParent;
 
