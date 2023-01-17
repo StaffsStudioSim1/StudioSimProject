@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Appearance.h"
-#include "Transform.h"
+#include "Physics.h"
 
 class GameObject
 {
@@ -23,6 +23,9 @@ public:
 	Transform* GetTransform() const noexcept { return _pTransform; }
 	void AddTransform(Transform* transform) { _pTransform = transform; }
 
+	Physics* GetPhysics() const noexcept { return _pPhysics; }
+	void AddPhysics(Physics* physics) { _pPhysics = physics; }
+
 	// Stores a name for the object - might not be used
 	std::string GetName() const noexcept { return _name; }
 	void SetName(std::string name) { _name = name; }
@@ -36,5 +39,6 @@ private:
 
 	Appearance* _pAppearance = {};
 	Transform* _pTransform = {};
+	Physics* _pPhysics = {};
 };
 
