@@ -7,11 +7,13 @@ public:
 	~SoundEffect();
 
 	void Play();
+	void Stop();
 
 	void SetVolume(float volume);
 	void SetPitch(float pitch);
 	void SetPan(float pan);
 
+	// Called by AudioManager - do not use
 	void ResetLooping();
 private:
 	std::unique_ptr<DirectX::SoundEffect> _sfx;

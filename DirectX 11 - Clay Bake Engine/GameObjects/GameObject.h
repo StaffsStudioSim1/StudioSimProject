@@ -2,17 +2,16 @@
 
 #include "Appearance.h"
 #include "Transform.h"
+#include "Component.h"
+#include "../nlohmann/json.hpp"
+using json = nlohmann::json;
 
 class GameObject
 {
 public:
-	GameObject(int type);
+	GameObject();
+	GameObject(json json);
 	~GameObject();
-
-	enum OBJECT_TYPE
-	{
-		TYPE_EXAMPLE = 0,
-	};
 
 	int GetType() const noexcept { return _type; }
 	void SetType(int type) { _type = type; }
@@ -27,7 +26,11 @@ public:
 	std::string GetName() const noexcept { return _name; }
 	void SetName(std::string name) { _name = name; }
 
-	void Update();
+	void Start();
+	void Update(float deltaTime);
+	void FixedUpdate(float timeStep);
+	void Stop();
+
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context);
 private:
 	int _type = 0;
@@ -36,5 +39,7 @@ private:
 
 	Appearance* _pAppearance = {};
 	Transform* _pTransform = {};
+
+	std::vector<Component*> _components;
 };
 

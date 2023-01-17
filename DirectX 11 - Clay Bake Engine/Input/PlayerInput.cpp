@@ -11,7 +11,7 @@ PlayerInput::PlayerInput()
 
 PlayerInput::~PlayerInput()
 {
-	InputManager::GetInstance().DeregisterPlayerInput(this);
+	InputManager::GetInstance().UnregisterPlayerInput(this);
 }
 
 void PlayerInput::PollInput(KeyboardClass keyboard)

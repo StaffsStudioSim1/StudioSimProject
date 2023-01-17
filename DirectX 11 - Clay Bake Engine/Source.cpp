@@ -15,7 +15,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	}
 	engine.Destroy();
 
-	HRESULT hr = S_OK;
+	/*HRESULT hr = S_OK;
 
 	if (FAILED(hr))
 	{
@@ -24,7 +24,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	if (SUCCEEDED(hr))
 	{
 		MessageBoxA(NULL, "success", "Yay", NULL);
-	}
+	}*/
 
 	return 0;
 }
