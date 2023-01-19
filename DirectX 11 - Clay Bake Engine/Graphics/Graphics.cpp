@@ -343,6 +343,8 @@ void Graphics::RenderFrame()
 
 		object.second->Render(this->deviceContext);
 	}
+	pTestObject->Update(0.0f);
+	pTestObject->Render(this->deviceContext);
 
 	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }
