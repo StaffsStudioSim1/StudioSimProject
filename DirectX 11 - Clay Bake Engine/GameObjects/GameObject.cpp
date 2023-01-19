@@ -29,6 +29,7 @@ void GameObject::Update(float deltaTime)
 
 	if (_pPhysics)
 		_pPhysics->Update();
+
 	for (Component* component : _components)
 		component->Update(deltaTime);
 }

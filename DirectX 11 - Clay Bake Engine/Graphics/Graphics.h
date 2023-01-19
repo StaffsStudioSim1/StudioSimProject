@@ -56,7 +56,6 @@ private:
 
 	Geometry											squareGeometryData;
 
-	GameObject* pTestObject;
 	ID3D11ShaderResourceView* testTexture = nullptr;
 
 	ObjectHandler										_pObjectHandler;

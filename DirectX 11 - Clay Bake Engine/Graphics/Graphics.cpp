@@ -33,8 +33,8 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	_pObjectHandler.SetSquareGeometry(squareGeometryData);
 
 	_pObjectHandler.CreateGameObject("ObjectTest", { 0.0f, 0.0f, 2.0f }, { 2.0f, 2.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
-	_pObjectHandler.CreateGameObject("ObjectTest2", { 0.0f, 0.0f, 1.0f }, { 1.5f, 1.5f }, 3.141f, false, "Test", {1.0f, 1.0f, 0.0f, 0.0f});
-	_pObjectHandler.CreateGameObject("ObjectTest3", { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test", {1.0f, 1.0f, 0.0f, 0.0f});
+	_pObjectHandler.CreateGameObject("ObjectTest2", { 0.0f, 0.0f, 1.0f }, { 1.5f, 1.5f }, 3.141f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
+	_pObjectHandler.CreateGameObject("ObjectTest3", { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
 
 	return true;
 }
@@ -335,7 +335,7 @@ void Graphics::RenderFrame()
 
 	for (std::pair<std::string, GameObject*> object : _pObjectHandler.GetAllObjects())
 	{
-		object.second->Update();
+		object.second->Update(0.0f);
 		cb.mWorld = DirectX::XMMatrixTranspose(object.second->GetTransform()->GetWorldMatrix());
 		cb.mTexCoord = object.second->GetAppearance()->GetTexMatrix();
 
@@ -343,8 +343,6 @@ void Graphics::RenderFrame()
 
 		object.second->Render(this->deviceContext);
 	}
-	pTestObject->Update(0.0f);
-	pTestObject->Render(this->deviceContext);
 
 	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }
