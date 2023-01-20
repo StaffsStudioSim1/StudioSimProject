@@ -11,6 +11,7 @@ struct ConstantBufferStruct
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
 	DirectX::XMFLOAT4X4 mTexCoord;
+	float mAlphaMultiplier;
 };
 
 struct SimpleVertex
@@ -49,6 +50,7 @@ private:
 	Microsoft::WRL::ComPtr <ID3D11DepthStencilState>	_stencilState;
 	Microsoft::WRL::ComPtr <ID3D11RasterizerState>		_wireframeRasterState;
 	Microsoft::WRL::ComPtr <ID3D11RasterizerState>		_solidRasterState;
+	Microsoft::WRL::ComPtr <ID3D11BlendState>			_blendState;
 
 	DirectX::XMFLOAT4X4									_world;
 	DirectX::XMFLOAT4X4									_view;

@@ -37,6 +37,9 @@ public:
 	void SetTexCoords(float width, float height, float x, float y);
 	void SetTexCoords(DirectX::XMFLOAT4 coords) { SetTexCoords(coords.x, coords.y, coords.z, coords.w); }
 
+	float GetAlphaMultiplier() const noexcept { return _alphaMultiplier; }
+	void SetAlphaMultiplier(float alpha) { _alphaMultiplier = alpha; }
+
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext>& context);
 private:
 	Geometry _geometry;
@@ -52,5 +55,7 @@ private:
 	};
 
 	DirectX::XMFLOAT4 _texCoords = { 1.0f, 1.0f, 0.0f, 0.0f };
+
+	float _alphaMultiplier = 1.0f;
 };
 

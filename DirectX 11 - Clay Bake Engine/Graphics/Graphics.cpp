@@ -32,8 +32,8 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	_pObjectHandler.AddTextureToMap("Test", this->testTexture);
 	_pObjectHandler.SetSquareGeometry(squareGeometryData);
 
-	_pObjectHandler.CreateGameObject("ObjectTest", { 0.0f, 0.0f, 2.0f }, { 2.0f, 2.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
-	_pObjectHandler.CreateGameObject("ObjectTest2", { 0.0f, 0.0f, 1.0f }, { 1.5f, 1.5f }, 3.141f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
+	_pObjectHandler.CreateGameObject("ObjectTest", { 0.0f, 0.0f, 1.0f }, { 2.0f, 2.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
+	_pObjectHandler.CreateGameObject("ObjectTest2", { 0.0f, 0.0f, 0.5f }, { 1.5f, 1.5f }, 3.141f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
 	_pObjectHandler.CreateGameObject("ObjectTest3", { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
 
 	return true;
@@ -142,6 +142,8 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 			viewport.TopLeftY = 0;
 		viewport.Width = width;
 		viewport.Height = width;
+		viewport.MinDepth = 0;
+		viewport.MaxDepth = 1;
 
 		//set viewport
 		this->deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
@@ -172,13 +174,14 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		this->deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
 
+		// Create rasteriser states - wireframe and solid
 		D3D11_RASTERIZER_DESC rasterDesc0 = CD3D11_RASTERIZER_DESC(CD3D11_DEFAULT{});
 		ZeroMemory(&rasterDesc0, sizeof(D3D11_RASTERIZER_DESC));
 		rasterDesc0.MultisampleEnable = true;
 		rasterDesc0.AntialiasedLineEnable = true;
 		rasterDesc0.FillMode = D3D11_FILL_WIREFRAME;
 		rasterDesc0.CullMode = D3D11_CULL_NONE;
-		this->device->CreateRasterizerState(&rasterDesc0, &_wireframeRasterState);
+		this->device->CreateRasterizerState(&rasterDesc0, _wireframeRasterState.GetAddressOf());
 
 		D3D11_RASTERIZER_DESC rasterDesc1 = CD3D11_RASTERIZER_DESC(CD3D11_DEFAULT{});
 		ZeroMemory(&rasterDesc1, sizeof(D3D11_RASTERIZER_DESC));
@@ -186,9 +189,26 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		rasterDesc1.AntialiasedLineEnable = true;
 		rasterDesc1.FillMode = D3D11_FILL_SOLID;
 		rasterDesc1.CullMode = D3D11_CULL_BACK;
-		this->device->CreateRasterizerState(&rasterDesc1, &_solidRasterState);
+		this->device->CreateRasterizerState(&rasterDesc1, _solidRasterState.GetAddressOf());
 
 		this->deviceContext->RSSetState(_solidRasterState.Get());
+
+		// Create blender state
+		D3D11_RENDER_TARGET_BLEND_DESC blendDesc;
+		ZeroMemory(&blendDesc, sizeof(blendDesc));
+		blendDesc.BlendEnable = true;
+		blendDesc.BlendOp = D3D11_BLEND_OP_ADD;
+		blendDesc.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		blendDesc.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+		blendDesc.DestBlendAlpha = D3D11_BLEND_ZERO;
+		blendDesc.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		blendDesc.SrcBlend = D3D11_BLEND_ONE;
+		blendDesc.SrcBlendAlpha = D3D11_BLEND_ONE;
+
+		D3D11_BLEND_DESC bDesc = { 0 };
+		bDesc.RenderTarget[0] = blendDesc;
+		this->device->CreateBlendState(&bDesc, _blendState.GetAddressOf());
+		this->deviceContext->OMSetBlendState(_blendState.Get(), NULL, 0xFFFFFFFF);
 
 		return true;
 	}															
@@ -338,6 +358,7 @@ void Graphics::RenderFrame()
 		object.second->Update(0.0f);
 		cb.mWorld = DirectX::XMMatrixTranspose(object.second->GetTransform()->GetWorldMatrix());
 		cb.mTexCoord = object.second->GetAppearance()->GetTexMatrix();
+		cb.mAlphaMultiplier = object.second->GetAppearance()->GetAlphaMultiplier();
 
 		this->deviceContext->UpdateSubresource(_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
 
