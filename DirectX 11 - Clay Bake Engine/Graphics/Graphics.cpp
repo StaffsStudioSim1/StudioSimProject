@@ -26,7 +26,7 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	// Projection matrix
 	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixOrthographicLH(width, height, 0.01f, 100.0f));
 
-	if (FAILED(DirectX::CreateDDSTextureFromFile(this->device.Get(), L"Textures\\Test2.dds", nullptr, &this->testTexture)))
+	if (FAILED(DirectX::CreateDDSTextureFromFile(this->device.Get(), L"Textures\\Test.dds", nullptr, &this->testTexture)))
 		exit(-1);
 
 	_pObjectHandler.AddTextureToMap("Test", this->testTexture);
@@ -34,7 +34,7 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 
 	_pObjectHandler.CreateGameObject("ObjectTest", { 0.0f, 0.0f, 1.0f }, { 2.0f, 2.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
 	_pObjectHandler.CreateGameObject("ObjectTest2", { 0.0f, 0.0f, 0.5f }, { 1.5f, 1.5f }, 3.141f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
-	_pObjectHandler.CreateGameObject("ObjectTest3", { 0.5f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test", { 3.0f, 2.0f, 0.0f, 0.0f });
+	_pObjectHandler.CreateGameObject("ObjectTest3", { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
 
 	return true;
 }
