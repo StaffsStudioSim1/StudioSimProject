@@ -5,7 +5,7 @@ ObjectHandler::ObjectHandler()
 
 }
 
-void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics, std::string textureName, DirectX::XMFLOAT4 texCoords)
+void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics, std::string textureName, DirectX::XMFLOAT4 texCoords, float alphaMul)
 {
 	GameObject* tempObject = new GameObject(0);
 	tempObject->AddAppearance(new Appearance);
@@ -19,6 +19,7 @@ void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 positio
 	// Set appearance values
 	tempObject->GetAppearance()->SetTexture(GetLoadedTexture(textureName));
 	tempObject->GetAppearance()->SetTexCoords(texCoords);
+	tempObject->GetAppearance()->SetAlphaMultiplier(alphaMul);
 	tempObject->GetAppearance()->SetGeometryData(GetSquareGeometry());
 
 	// Add physics if needed

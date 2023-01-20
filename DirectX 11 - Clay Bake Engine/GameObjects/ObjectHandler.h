@@ -13,7 +13,7 @@ public:
 	GameObject* GetGameObject(std::string name) { return _gameObjects[name]; }
 	std::unordered_map<std::string, GameObject*> GetAllObjects() { return _gameObjects; }
 	void AddGameObjectToMap(std::string name, GameObject* object) { _gameObjects.emplace(name, object); }
-	void CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics = false, std::string textureName = "", DirectX::XMFLOAT4 texCoords = {1.0f, 1.0f, 0.0f, 0.0f});
+	void CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics = false, std::string textureName = "", DirectX::XMFLOAT4 texCoords = { 1.0f, 1.0f, 0.0f, 0.0f }, float alphaMul = 1.0f);
 	void RemoveGameObject(std::string name);
 	void ClearGameObjects();
 
