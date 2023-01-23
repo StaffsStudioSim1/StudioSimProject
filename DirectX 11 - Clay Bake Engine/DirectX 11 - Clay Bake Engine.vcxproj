@@ -170,6 +170,7 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="GameObjects\Component.h" />
     <ClInclude Include="GameObjects\Appearance.h" />
     <ClInclude Include="GameObjects\GameObject.h" />

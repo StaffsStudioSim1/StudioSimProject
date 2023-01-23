@@ -5,10 +5,10 @@ ObjectHandler::ObjectHandler()
 
 }
 
-void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics, std::string textureName, DirectX::XMFLOAT4 texCoords, float alphaMul)
+/*void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics)
 {
 	GameObject* tempObject = new GameObject(0);
-	tempObject->AddAppearance(new Appearance);
+	tempObject->AddComponent(new Appearance);
 	tempObject->AddTransform(new Transform);
 
 	// Set transformation values
@@ -29,26 +29,12 @@ void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 positio
 	}
 
 	// Add to map
-	AddGameObjectToMap(name, tempObject);
-}
+	RegisterObject(name, tempObject);
+}*/
 
-void ObjectHandler::RemoveGameObject(std::string name)
+void ObjectHandler::Unregister(GameObject* object)
 {
-	GameObject* objectToDelete = _gameObjects[name];
-	_gameObjects.erase(name);
-	delete objectToDelete;
-	objectToDelete = nullptr;
-}
-
-void ObjectHandler::ClearGameObjects()
-{
-	std::unordered_map<std::string, GameObject*> objectsToDelete = _gameObjects;
-	_gameObjects.clear();
-	for (std::pair<std::string, GameObject*> object : objectsToDelete)
-	{
-		delete object.second;
-		object.second = nullptr;
-	}
+	_gameObjects.erase(std::remove(_gameObjects.begin(), _gameObjects.end(), object), _gameObjects.end());
 }
 
 void ObjectHandler::SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride)

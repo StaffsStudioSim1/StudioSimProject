@@ -1,19 +1,12 @@
 #pragma once
 #include "AdapterReader.h"
 #include "Shaders.h"
+#include "ConstantBuffer.h"
+#include "../Scene.h"
 
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <DDSTextureLoader.h>
-
-struct ConstantBufferStruct
-{
-	DirectX::XMMATRIX mWorld;
-	DirectX::XMMATRIX mView;
-	DirectX::XMMATRIX mProjection;
-	DirectX::XMFLOAT4X4 mTexCoord;
-	float mAlphaMultiplier;
-};
 
 struct SimpleVertex
 {
@@ -25,7 +18,7 @@ class Graphics
 {
 public:
 	bool Initialize(HWND hwnd, int width, int height);
-	void RenderFrame();
+	void RenderFrame(Scene* scene);
 private:
 	bool InitializeDirectX(HWND hwnd, int width, int hegiht);
 	bool InitializeShaders();

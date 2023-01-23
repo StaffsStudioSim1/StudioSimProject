@@ -4,6 +4,7 @@
 #include <DirectXMath.h>
 #include <string>
 #include <wrl/client.h>
+#include "Component.h"
 
 // For loaded models
 struct Geometry
@@ -17,11 +18,11 @@ struct Geometry
 	UINT vertexBufferOffset = 0;
 };
 
-class Appearance
+class Appearance : public Component
 {
 public:
-	Appearance();
-	~Appearance() {}
+	Appearance(std::string textureName = "", DirectX::XMFLOAT4 texCoords = { 1.0f, 1.0f, 0.0f, 0.0f }, float alphaMultiplier = 1.0f);
+	~Appearance();
 
 	// For loaded models
 	Geometry GetGeometryData() const noexcept { return _geometry; }
@@ -41,7 +42,7 @@ public:
 	float GetAlphaMultiplier() const noexcept { return _alphaMultiplier; }
 	void SetAlphaMultiplier(float alpha) { _alphaMultiplier = alpha; }
 
-	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext>& context);
+	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 private:
 	Geometry _geometry;
 

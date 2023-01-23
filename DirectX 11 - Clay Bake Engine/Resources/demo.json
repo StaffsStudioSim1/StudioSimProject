@@ -1,0 +1,18 @@
+{
+	"background_image" : "Resources/DemoLevel.dds",
+	"gameObjects" : [
+		{
+			"name" : "blank",
+			"position" : [1.0, 1.0, 1.0],
+			"rotation" : 1.0,
+			"scale" : [1.0, 1.0, 1.0],
+			"components" : [
+				{
+					"class" : "examplecomponent",
+					"custom1" : "string",
+					"custom2" : 1
+				}
+			]
+		}
+	]
+}

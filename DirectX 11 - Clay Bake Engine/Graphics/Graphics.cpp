@@ -30,11 +30,7 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	if (FAILED(DirectX::CreateDDSTextureFromFile(this->device.Get(), L"Textures\\Test.dds", nullptr, &this->testTexture)))
 		exit(-1);
 
-	ObjectHandler::Instance()->AddTextureToMap("Test", this->testTexture);
-
-	ObjectHandler::Instance()->CreateGameObject("ObjectTest", { 0.0f, 0.0f, 1.0f }, { 2.0f, 2.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
-	ObjectHandler::Instance()->CreateGameObject("ObjectTest2", { 0.0f, 0.0f, 0.5f }, { 1.5f, 1.5f }, 3.141f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
-	ObjectHandler::Instance()->CreateGameObject("ObjectTest3", { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
+	ObjectHandler::GetInstance()->AddTextureToMap("Test", this->testTexture);
 
 	return true;
 }
@@ -317,18 +313,18 @@ bool Graphics::InitializeScene()
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(ConstantBufferStruct);
+	bd.ByteWidth = sizeof(ConstantBuffer);
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
 	this->device->CreateBuffer(&bd, nullptr, _constantBuffer.GetAddressOf());
 
 	// Save the square shape data
-	ObjectHandler::Instance()->SetSquareGeometry(this->vertexBuffer, this->indexBuffer, ARRAYSIZE(indices), 0, sizeof(SimpleVertex));
+	ObjectHandler::GetInstance()->SetSquareGeometry(this->vertexBuffer, this->indexBuffer, ARRAYSIZE(indices), 0, sizeof(SimpleVertex));
 
 	return true;
 }
 
-void Graphics::RenderFrame()
+void Graphics::RenderFrame(Scene* scene)
 {
 	float bgcolor[] = {1.0f, 0.0f, 1.0f, 1.0f};
 	//this->deviceContext->OMSetRenderTargets(1, this->renderTargertView.GetAddressOf(), NULL);
@@ -339,7 +335,7 @@ void Graphics::RenderFrame()
 	DirectX::XMMATRIX viewMatrix = XMLoadFloat4x4(&_view);
 	DirectX::XMMATRIX projectionMatrix = XMLoadFloat4x4(&_projection);
 
-	ConstantBufferStruct cb;
+	ConstantBuffer cb;
 	cb.mView = DirectX::XMMatrixTranspose(viewMatrix);
 	cb.mProjection = DirectX::XMMatrixTranspose(projectionMatrix);
 
@@ -349,7 +345,7 @@ void Graphics::RenderFrame()
 	this->deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 	this->deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
-	for (std::pair<std::string, GameObject*> object : ObjectHandler::Instance()->GetAllObjects())
+	/*for (std::pair<std::string, GameObject*> object : ObjectHandler::Instance()->GetAllObjects())
 	{
 		object.second->Update(0.0f);
 		cb.mWorld = DirectX::XMMatrixTranspose(object.second->GetTransform()->GetWorldMatrix());
@@ -359,7 +355,8 @@ void Graphics::RenderFrame()
 		this->deviceContext->UpdateSubresource(_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
 
 		object.second->Render(this->deviceContext);
-	}
+	}*/
+	scene->Render(this->deviceContext, cb, _constantBuffer);
 
 	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }

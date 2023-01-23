@@ -4,27 +4,33 @@
 #include "Physics.h"
 #include "Transform.h"
 #include "Component.h"
+#include "../Graphics/ConstantBuffer.h"
 #include "../nlohmann/json.hpp"
 using json = nlohmann::json;
 
 class GameObject
 {
 public:
-	GameObject();
+	GameObject(std::string name);
+	GameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation);
 	GameObject(json json);
 	~GameObject();
 
 	int GetType() const noexcept { return _type; }
 	void SetType(int type) { _type = type; }
 
-	Appearance* GetAppearance() const noexcept { return _pAppearance; }
-	void AddAppearance(Appearance* appearance) { _pAppearance = appearance; }
+	template<typename T>
+	T* GetComponent()
+	{
+		for (Component* component : _components)
+			if (T* v = dynamic_cast<T*>(component))
+				return v;
+		return nullptr;
+	}
+	void AddComponent(Component* component) { _components.push_back(component); }
 
-	Transform* GetTransform() const noexcept { return _pTransform; }
-	void AddTransform(Transform* transform) { _pTransform = transform; }
-
-	Physics* GetPhysics() const noexcept { return _pPhysics; }
-	void AddPhysics(Physics* physics) { _pPhysics = physics; }
+	Physics* GetPhysics() const noexcept { return _physics; }
+	void AddPhysics(Physics* physics) { _physics = physics; }
 
 	// Stores a name for the object - might not be used
 	std::string GetName() const noexcept { return _name; }
@@ -35,15 +41,14 @@ public:
 	void FixedUpdate(float timeStep);
 	void Stop();
 
-	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context);
+	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 private:
 	int _type = 0;
 
 	std::string _name;
 
-	Appearance* _pAppearance = {};
-	Transform* _pTransform = {};
-	Physics* _pPhysics = {};
+	Transform _transform = {};
+	Physics* _physics = {};
 
 	std::vector<Component*> _components;
 };

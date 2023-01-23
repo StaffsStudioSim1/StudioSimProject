@@ -10,12 +10,10 @@ public:
 	ObjectHandler();
 	~ObjectHandler() {}
 
-	GameObject* GetGameObject(std::string name) { return _gameObjects[name]; }
-	std::unordered_map<std::string, GameObject*> GetAllObjects() { return _gameObjects; }
-	void AddGameObjectToMap(std::string name, GameObject* object) { _gameObjects.emplace(name, object); }
-	void CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics = false, std::string textureName = "", DirectX::XMFLOAT4 texCoords = { 1.0f, 1.0f, 0.0f, 0.0f }, float alphaMul = 1.0f);
-	void RemoveGameObject(std::string name);
-	void ClearGameObjects();
+	std::vector<GameObject*> GetAllObjects() { return _gameObjects; }
+
+	void Register(GameObject* object) { _gameObjects.push_back(object); }
+	void Unregister(GameObject* object);
 
 	ID3D11ShaderResourceView* GetLoadedTexture(std::string name) { return _loadedTextures[name]; }
 	void AddTextureToMap(std::string name, ID3D11ShaderResourceView* texture) { _loadedTextures.emplace(name, texture); }
@@ -23,13 +21,13 @@ public:
 	Geometry GetSquareGeometry() { return _squareGeometry; }
 	void SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride);
 
-	static ObjectHandler* Instance()
+	static ObjectHandler* GetInstance()
 	{
 		static ObjectHandler instance;
 		return &instance;
 	}
 private:
-	std::unordered_map<std::string, GameObject*> _gameObjects = {};
+	std::vector<GameObject*> _gameObjects = {};
 
 	std::unordered_map<std::string, ID3D11ShaderResourceView*> _loadedTextures = {};
 

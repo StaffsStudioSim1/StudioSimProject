@@ -5,9 +5,6 @@
 class Transform
 {
 public:
-	Transform();
-	~Transform() {}
-
 	DirectX::XMFLOAT2 GetPosition() const noexcept { return _position; }
 	void SetPosition(DirectX::XMFLOAT3 position) { _position.x = position.x; _position.y = position.y; _depthPos = position.z; }
 	void SetPosition(DirectX::XMFLOAT2 position) { _position.x = position.x; _position.y = position.y; }
