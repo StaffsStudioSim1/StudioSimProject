@@ -1,20 +1,23 @@
 #include "Scene.h"
 #include <fstream>
+#include "ErrorLogger.h"
 #include "nlohmann/json.hpp"
 using json = nlohmann::json;
 
 Scene::Scene(std::string filePath)
 {
-	/*std::ifstream f(filePath);
+	std::ifstream f(filePath);
+	if (!f.good())
+		ErrorLogger::Log("Unable to find scene file " + filePath);
+
 	json data = json::parse(f);
 
-	for (json objectData : data["gameObjects"])
-	{
-		GameObject* gameObject = new GameObject();
-		_children.push_back(gameObject);
-	}*/
+	std::string image = data["background_image"];
 
-	GameObject* test1 = new GameObject("ObjectTest", { 0.0f, 0.0f, 1.0f }, { 2.0f, 2.0f }, 0.0f);
+	for (json objectData : data["gameObjects"])
+		_children.push_back(new GameObject(objectData));
+
+	/*GameObject* test1 = new GameObject("ObjectTest", { 0.0f, 0.0f, 1.0f }, { 2.0f, 2.0f }, 0.0f);
 	test1->AddComponent(new Appearance("Test", { 1.0f, 1.0f, 0.0f, 0.0f }));
 	GameObject* test2 = new GameObject("ObjectTest2", { 0.0f, 0.0f, 0.5f }, { 1.5f, 1.5f }, 3.141f);
 	test2->AddComponent(new Appearance("Test", { 1.0f, 1.0f, 0.0f, 0.0f }));
@@ -23,7 +26,7 @@ Scene::Scene(std::string filePath)
 
 	_children.push_back(test1);
 	_children.push_back(test2);
-	_children.push_back(test3);
+	_children.push_back(test3);*/
 }
 
 Scene::~Scene()

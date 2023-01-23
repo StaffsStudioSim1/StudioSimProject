@@ -6,6 +6,11 @@ ObjectHandler::ObjectHandler()
 
 }
 
+ObjectHandler::~ObjectHandler()
+{
+
+}
+
 /*void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics)
 {
 	GameObject* tempObject = new GameObject(0);
@@ -33,24 +38,45 @@ ObjectHandler::ObjectHandler()
 	RegisterObject(name, tempObject);
 }*/
 
+void ObjectHandler::Initialise(Microsoft::WRL::ComPtr<ID3D11Device> device)
+{
+	if (_initialised)
+		return;
+	_initialised = true;
+	_device = device;
+}
+
+void ObjectHandler::Register(GameObject* object)
+{
+	_gameObjects.push_back(object);
+}
+
 void ObjectHandler::Unregister(GameObject* object)
 {
 	_gameObjects.erase(std::remove(_gameObjects.begin(), _gameObjects.end(), object), _gameObjects.end());
 }
 
-void ObjectHandler::LoadDDSTextureFile(std::string filePath, std::string textureName, Microsoft::WRL::ComPtr<ID3D11Device> device)
+ID3D11ShaderResourceView* ObjectHandler::LoadDDSTextureFile(std::string filePath)
 {
+	if (!_initialised)
+		return nullptr;
+
+	std::unordered_map<std::string, ID3D11ShaderResourceView*>::iterator it = _loadedTextures.find(filePath);
+	if (it != _loadedTextures.end())
+		return it->second;
+
 	ID3D11ShaderResourceView* tempTexture = nullptr;
 	wchar_t wideFilePath[256];
 	mbstowcs_s(nullptr, wideFilePath, filePath.c_str(), _TRUNCATE);
 
-	if (FAILED(DirectX::CreateDDSTextureFromFile(device.Get(), wideFilePath, nullptr, &tempTexture)))
+	if (FAILED(DirectX::CreateDDSTextureFromFile(_device.Get(), wideFilePath, nullptr, &tempTexture)))
 	{
-		ErrorLogger::Log("Failed to load DDS Texture!\nFile path: " + filePath + "\nTexture name: " + textureName);
+		ErrorLogger::Log("Failed to load DDS Texture!\nFile path: " + filePath + "\nTexture name: " + filePath);
 		exit(EXIT_FAILURE);
 	}
 
-	_loadedTextures.emplace(textureName, tempTexture);
+	_loadedTextures.emplace(filePath, tempTexture);
+	return tempTexture;
 }
 
 void ObjectHandler::SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride)

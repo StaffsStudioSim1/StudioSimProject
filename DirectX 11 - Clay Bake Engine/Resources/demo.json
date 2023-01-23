@@ -2,15 +2,29 @@
 	"background_image" : "Resources/DemoLevel.dds",
 	"gameObjects" : [
 		{
-			"name" : "blank",
-			"position" : [1.0, 1.0, 1.0],
-			"rotation" : 1.0,
-			"scale" : [1.0, 1.0, 1.0],
+			"name" : "test",
+			"position" : [0.0, 0.5, 1.0],
+			"rotation" : 0.0,
+			"scale" : [1.0, 1.0],
 			"components" : [
 				{
-					"class" : "examplecomponent",
-					"custom1" : "string",
-					"custom2" : 1
+					"class" : "Appearance",
+					"constructors" : ["Resources/Textures/Test.dds", 1.0, 1.0, 0.0, 0.0, 1.0]
+				}
+			]
+		},
+		{
+			"name" : "test2",
+			"position" : [0.0, 0.2, 0.1],
+			"rotation" : 0.0,
+			"scale" : [1.0, 1.0],
+			"components" : [
+				{
+					"class" : "Appearance",
+					"constructors" : ["Resources/Textures/Test2.dds", 3.0, 2.0, 0.0, 0.0, 1.0]
+				},
+				{
+					"class" : "PlayerInput"
 				}
 			]
 		}

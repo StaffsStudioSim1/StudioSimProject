@@ -27,8 +27,6 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	// Projection matrix
 	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixOrthographicLH(width, height, 0.01f, 100.0f));
 
-	ObjectHandler::GetInstance()->LoadDDSTextureFile("Textures\\Test.dds", "Test", this->device.Get());
-
 	return true;
 }
 
@@ -93,33 +91,33 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 			0,													// num feature levels in array
 			D3D11_SDK_VERSION,									// direct 3d sdk ver
 			&scd,												// swap chain desc
-			this->swapChain.GetAddressOf(),						// swap-chain ref 
-			this->device.GetAddressOf(),						// device ref
+			this->_swapChain.GetAddressOf(),						// swap-chain ref 
+			this->_device.GetAddressOf(),						// device ref
 			NULL,												// supported feature lvl
-			this->deviceContext.GetAddressOf()					// device context	
+			this->_deviceContext.GetAddressOf()					// device context	
 			);				
 		
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to Create device and swap-chain.\n");
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
 
-		hr = this->swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**> (backBuffer.GetAddressOf()));
+		hr = this->_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**> (backBuffer.GetAddressOf()));
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "GetBuffer Failed\n");
 
-		hr = this->device->CreateRenderTargetView(backBuffer.Get(), NULL, this->renderTargertView.GetAddressOf());
+		hr = this->_device->CreateRenderTargetView(backBuffer.Get(), NULL, this->_renderTargertView.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create render target view\n");
 
-		hr = this->device->CreateTexture2D(&depthStencilDesc, nullptr, _depthStencilBuffer.GetAddressOf());
+		hr = this->_device->CreateTexture2D(&depthStencilDesc, nullptr, _depthStencilBuffer.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create Texture2D\n");
 
-		hr = this->device->CreateDepthStencilView(_depthStencilBuffer.Get(), nullptr, _depthStencilView.GetAddressOf());
+		hr = this->_device->CreateDepthStencilView(_depthStencilBuffer.Get(), nullptr, _depthStencilView.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create depth stencil view\n");
 
-		this->deviceContext->OMSetRenderTargets(1, this->renderTargertView.GetAddressOf(), _depthStencilView.Get());
+		this->_deviceContext->OMSetRenderTargets(1, this->_renderTargertView.GetAddressOf(), _depthStencilView.Get());
 
 		//create viewport
 		D3D11_VIEWPORT viewport;
@@ -136,7 +134,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		viewport.MaxDepth = 1;
 
 		//set viewport
-		this->deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
+		this->_deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
 		
 		// Create stencil state
 		D3D11_DEPTH_STENCIL_DESC stencilDesc;
@@ -147,11 +145,11 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		stencilDesc.StencilEnable = false;
 
-		hr = this->device->CreateDepthStencilState(&stencilDesc, _stencilState.GetAddressOf());
+		hr = this->_device->CreateDepthStencilState(&stencilDesc, _stencilState.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create depth stencil state\n");
 
-		this->deviceContext->OMSetDepthStencilState(_stencilState.Get(), 1);
+		this->_deviceContext->OMSetDepthStencilState(_stencilState.Get(), 1);
 
 		// Create sampler state
 		D3D11_SAMPLER_DESC sampDesc;
@@ -163,11 +161,11 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 		sampDesc.MinLOD = 0;
 		sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-		hr = this->device->CreateSamplerState(&sampDesc, _samplerState.GetAddressOf());
+		hr = this->_device->CreateSamplerState(&sampDesc, _samplerState.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create sampler state\n");
 
-		this->deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
+		this->_deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
 
 		// Create rasteriser states - wireframe and solid
 		D3D11_RASTERIZER_DESC rasterDesc0 = CD3D11_RASTERIZER_DESC(CD3D11_DEFAULT{});
@@ -176,7 +174,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		rasterDesc0.AntialiasedLineEnable = true;
 		rasterDesc0.FillMode = D3D11_FILL_WIREFRAME;
 		rasterDesc0.CullMode = D3D11_CULL_NONE;
-		hr = this->device->CreateRasterizerState(&rasterDesc0, _wireframeRasterState.GetAddressOf());
+		hr = this->_device->CreateRasterizerState(&rasterDesc0, _wireframeRasterState.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create wireframe rasteriser state\n");
 
@@ -186,11 +184,11 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		rasterDesc1.AntialiasedLineEnable = true;
 		rasterDesc1.FillMode = D3D11_FILL_SOLID;
 		rasterDesc1.CullMode = D3D11_CULL_BACK;
-		hr = this->device->CreateRasterizerState(&rasterDesc1, _solidRasterState.GetAddressOf());
+		hr = this->_device->CreateRasterizerState(&rasterDesc1, _solidRasterState.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create solid rasteriser state\n");
 
-		this->deviceContext->RSSetState(_solidRasterState.Get());
+		this->_deviceContext->RSSetState(_solidRasterState.Get());
 
 		// Create blender state
 		D3D11_RENDER_TARGET_BLEND_DESC blendDesc;
@@ -206,11 +204,13 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		D3D11_BLEND_DESC bDesc = { 0 };
 		bDesc.RenderTarget[0] = blendDesc;
-		hr = this->device->CreateBlendState(&bDesc, _blendState.GetAddressOf());
+		hr = this->_device->CreateBlendState(&bDesc, _blendState.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create blender state\n");
 
-		this->deviceContext->OMSetBlendState(_blendState.Get(), NULL, 0xFFFFFFFF);
+		this->_deviceContext->OMSetBlendState(_blendState.Get(), NULL, 0xFFFFFFFF);
+
+		ObjectHandler::GetInstance().Initialise(_device);
 
 		return true;
 	}															
@@ -246,16 +246,16 @@ bool Graphics::InitializeShaders()
 
 	UINT numElements = ARRAYSIZE(layout);
 
-	if (!vertexshader.Initialize(this->device, shaderfolder+ L"vertexshader.cso", layout, numElements))
+	if (!_vertexshader.Initialize(this->_device, shaderfolder+ L"vertexshader.cso", layout, numElements))
 	{
 		return false;
 	}
-	if (!pixelshader.Initialize(this->device, shaderfolder + L"pixelshader.cso"))
+	if (!_pixelshader.Initialize(this->_device, shaderfolder + L"pixelshader.cso"))
 	{
 		return false;
 	}
 
-	this->deviceContext->IASetInputLayout(this->vertexshader.GetInputLayout());
+	this->_deviceContext->IASetInputLayout(this->_vertexshader.GetInputLayout());
 	
 	return true;
 }
@@ -284,7 +284,7 @@ bool Graphics::InitializeScene()
 	ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
 	vertexBufferData.pSysMem = v;
 
-	HRESULT hr = this->device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->vertexBuffer.GetAddressOf());
+	HRESULT hr = this->_device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->_vertexBuffer.GetAddressOf());
 	if (FAILED(hr))
 	{
 		ErrorLogger::Log(hr, "Failed to create vertex buffer.");
@@ -308,11 +308,11 @@ bool Graphics::InitializeScene()
 	D3D11_SUBRESOURCE_DATA indexBufferData;
 	ZeroMemory(&indexBufferData, sizeof(indexBufferData));
 	indexBufferData.pSysMem = indices;
-	hr = this->device->CreateBuffer(&indexBufferDesc, &indexBufferData, this->indexBuffer.GetAddressOf());
+	hr = this->_device->CreateBuffer(&indexBufferDesc, &indexBufferData, this->_indexBuffer.GetAddressOf());
 	if (FAILED(hr))
 		ErrorLogger::Log(hr, "Failed to create index buffer\n");
 
-	this->deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	this->_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// Constant buffer
 	D3D11_BUFFER_DESC bd;
@@ -321,12 +321,12 @@ bool Graphics::InitializeScene()
 	bd.ByteWidth = sizeof(ConstantBuffer);
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
-	hr = this->device->CreateBuffer(&bd, nullptr, _constantBuffer.GetAddressOf());
+	hr = this->_device->CreateBuffer(&bd, nullptr, _constantBuffer.GetAddressOf());
 	if (FAILED(hr))
 		ErrorLogger::Log(hr, "Failed to create constant buffer\n");
 
 	// Save the square shape data
-	ObjectHandler::GetInstance()->SetSquareGeometry(this->vertexBuffer, this->indexBuffer, ARRAYSIZE(indices), 0, sizeof(SimpleVertex));
+	ObjectHandler::GetInstance().SetSquareGeometry(this->_vertexBuffer, this->_indexBuffer, ARRAYSIZE(indices), 0, sizeof(SimpleVertex));
 
 	return true;
 }
@@ -335,8 +335,8 @@ void Graphics::RenderFrame(Scene* scene)
 {
 	float bgcolor[] = {1.0f, 0.0f, 1.0f, 1.0f};
 	//this->deviceContext->OMSetRenderTargets(1, this->renderTargertView.GetAddressOf(), NULL);
-	this->deviceContext->ClearRenderTargetView(this->renderTargertView.Get(), bgcolor);
-	this->deviceContext->ClearDepthStencilView(this->_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	this->_deviceContext->ClearRenderTargetView(this->_renderTargertView.Get(), bgcolor);
+	this->_deviceContext->ClearDepthStencilView(this->_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	DirectX::XMMATRIX worldMatrix = XMLoadFloat4x4(&_world);
 	DirectX::XMMATRIX viewMatrix = XMLoadFloat4x4(&_view);
@@ -346,14 +346,14 @@ void Graphics::RenderFrame(Scene* scene)
 	cb.mView = DirectX::XMMatrixTranspose(viewMatrix);
 	cb.mProjection = DirectX::XMMatrixTranspose(projectionMatrix);
 
-	this->deviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
-	this->deviceContext->PSSetShader(pixelshader.GetShader(), NULL, 0);
+	this->_deviceContext->VSSetShader(_vertexshader.GetShader(), NULL, 0);
+	this->_deviceContext->PSSetShader(_pixelshader.GetShader(), NULL, 0);
 
-	this->deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
-	this->deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
+	this->_deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
+	this->_deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
-	scene->Render(this->deviceContext, cb, _constantBuffer);
+	scene->Render(this->_deviceContext, cb, _constantBuffer);
 
-	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
+	this->_swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }
 

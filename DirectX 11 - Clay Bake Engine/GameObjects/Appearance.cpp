@@ -5,11 +5,10 @@ Appearance::Appearance(std::string textureName, DirectX::XMFLOAT4 texCoords, flo
 {
 	_pTextureRV = nullptr;
 
-	// Set Texture Here
-	SetTexture(ObjectHandler::GetInstance()->GetLoadedTexture(textureName));
+	SetTexture(ObjectHandler::GetInstance().LoadDDSTextureFile(textureName));
 	SetTexCoords(texCoords);
 	SetAlphaMultiplier(alphaMultiplier);
-	SetGeometryData(ObjectHandler::GetInstance()->GetSquareGeometry());
+	SetGeometryData(ObjectHandler::GetInstance().GetSquareGeometry());
 }
 
 Appearance::~Appearance()

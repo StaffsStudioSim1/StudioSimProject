@@ -2,21 +2,10 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include <string>
 #include <wrl/client.h>
+#include <string>
 #include "Component.h"
-
-// For loaded models
-struct Geometry
-{
-	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
-
-	UINT numOfIndices = 0;
-
-	UINT vertexBufferStride = 0;
-	UINT vertexBufferOffset = 0;
-};
+#include "../Graphics/Geometry.h"
 
 class Appearance : public Component
 {

@@ -24,16 +24,16 @@ private:
 	bool InitializeShaders();
 	bool InitializeScene();
 
-	Microsoft::WRL::ComPtr <ID3D11Device>				device;
-	Microsoft::WRL::ComPtr <ID3D11DeviceContext>		deviceContext;
-	Microsoft::WRL::ComPtr <IDXGISwapChain>				swapChain;
-	Microsoft::WRL::ComPtr <ID3D11RenderTargetView>		renderTargertView;
+	Microsoft::WRL::ComPtr <ID3D11Device>				_device;
+	Microsoft::WRL::ComPtr <ID3D11DeviceContext>		_deviceContext;
+	Microsoft::WRL::ComPtr <IDXGISwapChain>				_swapChain;
+	Microsoft::WRL::ComPtr <ID3D11RenderTargetView>		_renderTargertView;
 
-							VertexShader				vertexshader;
-							PixelShader					pixelshader;
+							VertexShader				_vertexshader;
+							PixelShader					_pixelshader;
 
-	Microsoft::WRL::ComPtr <ID3D11Buffer>				vertexBuffer;
-	Microsoft::WRL::ComPtr <ID3D11Buffer>				indexBuffer;
+	Microsoft::WRL::ComPtr <ID3D11Buffer>				_vertexBuffer;
+	Microsoft::WRL::ComPtr <ID3D11Buffer>				_indexBuffer;
 
 	Microsoft::WRL::ComPtr <ID3D11Buffer>				_constantBuffer;
 

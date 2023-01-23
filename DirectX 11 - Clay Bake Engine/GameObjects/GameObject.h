@@ -1,19 +1,27 @@
 #pragma once
 
-#include "Appearance.h"
-#include "Physics.h"
-#include "Transform.h"
 #include "Component.h"
+#include "Transform.h"
+#include "Physics.h"
 #include "../Graphics/ConstantBuffer.h"
 #include "../nlohmann/json.hpp"
 using json = nlohmann::json;
+
+#define JSON_GO_NAME "name"
+#define JSON_GO_POSITION "position"
+#define JSON_GO_ROTATION "rotation"
+#define JSON_GO_SCALE "scale"
+#define JSON_GO_COMPONENTS "components"
+
+#define JSON_COMPONENT_CLASS "class"
+#define JSON_COMPONENT_CONSTRUCTORS "constructors"
 
 class GameObject
 {
 public:
 	GameObject(std::string name);
 	GameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation);
-	GameObject(json json);
+	GameObject(json objectJson);
 	~GameObject();
 
 	int GetType() const noexcept { return _type; }
