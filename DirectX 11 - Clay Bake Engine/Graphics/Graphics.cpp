@@ -1,4 +1,5 @@
 #include "Graphics.h"
+#include "../GameObjects/ObjectHandler.h"
 
 bool Graphics::Initialize(HWND hwnd, int width, int height)
 {

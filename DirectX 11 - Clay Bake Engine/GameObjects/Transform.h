@@ -16,7 +16,7 @@ public:
 	void SetPositionChange(float x, float y) { _position.x += x; _position.y += y; }
 
 	float GetDepthPos() const noexcept { return _depthPos; }
-	void SetDepthPos(float depth) { _depthPos = depth; }
+	void SetDepthPos(float depth) { _depthPos = depth; } // Between 0.0f and 1.0f where 0.0f is the top layer and 1.0f is the bottom layer
 
 	float GetRotation() const noexcept { return _rotation; }
 	void SetRotation(float rotation) { _rotation = rotation; }

@@ -2,7 +2,8 @@
 #include "AdapterReader.h"
 #include "Shaders.h"
 
-#include "../GameObjects/ObjectHandler.h"
+#include <d3d11.h>
+#include <DirectXMath.h>
 #include <DDSTextureLoader.h>
 
 struct ConstantBufferStruct
