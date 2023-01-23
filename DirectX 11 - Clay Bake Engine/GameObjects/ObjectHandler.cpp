@@ -1,4 +1,5 @@
 #include "ObjectHandler.h"
+#include "../ErrorLogger.h"
 
 ObjectHandler::ObjectHandler()
 {
@@ -45,10 +46,8 @@ void ObjectHandler::LoadDDSTextureFile(std::string filePath, std::string texture
 
 	if (FAILED(DirectX::CreateDDSTextureFromFile(device.Get(), wideFilePath, nullptr, &tempTexture)))
 	{
-		std::string errorMessage = "Failed to load DDS Texture!\nFile path: " + filePath + "\nTexture name: " + textureName;
-		mbstowcs_s(nullptr, wideFilePath, errorMessage.c_str(), _TRUNCATE);
-		MessageBox(nullptr, wideFilePath, L"Error", MB_ICONERROR);
-		exit(-1);
+		ErrorLogger::Log("Failed to load DDS Texture!\nFile path: " + filePath + "\nTexture name: " + textureName);
+		exit(EXIT_FAILURE);
 	}
 
 	_loadedTextures.emplace(textureName, tempTexture);
