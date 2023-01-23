@@ -27,10 +27,7 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	// Projection matrix
 	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixOrthographicLH(width, height, 0.01f, 100.0f));
 
-	if (FAILED(DirectX::CreateDDSTextureFromFile(this->device.Get(), L"Textures\\Test.dds", nullptr, &this->testTexture)))
-		exit(-1);
-
-	ObjectHandler::GetInstance()->AddTextureToMap("Test", this->testTexture);
+	ObjectHandler::GetInstance()->LoadDDSTextureFile("Textures\\Test.dds", "Test", this->device.Get());
 
 	return true;
 }
@@ -345,17 +342,6 @@ void Graphics::RenderFrame(Scene* scene)
 	this->deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 	this->deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
-	/*for (std::pair<std::string, GameObject*> object : ObjectHandler::Instance()->GetAllObjects())
-	{
-		object.second->Update(0.0f);
-		cb.mWorld = DirectX::XMMatrixTranspose(object.second->GetTransform()->GetWorldMatrix());
-		cb.mTexCoord = object.second->GetAppearance()->GetTexMatrix();
-		cb.mAlphaMultiplier = object.second->GetAppearance()->GetAlphaMultiplier();
-
-		this->deviceContext->UpdateSubresource(_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
-
-		object.second->Render(this->deviceContext);
-	}*/
 	scene->Render(this->deviceContext, cb, _constantBuffer);
 
 	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <DDSTextureLoader.h>
 #include <unordered_map>
 
 #include "GameObject.h"
@@ -17,6 +18,8 @@ public:
 
 	ID3D11ShaderResourceView* GetLoadedTexture(std::string name) { return _loadedTextures[name]; }
 	void AddTextureToMap(std::string name, ID3D11ShaderResourceView* texture) { _loadedTextures.emplace(name, texture); }
+
+	void LoadDDSTextureFile(std::string filePath, std::string textureName, Microsoft::WRL::ComPtr<ID3D11Device> device);
 
 	Geometry GetSquareGeometry() { return _squareGeometry; }
 	void SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride);

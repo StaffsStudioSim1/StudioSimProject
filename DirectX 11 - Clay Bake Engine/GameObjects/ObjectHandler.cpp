@@ -37,6 +37,23 @@ void ObjectHandler::Unregister(GameObject* object)
 	_gameObjects.erase(std::remove(_gameObjects.begin(), _gameObjects.end(), object), _gameObjects.end());
 }
 
+void ObjectHandler::LoadDDSTextureFile(std::string filePath, std::string textureName, Microsoft::WRL::ComPtr<ID3D11Device> device)
+{
+	ID3D11ShaderResourceView* tempTexture = nullptr;
+	wchar_t wideFilePath[256];
+	mbstowcs_s(nullptr, wideFilePath, filePath.c_str(), _TRUNCATE);
+
+	if (FAILED(DirectX::CreateDDSTextureFromFile(device.Get(), wideFilePath, nullptr, &tempTexture)))
+	{
+		std::string errorMessage = "Failed to load DDS Texture!\nFile path: " + filePath + "\nTexture name: " + textureName;
+		mbstowcs_s(nullptr, wideFilePath, errorMessage.c_str(), _TRUNCATE);
+		MessageBox(nullptr, wideFilePath, L"Error", MB_ICONERROR);
+		exit(-1);
+	}
+
+	_loadedTextures.emplace(textureName, tempTexture);
+}
+
 void ObjectHandler::SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride)
 {
 	_squareGeometry.vertexBuffer = vertexBuffer;

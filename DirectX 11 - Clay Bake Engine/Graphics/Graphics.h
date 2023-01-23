@@ -49,6 +49,4 @@ private:
 	DirectX::XMFLOAT4X4									_world;
 	DirectX::XMFLOAT4X4									_view;
 	DirectX::XMFLOAT4X4									_projection;
-
-	ID3D11ShaderResourceView* testTexture = nullptr;
 };
