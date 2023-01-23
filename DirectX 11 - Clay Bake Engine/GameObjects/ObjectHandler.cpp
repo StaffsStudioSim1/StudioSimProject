@@ -8,7 +8,7 @@ ObjectHandler::ObjectHandler()
 
 ObjectHandler::~ObjectHandler()
 {
-
+	ClearLoadedTextures();
 }
 
 /*void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics)
@@ -77,6 +77,16 @@ ID3D11ShaderResourceView* ObjectHandler::LoadDDSTextureFile(std::string filePath
 
 	_loadedTextures.emplace(filePath, tempTexture);
 	return tempTexture;
+}
+
+void ObjectHandler::ClearLoadedTextures()
+{
+	for (std::pair<std::string, ID3D11ShaderResourceView*> texture : _loadedTextures)
+	{
+		texture.second->Release();
+		texture.second = nullptr;
+	}
+	_loadedTextures.clear();
 }
 
 void ObjectHandler::SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride)

@@ -334,7 +334,6 @@ bool Graphics::InitializeScene()
 void Graphics::RenderFrame(Scene* scene)
 {
 	float bgcolor[] = {1.0f, 0.0f, 1.0f, 1.0f};
-	//this->deviceContext->OMSetRenderTargets(1, this->renderTargertView.GetAddressOf(), NULL);
 	this->_deviceContext->ClearRenderTargetView(this->_renderTargertView.Get(), bgcolor);
 	this->_deviceContext->ClearDepthStencilView(this->_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 

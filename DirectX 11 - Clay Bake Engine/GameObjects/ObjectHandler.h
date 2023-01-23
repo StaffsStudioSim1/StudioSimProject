@@ -26,6 +26,7 @@ public:
 	void Unregister(GameObject* object);
 
 	ID3D11ShaderResourceView* LoadDDSTextureFile(std::string filePath);
+	void ClearLoadedTextures();
 
 	Geometry GetSquareGeometry() { return _squareGeometry; }
 	void SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride);
