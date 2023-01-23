@@ -29,12 +29,11 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	if (FAILED(DirectX::CreateDDSTextureFromFile(this->device.Get(), L"Textures\\Test.dds", nullptr, &this->testTexture)))
 		exit(-1);
 
-	_pObjectHandler.AddTextureToMap("Test", this->testTexture);
-	_pObjectHandler.SetSquareGeometry(squareGeometryData);
+	ObjectHandler::Instance()->AddTextureToMap("Test", this->testTexture);
 
-	_pObjectHandler.CreateGameObject("ObjectTest", { 0.0f, 0.0f, 1.0f }, { 2.0f, 2.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
-	_pObjectHandler.CreateGameObject("ObjectTest2", { 0.0f, 0.0f, 0.5f }, { 1.5f, 1.5f }, 3.141f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
-	_pObjectHandler.CreateGameObject("ObjectTest3", { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
+	ObjectHandler::Instance()->CreateGameObject("ObjectTest", { 0.0f, 0.0f, 1.0f }, { 2.0f, 2.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
+	ObjectHandler::Instance()->CreateGameObject("ObjectTest2", { 0.0f, 0.0f, 0.5f }, { 1.5f, 1.5f }, 3.141f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
+	ObjectHandler::Instance()->CreateGameObject("ObjectTest3", { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
 
 	return true;
 }
@@ -323,11 +322,7 @@ bool Graphics::InitializeScene()
 	this->device->CreateBuffer(&bd, nullptr, _constantBuffer.GetAddressOf());
 
 	// Save the square shape data
-	squareGeometryData.indexBuffer = this->indexBuffer;
-	squareGeometryData.numOfIndices = ARRAYSIZE(indices);
-	squareGeometryData.vertexBuffer = this->vertexBuffer;
-	squareGeometryData.vertexBufferOffset = 0;
-	squareGeometryData.vertexBufferStride = sizeof(SimpleVertex);
+	ObjectHandler::Instance()->SetSquareGeometry(this->vertexBuffer, this->indexBuffer, ARRAYSIZE(indices), 0, sizeof(SimpleVertex));
 
 	return true;
 }
@@ -353,7 +348,7 @@ void Graphics::RenderFrame()
 	this->deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 	this->deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
-	for (std::pair<std::string, GameObject*> object : _pObjectHandler.GetAllObjects())
+	for (std::pair<std::string, GameObject*> object : ObjectHandler::Instance()->GetAllObjects())
 	{
 		object.second->Update(0.0f);
 		cb.mWorld = DirectX::XMMatrixTranspose(object.second->GetTransform()->GetWorldMatrix());

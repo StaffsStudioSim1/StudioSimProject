@@ -56,9 +56,5 @@ private:
 	DirectX::XMFLOAT4X4									_view;
 	DirectX::XMFLOAT4X4									_projection;
 
-	Geometry											squareGeometryData;
-
 	ID3D11ShaderResourceView* testTexture = nullptr;
-
-	ObjectHandler										_pObjectHandler;
 };

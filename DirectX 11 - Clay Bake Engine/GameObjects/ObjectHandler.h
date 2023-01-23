@@ -21,7 +21,13 @@ public:
 	void AddTextureToMap(std::string name, ID3D11ShaderResourceView* texture) { _loadedTextures.emplace(name, texture); }
 
 	Geometry GetSquareGeometry() { return _squareGeometry; }
-	void SetSquareGeometry(Geometry square) { _squareGeometry = square; }
+	void SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride);
+
+	static ObjectHandler* Instance()
+	{
+		static ObjectHandler instance;
+		return &instance;
+	}
 private:
 	std::unordered_map<std::string, GameObject*> _gameObjects = {};
 

@@ -50,3 +50,12 @@ void ObjectHandler::ClearGameObjects()
 		object.second = nullptr;
 	}
 }
+
+void ObjectHandler::SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride)
+{
+	_squareGeometry.vertexBuffer = vertexBuffer;
+	_squareGeometry.indexBuffer = indexBuffer;
+	_squareGeometry.numOfIndices = numOfIndices;
+	_squareGeometry.vertexBufferOffset = vertexBufferOffset;
+	_squareGeometry.vertexBufferStride = vertexBufferStride;
+}
