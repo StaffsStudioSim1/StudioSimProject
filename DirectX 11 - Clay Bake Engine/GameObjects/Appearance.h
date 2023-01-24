@@ -6,6 +6,7 @@
 #include <string>
 #include "Component.h"
 #include "../Graphics/Geometry.h"
+#include "../GameObjects/TextureInfo.h"
 
 class Appearance : public Component
 {
@@ -18,9 +19,9 @@ public:
 	void SetGeometryData(Geometry geometry) { _geometry = geometry; }
 
 	// Object texture
-	bool HasTexture() const noexcept { return _pTextureRV ? true : false; }
-	ID3D11ShaderResourceView* GetTexture() const noexcept { return _pTextureRV.Get(); }
-	void SetTexture(ID3D11ShaderResourceView* textureRV) { _pTextureRV = textureRV; }
+	bool HasTexture() const noexcept { return _texture.texture ? true : false; }
+	TextureInfo GetTexture() const noexcept { return _texture; }
+	void SetTexture(TextureInfo textureRV) { _texture = textureRV; }
 
 	DirectX::XMFLOAT4X4 GetTexMatrix() const noexcept { return _texMatrix; }
 	DirectX::XMFLOAT4 GetTexCoords() const noexcept { return _texCoords; }
@@ -34,8 +35,7 @@ public:
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 private:
 	Geometry _geometry;
-
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _pTextureRV;
+	TextureInfo _texture;
 
 	DirectX::XMFLOAT4X4 _texMatrix =
 	{

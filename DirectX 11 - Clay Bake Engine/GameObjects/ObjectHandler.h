@@ -26,8 +26,7 @@ public:
 	void Register(GameObject* object);
 	void Unregister(GameObject* object);
 
-	ID3D11ShaderResourceView* LoadDDSTextureFile(std::string filePath);
-	TextureInfo GetTextureInfo(std::string filePath);
+	TextureInfo LoadDDSTextureFile(std::string filePath);
 	void ClearLoadedTextures();
 
 	Geometry GetSquareGeometry() { return _squareGeometry; }

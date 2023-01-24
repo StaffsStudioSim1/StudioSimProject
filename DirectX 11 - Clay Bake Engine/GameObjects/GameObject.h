@@ -35,10 +35,9 @@ public:
 				return v;
 		return nullptr;
 	}
-	void AddComponent(Component* component) { _components.push_back(component); }
-	
-	Transform* GetTransform() { return &_transform; }
+	void AddComponent(Component* component);
 
+	Transform* GetTransform() { return &_transform; }
 	Physics* GetPhysics() const noexcept { return _physics; }
 	void AddPhysics(Physics* physics) { _physics = physics; }
 
