@@ -11,33 +11,33 @@ public:
 
 	void Update(float deltaTime);
 	//GetPhysicInterface();
-	const PhysicsInterface GetPhysicInterface();
+	 PhysicsInterface GetPhysicInterface();
 
 	
 	
-	const PhysicsWorld* Getworld();
+	 PhysicsWorld* Getworld();
 
 	 PhysicsBody* CreateBody(BodyDefinition* _bodyDefinition);
-	const void DestroyBody(PhysicsBody* body);
-	const Vector2 GetPosition(PhysicsBody* body);
+	 void DestroyBody(PhysicsBody* body);
+	 Vector2 GetPosition(PhysicsBody* body);
 	//float GetAngle(PhysicsBody* body);
-	const float GetAngleDegress(PhysicsBody* body);
-	const float GetAngleRadians(PhysicsBody* body);
-	const void SetAngleDegress(PhysicsBody* body, float angle);
-	const void SetAngleRadians(PhysicsBody* body, float angle);
-	const void SetTransform(PhysicsBody* body, Vector2 position, float angleOfRotation);
-	const PhysicsTransform GetTransform(PhysicsBody* objectBody);
-	const b2Joint* Createjoint(BindObjectsDef* jointDefinition);
-	const void SetLinearVelocity(PhysicsBody* objectBody, Vector2* Velocity);
+	float GetAngleDegress(PhysicsBody* body);
+	float GetAngleRadians(PhysicsBody* body);
+	void SetAngleDegress(PhysicsBody* body, float angle);
+	void SetAngleRadians(PhysicsBody* body, float angle);
+	void SetTransform(PhysicsBody* body, Vector2 position, float angleOfRotation);
+	PhysicsTransform GetTransform(PhysicsBody* objectBody);
+	b2Joint* Createjoint(BindObjectsDef* jointDefinition);
+	void SetLinearVelocity(PhysicsBody* objectBody, Vector2* Velocity);
 	Vector2* GetLinearVelocity(PhysicsBody* objectBody);
-	const void SetAngularVelocity(PhysicsBody* objectBody, float omega);
-	const void ApplyForceToPointOnObj(PhysicsBody* objbody, Vector2& force, Vector2& point, bool wake);
-	const void ApplyForceToObj(PhysicsBody* objBody, Vector2 force, bool wake);
+	void SetAngularVelocity(PhysicsBody* objectBody, float omega);
+	void ApplyForceToPointOnObj(PhysicsBody* objbody, Vector2& force, Vector2& point, bool wake);
+	void ApplyForceToObj(PhysicsBody* objBody, Vector2 force, bool wake);
 
-	const HitBoxDefnintions CreateHitBox(Vector2 scale);
-	const void FixHitboxToBody(PhysicsBody* body, HitBoxDefnintions* hitbox, float density);
-	const void DeleteHitBox(PhysicsBody* body, b2Fixture* fixture);
-	const void UpdateObject(PhysicsBody* body);
+	HitBoxDefnintions CreateHitBox(Vector2 scale);
+	void FixHitboxToBody(PhysicsBody* body, HitBoxDefnintions* hitbox, float density);
+	void DeleteHitBox(PhysicsBody* body, b2Fixture* fixture);
+	void UpdateObject(PhysicsBody* body);
 
 private:
 	 Transform* _pTransform;

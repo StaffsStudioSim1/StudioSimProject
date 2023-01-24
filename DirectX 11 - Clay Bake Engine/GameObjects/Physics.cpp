@@ -17,12 +17,12 @@ void Physics::Update(float deltaTime) // Update physics
 
 }
 
-const PhysicsInterface Physics::GetPhysicInterface()
+PhysicsInterface Physics::GetPhysicInterface()
 {
 	return *_pPhysicsInterface;
 }
 
-const PhysicsWorld* Physics::Getworld()
+PhysicsWorld* Physics::Getworld()
 {
 	return _pWolrd;
 }
@@ -34,12 +34,12 @@ PhysicsBody* Physics::CreateBody(BodyDefinition* _bodyDefinition)
 	return &output;
 }
 
-const void Physics::DestroyBody(PhysicsBody* body)
+void Physics::DestroyBody(PhysicsBody* body)
 {
 	_pPhysicsInterface->DestroyBody(body->_body);
 }
 
-const Vector2 Physics::GetPosition(PhysicsBody* body)
+Vector2 Physics::GetPosition(PhysicsBody* body)
 {
 	Vector2 output(body->_body->GetPosition().x, body->_body->GetPosition().y);
 	return output;
@@ -50,46 +50,46 @@ const Vector2 Physics::GetPosition(PhysicsBody* body)
 //	
 //}
 
-const float Physics::GetAngleDegress(PhysicsBody* body)
+float Physics::GetAngleDegress(PhysicsBody* body)
 {
 	float output = _pPhysicsInterface->GetAngleDegress(body->_body);
 	return output;
 }
 
-const float Physics::GetAngleRadians(PhysicsBody* body)
+float Physics::GetAngleRadians(PhysicsBody* body)
 {
 	float output = _pPhysicsInterface->GetAngleRadians(body->_body);
 	return output;
 }
 
-const void Physics::SetAngleDegress(PhysicsBody* body, float angle)
+void Physics::SetAngleDegress(PhysicsBody* body, float angle)
 {
 	_pPhysicsInterface->SetAngleDegress(body->_body, angle);
 }
 
-const void Physics::SetAngleRadians(PhysicsBody* body, float angle)
+void Physics::SetAngleRadians(PhysicsBody* body, float angle)
 {
 	_pPhysicsInterface->SetAngleRadians(body->_body, angle);
 }
 
-const void Physics::SetTransform(PhysicsBody* body, Vector2 position, float angleOfRotation)
+void Physics::SetTransform(PhysicsBody* body, Vector2 position, float angleOfRotation)
 {
 	body->_body->SetTransform(b2Vec2(position.x, position.y), angleOfRotation);
 }
 
-const PhysicsTransform Physics::GetTransform(PhysicsBody* objectBody)
+PhysicsTransform Physics::GetTransform(PhysicsBody* objectBody)
 {
 	PhysicsTransform output;
 	output._Transformation = objectBody->_body->GetTransform();
 	return output;
 }
 
-const b2Joint* Physics::Createjoint(BindObjectsDef* jointDefinition)
+b2Joint* Physics::Createjoint(BindObjectsDef* jointDefinition)
 {
 	return _pWolrd->_world.CreateJoint(&jointDefinition->_jointdefinition);
 }
 
-const void Physics::SetLinearVelocity(PhysicsBody* objectBody, Vector2* Velocity)
+void Physics::SetLinearVelocity(PhysicsBody* objectBody, Vector2* Velocity)
 {
 	b2Vec2 input;
 	input.x = Velocity->x; input.y = Velocity->y;
@@ -104,25 +104,25 @@ Vector2* Physics::GetLinearVelocity(PhysicsBody* objectBody)
 	return &output;
 }
 
-const void Physics::SetAngularVelocity(PhysicsBody* objectBody, float omega)
+void Physics::SetAngularVelocity(PhysicsBody* objectBody, float omega)
 {
 	objectBody->_body->SetAngularVelocity(omega);
 }
 
-const void Physics::ApplyForceToPointOnObj(PhysicsBody* objbody, Vector2& force, Vector2& point, bool wake)
+void Physics::ApplyForceToPointOnObj(PhysicsBody* objbody, Vector2& force, Vector2& point, bool wake)
 {
 	b2Vec2 b2ForceIn; b2ForceIn.x = force.x; b2ForceIn.y = force.y;
 	b2Vec2 b2PointIn; b2PointIn.x = point.x; b2PointIn.y = force.y;
 	objbody->_body->ApplyForce(b2ForceIn, b2PointIn, wake);
 }
 
-const void Physics::ApplyForceToObj(PhysicsBody* objBody, Vector2 force, bool wake)
+void Physics::ApplyForceToObj(PhysicsBody* objBody, Vector2 force, bool wake)
 {
 	b2Vec2 b2ForceIn; b2ForceIn.x = force.x; b2ForceIn.y = force.y;
 	_pPhysicsInterface->ApplyForceToObj(objBody->_body, b2ForceIn, wake);
 }
 
-const HitBoxDefnintions Physics::CreateHitBox(Vector2 scale)
+HitBoxDefnintions Physics::CreateHitBox(Vector2 scale)
 {
 	b2Vec2 halfScale; halfScale.x = scale.x / 2; halfScale.y = scale.y / 2;
 
@@ -130,17 +130,17 @@ const HitBoxDefnintions Physics::CreateHitBox(Vector2 scale)
 	return output;
 }
 
-const void Physics::FixHitboxToBody(PhysicsBody* body, HitBoxDefnintions* hitbox, float density)
+void Physics::FixHitboxToBody(PhysicsBody* body, HitBoxDefnintions* hitbox, float density)
 {
 	_pPhysicsInterface->FixHitboxToBody(body->_body, &hitbox->_HitBox, density);
 }
 
-const void Physics::DeleteHitBox(PhysicsBody* body, b2Fixture* fixture)
+void Physics::DeleteHitBox(PhysicsBody* body, b2Fixture* fixture)
 {
 	_pPhysicsInterface->DeleteHitBox(body->_body, fixture);
 
 }
 
-const void Physics::UpdateObject(PhysicsBody* body)
+void Physics::UpdateObject(PhysicsBody* body)
 {
 }
