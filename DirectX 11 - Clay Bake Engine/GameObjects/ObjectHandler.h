@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include "Appearance.h"
 #include "GameObject.h"
+#include "TextureInfo.h"
 
 class ObjectHandler
 {
@@ -26,6 +27,7 @@ public:
 	void Unregister(GameObject* object);
 
 	ID3D11ShaderResourceView* LoadDDSTextureFile(std::string filePath);
+	TextureInfo GetTextureInfo(std::string filePath);
 	void ClearLoadedTextures();
 
 	Geometry GetSquareGeometry() { return _squareGeometry; }
@@ -40,7 +42,7 @@ private:
 
 	std::vector<GameObject*> _gameObjects = {};
 
-	std::unordered_map<std::string, ID3D11ShaderResourceView*> _loadedTextures = {};
+	std::unordered_map<std::string, TextureInfo> _loadedTextures = {};
 
 	Geometry _squareGeometry;
 };
