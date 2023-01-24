@@ -159,6 +159,7 @@
     <ClCompile Include="Input\Mouse\MouseClass.cpp" />
     <ClCompile Include="Input\Mouse\MouseEvent.cpp" />
     <ClCompile Include="Examples.cpp" />
+    <ClCompile Include="GameObjects\PlayerMagnetism.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
     <ClCompile Include="Audio\SoundEffect.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Input\Mouse\MouseEvent.h" />
     <ClInclude Include="Examples.h" />
     <ClInclude Include="nlohmann\json.hpp" />
+    <ClInclude Include="GameObjects\PlayerMagnetism.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />
     <ClInclude Include="Audio\SoundEffect.h" />
