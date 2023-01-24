@@ -1,5 +1,7 @@
 #include "Graphics.h"
 
+#include "../GameObjects/ObjectHandler.h"
+
 bool Graphics::Initialize(HWND hwnd, int width, int height)
 {
 	if (!InitializeDirectX(hwnd, width, height))
@@ -26,15 +28,7 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	// Projection matrix
 	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixOrthographicLH(width, height, 0.01f, 100.0f));
 
-	if (FAILED(DirectX::CreateDDSTextureFromFile(this->device.Get(), L"Textures\\Test.dds", nullptr, &this->testTexture)))
-		exit(-1);
 
-	_pObjectHandler.AddTextureToMap("Test", this->testTexture);
-	_pObjectHandler.SetSquareGeometry(squareGeometryData);
-
-	_pObjectHandler.CreateGameObject("ObjectTest", { 0.0f, 0.0f, 1.0f }, { 2.0f, 2.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
-	_pObjectHandler.CreateGameObject("ObjectTest2", { 0.0f, 0.0f, 0.5f }, { 1.5f, 1.5f }, 3.141f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
-	_pObjectHandler.CreateGameObject("ObjectTest3", { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f, false, "Test", { 1.0f, 1.0f, 0.0f, 0.0f });
 
 	//IMGUI SETUP
 	IMGUI_CHECKVERSION();
@@ -57,7 +51,8 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		ErrorLogger::Log("No DXGI Adapters found");
 	}
 	else if (adapters.size() >= 1)
-	{	
+
+	{
 		if (adapters.size() >= 2)
 		{
 			// use this to add a thing to chose gpu's over cpu virtal gpu if available otherwise is set to default 1st gpu available 
@@ -80,7 +75,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		DXGI_SWAP_CHAIN_DESC scd;
 		ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
-		
+
 		scd.BufferDesc.Width = width;
 		scd.BufferDesc.Height = height;
 		scd.BufferDesc.RefreshRate.Numerator = 60;
@@ -96,12 +91,14 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		scd.BufferCount = 2;
 
 		scd.OutputWindow = hwnd;
-		scd.Windowed = TRUE; 
+
+		scd.Windowed = TRUE;
 		scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 
 		hr =D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
+
 			D3D_DRIVER_TYPE_UNKNOWN,							// Graphics device
 			NULL,												// software driver type 
 			D3D11_CREATE_DEVICE_DEBUG,							// feature lvls array
@@ -109,54 +106,52 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 			0,													// num feature levels in array
 			D3D11_SDK_VERSION,									// direct 3d sdk ver
 			&scd,												// swap chain desc
-			this->swapChain.GetAddressOf(),						// swap-chain ref 
-			this->device.GetAddressOf(),						// device ref
+
+			
+
+			this->_swapChain.GetAddressOf(),						// swap-chain ref 
+			this->_device.GetAddressOf(),						// device ref
 			NULL,												// supported feature lvl
-			this->deviceContext.GetAddressOf()					// device context	
-			);				
-		
+			this->_deviceContext.GetAddressOf()					// device context	
+		);
+
 		if (FAILED(hr))
-		{
 			ErrorLogger::Log(hr, "Failed to Create device and swap-chain.\n");
-			return false;
-		}
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
 
-		hr = this->swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**> (backBuffer.GetAddressOf()));
+		hr = this->_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**> (backBuffer.GetAddressOf()));
 		if (FAILED(hr))
-		{
 			ErrorLogger::Log(hr, "GetBuffer Failed\n");
-			return false;
-		}
-		hr = this->device->CreateRenderTargetView(backBuffer.Get(), NULL, this->renderTargertView.GetAddressOf());
 
+		hr = this->_device->CreateRenderTargetView(backBuffer.Get(), NULL, this->_renderTargertView.GetAddressOf());
 		if (FAILED(hr))
-		{
 			ErrorLogger::Log(hr, "Failed to create render target view\n");
-			return false;
-		}
 
-		this->device->CreateTexture2D(&depthStencilDesc, nullptr, _depthStencilBuffer.GetAddressOf());
-		this->device->CreateDepthStencilView(_depthStencilBuffer.Get(), nullptr, _depthStencilView.GetAddressOf());
-		this->deviceContext->OMSetRenderTargets(1, this->renderTargertView.GetAddressOf(), _depthStencilView.Get());
-			
+		hr = this->_device->CreateTexture2D(&depthStencilDesc, nullptr, _depthStencilBuffer.GetAddressOf());
+		if (FAILED(hr))
+			ErrorLogger::Log(hr, "Failed to create Texture2D\n");
+
+		hr = this->_device->CreateDepthStencilView(_depthStencilBuffer.Get(), nullptr, _depthStencilView.GetAddressOf());
+		if (FAILED(hr))
+			ErrorLogger::Log(hr, "Failed to create depth stencil view\n");
+
+		this->_deviceContext->OMSetRenderTargets(1, this->_renderTargertView.GetAddressOf(), _depthStencilView.Get());
+
 		//create viewport
 		D3D11_VIEWPORT viewport;
 		ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
 
 		viewport.TopLeftX = 0;
-		if (width > height)
-			viewport.TopLeftY = -height / 2.5f;
-		else
-			viewport.TopLeftY = 0;
+		viewport.TopLeftY = 0;
 		viewport.Width = width;
-		viewport.Height = width;
+		viewport.Height = height;
 		viewport.MinDepth = 0;
 		viewport.MaxDepth = 1;
 
 		//set viewport
-		this->deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
-		
+
+		this->_deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
+
 		// Create stencil state
 		D3D11_DEPTH_STENCIL_DESC stencilDesc;
 		ZeroMemory(&stencilDesc, sizeof(stencilDesc));
@@ -166,8 +161,12 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		stencilDesc.StencilEnable = false;
 
-		this->device->CreateDepthStencilState(&stencilDesc, _stencilState.GetAddressOf());
-		this->deviceContext->OMSetDepthStencilState(_stencilState.Get(), 1);
+
+		hr = this->_device->CreateDepthStencilState(&stencilDesc, _stencilState.GetAddressOf());
+		if (FAILED(hr))
+			ErrorLogger::Log(hr, "Failed to create depth stencil state\n");
+
+		this->_deviceContext->OMSetDepthStencilState(_stencilState.Get(), 1);
 
 		// Create sampler state
 		D3D11_SAMPLER_DESC sampDesc;
@@ -179,9 +178,12 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 		sampDesc.MinLOD = 0;
 		sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-		this->device->CreateSamplerState(&sampDesc, _samplerState.GetAddressOf());
 
-		this->deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
+		hr = this->_device->CreateSamplerState(&sampDesc, _samplerState.GetAddressOf());
+		if (FAILED(hr))
+			ErrorLogger::Log(hr, "Failed to create sampler state\n");
+
+		this->_deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
 
 		// Create rasteriser states - wireframe and solid
 		D3D11_RASTERIZER_DESC rasterDesc0 = CD3D11_RASTERIZER_DESC(CD3D11_DEFAULT{});
@@ -190,7 +192,10 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		rasterDesc0.AntialiasedLineEnable = true;
 		rasterDesc0.FillMode = D3D11_FILL_WIREFRAME;
 		rasterDesc0.CullMode = D3D11_CULL_NONE;
-		this->device->CreateRasterizerState(&rasterDesc0, _wireframeRasterState.GetAddressOf());
+
+		hr = this->_device->CreateRasterizerState(&rasterDesc0, _wireframeRasterState.GetAddressOf());
+		if (FAILED(hr))
+			ErrorLogger::Log(hr, "Failed to create wireframe rasteriser state\n");
 
 		D3D11_RASTERIZER_DESC rasterDesc1 = CD3D11_RASTERIZER_DESC(CD3D11_DEFAULT{});
 		ZeroMemory(&rasterDesc1, sizeof(D3D11_RASTERIZER_DESC));
@@ -198,9 +203,12 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		rasterDesc1.AntialiasedLineEnable = true;
 		rasterDesc1.FillMode = D3D11_FILL_SOLID;
 		rasterDesc1.CullMode = D3D11_CULL_BACK;
-		this->device->CreateRasterizerState(&rasterDesc1, _solidRasterState.GetAddressOf());
 
-		this->deviceContext->RSSetState(_solidRasterState.Get());
+		hr = this->_device->CreateRasterizerState(&rasterDesc1, _solidRasterState.GetAddressOf());
+		if (FAILED(hr))
+			ErrorLogger::Log(hr, "Failed to create solid rasteriser state\n");
+
+		this->_deviceContext->RSSetState(_solidRasterState.Get());
 
 		// Create blender state
 		D3D11_RENDER_TARGET_BLEND_DESC blendDesc;
@@ -216,69 +224,76 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		D3D11_BLEND_DESC bDesc = { 0 };
 		bDesc.RenderTarget[0] = blendDesc;
-		this->device->CreateBlendState(&bDesc, _blendState.GetAddressOf());
-		this->deviceContext->OMSetBlendState(_blendState.Get(), NULL, 0xFFFFFFFF);
+
+		hr = this->_device->CreateBlendState(&bDesc, _blendState.GetAddressOf());
+		if (FAILED(hr))
+			ErrorLogger::Log(hr, "Failed to create blender state\n");
+
+		this->_deviceContext->OMSetBlendState(_blendState.Get(), NULL, 0xFFFFFFFF);
+
+		ObjectHandler::GetInstance().Initialise(_device);
 
 		return true;
-	}															
+	}
 	return false;
-//	HRESULT hr = D3D11CreateDeviceAndSwapChain(NULL);
-	
 }
 
 bool Graphics::InitializeShaders()
 {
 	std::wstring shaderfolder = L"";
-	#pragma region DetermineShaderPath
-		if (IsDebuggerPresent() == TRUE)
-		{
-			#ifdef _DEBUG //Debug Mode
-			#ifdef _WIN64 //x64
-				shaderfolder = L"..\\x64\\Debug\\";
-			#else  //x86 (Win32)
-				shaderfolder = L"..\\Debug\\";
-			#endif
-			#else //Release Mode
-			#ifdef _WIN64 //x64
-				shaderfolder = L"..\\x64\\Release\\";
-			#else  //x86 (Win32)
-				shaderfolder = L"..\\Release\\";
-			#endif
-			#endif
+
+#pragma region DetermineShaderPath
+	if (IsDebuggerPresent() == TRUE)
+	{
+#ifdef _DEBUG //Debug Mode
+#ifdef _WIN64 //x64
+		shaderfolder = L"..\\x64\\Debug\\";
+#else  //x86 (Win32)
+		shaderfolder = L"..\\Debug\\";
+#endif
+#else //Release Mode
+#ifdef _WIN64 //x64
+		shaderfolder = L"..\\x64\\Release\\";
+#else  //x86 (Win32)
+		shaderfolder = L"..\\Release\\";
+#endif
+#endif
 	}
 
-
-		D3D11_INPUT_ELEMENT_DESC layout[] =
-		{
-			{"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{"TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	D3D11_INPUT_ELEMENT_DESC layout[] =
+	{
+		{"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
 	UINT numElements = ARRAYSIZE(layout);
 
-	if (!vertexshader.Initialize(this->device, shaderfolder+ L"vertexshader.cso", layout, numElements))
+
+	if (!_vertexshader.Initialize(this->_device, shaderfolder + L"vertexshader.cso", layout, numElements))
 	{
 		return false;
 	}
-	if (!pixelshader.Initialize(this->device, shaderfolder + L"pixelshader.cso"))
+	if (!_pixelshader.Initialize(this->_device, shaderfolder + L"pixelshader.cso"))
 	{
 		return false;
 	}
 
-	this->deviceContext->IASetInputLayout(this->vertexshader.GetInputLayout());
-	
+
+	this->_deviceContext->IASetInputLayout(this->_vertexshader.GetInputLayout());
+
 	return true;
-}
+	}
 
 bool Graphics::InitializeScene()
 {
 	// Create a primitive square
 	SimpleVertex v[] =
 	{
-		{ DirectX::XMFLOAT3(-0.1f, 0.1f, 0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) },
-		{ DirectX::XMFLOAT3(0.1f, 0.1f, 0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) },
-		{ DirectX::XMFLOAT3(-0.1f, -0.1f, 0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(0.1f, -0.1f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) },
+
+		{ DirectX::XMFLOAT3(-1.0f, 1.0f, 0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) },
+		{ DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) },
+		{ DirectX::XMFLOAT3(-1.0f, -1.0f, 0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(1.0f, -1.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) },
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
@@ -294,7 +309,9 @@ bool Graphics::InitializeScene()
 	ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
 	vertexBufferData.pSysMem = v;
 
-	HRESULT hr = this->device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->vertexBuffer.GetAddressOf());
+
+	HRESULT hr = this->_device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->_vertexBuffer.GetAddressOf());
+  
 	if (FAILED(hr))
 	{
 		ErrorLogger::Log(hr, "Failed to create vertex buffer.");
@@ -318,81 +335,53 @@ bool Graphics::InitializeScene()
 	D3D11_SUBRESOURCE_DATA indexBufferData;
 	ZeroMemory(&indexBufferData, sizeof(indexBufferData));
 	indexBufferData.pSysMem = indices;
-	hr = this->device->CreateBuffer(&indexBufferDesc, &indexBufferData, this->indexBuffer.GetAddressOf());
 
-	this->deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	hr = this->_device->CreateBuffer(&indexBufferDesc, &indexBufferData, this->_indexBuffer.GetAddressOf());
+	if (FAILED(hr))
+		ErrorLogger::Log(hr, "Failed to create index buffer\n");
+
+	this->_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// Constant buffer
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(ConstantBufferStruct);
+
+	bd.ByteWidth = sizeof(ConstantBuffer);
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
-	this->device->CreateBuffer(&bd, nullptr, _constantBuffer.GetAddressOf());
+	hr = this->_device->CreateBuffer(&bd, nullptr, _constantBuffer.GetAddressOf());
+	if (FAILED(hr))
+		ErrorLogger::Log(hr, "Failed to create constant buffer\n");
 
 	// Save the square shape data
-	squareGeometryData.indexBuffer = this->indexBuffer;
-	squareGeometryData.numOfIndices = ARRAYSIZE(indices);
-	squareGeometryData.vertexBuffer = this->vertexBuffer;
-	squareGeometryData.vertexBufferOffset = 0;
-	squareGeometryData.vertexBufferStride = sizeof(SimpleVertex);
+	ObjectHandler::GetInstance().SetSquareGeometry(this->_vertexBuffer, this->_indexBuffer, ARRAYSIZE(indices), 0, sizeof(SimpleVertex));
 
 	return true;
 }
 
-void Graphics::RenderFrame()
+
+void Graphics::RenderFrame(Scene* scene)
 {
 	float bgcolor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
-	//this->deviceContext->OMSetRenderTargets(1, this->renderTargertView.GetAddressOf(), NULL);
-	this->deviceContext->ClearRenderTargetView(this->renderTargertView.Get(), bgcolor);
-	this->deviceContext->ClearDepthStencilView(this->_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	static float objTestOffset[3] = { 0,0,0 };
-	static float obj2TestOffset[3] = { 0,0,-0.1 };
-	static float obj3TestOffset[3] = { 0,0,-0.2 };
-	static float objRotation,obj2Rotation,obj3Rotation = 0;
-	static float objScale[2] = {3,3};
-	static float obj2Scale[2] = { 2,2 };
-	static float obj3Scale[2] = {1,1};
+	this->_deviceContext->ClearRenderTargetView(this->_renderTargertView.Get(), bgcolor);
+	this->_deviceContext->ClearDepthStencilView(this->_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	DirectX::XMMATRIX worldMatrix = XMLoadFloat4x4(&_world);
 	DirectX::XMMATRIX viewMatrix = XMLoadFloat4x4(&_view);
 	DirectX::XMMATRIX projectionMatrix = XMLoadFloat4x4(&_projection);
 
-	ConstantBufferStruct cb;
+	ConstantBuffer cb;
 	cb.mView = DirectX::XMMatrixTranspose(viewMatrix);
 	cb.mProjection = DirectX::XMMatrixTranspose(projectionMatrix);
 
-	this->deviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
-	this->deviceContext->PSSetShader(pixelshader.GetShader(), NULL, 0);
+	this->_deviceContext->VSSetShader(_vertexshader.GetShader(), NULL, 0);
+	this->_deviceContext->PSSetShader(_pixelshader.GetShader(), NULL, 0);
 
-	this->deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
-	this->deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
-	_pObjectHandler.GetGameObject("ObjectTest")->GetTransform()->SetPosition({ objTestOffset[0], objTestOffset[1], objTestOffset[2] });
-	_pObjectHandler.GetGameObject("ObjectTest2")->GetTransform()->SetPosition({ obj2TestOffset[0], obj2TestOffset[1],obj2TestOffset[2] });
-	_pObjectHandler.GetGameObject("ObjectTest3")->GetTransform()->SetPosition({ obj3TestOffset[0], obj3TestOffset[1],obj3TestOffset[2] });
-	_pObjectHandler.GetGameObject("ObjectTest")->GetTransform()->SetRotation(objRotation);
-	_pObjectHandler.GetGameObject("ObjectTest2")->GetTransform()->SetRotation(obj2Rotation);
-	_pObjectHandler.GetGameObject("ObjectTest3")->GetTransform()->SetRotation(obj3Rotation);
-	_pObjectHandler.GetGameObject("ObjectTest")->GetTransform()->SetScale(objScale[0],objScale[1]);
-	_pObjectHandler.GetGameObject("ObjectTest2")->GetTransform()->SetScale(obj2Scale[0], obj2Scale[1]);
-	_pObjectHandler.GetGameObject("ObjectTest3")->GetTransform()->SetScale(obj3Scale[0], obj3Scale[1]);
+	this->_deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
+	this->_deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
-
-
-
-	for (std::pair<std::string, GameObject*> object : _pObjectHandler.GetAllObjects())
-	{
-		//object.second->GetTransform()->SetPosition(translationOffset[0], translationOffset[1]);
-		object.second->Update(0.0f);
-		cb.mWorld = DirectX::XMMatrixTranspose(object.second->GetTransform()->GetWorldMatrix());
-		cb.mTexCoord = object.second->GetAppearance()->GetTexMatrix();
-		cb.mAlphaMultiplier = object.second->GetAppearance()->GetAlphaMultiplier();
-
-		this->deviceContext->UpdateSubresource(_constantBuffer.Get(), 0, nullptr, &cb, 0, 0);
-
-		object.second->Render(this->deviceContext);
-	}
+	scene->Render(this->_deviceContext, cb, _constantBuffer);
 	//Create Frame
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -448,6 +437,3 @@ void Graphics::RenderFrame()
 
 	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }
-
-
-

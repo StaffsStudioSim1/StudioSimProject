@@ -26,5 +26,6 @@ LRESULT WindowContainer::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam))
 		return true;
 
+
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
