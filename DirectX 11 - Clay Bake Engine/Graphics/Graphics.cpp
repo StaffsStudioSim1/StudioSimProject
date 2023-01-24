@@ -1,5 +1,4 @@
 #include "Graphics.h"
-
 #include "../GameObjects/ObjectHandler.h"
 
 bool Graphics::Initialize(HWND hwnd, int width, int height)
@@ -28,17 +27,6 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	// Projection matrix
 	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixOrthographicLH(width, height, 0.01f, 100.0f));
 
-
-
-	//IMGUI SETUP
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
-	ImGui_ImplWin32_Init(hwnd);
-	ImGui_ImplDX11_Init(this->device.Get(), this->deviceContext.Get());
-	ImGui::StyleColorsDark();
-
-
 	return true;
 }
 
@@ -51,7 +39,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		ErrorLogger::Log("No DXGI Adapters found");
 	}
 	else if (adapters.size() >= 1)
-
 	{
 		if (adapters.size() >= 2)
 		{
@@ -91,14 +78,12 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		scd.BufferCount = 2;
 
 		scd.OutputWindow = hwnd;
-
 		scd.Windowed = TRUE;
 		scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 
-		hr =D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
-
+		hr = D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
 			D3D_DRIVER_TYPE_UNKNOWN,							// Graphics device
 			NULL,												// software driver type 
 			D3D11_CREATE_DEVICE_DEBUG,							// feature lvls array
@@ -106,9 +91,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 			0,													// num feature levels in array
 			D3D11_SDK_VERSION,									// direct 3d sdk ver
 			&scd,												// swap chain desc
-
-			
-
 			this->_swapChain.GetAddressOf(),						// swap-chain ref 
 			this->_device.GetAddressOf(),						// device ref
 			NULL,												// supported feature lvl
@@ -149,7 +131,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		viewport.MaxDepth = 1;
 
 		//set viewport
-
 		this->_deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
 
 		// Create stencil state
@@ -160,7 +141,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		stencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 
 		stencilDesc.StencilEnable = false;
-
 
 		hr = this->_device->CreateDepthStencilState(&stencilDesc, _stencilState.GetAddressOf());
 		if (FAILED(hr))
@@ -178,7 +158,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 		sampDesc.MinLOD = 0;
 		sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
 		hr = this->_device->CreateSamplerState(&sampDesc, _samplerState.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create sampler state\n");
@@ -192,7 +171,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		rasterDesc0.AntialiasedLineEnable = true;
 		rasterDesc0.FillMode = D3D11_FILL_WIREFRAME;
 		rasterDesc0.CullMode = D3D11_CULL_NONE;
-
 		hr = this->_device->CreateRasterizerState(&rasterDesc0, _wireframeRasterState.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create wireframe rasteriser state\n");
@@ -203,7 +181,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		rasterDesc1.AntialiasedLineEnable = true;
 		rasterDesc1.FillMode = D3D11_FILL_SOLID;
 		rasterDesc1.CullMode = D3D11_CULL_BACK;
-
 		hr = this->_device->CreateRasterizerState(&rasterDesc1, _solidRasterState.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create solid rasteriser state\n");
@@ -224,7 +201,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		D3D11_BLEND_DESC bDesc = { 0 };
 		bDesc.RenderTarget[0] = blendDesc;
-
 		hr = this->_device->CreateBlendState(&bDesc, _blendState.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create blender state\n");
@@ -241,7 +217,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 bool Graphics::InitializeShaders()
 {
 	std::wstring shaderfolder = L"";
-
 #pragma region DetermineShaderPath
 	if (IsDebuggerPresent() == TRUE)
 	{
@@ -268,7 +243,6 @@ bool Graphics::InitializeShaders()
 
 	UINT numElements = ARRAYSIZE(layout);
 
-
 	if (!_vertexshader.Initialize(this->_device, shaderfolder + L"vertexshader.cso", layout, numElements))
 	{
 		return false;
@@ -277,7 +251,6 @@ bool Graphics::InitializeShaders()
 	{
 		return false;
 	}
-
 
 	this->_deviceContext->IASetInputLayout(this->_vertexshader.GetInputLayout());
 
@@ -289,7 +262,6 @@ bool Graphics::InitializeScene()
 	// Create a primitive square
 	SimpleVertex v[] =
 	{
-
 		{ DirectX::XMFLOAT3(-1.0f, 1.0f, 0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) },
 		{ DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) },
 		{ DirectX::XMFLOAT3(-1.0f, -1.0f, 0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) },
@@ -309,9 +281,7 @@ bool Graphics::InitializeScene()
 	ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
 	vertexBufferData.pSysMem = v;
 
-
 	HRESULT hr = this->_device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->_vertexBuffer.GetAddressOf());
-  
 	if (FAILED(hr))
 	{
 		ErrorLogger::Log(hr, "Failed to create vertex buffer.");
@@ -335,7 +305,6 @@ bool Graphics::InitializeScene()
 	D3D11_SUBRESOURCE_DATA indexBufferData;
 	ZeroMemory(&indexBufferData, sizeof(indexBufferData));
 	indexBufferData.pSysMem = indices;
-
 	hr = this->_device->CreateBuffer(&indexBufferDesc, &indexBufferData, this->_indexBuffer.GetAddressOf());
 	if (FAILED(hr))
 		ErrorLogger::Log(hr, "Failed to create index buffer\n");
@@ -346,7 +315,6 @@ bool Graphics::InitializeScene()
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-
 	bd.ByteWidth = sizeof(ConstantBuffer);
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
@@ -359,7 +327,6 @@ bool Graphics::InitializeScene()
 
 	return true;
 }
-
 
 void Graphics::RenderFrame(Scene* scene)
 {
@@ -382,58 +349,7 @@ void Graphics::RenderFrame(Scene* scene)
 	this->_deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
 	scene->Render(this->_deviceContext, cb, _constantBuffer);
-	//Create Frame
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-	//Windows
-//	ImGui::Begin("Test");
-//	ImGui::End();
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu("Testing Tools"))
-		{
-			if (ImGui::MenuItem("Translation"))
-				translation_window = !translation_window;
-			if (ImGui::MenuItem("Rotation"))
-				rotation_window = !rotation_window;
-			if (ImGui::MenuItem("Scaling"))
-				scale_window = !scale_window;
-			ImGui::EndMenu();
-		}
-		ImGui::EndMainMenuBar();
-	}
 
-	if (translation_window)
-	{
-		ImGui::Begin("Translation Tools");
-		ImGui::DragFloat3("First layer XYZ", objTestOffset, 0.02f, -10.0f, 10.0f);
-		ImGui::DragFloat3("Second layer XYZ", obj2TestOffset, 0.02f, -10.0f, 10.0f);
-		ImGui::DragFloat3("Third layer XYZ", obj3TestOffset, 0.02f, -10.0f, 10.0f);
-		ImGui::End();
-	}
-	if (rotation_window)
-	{
-		ImGui::Begin("Rotation Tools");
-		ImGui::DragFloat("First layer rotation", &objRotation, 0.02f, 0.0f, DirectX::XM_2PI );
-		ImGui::DragFloat("Second layer rotation", &obj2Rotation, 0.02f, 0.0f, DirectX::XM_2PI);
-		ImGui::DragFloat("Third layer rotation", &obj3Rotation, 0.02f, 0.0f, DirectX::XM_2PI);
-		ImGui::End();
-	}
-	if (scale_window)
-	{
-		ImGui::Begin("Scaling Tools");
-		ImGui::DragFloat2("First layer scaling", objScale, 0.02f, 0.0f, DirectX::XM_2PI);
-		ImGui::DragFloat2("Second layer rotation", obj2Scale, 0.02f, 0.0f, DirectX::XM_2PI);
-		ImGui::DragFloat2("Third layer rotation", obj3Scale, 0.02f, 0.0f, DirectX::XM_2PI);
-		ImGui::End();
-	}
-	//Assemble draw Data
-	ImGui::Render();		
-	//Render draw data
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-
-
-	this->swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
+	this->_swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }
+

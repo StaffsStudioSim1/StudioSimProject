@@ -1,6 +1,4 @@
 #include "GameObject.h"
-
-
 #include "ObjectHandler.h"
 #include "Appearance.h"
 #include "../Input/PlayerInput.h"
@@ -53,7 +51,6 @@ GameObject::GameObject(json objectJson)
 
 GameObject::~GameObject()
 {
-
 	for (Component* component : _components)
 		delete component;
 	_components.clear();
@@ -69,7 +66,6 @@ void GameObject::Start()
 
 void GameObject::Update(float deltaTime)
 {
-
 	_transform.Update();
 
 	if (_physics)
@@ -90,7 +86,6 @@ void GameObject::Stop()
 	for (Component* component : _components)
 		component->Stop();
 }
-
 
 void GameObject::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
 {

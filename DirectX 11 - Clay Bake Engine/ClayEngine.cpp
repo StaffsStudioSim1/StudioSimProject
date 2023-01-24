@@ -25,7 +25,6 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
-
 	_scene = new Scene("Resources/demo.json");
 	return true;
 }
@@ -33,7 +32,6 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 void ClayEngine::Destroy()
 {
 	delete _ex;
-
 	if (_scene)
 		delete _scene;
 }
@@ -110,6 +108,5 @@ void ClayEngine::Update()
 
 void ClayEngine::RenderFrame()
 {
-
 	gamefx.RenderFrame(_scene);
 }

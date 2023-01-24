@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <DDSTextureLoader.h>
 #include <unordered_map>
 #include "Appearance.h"
@@ -10,7 +9,6 @@
 class ObjectHandler
 {
 public:
-
 	// Singleton Code
 	static ObjectHandler& GetInstance()
 	{

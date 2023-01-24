@@ -2,7 +2,6 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
-
 #include <wrl/client.h>
 #include <string>
 #include "Component.h"
@@ -27,12 +26,10 @@ public:
 	DirectX::XMFLOAT4 GetTexCoords() const noexcept { return _texCoords; }
 	void SetTexCoords(float numOfXFrames, float numOfYFrames, float xFramePos, float yFramePos); // number of frames contained in texture file and then the position of which frame you want to use
 	void SetTexCoords(DirectX::XMFLOAT4 coords) { SetTexCoords(coords.x, coords.y, coords.z, coords.w); }
-
 	void SetTexPosChange(float xPos, float yPos) { SetTexCoords(_texCoords.x, _texCoords.y, _texCoords.z += xPos, _texCoords.w += yPos); }
 
 	float GetAlphaMultiplier() const noexcept { return _alphaMultiplier; }
 	void SetAlphaMultiplier(float alpha) { _alphaMultiplier = alpha; }
-
 
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 private:
