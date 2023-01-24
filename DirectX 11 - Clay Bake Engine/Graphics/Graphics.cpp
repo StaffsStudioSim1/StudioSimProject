@@ -39,7 +39,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		ErrorLogger::Log("No DXGI Adapters found");
 	}
 	else if (adapters.size() >= 1)
-	{	
+	{
 		if (adapters.size() >= 2)
 		{
 			// use this to add a thing to chose gpu's over cpu virtal gpu if available otherwise is set to default 1st gpu available 
@@ -62,7 +62,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		DXGI_SWAP_CHAIN_DESC scd;
 		ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
-		
+
 		scd.BufferDesc.Width = width;
 		scd.BufferDesc.Height = height;
 		scd.BufferDesc.RefreshRate.Numerator = 60;
@@ -78,12 +78,12 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		scd.BufferCount = 2;
 
 		scd.OutputWindow = hwnd;
-		scd.Windowed = TRUE; 
+		scd.Windowed = TRUE;
 		scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 
-		hr =D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
+		hr = D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
 			D3D_DRIVER_TYPE_UNKNOWN,							// Graphics device
 			NULL,												// software driver type 
 			D3D11_CREATE_DEVICE_DEBUG,							// feature lvls array
@@ -95,8 +95,8 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 			this->_device.GetAddressOf(),						// device ref
 			NULL,												// supported feature lvl
 			this->_deviceContext.GetAddressOf()					// device context	
-			);				
-		
+		);
+
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to Create device and swap-chain.\n");
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
@@ -124,18 +124,15 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
 
 		viewport.TopLeftX = 0;
-		if (width > height)
-			viewport.TopLeftY = -height / 2.5f;
-		else
-			viewport.TopLeftY = 0;
+		viewport.TopLeftY = 0;
 		viewport.Width = width;
-		viewport.Height = width;
+		viewport.Height = height;
 		viewport.MinDepth = 0;
 		viewport.MaxDepth = 1;
 
 		//set viewport
 		this->_deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
-		
+
 		// Create stencil state
 		D3D11_DEPTH_STENCIL_DESC stencilDesc;
 		ZeroMemory(&stencilDesc, sizeof(stencilDesc));
@@ -213,40 +210,40 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		ObjectHandler::GetInstance().Initialise(_device);
 
 		return true;
-	}															
+	}
 	return false;
 }
 
 bool Graphics::InitializeShaders()
 {
 	std::wstring shaderfolder = L"";
-	#pragma region DetermineShaderPath
-		if (IsDebuggerPresent() == TRUE)
-		{
-			#ifdef _DEBUG //Debug Mode
-			#ifdef _WIN64 //x64
-				shaderfolder = L"..\\x64\\Debug\\";
-			#else  //x86 (Win32)
-				shaderfolder = L"..\\Debug\\";
-			#endif
-			#else //Release Mode
-			#ifdef _WIN64 //x64
-				shaderfolder = L"..\\x64\\Release\\";
-			#else  //x86 (Win32)
-				shaderfolder = L"..\\Release\\";
-			#endif
-			#endif
-		}
+#pragma region DetermineShaderPath
+	if (IsDebuggerPresent() == TRUE)
+	{
+#ifdef _DEBUG //Debug Mode
+#ifdef _WIN64 //x64
+		shaderfolder = L"..\\x64\\Debug\\";
+#else  //x86 (Win32)
+		shaderfolder = L"..\\Debug\\";
+#endif
+#else //Release Mode
+#ifdef _WIN64 //x64
+		shaderfolder = L"..\\x64\\Release\\";
+#else  //x86 (Win32)
+		shaderfolder = L"..\\Release\\";
+#endif
+#endif
+	}
 
-		D3D11_INPUT_ELEMENT_DESC layout[] =
-		{
-			{"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{"TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
+	D3D11_INPUT_ELEMENT_DESC layout[] =
+	{
+		{"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
 
 	UINT numElements = ARRAYSIZE(layout);
 
-	if (!_vertexshader.Initialize(this->_device, shaderfolder+ L"vertexshader.cso", layout, numElements))
+	if (!_vertexshader.Initialize(this->_device, shaderfolder + L"vertexshader.cso", layout, numElements))
 	{
 		return false;
 	}
@@ -256,19 +253,19 @@ bool Graphics::InitializeShaders()
 	}
 
 	this->_deviceContext->IASetInputLayout(this->_vertexshader.GetInputLayout());
-	
+
 	return true;
-}
+	}
 
 bool Graphics::InitializeScene()
 {
 	// Create a primitive square
 	SimpleVertex v[] =
 	{
-		{ DirectX::XMFLOAT3(-0.1f, 0.1f, 0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) },
-		{ DirectX::XMFLOAT3(0.1f, 0.1f, 0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) },
-		{ DirectX::XMFLOAT3(-0.1f, -0.1f, 0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(0.1f, -0.1f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(-1.0f, 1.0f, 0.0f), DirectX::XMFLOAT2(0.0f, 0.0f) },
+		{ DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 0.0f) },
+		{ DirectX::XMFLOAT3(-1.0f, -1.0f, 0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(1.0f, -1.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) },
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
@@ -333,7 +330,7 @@ bool Graphics::InitializeScene()
 
 void Graphics::RenderFrame(Scene* scene)
 {
-	float bgcolor[] = {1.0f, 0.0f, 1.0f, 1.0f};
+	float bgcolor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
 	this->_deviceContext->ClearRenderTargetView(this->_renderTargertView.Get(), bgcolor);
 	this->_deviceContext->ClearDepthStencilView(this->_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 

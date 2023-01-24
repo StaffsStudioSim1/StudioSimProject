@@ -3,9 +3,9 @@
 	"gameObjects" : [
 		{
 			"name" : "test",
-			"position" : [0.0, 0.5, 1.0],
+			"position" : [0.0, 0.0, 1.0],
 			"rotation" : 0.0,
-			"scale" : [1.0, 1.0],
+			"scale" : [100.0, 100.0],
 			"components" : [
 				{
 					"class" : "Appearance",
@@ -15,7 +15,7 @@
 		},
 		{
 			"name" : "test2",
-			"position" : [0.0, 0.2, 0.1],
+			"position" : [10.0, 0.0, 0.1],
 			"rotation" : 0.0,
 			"scale" : [1.0, 1.0],
 			"components" : [
@@ -24,7 +24,7 @@
 					"constructors" : ["Resources/Textures/Test2.dds", 3.0, 2.0, 0.0, 0.0, 1.0]
 				},
 				{
-					"class" : "PlayerInput"
+					"class" : "PlayerController"
 				}
 			]
 		}
