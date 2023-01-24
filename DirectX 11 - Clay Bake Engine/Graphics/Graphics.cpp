@@ -395,6 +395,8 @@ void Graphics::RenderFrame(Scene* scene)
 		scaleOffset[1] = 100;
 		rotationOffset = 0;
 	}
+	if (ImGui::Button("Save"))
+	{ }
 	ImGui::End();
 
 	//ASSEMBLE AND RENDER DRAW DATA
