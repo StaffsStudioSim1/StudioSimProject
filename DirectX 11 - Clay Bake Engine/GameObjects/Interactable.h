@@ -1,7 +1,8 @@
 #pragma once
-#include Component.h
+#include "Component.h"
 
-class Interactable::Component
+class Interactable: Component
 {
-	virtual void Interact();
+	virtual void Interact()
+	{};
 };
