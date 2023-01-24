@@ -1,18 +1,8 @@
 #include "Appearance.h"
-#include "ObjectHandler.h"
 
-Appearance::Appearance(std::string textureName, DirectX::XMFLOAT4 texCoords, float alphaMultiplier)
+Appearance::Appearance()
 {
 	_pTextureRV = nullptr;
-
-	SetTexture(ObjectHandler::GetInstance().LoadDDSTextureFile(textureName));
-	SetTexCoords(texCoords);
-	SetAlphaMultiplier(alphaMultiplier);
-	SetGeometryData(ObjectHandler::GetInstance().GetSquareGeometry());
-}
-
-Appearance::~Appearance()
-{
 }
 
 void Appearance::SetTexCoords(float numOfXFrames, float numOfYFrames, float xFramePos, float yFramePos)
@@ -38,13 +28,8 @@ void Appearance::SetTexCoords(float numOfXFrames, float numOfYFrames, float xFra
 
 }
 
-void Appearance::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
+void Appearance::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext>& context)
 {
-	constantBuffer.mTexCoord = GetTexMatrix();
-	constantBuffer.mAlphaMultiplier = GetAlphaMultiplier();
-
-	context->UpdateSubresource(globalBuffer.Get(), 0, nullptr, &constantBuffer, 0, 0);
-
 	// Draw object
 	context->PSSetShaderResources(0, 1, _pTextureRV.GetAddressOf());
 	context->IASetVertexBuffers(0, 1, _geometry.vertexBuffer.GetAddressOf(), &_geometry.vertexBufferStride, &_geometry.vertexBufferOffset);

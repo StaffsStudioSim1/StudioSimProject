@@ -1,48 +1,31 @@
 #pragma once
 
-#include <DDSTextureLoader.h>
 #include <unordered_map>
-#include "Appearance.h"
+
 #include "GameObject.h"
-#include "TextureInfo.h"
 
 class ObjectHandler
 {
 public:
-	// Singleton Code
-	static ObjectHandler& GetInstance()
-	{
-		static ObjectHandler instance;
-		return instance;
-	}
+	ObjectHandler();
+	~ObjectHandler() {}
 
-	ObjectHandler(ObjectHandler const&) = delete;
-	void operator=(ObjectHandler const&) = delete;
+	GameObject* GetGameObject(std::string name) { return _gameObjects[name]; }
+	std::unordered_map<std::string, GameObject*> GetAllObjects() { return _gameObjects; }
+	void AddGameObjectToMap(std::string name, GameObject* object) { _gameObjects.emplace(name, object); }
+	void CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics = false, std::string textureName = "", DirectX::XMFLOAT4 texCoords = { 1.0f, 1.0f, 0.0f, 0.0f }, float alphaMul = 1.0f);
+	void RemoveGameObject(std::string name);
+	void ClearGameObjects();
 
-	void Initialise(Microsoft::WRL::ComPtr <ID3D11Device> device);
-
-	std::vector<GameObject*> GetAllObjects() { return _gameObjects; }
-
-	void Register(GameObject* object);
-	void Unregister(GameObject* object);
-
-	ID3D11ShaderResourceView* LoadDDSTextureFile(std::string filePath);
-	TextureInfo GetTextureInfo(std::string filePath);
-	void ClearLoadedTextures();
+	ID3D11ShaderResourceView* GetLoadedTexture(std::string name) { return _loadedTextures[name]; }
+	void AddTextureToMap(std::string name, ID3D11ShaderResourceView* texture) { _loadedTextures.emplace(name, texture); }
 
 	Geometry GetSquareGeometry() { return _squareGeometry; }
-	void SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride);
+	void SetSquareGeometry(Geometry square) { _squareGeometry = square; }
 private:
-	ObjectHandler();
-	~ObjectHandler();
+	std::unordered_map<std::string, GameObject*> _gameObjects = {};
 
-	bool _initialised = false;
-
-	Microsoft::WRL::ComPtr <ID3D11Device>	_device;
-
-	std::vector<GameObject*> _gameObjects = {};
-
-	std::unordered_map<std::string, TextureInfo> _loadedTextures = {};
+	std::unordered_map<std::string, ID3D11ShaderResourceView*> _loadedTextures = {};
 
 	Geometry _squareGeometry;
 };
