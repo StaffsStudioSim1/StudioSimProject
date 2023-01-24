@@ -23,7 +23,6 @@ private:
 	bool InitializeDirectX(HWND hwnd, int width, int hegiht);
 	bool InitializeShaders();
 	bool InitializeScene();
-
 	Microsoft::WRL::ComPtr <ID3D11Device>				_device;
 	Microsoft::WRL::ComPtr <ID3D11DeviceContext>		_deviceContext;
 	Microsoft::WRL::ComPtr <IDXGISwapChain>				_swapChain;

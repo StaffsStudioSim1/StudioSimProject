@@ -23,7 +23,9 @@ public:
 	GameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation);
 	GameObject(json objectJson);
 	~GameObject();
-
+	 float translationOffset[3];
+	 float rotationOffset;
+	 float scaleOffset[2];
 	int GetType() const noexcept { return _type; }
 	void SetType(int type) { _type = type; }
 
@@ -50,6 +52,8 @@ public:
 	void Update(float deltaTime);
 	void FixedUpdate(float timeStep);
 	void Stop();
+
+
 
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 private:
