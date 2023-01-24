@@ -198,6 +198,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="GameObjects\Transform.h" />
+    <ClInclude Include="GameObjects\TextureInfo.h" />
     <ClInclude Include="WindowContainer.h" />
   </ItemGroup>
   <ItemGroup>
