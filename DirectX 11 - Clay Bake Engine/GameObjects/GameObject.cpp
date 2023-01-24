@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "ObjectHandler.h"
 #include "Appearance.h"
+#include "PlayerController.h"
 #include "../Input/PlayerInput.h"
 
 GameObject::GameObject(std::string name)
@@ -36,11 +37,12 @@ GameObject::GameObject(json objectJson)
 				componentJson[JSON_COMPONENT_CONSTRUCTORS].at(3), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(4)
 			};
 			float alphaMultiplier = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(5);
+
 			component = new Appearance(textureName, texCoords, alphaMultiplier);
 		}
 		else if (type == "PlayerController")
 		{
-			// TODO add yo stuff here
+			component = new PlayerController();
 		}
 
 		if (component != nullptr)
