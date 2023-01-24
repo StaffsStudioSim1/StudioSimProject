@@ -344,6 +344,8 @@ void Graphics::RenderFrame(Scene* scene)
 	this->_deviceContext->ClearRenderTargetView(this->_renderTargertView.Get(), bgcolor);
 	this->_deviceContext->ClearDepthStencilView(this->_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	static float translationOffset[3] = { 0,0,0 };
+	static float rotationOffset = 0;
+	static float scaleOffset[2] = { 100,100 };
 	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(translationOffset[0],translationOffset[1],translationOffset[2]);
 	DirectX::XMMATRIX viewMatrix = XMLoadFloat4x4(&_view);
 	DirectX::XMMATRIX projectionMatrix = XMLoadFloat4x4(&_projection);
@@ -358,7 +360,8 @@ void Graphics::RenderFrame(Scene* scene)
 	this->_deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 	this->_deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 	ObjectHandler::GetInstance().GetAllObjects()[0]->GetTransform()->SetPosition({translationOffset[0], translationOffset[1], translationOffset[2]});
-//	ObjectHandler::GetInstance().GetAllObjects()[1]->G
+	ObjectHandler::GetInstance().GetAllObjects()[0]->GetTransform()->SetRotation(rotationOffset);
+	ObjectHandler::GetInstance().GetAllObjects()[0]->GetTransform()->SetScale(scaleOffset[0], scaleOffset[1]);
 	scene->Render(this->_deviceContext, cb, _constantBuffer);
 
 	//UI
@@ -367,10 +370,31 @@ void Graphics::RenderFrame(Scene* scene)
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	//UI WINDOWS
-	ImGui::Begin("Test");
-	ImGui::End();
-	ImGui::Begin("Translation");
+	ImGui::Begin("Transformations");
 	ImGui::DragFloat3("Translation XYZ", translationOffset, 0.1, -500, 500);
+	ImGui::DragFloat("Rotation", &rotationOffset, 0.05, (-1*DirectX::XM_2PI), DirectX::XM_2PI);
+	ImGui::DragFloat2("Scale", scaleOffset, 0.1, -1000, 1000);
+	ImGui::SameLine();
+	if (ImGui::Button("Scale Up"))
+	{
+		scaleOffset[0] += 10;
+		scaleOffset[1] += 10;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Scale Down"))
+	{
+		scaleOffset[0] -= 10;
+		scaleOffset[1] -= 10;
+	}
+	if (ImGui::Button("Reset"))
+	{
+		translationOffset[0] = 0;
+		translationOffset[1] = 0;
+		translationOffset[2] = 0;
+		scaleOffset[0] = 100;
+		scaleOffset[1] = 100;
+		rotationOffset = 0;
+	}
 	ImGui::End();
 
 	//ASSEMBLE AND RENDER DRAW DATA
