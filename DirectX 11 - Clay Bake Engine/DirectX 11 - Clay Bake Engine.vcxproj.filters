@@ -223,6 +223,8 @@
     </ClInclude>
     <ClInclude Include="GameObjects\ObjectHandler.h">
       <Filter>Header Files\GameObject</Filter>
+    <ClInclude Include="GameObjects\TextureInfo.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

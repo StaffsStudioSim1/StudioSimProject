@@ -8,7 +8,7 @@ ObjectHandler::ObjectHandler()
 
 ObjectHandler::~ObjectHandler()
 {
-
+	ClearLoadedTextures();
 }
 
 /*void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics)
@@ -61,22 +61,59 @@ ID3D11ShaderResourceView* ObjectHandler::LoadDDSTextureFile(std::string filePath
 	if (!_initialised)
 		return nullptr;
 
-	std::unordered_map<std::string, ID3D11ShaderResourceView*>::iterator it = _loadedTextures.find(filePath);
-	if (it != _loadedTextures.end())
-		return it->second;
+	HRESULT hr;
 
+	std::unordered_map<std::string, TextureInfo>::iterator it = _loadedTextures.find(filePath);
+	if (it != _loadedTextures.end())
+		return it->second.texture;
+
+	// Load texture from file
 	ID3D11ShaderResourceView* tempTexture = nullptr;
 	wchar_t wideFilePath[256];
 	mbstowcs_s(nullptr, wideFilePath, filePath.c_str(), _TRUNCATE);
 
-	if (FAILED(DirectX::CreateDDSTextureFromFile(_device.Get(), wideFilePath, nullptr, &tempTexture)))
+	Microsoft::WRL::ComPtr<ID3D11Resource> res;
+
+	hr = DirectX::CreateDDSTextureFromFile(_device.Get(), wideFilePath, res.GetAddressOf(), &tempTexture);
+	if (FAILED(hr))
 	{
 		ErrorLogger::Log("Failed to load DDS Texture!\nFile path: " + filePath + "\nTexture name: " + filePath);
 		exit(EXIT_FAILURE);
 	}
+	
+	// Get data from loaded texture
+	D3D11_RESOURCE_DIMENSION resType = D3D11_RESOURCE_DIMENSION_UNKNOWN;
+	res->GetType(&resType);
 
-	_loadedTextures.emplace(filePath, tempTexture);
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> tex;
+	hr = res.As(&tex);
+	if (FAILED(hr))
+	{
+		ErrorLogger::Log("Failed to get DDS Texture information\n");
+		exit(EXIT_FAILURE);
+	}
+	D3D11_TEXTURE2D_DESC desc;
+	tex->GetDesc(&desc);
+
+	TextureInfo textureInfo = { tempTexture, desc.Width, desc.Height };
+
+	_loadedTextures.emplace(filePath, textureInfo);
 	return tempTexture;
+}
+
+TextureInfo ObjectHandler::GetTextureInfo(std::string filePath)
+{
+	return _loadedTextures[filePath];
+}
+
+void ObjectHandler::ClearLoadedTextures()
+{
+	for (std::pair<std::string, TextureInfo> texture : _loadedTextures)
+	{
+		texture.second.texture->Release();
+		texture.second.texture = nullptr;
+	}
+	_loadedTextures.clear();
 }
 
 void ObjectHandler::SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride)
