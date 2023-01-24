@@ -56,16 +56,16 @@ void ObjectHandler::Unregister(GameObject* object)
 	_gameObjects.erase(std::remove(_gameObjects.begin(), _gameObjects.end(), object), _gameObjects.end());
 }
 
-ID3D11ShaderResourceView* ObjectHandler::LoadDDSTextureFile(std::string filePath)
+TextureInfo ObjectHandler::LoadDDSTextureFile(std::string filePath)
 {
 	if (!_initialised)
-		return nullptr;
+		return TextureInfo();
 
 	HRESULT hr;
 
 	std::unordered_map<std::string, TextureInfo>::iterator it = _loadedTextures.find(filePath);
 	if (it != _loadedTextures.end())
-		return it->second.texture;
+		return it->second;
 
 	// Load texture from file
 	ID3D11ShaderResourceView* tempTexture = nullptr;
@@ -98,12 +98,7 @@ ID3D11ShaderResourceView* ObjectHandler::LoadDDSTextureFile(std::string filePath
 	TextureInfo textureInfo = { tempTexture, desc.Width, desc.Height };
 
 	_loadedTextures.emplace(filePath, textureInfo);
-	return tempTexture;
-}
-
-TextureInfo ObjectHandler::GetTextureInfo(std::string filePath)
-{
-	return _loadedTextures[filePath];
+	return textureInfo;
 }
 
 void ObjectHandler::ClearLoadedTextures()
