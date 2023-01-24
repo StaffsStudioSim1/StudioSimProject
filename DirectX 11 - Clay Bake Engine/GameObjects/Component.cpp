@@ -16,7 +16,6 @@ void Component::Stop()
 {
 }
 
-
 void Component::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
 {
 }

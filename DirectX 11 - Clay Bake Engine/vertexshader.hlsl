@@ -24,7 +24,6 @@ VS_OUTPUT main(VS_INPUT input) //: SV_POSITION
 {
     VS_OUTPUT output = (VS_OUTPUT)0;
     output.PosW = mul(float4(input.Pos, 1.0f), World);
-
     output.PosW = mul(output.PosW, View);
     output.PosW = mul(output.PosW, Projection);
     output.Tex = mul(float4(input.InTex, 0.0f, 1.0f), TexMatrix);

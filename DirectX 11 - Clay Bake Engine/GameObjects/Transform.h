@@ -5,7 +5,6 @@
 class Transform
 {
 public:
-
 	DirectX::XMFLOAT2 GetPosition() const noexcept { return _position; }
 	void SetPosition(DirectX::XMFLOAT3 position) { _position.x = position.x; _position.y = position.y; _depthPos = position.z; }
 	void SetPosition(DirectX::XMFLOAT2 position) { _position.x = position.x; _position.y = position.y; }
@@ -14,7 +13,6 @@ public:
 	void SetPositionChange(float x, float y) { _position.x += x; _position.y += y; }
 
 	float GetDepthPos() const noexcept { return _depthPos; }
-
 	void SetDepthPos(float depth) { _depthPos = depth; } // Between 0.0f and 1.0f where 0.0f is the top layer and 1.0f is the bottom layer
 
 	float GetRotation() const noexcept { return _rotation; }
@@ -30,9 +28,7 @@ public:
 
 	DirectX::XMMATRIX GetWorldMatrix() const noexcept { return DirectX::XMLoadFloat4x4(&_world); }
 
-
 	bool HasTransformParent() const noexcept { return _pParent ? true : false; }
-  
 	void SetTransformParent(Transform* parent) { _pParent = parent; }
 
 	void Update();

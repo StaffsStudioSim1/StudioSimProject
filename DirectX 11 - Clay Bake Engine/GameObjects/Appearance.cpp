@@ -1,5 +1,4 @@
 #include "Appearance.h"
-
 #include "ObjectHandler.h"
 
 Appearance::Appearance(std::string textureName, DirectX::XMFLOAT4 texCoords, float alphaMultiplier)
@@ -38,7 +37,6 @@ void Appearance::SetTexCoords(float numOfXFrames, float numOfYFrames, float xFra
 
 
 }
-
 
 void Appearance::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
 {

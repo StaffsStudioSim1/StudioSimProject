@@ -158,7 +158,6 @@
     <ClCompile Include="Graphics\ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="Graphics\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp" />
-
     <ClCompile Include="Input\PlayerInput.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Input\Keyboard\KeyboardClass.cpp" />
@@ -177,7 +176,8 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
-
+    <ClInclude Include="Graphics\Geometry.h" />
+    <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="GameObjects\Component.h" />
     <ClInclude Include="GameObjects\Appearance.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
@@ -212,7 +212,6 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="GameObjects\Transform.h" />
-
     <ClInclude Include="GameObjects\TextureInfo.h" />
     <ClInclude Include="WindowContainer.h" />
   </ItemGroup>
