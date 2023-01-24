@@ -225,7 +225,7 @@
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\TextureInfo.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
