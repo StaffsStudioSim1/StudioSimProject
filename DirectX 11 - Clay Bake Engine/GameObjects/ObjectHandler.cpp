@@ -1,10 +1,12 @@
 #include "ObjectHandler.h"
+
 #include "../ErrorLogger.h"
 
 ObjectHandler::ObjectHandler()
 {
 
 }
+
 
 ObjectHandler::~ObjectHandler()
 {
@@ -35,6 +37,7 @@ ObjectHandler::~ObjectHandler()
 	}
 
 	// Add to map
+
 	RegisterObject(name, tempObject);
 }*/
 

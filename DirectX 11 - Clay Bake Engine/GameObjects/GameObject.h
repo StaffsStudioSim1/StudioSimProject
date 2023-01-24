@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "Component.h"
 #include "Transform.h"
 #include "Physics.h"
@@ -27,6 +28,7 @@ public:
 	int GetType() const noexcept { return _type; }
 	void SetType(int type) { _type = type; }
 
+
 	template<typename T>
 	T* GetComponent()
 	{
@@ -49,11 +51,13 @@ public:
 	void FixedUpdate(float timeStep);
 	void Stop();
 
+
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 private:
 	int _type = 0;
 
 	std::string _name;
+
 
 	Transform _transform = {};
 	Physics* _physics = {};

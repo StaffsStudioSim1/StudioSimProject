@@ -7,7 +7,7 @@ class WindowContainer
 {
 public:
 	WindowContainer();
-	virtual LRESULT WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	 LRESULT WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	RenderWindow render_window;
 	Graphics gamefx;
