@@ -1,5 +1,5 @@
 #include "Appearance.h"
-#include "ObjectHandler.h"
+#include "../ObjectHandler.h"
 
 Appearance::Appearance(std::string textureName, DirectX::XMFLOAT4 texCoords, float alphaMultiplier)
 {

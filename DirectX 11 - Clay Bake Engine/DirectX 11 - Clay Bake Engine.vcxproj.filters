@@ -19,9 +19,6 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{c7b938f2-1452-45c0-9623-26383123a89e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameObjects">
-      <UniqueIdentifier>{056e41aa-952b-4889-b444-4537261d9217}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\GameObject">
       <UniqueIdentifier>{d6a64ab4-98b4-49f2-ac37-36f5e33602cf}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,15 @@
     </Filter>
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{fede7603-ddb4-4b49-903f-f428d466b77f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObject\Components">
+      <UniqueIdentifier>{99b08f29-3f28-45ad-8e56-15a7214785a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject">
+      <UniqueIdentifier>{056e41aa-952b-4889-b444-4537261d9217}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\Components">
+      <UniqueIdentifier>{df750bad-7aad-4282-89a6-9564dfcb96d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,13 +103,10 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\GameObject.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+      <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Transform.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Appearance.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+      <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Source Files\Input</Filter>
@@ -126,14 +129,23 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Component.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Physics.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GameObjects\Components\Component.cpp">
+      <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\ObjectHandler.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\Appearance.cpp">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\Interactable.cpp">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\LeverComponent.cpp">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\Physics.cpp">
+      <Filter>Source Files\GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,9 +191,6 @@
     <ClInclude Include="GameObjects\Transform.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Appearance.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Input\InputManager.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
@@ -206,11 +215,8 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Component.h">
+    <ClInclude Include="GameObjects\Components\Component.h">
       <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\Physics.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Geometry.h">
       <Filter>Header Files\Graphics</Filter>
@@ -218,14 +224,26 @@
     <ClInclude Include="Graphics\ConstantBuffer.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Input\PlayerInput.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjects\ObjectHandler.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\TextureInfo.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\Appearance.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\PlayerInput.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\LeverComponent.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\Physics.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\Interactable.h">
+      <Filter>Header Files\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "ObjectHandler.h"
-#include "Appearance.h"
+#include "Components/Appearance.h"
+#include "Components/LeverComponent.h"
 #include "../Input/PlayerInput.h"
 
 GameObject::GameObject(std::string name)
@@ -41,6 +42,10 @@ GameObject::GameObject(json objectJson)
 		else if (type == "PlayerController")
 		{
 			// TODO add yo stuff here
+		}
+		else if (type == "LeverComponent")
+		{
+			component = new LeverComponent();
 		}
 
 		if (component != nullptr)

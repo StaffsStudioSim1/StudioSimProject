@@ -2,7 +2,7 @@
 
 #include <DDSTextureLoader.h>
 #include <unordered_map>
-#include "Appearance.h"
+#include "Components/Appearance.h"
 #include "GameObject.h"
 #include "TextureInfo.h"
 

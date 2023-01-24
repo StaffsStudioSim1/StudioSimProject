@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Component.h"
+#include "Components/Component.h"
 #include "Transform.h"
-#include "Physics.h"
+#include "Components/Physics.h"
 #include "../Graphics/ConstantBuffer.h"
 #include "../nlohmann/json.hpp"
 using json = nlohmann::json;
