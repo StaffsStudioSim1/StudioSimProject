@@ -11,6 +11,8 @@
 
 #define FIXED_TIMESTEP 1.0f/50.0f
 
+#define EDIT_MODE false
+
 class ClayEngine : WindowContainer
 {
 
@@ -30,4 +32,8 @@ private:
 	Examples* _ex;
 	PhysicsWorld* _PhysicsWoldSimulation;
 	b2World* boxWorld;
+
+#if EDIT_MODE
+	SceneEditor* _editor;
+#endif
 };

@@ -30,6 +30,11 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
+#if EDIT_MODE
+	_editor = new Scene("Resources/demo.json");
+#else
+	_scene = new Scene("Resources/demo.json");
+#endif
 	return true;
 }
 
@@ -58,6 +63,10 @@ bool ClayEngine::ProcessMessages()
 
 void ClayEngine::Update()
 {
+#if EDIT_MODE
+	if (_editor != nullptr)
+		_editor->Update(0);
+#else
 	AudioManager::GetInstance().Update();
 
 	static float deltaTime = 0.0f;
@@ -108,9 +117,14 @@ void ClayEngine::Update()
 
 
 	dwTimeStart = dwTimeCur;
+#endif
 }
 
 void ClayEngine::RenderFrame()
 {
-	gamefx.RenderFrame();
+#if EDIT_MODE
+	gamefx.RenderFrame(_editor);
+#else
+	gamefx.RenderFrame(_scene);
+#endif
 }
