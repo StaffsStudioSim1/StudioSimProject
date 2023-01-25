@@ -1,18 +1,12 @@
 #pragma once
 #include "AdapterReader.h"
 #include "Shaders.h"
+#include "ConstantBuffer.h"
+#include "../Scene.h"
 
-#include "../GameObjects/ObjectHandler.h"
+#include <d3d11.h>
+#include <DirectXMath.h>
 #include <DDSTextureLoader.h>
-
-struct ConstantBufferStruct
-{
-	DirectX::XMMATRIX mWorld;
-	DirectX::XMMATRIX mView;
-	DirectX::XMMATRIX mProjection;
-	DirectX::XMFLOAT4X4 mTexCoord;
-	float mAlphaMultiplier;
-};
 
 struct SimpleVertex
 {
@@ -24,22 +18,22 @@ class Graphics
 {
 public:
 	bool Initialize(HWND hwnd, int width, int height);
-	void RenderFrame();
+	void RenderFrame(Scene* scene);
 private:
 	bool InitializeDirectX(HWND hwnd, int width, int hegiht);
 	bool InitializeShaders();
 	bool InitializeScene();
 
-	Microsoft::WRL::ComPtr <ID3D11Device>				device;
-	Microsoft::WRL::ComPtr <ID3D11DeviceContext>		deviceContext;
-	Microsoft::WRL::ComPtr <IDXGISwapChain>				swapChain;
-	Microsoft::WRL::ComPtr <ID3D11RenderTargetView>		renderTargertView;
+	Microsoft::WRL::ComPtr <ID3D11Device>				_device;
+	Microsoft::WRL::ComPtr <ID3D11DeviceContext>		_deviceContext;
+	Microsoft::WRL::ComPtr <IDXGISwapChain>				_swapChain;
+	Microsoft::WRL::ComPtr <ID3D11RenderTargetView>		_renderTargertView;
 
-							VertexShader				vertexshader;
-							PixelShader					pixelshader;
+							VertexShader				_vertexshader;
+							PixelShader					_pixelshader;
 
-	Microsoft::WRL::ComPtr <ID3D11Buffer>				vertexBuffer;
-	Microsoft::WRL::ComPtr <ID3D11Buffer>				indexBuffer;
+	Microsoft::WRL::ComPtr <ID3D11Buffer>				_vertexBuffer;
+	Microsoft::WRL::ComPtr <ID3D11Buffer>				_indexBuffer;
 
 	Microsoft::WRL::ComPtr <ID3D11Buffer>				_constantBuffer;
 
@@ -55,10 +49,4 @@ private:
 	DirectX::XMFLOAT4X4									_world;
 	DirectX::XMFLOAT4X4									_view;
 	DirectX::XMFLOAT4X4									_projection;
-
-	Geometry											squareGeometryData;
-
-	ID3D11ShaderResourceView* testTexture = nullptr;
-
-	ObjectHandler										_pObjectHandler;
 };

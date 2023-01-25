@@ -1,14 +1,20 @@
 #include "ObjectHandler.h"
+#include "../ErrorLogger.h"
 
 ObjectHandler::ObjectHandler()
 {
 
 }
 
-void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics, std::string textureName, DirectX::XMFLOAT4 texCoords, float alphaMul)
+ObjectHandler::~ObjectHandler()
+{
+	ClearLoadedTextures();
+}
+
+/*void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics)
 {
 	GameObject* tempObject = new GameObject(0);
-	tempObject->AddAppearance(new Appearance);
+	tempObject->AddComponent(new Appearance);
 	tempObject->AddTransform(new Transform);
 
 	// Set transformation values
@@ -22,25 +28,30 @@ void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 positio
 	tempObject->GetAppearance()->SetAlphaMultiplier(alphaMul);
 	tempObject->GetAppearance()->SetGeometryData(GetSquareGeometry());
 
-	//// Add physics if needed
-	//if (hasPhysics)
-	//{
-	//	tempObject->AddPhysics(new Physics(tempObject->GetTransform()));
-	//}
+	// Add physics if needed
+	if (hasPhysics)
+	{
+		tempObject->AddPhysics(new Physics(tempObject->GetTransform()));
+	}
 
 	// Add to map
-	AddGameObjectToMap(name, tempObject);
-}
+	RegisterObject(name, tempObject);
+}*/
 
-void ObjectHandler::RemoveGameObject(std::string name)
+void ObjectHandler::Initialise(Microsoft::WRL::ComPtr<ID3D11Device> device)
 {
-	GameObject* objectToDelete = _gameObjects[name];
-	_gameObjects.erase(name);
-	delete objectToDelete;
-	objectToDelete = nullptr;
+	if (_initialised)
+		return;
+	_initialised = true;
+	_device = device;
 }
 
-void ObjectHandler::ClearGameObjects()
+void ObjectHandler::Register(GameObject* object)
+{
+	_gameObjects.push_back(object);
+}
+
+void ObjectHandler::Unregister(GameObject* object)
 {
 	_gameObjects.erase(std::remove(_gameObjects.begin(), _gameObjects.end(), object), _gameObjects.end());
 }
@@ -66,8 +77,8 @@ TextureInfo ObjectHandler::LoadDDSTextureFile(std::string filePath)
 	hr = DirectX::CreateDDSTextureFromFile(_device.Get(), wideFilePath, res.GetAddressOf(), &tempTexture);
 	if (FAILED(hr))
 	{
-		delete object.second;
-		object.second = nullptr;
+		ErrorLogger::Log("Failed to load DDS Texture!\nFile path: " + filePath + "\nTexture name: " + filePath);
+		exit(EXIT_FAILURE);
 	}
 	
 	// Get data from loaded texture

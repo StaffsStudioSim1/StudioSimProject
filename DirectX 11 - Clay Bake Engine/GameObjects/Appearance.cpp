@@ -1,6 +1,7 @@
 #include "Appearance.h"
+#include "ObjectHandler.h"
 
-Appearance::Appearance()
+Appearance::Appearance(std::string textureName, DirectX::XMFLOAT4 texCoords, float alphaMultiplier)
 {
 	SetTexture(ObjectHandler::GetInstance().LoadDDSTextureFile(textureName));
 	SetTexCoords(texCoords);
@@ -10,7 +11,6 @@ Appearance::Appearance()
 
 Appearance::~Appearance()
 {
-
 }
 
 void Appearance::SetTexCoords(float numOfXFrames, float numOfYFrames, float xFramePos, float yFramePos)
@@ -36,7 +36,7 @@ void Appearance::SetTexCoords(float numOfXFrames, float numOfYFrames, float xFra
 
 }
 
-void Appearance::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext>& context)
+void Appearance::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
 {
 	DirectX::XMMATRIX world =
 		DirectX::XMMatrixScaling(_gameObject->GetTransform()->GetScale().x * _texture.width * _texCoords.x, _gameObject->GetTransform()->GetScale().y * _texture.height * _texCoords.y, 1.0f) *

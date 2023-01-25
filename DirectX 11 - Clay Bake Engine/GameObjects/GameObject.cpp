@@ -1,10 +1,15 @@
 #include "GameObject.h"
+#include "ObjectHandler.h"
+#include "Appearance.h"
+#include "../Input/PlayerInput.h"
 
-GameObject::GameObject()
+GameObject::GameObject(std::string name)
 {
+	_name = name;
+	ObjectHandler::GetInstance().Register(this);
 }
 
-GameObject::GameObject(json json)
+GameObject::GameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation) : GameObject(name)
 {
 	_transform.SetPosition(position);
 	_transform.SetScale(scale);
@@ -46,11 +51,11 @@ GameObject::GameObject(json objectJson)
 
 GameObject::~GameObject()
 {
-	delete _pTransform;
-	_pTransform = nullptr;
+	for (Component* component : _components)
+		delete component;
+	_components.clear();
 
-	delete _pAppearance;
-	_pAppearance = nullptr;
+	ObjectHandler::GetInstance().Unregister(this);
 }
 
 void GameObject::AddComponent(Component* component)
@@ -67,10 +72,10 @@ void GameObject::Start()
 
 void GameObject::Update(float deltaTime)
 {
-	_pTransform->Update();
+	_transform.Update();
 
-	if (_pPhysics)
-		_pPhysics->Update(deltaTime);
+	if (_physics)
+		_physics->Update(deltaTime);
 
 	for (Component* component : _components)
 		component->Update(deltaTime);
@@ -88,7 +93,7 @@ void GameObject::Stop()
 		component->Stop();
 }
 
-void GameObject::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context)
+void GameObject::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
 {
 	for (Component* component : _components)
 		component->Render(context, constantBuffer, globalBuffer);
