@@ -31,7 +31,8 @@ public:
 
 	DirectX::XMMATRIX GetWorldMatrix() const noexcept { return DirectX::XMLoadFloat4x4(&_world); }
 
-	bool GetHasTransformParent() const noexcept { return _pParent ? true : false; }
+	bool HasTransformParent() const noexcept { return _pParent ? true : false; }
+	Transform* GetTransformParent() const noexcept { return _pParent; }
 	void SetTransformParent(Transform* parent) { _pParent = parent; }
 
 	void Update();

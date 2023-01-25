@@ -17,8 +17,15 @@ public:
 	void RemoveGameObject(std::string name);
 	void ClearGameObjects();
 
-	ID3D11ShaderResourceView* GetLoadedTexture(std::string name) { return _loadedTextures[name]; }
-	void AddTextureToMap(std::string name, ID3D11ShaderResourceView* texture) { _loadedTextures.emplace(name, texture); }
+	void Initialise(Microsoft::WRL::ComPtr <ID3D11Device> device);
+
+	std::vector<GameObject*> GetAllObjects() { return _gameObjects; }
+
+	void Register(GameObject* object);
+	void Unregister(GameObject* object);
+
+	TextureInfo LoadDDSTextureFile(std::string filePath);
+	void ClearLoadedTextures();
 
 	Geometry GetSquareGeometry() { return _squareGeometry; }
 	void SetSquareGeometry(Geometry square) { _squareGeometry = square; }

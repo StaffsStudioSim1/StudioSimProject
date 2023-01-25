@@ -1,4 +1,10 @@
 #include "Component.h"
+#include "GameObject.h"
+
+void Component::SetObject(GameObject* gameObject)
+{
+	_gameObject = gameObject;
+}
 
 void Component::Start()
 {

@@ -17,14 +17,19 @@ public:
 	int GetType() const noexcept { return _type; }
 	void SetType(int type) { _type = type; }
 
-	Appearance* GetAppearance() const noexcept { return _pAppearance; }
-	void AddAppearance(Appearance* appearance) { _pAppearance = appearance; }
+	template<typename T>
+	T* GetComponent()
+	{
+		for (Component* component : _components)
+			if (T* v = dynamic_cast<T*>(component))
+				return v;
+		return nullptr;
+	}
+	void AddComponent(Component* component);
 
-	Transform* GetTransform() const noexcept { return _pTransform; }
-	void AddTransform(Transform* transform) { _pTransform = transform; }
-
-	Physics* GetPhysics() const noexcept { return _pPhysics; }
-	void AddPhysics(Physics* physics) { _pPhysics = physics; }
+	Transform* GetTransform() { return &_transform; }
+	Physics* GetPhysics() const noexcept { return _physics; }
+	void AddPhysics(Physics* physics) { _physics = physics; }
 
 	// Stores a name for the object - might not be used
 	std::string GetName() const noexcept { return _name; }

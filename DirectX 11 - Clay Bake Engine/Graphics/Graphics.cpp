@@ -141,7 +141,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		else
 			viewport.TopLeftY = 0;
 		viewport.Width = width;
-		viewport.Height = width;
+		viewport.Height = height + 1;
 		viewport.MinDepth = 0;
 		viewport.MaxDepth = 1;
 
