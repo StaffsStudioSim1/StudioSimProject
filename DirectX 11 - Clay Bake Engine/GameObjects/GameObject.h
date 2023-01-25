@@ -27,9 +27,9 @@ public:
 	}
 	void AddComponent(Component* component);
 
-	Transform* GetTransform() { return &_transform; }
-	Physics* GetPhysics() const noexcept { return _physics; }
-	void AddPhysics(Physics* physics) { _physics = physics; }
+	Transform* GetTransform() { return _pTransform; }
+	Physics* GetPhysics() const noexcept { return _pPhysics; }
+	void AddPhysics(Physics* physics) { _pPhysics = physics; }
 
 	// Stores a name for the object - might not be used
 	std::string GetName() const noexcept { return _name; }

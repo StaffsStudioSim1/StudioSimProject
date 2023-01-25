@@ -1,5 +1,5 @@
 #pragma once
-#include <box2d/box2d.h>
+#include <Box2D/box2d.h>
 #include <iostream>
 #include <box2d/b2_math.h>
 //#include "PhysicsStructs.h"
