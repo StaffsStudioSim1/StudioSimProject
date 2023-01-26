@@ -10,7 +10,7 @@
 
 #define FIXED_TIMESTEP 1.0f/50.0f
 
-#define EDIT_MODE false
+#define EDIT_MODE true
 
 class ClayEngine : WindowContainer
 {
@@ -31,6 +31,6 @@ private:
 	Examples* _ex;
 
 #if EDIT_MODE
-	SceneEditor* _editor;
+	//SceneEditor* _editor;
 #endif
 };

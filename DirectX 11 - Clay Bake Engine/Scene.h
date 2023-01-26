@@ -4,6 +4,12 @@
 #include "GameObjects/GameObject.h"
 #include "Graphics/ConstantBuffer.h"
 
+#define EDIT_MODE true
+
+#if EDIT_MODE
+#include "Input/Mouse/MousePicking.h"
+#endif
+
 class Scene
 {
 public:
@@ -18,5 +24,9 @@ public:
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 private:
 	std::vector<GameObject*> _children;
+
+#if EDIT_MODE
+	MousePicking _mousePicking = {};
+#endif
 };
 

@@ -135,6 +135,9 @@
     <ClCompile Include="GameObjects\ObjectHandler.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Input\Mouse\MousePicking.cpp">
+      <Filter>Source Files\Input\Mouse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StringConverter.h">
@@ -226,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="GameObjects\TextureInfo.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Mouse\MousePicking.h">
+      <Filter>Header Files\Input\Mouse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
