@@ -44,7 +44,7 @@ GameObject::GameObject(json objectJson)
 		}
 
 		if (component != nullptr)
-			_components.push_back(component);
+			AddComponent(component);
 	}
 	ObjectHandler::GetInstance().Register(this);
 }
@@ -56,6 +56,12 @@ GameObject::~GameObject()
 	_components.clear();
 
 	ObjectHandler::GetInstance().Unregister(this);
+}
+
+void GameObject::AddComponent(Component* component)
+{
+	component->SetObject(this);
+	_components.push_back(component);
 }
 
 void GameObject::Start()
@@ -89,8 +95,6 @@ void GameObject::Stop()
 
 void GameObject::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
 {
-	constantBuffer.mWorld = DirectX::XMMatrixTranspose(_transform.GetWorldMatrix());
-
 	for (Component* component : _components)
 		component->Render(context, constantBuffer, globalBuffer);
 }

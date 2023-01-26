@@ -5,7 +5,7 @@
 			"name" : "test",
 			"position" : [0.0, 0.0, 1.0],
 			"rotation" : 0.0,
-			"scale" : [100.0, 100.0],
+			"scale" : [1.0, 1.0],
 			"components" : [
 				{
 					"class" : "Appearance",
@@ -15,7 +15,7 @@
 		},
 		{
 			"name" : "test2",
-			"position" : [10.0, 0.0, 0.1],
+			"position" : [100.0, 0.0, 0.1],
 			"rotation" : 0.0,
 			"scale" : [1.0, 1.0],
 			"components" : [
