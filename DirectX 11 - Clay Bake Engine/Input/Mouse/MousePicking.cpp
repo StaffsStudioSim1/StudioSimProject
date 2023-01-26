@@ -9,40 +9,37 @@ void MousePicking::Initialise(int width, int height)
 	_height = height;
 }
 
-DirectX::XMINT3 MousePicking::TestForObjectIntersection(int mouseX, int mouseY)
+int MousePicking::TestForObjectIntersection(int mouseX, int mouseY, int currentObj)
 {
 	DirectX::XMINT3 returnInfo = { 0, 0, -1 };
 
 	DirectX::BoundingBox objBox, mouseBox;
-	DirectX::XMFLOAT2 mousePos = { mouseX - (_width / 2.0f), mouseY - (_height / 2.0f) };
+	DirectX::XMINT2 mousePos = GetRelativeMousePos(mouseX, mouseY);
 
 	int objectNum = 0;
 	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 	{
+		//if (objectNum == currentObj)
+		//	continue;
+
 		objBox.Center = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y, object->GetTransform()->GetDepthPos() };
 		objBox.Extents = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y, 0.0f };
 
-		mouseBox.Center = { mousePos.x, mousePos.y, 0.0f };
-		mouseBox.Extents = { 5.0f, 5.0f, 2.0f };
+		mouseBox.Center = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y), 0.0f };
+		mouseBox.Extents = { 25.0f, 25.0f, 10.0f };
 
 		if (mouseBox.Intersects(objBox))
 		{
-			if (mouseBox.Center.x - objBox.Center.x < -50.0f)
-				returnInfo.x = -1;
-			else if (mouseBox.Center.x - objBox.Center.x > 50.0f)
-				returnInfo.x = 1;
-
-			if (mouseBox.Center.y + objBox.Center.y < -50.0f)
-				returnInfo.y = 1;
-			else if (mouseBox.Center.y + objBox.Center.y > 50.0f)
-				returnInfo.y = -1;
-
-			returnInfo.z = objectNum;
-			return returnInfo;
+			return objectNum;
 		}
 
 		objectNum++;
 	}
 
-	return { 0, 0, -1 };
+	return -1;
+}
+
+DirectX::XMINT2 MousePicking::GetRelativeMousePos(int mouseX, int mouseY)
+{
+	return { mouseX - (_width / 2), -(mouseY - (_height / 2)) };
 }

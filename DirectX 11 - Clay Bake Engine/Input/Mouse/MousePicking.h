@@ -6,7 +6,8 @@ class MousePicking
 {
 public:
 	void Initialise(int width, int height);
-	DirectX::XMINT3 TestForObjectIntersection(int mouseX, int mouseY);
+	int TestForObjectIntersection(int mouseX, int mouseY, int currentObj);
+	DirectX::XMINT2 GetRelativeMousePos(int mouseX, int mouseY);
 private:
 	int _height, _width;
 };

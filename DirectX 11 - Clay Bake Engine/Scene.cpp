@@ -45,28 +45,30 @@ void Scene::Update(float deltaTime)
 #if EDIT_MODE
 	static int selectedObj = -1;
 
+	DirectX::XMINT2 mousePos = { InputManager::GetInstance().GetMouse().GetPosX(), InputManager::GetInstance().GetMouse().GetPosY() };
+
 	if (InputManager::GetInstance().GetMouse().IsLeftDown())
 	{
-		selectedObj = _mousePicking.TestForObjectIntersection(InputManager::GetInstance().GetMouse().GetPosX(), InputManager::GetInstance().GetMouse().GetPosY()).z;
+		selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y, selectedObj);
 	}
-	else if (InputManager::GetInstance().GetMouse().IsRightDown())
+	else if (InputManager::GetInstance().GetMouse().IsRightDown() && selectedObj != -1)
 	{
+		GameObject* object = ObjectHandler::GetInstance().GetAllObjects()[selectedObj];
+		DirectX::XMFLOAT2 objectPos = object->GetTransform()->GetPosition();
+		int snapScale = 10;
+		int objXPos = static_cast<int>(objectPos.x / snapScale) * snapScale;
+		int objYPos = static_cast<int>(objectPos.y / snapScale) * snapScale;
+		object->GetTransform()->SetPosition(objXPos, objYPos);
 		selectedObj = -1;
 	}
 
 	if (selectedObj != -1)
 	{
-		DirectX::XMINT3 mouseInfo = _mousePicking.TestForObjectIntersection(InputManager::GetInstance().GetMouse().GetPosX(), InputManager::GetInstance().GetMouse().GetPosY());
+		//DirectX::XMINT3 mouseInfo = _mousePicking.TestForObjectIntersection(InputManager::GetInstance().GetMouse().GetPosX(), InputManager::GetInstance().GetMouse().GetPosY());
 
 		GameObject* object = ObjectHandler::GetInstance().GetAllObjects()[selectedObj];
-		if (mouseInfo.x == -1)
-			object->GetTransform()->SetPositionChange(-100.0f, 0.0f);
-		else if (mouseInfo.x == 1)
-			object->GetTransform()->SetPositionChange(100.0f, 0.0f);
-		if (mouseInfo.y == -1)
-			object->GetTransform()->SetPositionChange(0.0f, -100.0f);
-		else if (mouseInfo.y == 1)
-			object->GetTransform()->SetPositionChange(0.0f, 100.0f);
+		DirectX::XMINT2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
+		object->GetTransform()->SetPosition(relativeMousePos.x, relativeMousePos.y);
 	}
 #endif
 
