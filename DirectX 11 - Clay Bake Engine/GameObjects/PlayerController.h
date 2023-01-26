@@ -18,7 +18,7 @@ public:
 private:
 
     //Variables
-    PlayerInput* pi;
+    PlayerInput* _playerInput;
 
     float _moveSpeed;
     float _topSpeed;
@@ -29,6 +29,17 @@ private:
     bool _isJumping;
     bool _movementEnabled = true;
 
+    //Functions
+    void MovePressed();
+    void MoveReleased();
+    void JumpPressed();
+    void JumpReleased();
+    void InteractPressed();
+    void MagnetPressed();
+    void PausePressed();
+
+
+    //Physics Reliant Vars
     //Vector2 _currentMovementVector;
     //Vector2 _jumpForce;
     //BoxCollider2D _groundDetector (change to raycast);
