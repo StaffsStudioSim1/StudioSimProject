@@ -167,6 +167,7 @@
     <ClCompile Include="Examples.cpp" />
     <ClCompile Include="GameObjects\PlayerMagnetism.cpp" />
     <ClCompile Include="GameObjects\MagnetismObject.cpp" />
+    <ClCompile Include="GameObjects\PlayerController.cpp" />
     <ClCompile Include="Physics\PhysicsInterface.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="GameObjects\MagnetismObject.h" />
     <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="GameObjects\PlayerMagnetism.h" />
+    <ClInclude Include="GameObjects\PlayerController.h" />
     <ClInclude Include="PhysicsStructs.h" />
     <ClInclude Include="Physics\PhysicsInterface.h" />
     <ClInclude Include="RenderWindow.h" />

@@ -33,7 +33,7 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 #if EDIT_MODE
 	_editor = new Scene("Resources/demo.json");
 #else
-	_scene = new Scene("Resources/demo.json");
+	SceneManager::GetInstance().LoadScene("Resources/demo.json");
 #endif
 	return true;
 }
@@ -123,8 +123,10 @@ void ClayEngine::Update()
 void ClayEngine::RenderFrame()
 {
 #if EDIT_MODE
-	gamefx.RenderFrame(_editor);
+  if (_editor != nullptr)
+    gamefx.Render(_editor)
 #else
-	gamefx.RenderFrame(_scene);
+	if (_scene != nullptr)
+		gamefx.RenderFrame(_scene);
 #endif
 }
