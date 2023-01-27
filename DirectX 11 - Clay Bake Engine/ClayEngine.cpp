@@ -126,7 +126,7 @@ void ClayEngine::RenderFrame()
   if (_editor != nullptr)
     gamefx.Render(_editor)
 #else
-  if (_scene != nullptr)
-    gamefx.Render(_scene)
+	if (_scene != nullptr)
+		gamefx.RenderFrame(_scene);
 #endif
 }
