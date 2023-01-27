@@ -147,8 +147,8 @@
     <ClCompile Include="GameObjects\Components\Physics.cpp">
       <Filter>Source Files\GameObject\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ButtonComponent.cpp">
-      <Filter>Source Files\GameObject\Components</Filter>
+    <ClCompile Include="GameObjects\Components\ButtonComponent.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

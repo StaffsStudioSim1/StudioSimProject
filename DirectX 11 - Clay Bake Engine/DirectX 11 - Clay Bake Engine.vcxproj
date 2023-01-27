@@ -142,7 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ButtonComponent.cpp" />
+    <ClCompile Include="GameObjects\Components\ButtonComponent.cpp" />
     <ClCompile Include="GameObjects\Components\Component.cpp" />
     <ClCompile Include="GameObjects\Components\Appearance.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />

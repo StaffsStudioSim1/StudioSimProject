@@ -4,8 +4,9 @@
 class ButtonComponent : public Interactable
 {
 public:
-	int m_Timer;
+	float m_Timer;
 	bool m_State;
 	void Interact();
+	void Start();
 };
 
