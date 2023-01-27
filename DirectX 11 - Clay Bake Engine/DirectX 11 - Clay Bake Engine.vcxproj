@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Box2D-cpp.2.4.1.5\build\native\Box2D-cpp.props" Condition="Exists('..\packages\Box2D-cpp.2.4.1.5\build\native\Box2D-cpp.props')" />
+  <Import Project="..\packages\Box2D-cpp.redist.2.4.1.5\build\native\Box2D-cpp.redist.props" Condition="Exists('..\packages\Box2D-cpp.redist.2.4.1.5\build\native\Box2D-cpp.redist.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -72,6 +74,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ExecutablePath>$(SolutionDir)DirectX 11 - Clay Bake Engine\Includes;$(ExecutablePath)</ExecutablePath>
     <LibraryPath>$(SolutionDir)DirectX 11 - Clay Bake Engine\Libs\x86\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ExecutablePath>$(SolutionDir)DirectX 11 - Clay Bake Engine\Includes;$(ExecutablePath)</ExecutablePath>
@@ -91,10 +94,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -119,6 +124,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(Box2D-cppIncludes);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -160,6 +166,7 @@
     <ClCompile Include="Input\Mouse\MouseEvent.cpp" />
     <ClCompile Include="Examples.cpp" />
     <ClCompile Include="Input\Mouse\MousePicking.cpp" />
+    <ClCompile Include="Physics\PhysicsInterface.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
     <ClCompile Include="Audio\SoundEffect.cpp" />
@@ -168,11 +175,10 @@
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="StringConverter.cpp" />
     <ClCompile Include="GameObjects\Transform.cpp" />
+    <ClCompile Include="Physics\Vectors.cpp" />
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Graphics\Geometry.h" />
-    <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="GameObjects\Component.h" />
     <ClInclude Include="GameObjects\Appearance.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
@@ -193,6 +199,8 @@
     <ClInclude Include="Examples.h" />
     <ClInclude Include="Input\Mouse\MousePicking.h" />
     <ClInclude Include="nlohmann\json.hpp" />
+    <ClInclude Include="PhysicsStructs.h" />
+    <ClInclude Include="Physics\PhysicsInterface.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />
     <ClInclude Include="Audio\SoundEffect.h" />
@@ -200,7 +208,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="GameObjects\Transform.h" />
-    <ClInclude Include="GameObjects\TextureInfo.h" />
+    <ClInclude Include="Physics\Vectors.h" />
     <ClInclude Include="WindowContainer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -241,5 +249,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\directxtk_desktop_win10.2022.12.16.1\build\native\directxtk_desktop_win10.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk_desktop_win10.2022.12.16.1\build\native\directxtk_desktop_win10.targets'))" />
+    <Error Condition="!Exists('..\packages\Box2D-cpp.redist.2.4.1.5\build\native\Box2D-cpp.redist.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Box2D-cpp.redist.2.4.1.5\build\native\Box2D-cpp.redist.props'))" />
+    <Error Condition="!Exists('..\packages\Box2D-cpp.2.4.1.5\build\native\Box2D-cpp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Box2D-cpp.2.4.1.5\build\native\Box2D-cpp.props'))" />
   </Target>
 </Project>
