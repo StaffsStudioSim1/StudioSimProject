@@ -193,50 +193,7 @@ void InputManager::PollInput()
 	}
 }
 
-std::vector<int> InputManager::PollMouseInput() // Hopefully temporary, using GetMouse causes the event buffer to not be cleared
+MouseClass* InputManager::GetMouse()
 {
-	std::vector<int> mouseInputs = { 0, 0, 0, 0, 0 };
-
-	while (!_mouse.EventBufferIsEmpty())
-	{
-		MouseEvent me = _mouse.ReadEvent();
-
-		switch (me.GetType())
-		{
-		case (MouseEvent::EventType::LPress):
-		{
-			mouseInputs[0] = 1;
-			break;
-		}
-		case (MouseEvent::EventType::LRelease):
-		{
-			mouseInputs[1] = 1;
-			break;
-		}
-		case (MouseEvent::EventType::RPress):
-		{
-			mouseInputs[2] = 1;
-			break;
-		}
-		case (MouseEvent::EventType::RRelease):
-		{
-			mouseInputs[3] = 1;
-			break;
-		}
-		case (MouseEvent::EventType::MPress):
-		{
-			mouseInputs[4] = 1;
-			break;
-		}
-		default:
-			break;
-		}
-	}
-
-	return mouseInputs;
-}
-
-MouseClass InputManager::GetMouse()
-{
-	return _mouse;
+	return &_mouse;
 }

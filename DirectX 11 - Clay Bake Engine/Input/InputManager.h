@@ -25,9 +25,7 @@ public:
 	void UnregisterPlayerInput(PlayerInput* playerInput);
 	void PollInput();
 
-	std::vector<int> PollMouseInput();
-
-	MouseClass GetMouse();
+	MouseClass* GetMouse();
 private:
 	InputManager();
 	~InputManager();

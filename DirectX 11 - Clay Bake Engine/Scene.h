@@ -27,6 +27,8 @@ private:
 
 #if EDIT_MODE
 	MousePicking _mousePicking = {};
+	std::vector<std::string> _textureNames = { "Test.dds", "Test2.dds" };
+	int _textureNum = 0;
 #endif
 };
 
