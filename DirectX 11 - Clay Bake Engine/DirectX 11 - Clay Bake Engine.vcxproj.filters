@@ -147,6 +147,9 @@
     <ClCompile Include="GameObjects\Components\Physics.cpp">
       <Filter>Source Files\GameObject\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ButtonComponent.cpp">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StringConverter.h">
@@ -243,6 +246,9 @@
       <Filter>Header Files\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Components\Interactable.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\ButtonComponent.h">
       <Filter>Header Files\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>

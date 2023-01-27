@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="GameObjects\Components\Component.cpp" />
     <ClCompile Include="GameObjects\Components\Appearance.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObjects\Components\ButtonComponent.h" />
     <ClInclude Include="GameObjects\Components\Interactable.h" />
     <ClInclude Include="Graphics\Geometry.h" />
     <ClInclude Include="Graphics\ConstantBuffer.h" />

@@ -1,11 +1,11 @@
 #pragma once
 #include "Interactable.h"
 
-class LeverComponent : public Interactable
+class ButtonComponent : public Interactable
 {
 public:
+	int m_Timer;
 	bool m_State;
-	void start();
 	void Interact();
 };
-  
+
