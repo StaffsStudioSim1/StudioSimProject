@@ -77,7 +77,7 @@ void GameObject::Update(float deltaTime)
 	_transform.Update();
 
 	if (_physics)
-		_physics->Update();
+		_physics->Update(deltaTime);
 
 	for (Component* component : _components)
 		component->Update(deltaTime);
