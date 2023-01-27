@@ -25,7 +25,7 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
-	_scene = new Scene("Resources/demo.json");
+	SceneManager::GetInstance().LoadScene("Resources/demo.json");
 	return true;
 }
 
@@ -108,5 +108,6 @@ void ClayEngine::Update()
 
 void ClayEngine::RenderFrame()
 {
-	gamefx.RenderFrame(_scene);
+	if (_scene != nullptr)
+		gamefx.RenderFrame(_scene);
 }
