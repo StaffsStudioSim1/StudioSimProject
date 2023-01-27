@@ -8,5 +8,5 @@ void LeverComponent::start()
 
 void LeverComponent::Interact()
 {
-	//lever funcitonality implemented here
+	//override lever functionality
 }
