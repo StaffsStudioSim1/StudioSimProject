@@ -11,8 +11,6 @@
 
 #define FIXED_TIMESTEP 1.0f/50.0f
 
-#define EDIT_MODE true // Other define is in Scene.h
-
 class ClayEngine : WindowContainer
 {
 

@@ -4,7 +4,7 @@
 #include "GameObjects/GameObject.h"
 #include "Graphics/ConstantBuffer.h"
 
-#define EDIT_MODE true // Other define is in ClayEngine.h
+#define EDIT_MODE true 
 
 #if EDIT_MODE
 #include "Input/Mouse/MousePicking.h"
