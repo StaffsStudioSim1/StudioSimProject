@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "../Physics/Vectors.h"
 //#include "../Input/PlayerInput.h"
 
 enum PlayerDirection
@@ -25,13 +26,13 @@ public:
     void MagnetOff();
 
     bool m_active;
-    //Vector2 box size
     
-    //Vector2 HandOffset
-    // 
+    Vector2* m_boxSize;    
+    Vector2* m_handOffest;
 private:
 
-    //Vector2 currentHandOffset
-    //Vector2 facing vector
+    Vector2* m_currentHandOffset;
+    Vector2* m_factingVector = new Vector2(1,1);
+    
 };
 
