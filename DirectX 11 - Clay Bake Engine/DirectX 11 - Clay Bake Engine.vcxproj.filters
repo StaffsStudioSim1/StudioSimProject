@@ -235,6 +235,7 @@
     </ClInclude>
     <ClInclude Include="PhysicsStructs.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="GameObjects\TextureInfo.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
