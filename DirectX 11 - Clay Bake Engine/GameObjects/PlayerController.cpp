@@ -39,9 +39,13 @@ void PlayerController::Update(float deltaTime)
 	{
 		InteractPressed();
 	}
-	else if (_playerInput->IsActionDown(Magnet))
+	else if (_playerInput->IsActionHeld(Magnet))
 	{
 		MagnetPressed();
+	}
+	else if (_playerInput->IsActionUp(Magnet))
+	{
+		MagnetReleased();
 	}
 	else if (_playerInput->IsActionDown(Pause))
 	{
@@ -108,6 +112,11 @@ void PlayerController::InteractPressed()
 }
 
 void PlayerController::MagnetPressed()
+{
+	//TODO: Link to Will's magnet class
+}
+
+void PlayerController::MagnetReleased()
 {
 	//TODO: Link to Will's magnet class
 }

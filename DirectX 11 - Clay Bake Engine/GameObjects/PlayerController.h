@@ -37,6 +37,7 @@ private:
     void JumpReleased();
     void InteractPressed();
     void MagnetPressed();
+    void MagnetReleased();
     void PausePressed();
 
 
