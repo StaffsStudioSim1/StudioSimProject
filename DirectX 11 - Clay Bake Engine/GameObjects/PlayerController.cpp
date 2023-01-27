@@ -2,8 +2,12 @@
 
 //Treat this just like the old Unity Input System
 
+//Start does not get called
+
 void PlayerController::Start()
 {
+	int ActivePlayerCount = 0;
+
 	//Create new PlayerInput
 	_playerInput = new PlayerInput();
 
@@ -49,7 +53,6 @@ void PlayerController::Update(float deltaTime)
 		_jumpTimer = deltaTime;
 	//potential functionality for the midaircontroldelay
 }
-
 
 //Need OnCollisionEnter
 
