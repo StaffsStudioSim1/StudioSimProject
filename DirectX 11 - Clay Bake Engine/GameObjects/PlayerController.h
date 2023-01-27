@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "../Physics/PhysicsInterface.h"
 #include "../Input/PlayerInput.h"
 
 class PlayerController : public Component
