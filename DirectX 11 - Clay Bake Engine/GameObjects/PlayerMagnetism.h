@@ -25,7 +25,7 @@ public:
     void MagnetOn();
     void MagnetOff();
 
-    bool m_active;
+    bool m_magnetActive;
     
     Vector2* m_boxSize;    
     Vector2* m_handOffest;

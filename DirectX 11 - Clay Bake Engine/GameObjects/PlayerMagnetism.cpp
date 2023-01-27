@@ -2,7 +2,7 @@
 
 void PlayerMagnetism::Start()
 {
-	m_active = false;
+	m_magnetActive = false;
 	m_handOffest = new Vector2();
 	m_currentHandOffset = m_handOffest;
 	m_boxSize = new Vector2();
@@ -19,8 +19,10 @@ void PlayerMagnetism::Stop()
 
 void PlayerMagnetism::FixedUpdate(float timeStep)
 {
-	if (m_active)
+	if (m_magnetActive)
 	{
+
+		//TODO
 		//Pysiics Cheack area to find colliders
 
 		//For each collider found]
@@ -58,12 +60,12 @@ void PlayerMagnetism::ChangeDirection(PlayerDirection direction)
 
 void PlayerMagnetism::MagnetOn()
 {
-	m_active = true;
+	m_magnetActive = true;
 }
 
 void PlayerMagnetism::MagnetOff()
 {
-	m_active = false;
+	m_magnetActive = false;
 }
 
 
