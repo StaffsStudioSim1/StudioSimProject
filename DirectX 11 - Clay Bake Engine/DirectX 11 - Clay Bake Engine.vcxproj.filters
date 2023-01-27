@@ -150,6 +150,15 @@
     <ClCompile Include="GameObjects\Components\ButtonComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\Components\DoorComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\PressurePlateComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StringConverter.h">
@@ -250,6 +259,12 @@
     </ClInclude>
     <ClInclude Include="GameObjects\Components\ButtonComponent.h">
       <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\DoorComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\PressurePlateComponent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
