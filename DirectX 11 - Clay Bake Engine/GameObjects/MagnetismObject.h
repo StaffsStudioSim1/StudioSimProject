@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include"../Physics/Vectors.h"
+#include "PlayerController.h"
 
 enum MagnetDirection
 {
@@ -12,6 +13,6 @@ class MagnetismObject :
     public Component
 {
 public:
-    //void isBeingMagnetised(Vector2 posOfEffector,MagnetDirection direction, )
+    virtual void isBeingMagnetised(Vector2 pushingPlayerPos, MagnetDirection forceDirection, PlayerController* ControlingPlayer) = 0;
 };
 
