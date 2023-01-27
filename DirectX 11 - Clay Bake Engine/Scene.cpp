@@ -48,7 +48,7 @@ void Scene::Update(float deltaTime)
 	std::vector<int> mouseInputs = InputManager::GetInstance().PollMouseInput();
 	DirectX::XMINT2 mousePos = { InputManager::GetInstance().GetMouse().GetPosX(), InputManager::GetInstance().GetMouse().GetPosY() };
 
-	if (mouseInputs[0]) // If an object is near the cursor select it
+	if (mouseInputs[0] && selectedObj == -1) // If an object is near the cursor select it
 	{
 		selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y, selectedObj);
 	}
@@ -62,12 +62,29 @@ void Scene::Update(float deltaTime)
 		object->GetTransform()->SetPosition(objXPos, objYPos);
 		selectedObj = -1;
 	}
-
-	if (selectedObj != -1) // Move the selected object to the cursor's position
+	else if (selectedObj != -1) // Move the selected object to the cursor's position
 	{
-		GameObject* object = ObjectHandler::GetInstance().GetAllObjects()[selectedObj];
+		GameObject* object = ObjectHandler::GetInstance().GetGameObject(selectedObj);
 		DirectX::XMINT2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
 		object->GetTransform()->SetPosition(relativeMousePos.x, relativeMousePos.y);
+
+		if (mouseInputs[4])
+		{
+			//_children.erase(std::remove(ObjectHandler::GetInstance().GetAllObjects().begin(), ObjectHandler::GetInstance().GetAllObjects().end(), object), ObjectHandler::GetInstance().GetAllObjects().end());
+			_children.erase(_children.begin() + selectedObj);
+			ObjectHandler::GetInstance().Unregister(object);
+			selectedObj = -1;
+		}
+	}
+	else if (mouseInputs[2] && selectedObj == -1)
+	{
+		static int objNum = 0;
+		GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f);
+		objNum++;
+
+		Component* component = new Appearance("Resources/Textures/Test.dds");
+		tempObj->AddComponent(component);
+		_children.push_back(tempObj);
 	}
 #endif
 
