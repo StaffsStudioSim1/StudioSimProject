@@ -14,7 +14,7 @@ int MousePicking::TestForObjectIntersection(int mouseX, int mouseY, int currentO
 	DirectX::XMINT3 returnInfo = { 0, 0, -1 };
 
 	DirectX::BoundingBox objBox, mouseBox;
-	DirectX::XMINT2 mousePos = GetRelativeMousePos(mouseX, mouseY);
+	DirectX::XMINT2 mousePos = GetRelativeMousePos(mouseX * 1, mouseY * 1);
 
 	int objectNum = 0;
 	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
@@ -41,5 +41,5 @@ int MousePicking::TestForObjectIntersection(int mouseX, int mouseY, int currentO
 
 DirectX::XMINT2 MousePicking::GetRelativeMousePos(int mouseX, int mouseY)
 {
-	return { mouseX - (_width / 2), -(mouseY - (_height / 2)) };
+	return { int((float(mouseX * 1.01f))) - (_width / 2), -(int(float(mouseY * 1.05f)) - (_height / 2)) };
 }

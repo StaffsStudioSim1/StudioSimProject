@@ -45,13 +45,14 @@ void Scene::Update(float deltaTime)
 #if EDIT_MODE
 	static int selectedObj = -1;
 
+	std::vector<int> mouseInputs = InputManager::GetInstance().PollMouseInput();
 	DirectX::XMINT2 mousePos = { InputManager::GetInstance().GetMouse().GetPosX(), InputManager::GetInstance().GetMouse().GetPosY() };
 
-	if (InputManager::GetInstance().GetMouse().IsLeftDown())
+	if (mouseInputs[0]) // If an object is near the cursor select it
 	{
 		selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y, selectedObj);
 	}
-	else if (InputManager::GetInstance().GetMouse().IsRightDown() && selectedObj != -1)
+	else if (mouseInputs[1] && selectedObj != -1) // If an object is selected and the left click is released stop moving the object and deselect it
 	{
 		GameObject* object = ObjectHandler::GetInstance().GetAllObjects()[selectedObj];
 		DirectX::XMFLOAT2 objectPos = object->GetTransform()->GetPosition();
@@ -62,10 +63,8 @@ void Scene::Update(float deltaTime)
 		selectedObj = -1;
 	}
 
-	if (selectedObj != -1)
+	if (selectedObj != -1) // Move the selected object to the cursor's position
 	{
-		//DirectX::XMINT3 mouseInfo = _mousePicking.TestForObjectIntersection(InputManager::GetInstance().GetMouse().GetPosX(), InputManager::GetInstance().GetMouse().GetPosY());
-
 		GameObject* object = ObjectHandler::GetInstance().GetAllObjects()[selectedObj];
 		DirectX::XMINT2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
 		object->GetTransform()->SetPosition(relativeMousePos.x, relativeMousePos.y);
