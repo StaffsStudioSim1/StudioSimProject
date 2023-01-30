@@ -26,6 +26,7 @@ class GameManager :
     void LevelLose();
     void LevelReset();
     void Pause();
+    void UnPause();
     void GravityFlip();
 };
 
