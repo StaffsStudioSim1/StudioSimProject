@@ -5,8 +5,8 @@
 
 enum MagnetDirection
 {
-    Towards,
-    Away
+    PullTowards,
+    PushAway
 };
 
 class MagnetismObject :

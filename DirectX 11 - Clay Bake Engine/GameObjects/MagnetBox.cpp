@@ -4,11 +4,11 @@ void MagnetBox::isBeingMagnetised(Vector2 pushingPlayerPos, MagnetDirection forc
 {
 	switch (forceDirection)
 	{
-	case Towards:
+	case PullTowards:
 		//Force to add pushingPlayerPos - (Vector2)transform.position)*m_pushForce
 		m_attachedPhysics->ApplyForceToObj();
 		break;
-	case Away:
+	case PushAway:
 		//Force to add -(pushingPlayerPos - (Vector2)transform.position)*m_pushForce
 		break;
 	default:

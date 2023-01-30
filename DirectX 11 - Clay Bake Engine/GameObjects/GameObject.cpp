@@ -5,6 +5,7 @@
 #include "../Input/PlayerInput.h"
 #include "PlayerMagnetism.h"
 #include "MagnetismObject.h"
+#include "MagnetBox.h"
 
 GameObject::GameObject(std::string name)
 {
@@ -50,9 +51,9 @@ GameObject::GameObject(json objectJson)
 		{
 			component = new PlayerMagnetism();
 		}
-		else if (type == "MagnetismObject")
+		else if (type == "MagnetBox")
 		{
-			component = new MagnetismObject;
+			component = new MagnetBox();
 		}
 
 		if (component != nullptr)

@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "../Physics/Vectors.h"
+#include "MagnetismObject.h"
 //#include "../Input/PlayerInput.h"
 
 enum PlayerDirection
@@ -29,6 +30,8 @@ public:
     
     Vector2* m_boxSize;    
     Vector2* m_handOffest;
+
+    MagnetDirection m_magnetDirection;
 private:
 
     Vector2* m_currentHandOffset;
