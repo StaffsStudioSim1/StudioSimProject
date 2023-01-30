@@ -2,8 +2,8 @@
 #include "WindowContainer.h"
 #include "Examples.h"
 #include "Scene.h"
-#include "GameObjects/Physics.h"
-#include "PhysicsStructs.h"
+#include "GameObjects/Components/Physics.h"
+#include "Physics/PhysicsStructs.h"
 
 #define FPS_5 1.0f/5.0f
 #define FPS_30 1.0f/30.0f

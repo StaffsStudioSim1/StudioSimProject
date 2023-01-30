@@ -2,8 +2,8 @@
 #include "ObjectHandler.h"
 #include "Components/Appearance.h"
 #include "Components/LeverComponent.h"
-#include "Appearance.h"
-#include "Physics.h"
+#include "Components/Appearance.h"
+#include "Components/Physics.h"
 #include "../Input/PlayerInput.h"
 
 GameObject::GameObject(std::string name)
