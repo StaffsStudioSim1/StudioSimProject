@@ -15,11 +15,6 @@ void GameManager::FixedUpdate(float timestamp)
 	//fixed stuff
 }
 
-void GameManager::OnPlayerJoined()
-{
-	//initialise input controls for player
-}
-
 void GameManager::LevelWin()
 {
 	//what the game does when win condition is met
@@ -33,4 +28,14 @@ void GameManager::LevelLose()
 void GameManager::LevelReset()
 {
 	//reset the current level
+}
+
+void GameManager::Pause()
+{
+	//pause the game
+}
+
+void GameManager::GravityFlip()
+{
+
 }

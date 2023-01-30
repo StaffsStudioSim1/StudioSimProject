@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "ObjectHandler.h"
 #include "Appearance.h"
+#include "Physics.h"
 #include "../Input/PlayerInput.h"
 #include "GameManager.h"
 
@@ -47,6 +48,23 @@ GameObject::GameObject(json objectJson)
 		{
 			component = new GameManager();
 		}
+		else if(type == "Physics")
+		{
+			bool dynamic = componentJson.contains(JSON_COMPONENT_CONSTRUCTORS) && componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+
+			PhysicsBody* body = new PhysicsBody();
+			body->bodyDef.startPos = _transform.GetPosition();
+			body->bodyDef.startingRoatation = _transform.GetRotation();
+			body->bodyDef.density = 0.1f;
+			body->bodyDef.friction = 1.0f;
+			body->hitboxdef.bodyType = dynamic ? Dynmaic : Static;
+			body->hitboxdef.scaleX = _transform.GetScale().x;
+			body->hitboxdef.scaleY = _transform.GetScale().y;
+			body->hitboxdef.shape = Box;
+
+			PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
+			component = new Physics(body, physicsWorld);
+		}
 
 		if (component != nullptr)
 			AddComponent(component);
@@ -78,9 +96,6 @@ void GameObject::Start()
 void GameObject::Update(float deltaTime)
 {
 	_transform.Update();
-
-	if (_physics)
-		_physics->Update(deltaTime);
 
 	for (Component* component : _components)
 		component->Update(deltaTime);

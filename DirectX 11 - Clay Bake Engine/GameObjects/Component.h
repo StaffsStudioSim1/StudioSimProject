@@ -16,6 +16,7 @@ public:
 	virtual void Stop();
 
 	virtual void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
+
 protected:
 	GameObject* _gameObject;
 };
