@@ -23,7 +23,11 @@ Scene::Scene(std::string filePath)
 		_children.push_back(new GameObject(objectData));
 
 #if EDIT_MODE
-	_mousePicking.Initialise(1280, 720);
+	RECT rc;
+	GetWindowRect(GetActiveWindow(), &rc);
+	int width = (rc.right - rc.left) - 16;
+	int height = (rc.bottom - rc.top) - 39;
+	_mousePicking.Initialise(width, height);
 #endif
 }
 
@@ -57,9 +61,9 @@ void Scene::Update(float deltaTime)
 		}
 		else if (me.GetType() == MouseEvent::EventType::LRelease && selectedObj != -1)
 		{
-			GameObject* object = ObjectHandler::GetInstance().GetAllObjects()[selectedObj];
+			GameObject* object = ObjectHandler::GetInstance().GetGameObject(selectedObj);
 			DirectX::XMFLOAT2 objectPos = object->GetTransform()->GetPosition();
-			int snapScale = 10;
+			int snapScale = 10; // Edit this to change the scaling
 			int objXPos = static_cast<int>(objectPos.x / snapScale) * snapScale;
 			int objYPos = static_cast<int>(objectPos.y / snapScale) * snapScale;
 			object->GetTransform()->SetPosition(objXPos, objYPos);
@@ -78,7 +82,7 @@ void Scene::Update(float deltaTime)
 				selectedObj = -1;
 			}
 		}
-		else if (me.GetType() == MouseEvent::EventType::RPress && selectedObj == -1)
+		else if (me.GetType() == MouseEvent::EventType::RPress && selectedObj == -1) // Creates a new game object
 		{
 			static int objNum = 0;
 			GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f);
@@ -88,11 +92,17 @@ void Scene::Update(float deltaTime)
 			tempObj->AddComponent(component);
 			_children.push_back(tempObj);
 		}
-		else if (me.GetType() == MouseEvent::EventType::WheelUp && selectedObj == -1)
+		else if (me.GetType() == MouseEvent::EventType::WheelUp && selectedObj == -1) // Changes the texture that the next game object will be created with
 		{
 			_textureNum += 1;
 			if (_textureNum == _textureNames.size())
 				_textureNum = 0;
+		}
+		else if (me.GetType() == MouseEvent::EventType::WheelDown && selectedObj == -1)
+		{
+			_textureNum -= 1;
+			if (_textureNum < 0)
+				_textureNum = _textureNames.size() - 1;
 		}
 	}
 #endif
