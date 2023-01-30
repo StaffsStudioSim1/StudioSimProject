@@ -5,22 +5,22 @@
 
 enum PhysicsBodyType
 {
-	_Static,
-	_kinematic,
-	_Dynmaic
+	Static,
+	Kinematic,
+	Dynmaic
 };
 
 enum HitboxShape
 {
-	_box, 
-	_circular
+	Box,
+	Circular
 };
 
 typedef struct PhysicsWorld
 {
-	PhysicsWorld() { _world = nullptr; }
+	PhysicsWorld() { world = nullptr; }
 
-	b2World* _world;
+	b2World* world;
 	//inline PhysicsWorld() : _world(b2Vec2 in) { }
 	//inline PhysicsWorld(_world) : _wolrd(b2Vec2 in) { }
 
@@ -28,26 +28,26 @@ typedef struct PhysicsWorld
 
 struct PhysicsTransform
 {
-	b2Transform _Transformation;
+	b2Transform transformation;
 };
 
 
 struct BodyDefinition
 {
 	BodyDefinition() {};
-	b2BodyDef _bodyDef;
-	Vector2 StartPos;
-	float StartingRoatation;
+	b2BodyDef bodyDef;
+	Vector2 startPos;
+	float startingRoatation;
 	float density, friction;
 	//b2Fixture _fixture;
 };
 
 struct HitBoxDefnintions
 {
-	b2PolygonShape _HitBox;
-	PhysicsBodyType _BodyType;
-	HitboxShape _Shape;
-	float _scaleX, _ScaleY;
+	b2PolygonShape hitBox;
+	PhysicsBodyType bodyType;
+	HitboxShape shape;
+	float scaleX, scaleY;
 };
 
 struct BindObjectsDef
@@ -59,9 +59,9 @@ typedef struct PhysicsBody
 {
 	PhysicsBody()  { }
 
-	b2Body* _body;
+	b2Body* body;
 	//PhysicsBodyType _BodyType;
-	BodyDefinition _bodyDef;
+	BodyDefinition bodyDef;
 	HitBoxDefnintions hitboxdef;
 };
 

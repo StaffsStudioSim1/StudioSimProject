@@ -48,14 +48,14 @@ GameObject::GameObject(json objectJson)
 			bool dynamic = componentJson.contains(JSON_COMPONENT_CONSTRUCTORS) && componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
 
 			PhysicsBody* body = new PhysicsBody();
-			body->_bodyDef.StartPos = _transform.GetPosition();
-			body->_bodyDef.StartingRoatation = _transform.GetRotation();
-			body->_bodyDef.density = 0.1f;
-			body->_bodyDef.friction = 1.0f;
-			body->hitboxdef._BodyType = dynamic ? _Dynmaic : _Static;
-			body->hitboxdef._scaleX = _transform.GetScale().x;
-			body->hitboxdef._ScaleY = _transform.GetScale().y;
-			body->hitboxdef._Shape = _box;
+			body->bodyDef.startPos = _transform.GetPosition();
+			body->bodyDef.startingRoatation = _transform.GetRotation();
+			body->bodyDef.density = 0.1f;
+			body->bodyDef.friction = 1.0f;
+			body->hitboxdef.bodyType = dynamic ? Dynmaic : Static;
+			body->hitboxdef.scaleX = _transform.GetScale().x;
+			body->hitboxdef.scaleY = _transform.GetScale().y;
+			body->hitboxdef.shape = Box;
 
 			PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
 			component = new Physics(body, physicsWorld);

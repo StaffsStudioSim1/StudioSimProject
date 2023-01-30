@@ -29,7 +29,7 @@ private:
 
 	Scene* _scene = nullptr;
 	Examples* _ex;
-	PhysicsWorld* _PhysicsWorld;
+	PhysicsWorld* _physicsWorld;
 	Physics* _physicsAccess;
 	bool _physicsRunning;
 };
