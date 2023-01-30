@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -52,14 +52,11 @@
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{fede7603-ddb4-4b49-903f-f428d466b77f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameObject\Components">
-      <UniqueIdentifier>{99b08f29-3f28-45ad-8e56-15a7214785a2}</UniqueIdentifier>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{7d97d1b9-69b2-4f02-9695-2b5e9b75cdf5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameObject">
-      <UniqueIdentifier>{056e41aa-952b-4889-b444-4537261d9217}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObject\Components">
-      <UniqueIdentifier>{df750bad-7aad-4282-89a6-9564dfcb96d3}</UniqueIdentifier>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{92b9bd95-7637-4208-8383-017852e76d2b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -138,26 +135,17 @@
     <ClCompile Include="GameObjects\Components\Appearance.cpp">
       <Filter>Source Files\GameObject\Components</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Components\Interactable.cpp">
-      <Filter>Source Files\GameObject\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Components\LeverComponent.cpp">
-      <Filter>Source Files\GameObject\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Components\Physics.cpp">
-      <Filter>Source Files\GameObject\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Components\ButtonComponent.cpp">
+    <ClCompile Include="GameObjects\ObjectHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Components\DoorComponent.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Physics\PhysicsInterface.cpp">
+      <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Components\GameObject.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GameObjects\Physics.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Components\PressurePlateComponent.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Physics\Vectors.cpp">
+      <Filter>Source Files\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +194,9 @@
     <ClInclude Include="Input\InputManager.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Input\PlayerInput.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
     <ClInclude Include="Input\ActionMap.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
@@ -230,17 +221,23 @@
     <ClInclude Include="GameObjects\Components\Component.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\Geometry.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\ConstantBuffer.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjects\ObjectHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsInterface.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Physics.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\TextureInfo.h">
+    <ClInclude Include="PhysicsStructs.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\TextureInfo.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Vectors.h">
+      <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Components\Appearance.h">
       <Filter>Header Files\GameObject\Components</Filter>
