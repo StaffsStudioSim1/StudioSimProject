@@ -40,6 +40,8 @@ public:
 	void DeleteHitBox(b2Fixture* fixture);
 
 	BodyDefinition SetCorrectBodyDef(PhysicsBody input, PhysicsBodyType type);
+	PhysicsBody GetCollisionsWithBody();
+	bool IsObjectCollidingwith(PhysicsBody input);
 private:
 	Transform* _pTransform;
 	PhysicsInterface* _pPhysicsInterface;

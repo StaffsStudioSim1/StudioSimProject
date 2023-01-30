@@ -123,7 +123,7 @@ void ClayEngine::Update()
 		_scene->Start();
 	}
 
-
+//	if(ObjectHandler::GetInstance().GetGameObject(0)->GetComponent()
 
 	dwTimeStart = dwTimeCur;
 #endif

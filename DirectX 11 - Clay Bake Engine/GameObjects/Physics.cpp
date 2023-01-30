@@ -180,3 +180,37 @@ b2World* Physics::CreatePhysicsWorld(float gravity)
 
 	return &boxWorld;
 }
+
+PhysicsBody Physics::GetCollisionsWithBody()
+{
+	BodyEdgeCollision collisioncheck;
+	b2Fixture* collidingWith;
+	for (collisioncheck.edge = _objectPhysicsBody->body->GetContactList(); &collisioncheck.edge; collisioncheck.edge = collisioncheck.edge->next)
+	{
+		collidingWith = collisioncheck.edge->contact->GetFixtureB();
+	}
+
+	PhysicsBody output;
+	output.body = collidingWith->GetBody();
+
+	return output;
+
+}
+
+bool Physics::IsObjectCollidingwith(PhysicsBody input)
+{
+	BodyEdgeCollision collisioncheck;
+	b2Fixture* collidingWith;
+	for (collisioncheck.edge = _objectPhysicsBody->body->GetContactList(); &collisioncheck.edge; collisioncheck.edge = collisioncheck.edge->next)
+	{
+		collidingWith = collisioncheck.edge->contact->GetFixtureB();
+	}
+
+	if (collidingWith->GetBody() == input.body)
+	{
+		return true;
+	}else
+	{
+		return false;
+	}
+}
