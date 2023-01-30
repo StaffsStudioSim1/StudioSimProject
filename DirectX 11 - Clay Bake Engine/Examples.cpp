@@ -33,6 +33,4 @@ void Examples::Update()
 	// Was jump released?
 	if (playerInput->IsActionUp(Jump))
 		OutputDebugStringA("Jump Released\n");
-
-	OutputDebugStringA((std::to_string(playerInput->ReadAxis(Movement).x) + "\n").c_str());
 }

@@ -2,7 +2,6 @@
 #include "WindowContainer.h"
 #include "Examples.h"
 #include "Scene.h"
-#include "PhysicsStructs.h"
 
 #define FPS_5 1.0f/5.0f
 #define FPS_30 1.0f/30.0f
@@ -10,8 +9,6 @@
 #define FPS_CAP FPS_60
 
 #define FIXED_TIMESTEP 1.0f/50.0f
-
-#define EDIT_MODE false
 
 class ClayEngine : WindowContainer
 {
@@ -30,10 +27,4 @@ private:
 
 	Scene* _scene = nullptr;
 	Examples* _ex;
-	PhysicsWorld* _PhysicsWoldSimulation;
-	b2World* boxWorld;
-
-#if EDIT_MODE
-	SceneEditor* _editor;
-#endif
 };

@@ -6,7 +6,6 @@ PlayerInput::PlayerInput()
 	InputManager::GetInstance().RegisterPlayerInput(this);
 	FillButtonMap(_actionDown);
 	FillButtonMap(_actionHeld);
-	FillAxisMap(_axisMap);
 	SetDeviceType(Unassigned);
 }
 
@@ -19,16 +18,6 @@ void PlayerInput::PollInput(KeyboardClass keyboard)
 {
 	if (_deviceType != KeyboardLeft && _deviceType != KeyboardRight)
 		return;
-
-	// Movement
-	Vector2 axis;
-	if (keyboard.IsKeyPressed(_actionMap.leftKeyCode))
-		axis.x -= 1;
-	// Both keys can be pressed to equal each other out, so do not change to 'else if'
-	if (keyboard.IsKeyPressed(_actionMap.rightKeyCode))
-		axis.x += 1;
-	SetValue(_axisMap, Movement, axis);
-	// End Movement
 
 	// Jump
 	// Is the button down?
@@ -132,11 +121,6 @@ bool PlayerInput::IsActionUp(Action action)
 	return !GetValue(_actionDown, action) && GetValue(_actionHeld, action);
 }
 
-Vector2 PlayerInput::ReadAxis(Action action)
-{
-	return GetValue(_axisMap, action);
-}
-
 DeviceType PlayerInput::GetDeviceType()
 {
 	return _deviceType;
@@ -147,7 +131,6 @@ void PlayerInput::SetDeviceType(DeviceType deviceType)
 	_deviceType = deviceType;
 	ResetButtonMap(_actionDown);
 	ResetButtonMap(_actionHeld);
-	ResetAxisMap(_axisMap);
 
 	// Scan Codes from https://learn.microsoft.com/en-gb/windows/win32/inputdev/about-keyboard-input#scan-codes
 	// NOTE: Those values start at 1, therefore we need to subtract 1 when putting them here. E.G. w on the docs is 18, but the code says it's 17
@@ -189,12 +172,11 @@ bool PlayerInput::GetValue(std::map<Action, bool>& map, Action action)
 	return false;
 }
 
-Vector2 PlayerInput::GetValue(std::map<Action, Vector2>& map, Action action)
+void PlayerInput::SetValue(std::map<Action, bool>& map, Action action, bool value)
 {
-	std::map<Action, Vector2>::iterator it = map.find(action);
+	std::map<Action, bool>::iterator it = map.find(action);
 	if (it != map.end())
-		return it->second;
-	return Vector2(-INFINITY, -INFINITY);
+		it->second = value;
 }
 
 void PlayerInput::FillButtonMap(std::map<Action, bool>& map)
@@ -211,14 +193,4 @@ void PlayerInput::ResetButtonMap(std::map<Action, bool>& map)
 	SetValue(map, Interact, false);
 	SetValue(map, Magnet, false);
 	SetValue(map, Pause, false);
-}
-
-void PlayerInput::FillAxisMap(std::map<Action, Vector2>& map)
-{
-	map.insert(std::make_pair(Movement, Vector2()));
-}
-
-void PlayerInput::ResetAxisMap(std::map<Action, Vector2>& map)
-{
-	SetValue(map, Movement, Vector2());
 }

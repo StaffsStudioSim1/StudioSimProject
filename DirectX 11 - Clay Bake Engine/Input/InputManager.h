@@ -24,8 +24,6 @@ public:
 	void RegisterPlayerInput(PlayerInput* playerInput);
 	void UnregisterPlayerInput(PlayerInput* playerInput);
 	void PollInput();
-
-	MouseClass GetMouse();
 private:
 	InputManager();
 	~InputManager();

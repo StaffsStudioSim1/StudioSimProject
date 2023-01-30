@@ -2,7 +2,6 @@
 #include <map>
 #include "Keyboard/KeyboardClass.h"
 #include "ActionMap.h"
-#include "../Physics/Vectors.h"
 
 enum DeviceType { Unassigned, KeyboardLeft, KeyboardRight, Controller };
 enum Action { Movement, Jump, Interact, Magnet, Pause };
@@ -25,9 +24,6 @@ public:
 	// Returns true on the frame the Action is released
 	bool IsActionUp(Action action);
 
-	// Read the Vector2 Data from an Action
-	Vector2 ReadAxis(Action action);
-
 	// Get the DeviceType this is bound to
 	DeviceType GetDeviceType();
 	// Bind this to the specified DeviceType
@@ -38,24 +34,11 @@ private:
 
 	std::map<Action, bool> _actionDown;
 	std::map<Action, bool> _actionHeld;
-	std::map<Action, Vector2> _axisMap;
 
 	// Useful functions
-
 	static bool GetValue(std::map<Action, bool>& map, Action action);
-	static Vector2 GetValue(std::map<Action, Vector2>& map, Action action);
-
-	template<typename T>
-	static void SetValue(std::map<Action, T>& map, Action action, T value)
-	{
-		typename std::map<Action, T>::iterator it = map.find(action);
-		if (it != map.end())
-			it->second = value;
-	}
-
+	static void SetValue(std::map<Action, bool>& map, Action action, bool value);
 	static void FillButtonMap(std::map<Action, bool>& map);
 	static void ResetButtonMap(std::map<Action, bool>& map);
-	static void FillAxisMap(std::map<Action, Vector2>& map);
-	static void ResetAxisMap(std::map<Action, Vector2>& map);
 };
 

@@ -22,25 +22,18 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 
 	_ex = new Examples();
 
-	// Physics world for data processing
-	b2World boxWorld(b2Vec2(0.0f, -9.81f));
-	//_PhysicsWoldSimulation = new _mPhysicsWorld();
-	//->_world = boxWorld;
-
 	// initialise graphics here
 
 	_initialised = true;
-#if EDIT_MODE
-	_editor = new Scene("Resources/demo.json");
-#else
 	_scene = new Scene("Resources/demo.json");
-#endif
 	return true;
 }
 
 void ClayEngine::Destroy()
 {
 	delete _ex;
+	if (_scene)
+		delete _scene;
 }
 
 LRESULT ClayEngine::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -63,10 +56,6 @@ bool ClayEngine::ProcessMessages()
 
 void ClayEngine::Update()
 {
-#if EDIT_MODE
-	if (_editor != nullptr)
-		_editor->Update(0);
-#else
 	AudioManager::GetInstance().Update();
 
 	static float deltaTime = 0.0f;
@@ -114,17 +103,10 @@ void ClayEngine::Update()
 		_scene->Start();
 	}
 
-
-
 	dwTimeStart = dwTimeCur;
-#endif
 }
 
 void ClayEngine::RenderFrame()
 {
-#if EDIT_MODE
-	gamefx.RenderFrame(_editor);
-#else
 	gamefx.RenderFrame(_scene);
-#endif
 }
