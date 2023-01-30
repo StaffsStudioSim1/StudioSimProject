@@ -2,7 +2,7 @@
 
 void ButtonComponent::Start()
 {
-	m_State = false; //set state to off on start
+	m_Opened= false; //set state to off on start
 	m_Timer = 0;
 }
 

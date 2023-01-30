@@ -8,7 +8,6 @@ public:
 	void start();
 	void WeighedDown();
 	void WeightReleased();
-
-
+	void Update();
 };
 

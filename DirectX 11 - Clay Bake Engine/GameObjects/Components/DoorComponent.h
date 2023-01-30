@@ -1,12 +1,5 @@
 #pragma once
 #include "Interactable.h"
-class DoorComponent :
-    public Interactable
-{
-};
-
-#pragma once
-#include "Interactable.h"
 
 class DoorComponent : public Interactable
 {
@@ -19,6 +12,6 @@ public:
 	void Open();
 	void Close();
 
-	void SwitchState()
+	void SwitchState();
 
 };

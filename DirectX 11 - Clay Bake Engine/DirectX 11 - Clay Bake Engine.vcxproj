@@ -146,9 +146,8 @@
     <ClCompile Include="GameObjects\Components\ButtonComponent.cpp" />
     <ClCompile Include="GameObjects\Components\Component.cpp" />
     <ClCompile Include="GameObjects\Components\Appearance.cpp" />
-    <ClCompile Include="GameObjects\Components\GameObject.cpp" />
-    <ClCompile Include="GameObjects\Components\PressurePlateComponent.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
+    <ClCompile Include="GameObjects\Components\PressurePlateComponent.cpp" />
     <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="GameObjects\ObjectHandler.cpp" />
     <ClCompile Include="GameObjects\Components\Physics.cpp" />

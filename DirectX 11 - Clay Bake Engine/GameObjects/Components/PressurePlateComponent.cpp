@@ -14,3 +14,9 @@ void PressurePlateComponent::WeightReleased()
 {
 	m_WeighedDown = false;
 }
+
+void PressurePlateComponent::Update()
+{
+	//call interactable update
+
+}
