@@ -63,7 +63,7 @@ void Scene::Update(float deltaTime)
 		else if (me.GetType() == MouseEvent::EventType::LRelease && selectedObj != -1)
 		{
 			GameObject* object = ObjectHandler::GetInstance().GetGameObject(selectedObj);
-			DirectX::XMFLOAT2 objectPos = object->GetTransform()->GetPosition();
+			Vector2 objectPos = object->GetTransform()->GetPosition();
 			DirectX::XMINT2 snapPos = _mousePicking.SnapCoordinatesToGrid(objectPos.x, objectPos.y);
 			object->GetTransform()->SetPosition(snapPos.x, snapPos.y);
 			selectedObj = -1;
