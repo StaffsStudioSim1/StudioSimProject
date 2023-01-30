@@ -114,10 +114,9 @@ void Scene::Update(float deltaTime)
 
 void Scene::FixedUpdate(float timeStep)
 {
-	ObjectHandler::GetInstance().GetPhysicsWorld()->_world->Step(timeStep, 8, 3);
+	ObjectHandler::GetInstance().GetPhysicsWorld()->world->Step(timeStep, 8, 3);
 	for (GameObject* obj : _children)
 		obj->FixedUpdate(timeStep);
-	
 }
 
 void Scene::Stop()
