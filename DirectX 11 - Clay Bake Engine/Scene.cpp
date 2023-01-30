@@ -64,10 +64,8 @@ void Scene::Update(float deltaTime)
 		{
 			GameObject* object = ObjectHandler::GetInstance().GetGameObject(selectedObj);
 			DirectX::XMFLOAT2 objectPos = object->GetTransform()->GetPosition();
-			int snapScale = 10; // Edit this to change the scaling
-			int objXPos = static_cast<int>(objectPos.x / snapScale) * snapScale;
-			int objYPos = static_cast<int>(objectPos.y / snapScale) * snapScale;
-			object->GetTransform()->SetPosition(objXPos, objYPos);
+			DirectX::XMINT2 snapPos = _mousePicking.SnapCoordinatesToGrid(objectPos.x, objectPos.y);
+			object->GetTransform()->SetPosition(snapPos.x, snapPos.y);
 			selectedObj = -1;
 		}
 		else if (selectedObj != -1)
@@ -86,7 +84,16 @@ void Scene::Update(float deltaTime)
 		else if (me.GetType() == MouseEvent::EventType::RPress && selectedObj == -1) // Creates a new game object
 		{
 			static int objNum = 0;
-			GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 0.0f);
+			DirectX::XMINT2 relPos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
+			relPos = _mousePicking.SnapCoordinatesToGrid(relPos.x, relPos.y);
+
+			for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+			{
+				if (object->GetTransform()->GetPosition().x == relPos.x && object->GetTransform()->GetPosition().y == relPos.y)
+					return;
+			}
+
+			GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { float(relPos.x), float(relPos.y), 0.0f }, { 1.0f, 1.0f }, 0.0f);
 			objNum++;
 
 			Component* component = new Appearance("Resources/Textures/" + _textureNames[_textureNum]);
