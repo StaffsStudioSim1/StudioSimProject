@@ -32,6 +32,7 @@ public:
 	void Update(float deltaTime);
 
 
+
 	b2PolygonShape CreateHitBox(b2Vec2 Halfscale);
 	void FixHitboxToBody(b2Body* body, b2PolygonShape* hitbox, float density);
 	void DeleteHitBox(b2Body* body, b2Fixture* fixture);

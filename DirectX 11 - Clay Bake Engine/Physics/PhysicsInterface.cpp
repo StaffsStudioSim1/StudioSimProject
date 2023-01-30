@@ -129,3 +129,4 @@ void PhysicsInterface::DestroyJoint(b2Joint* joint)
 {
 	world->DestroyJoint(joint);
 }
+
