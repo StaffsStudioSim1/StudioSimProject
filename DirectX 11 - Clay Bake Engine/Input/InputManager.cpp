@@ -192,3 +192,8 @@ void InputManager::PollInput()
 		}
 	}
 }
+
+MouseClass InputManager::GetMouse()
+{
+	return _mouse;
+}
