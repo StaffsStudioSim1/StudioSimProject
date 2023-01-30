@@ -2,6 +2,7 @@
 #include <fstream>
 #include "ErrorLogger.h"
 #include "nlohmann/json.hpp"
+#include "GameObjects/ObjectHandler.h"
 using json = nlohmann::json;
 
 #if EDIT_MODE
@@ -113,8 +114,10 @@ void Scene::Update(float deltaTime)
 
 void Scene::FixedUpdate(float timeStep)
 {
+	ObjectHandler::GetInstance().GetPhysicsWorld()->_world->Step(timeStep, 8, 3);
 	for (GameObject* obj : _children)
 		obj->FixedUpdate(timeStep);
+	
 }
 
 void Scene::Stop()
