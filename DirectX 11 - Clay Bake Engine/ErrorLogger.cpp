@@ -5,7 +5,6 @@ void ErrorLogger::Log(std::string message)
 {
 	std::string error_message = "Error: " + message;
 	MessageBoxA(NULL, error_message.c_str(), "Error", MB_ICONERROR);
-	exit(EXIT_FAILURE);
 }
 
 void ErrorLogger::Log(HRESULT hr, std::string message)
