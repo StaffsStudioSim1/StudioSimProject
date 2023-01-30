@@ -3,8 +3,8 @@
 Physics::Physics(Transform* transform, PhysicsWorld* _world) // Initilaise transform variables
 {
 	_pTransform = transform;
-	_pWolrd = _world;
-	_pPhysicsInterface = new PhysicsInterface(&_pWolrd->_world);
+	_pWorld = _world;
+	_pPhysicsInterface = new PhysicsInterface(_pWorld->_world);
 }
 
 Physics::~Physics()
@@ -24,7 +24,7 @@ PhysicsInterface Physics::GetPhysicInterface()
 
 PhysicsWorld* Physics::Getworld()
 {
-	return _pWolrd;
+	return _pWorld;
 }
 
 PhysicsBody* Physics::CreateBody(PhysicsBody* _body)
@@ -85,7 +85,7 @@ PhysicsTransform Physics::GetTransform(PhysicsBody* objectBody)
 
 b2Joint* Physics::Createjoint(BindObjectsDef* jointDefinition)
 {
-	return _pWolrd->_world.CreateJoint(&jointDefinition->_jointdefinition);
+	return _pWorld->_world->CreateJoint(&jointDefinition->_jointdefinition);
 }
 
 void Physics::SetLinearVelocity(PhysicsBody* objectBody, Vector2* Velocity)
@@ -174,7 +174,7 @@ PhysicsBody Physics::InitPhysicsBody(PhysicsBody* body, PhysicsWorld* world)
 
 	SetTransform(body, body->_bodyDef.StartPos, body->_bodyDef.StartingRoatation);
 
-	body->_body = world->_world.CreateBody(&body->_bodyDef._bodyDef);
+	body->_body = world->_world->CreateBody(&body->_bodyDef._bodyDef);
 
 	body->hitboxdef = CreateHitBox(Vector2(body->hitboxdef._scaleX, body->hitboxdef._ScaleY));
 	

@@ -44,6 +44,6 @@ public:
 private:
 	 Transform* _pTransform;
 	 PhysicsInterface* _pPhysicsInterface;
-	 PhysicsWorld* _pWolrd;
+	 PhysicsWorld* _pWorld;
 };
 

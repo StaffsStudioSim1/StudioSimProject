@@ -30,7 +30,7 @@ private:
 
 	Scene* _scene = nullptr;
 	Examples* _ex;
-	PhysicsWorld* _PhysicsWold;
+	PhysicsWorld* _PhysicsWorld;
 	Physics* _physicsAccess;
 	bool _physicsRunning;
 

@@ -18,9 +18,10 @@ enum HitboxShape
 
 typedef struct PhysicsWorld
 {
+	PhysicsWorld() { _world = nullptr; };
 
-	b2World _world;
-//	inline PhysicsWorld() : _wolrd(b2Vec2 in) { }
+	b2World* _world;
+	//inline PhysicsWorld() : _world(b2Vec2 in) { }
 	//inline PhysicsWorld(_world) : _wolrd(b2Vec2 in) { }
 
 }PhysicsWorld;

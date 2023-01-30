@@ -25,7 +25,8 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// Physics world for data processing
 	float gravity = 9.806f;
 	b2World* boxworld = new b2World(b2Vec2(0, gravity));
-	_PhysicsWold->_world = *boxworld;// = *_physicsAccess->CreatePhysicsWorld(gravity);
+	_PhysicsWorld = new PhysicsWorld();
+	_PhysicsWorld->_world = boxworld;// = *_physicsAccess->CreatePhysicsWorld(gravity);
 
 	// initialise graphics here
 
@@ -103,7 +104,7 @@ void ClayEngine::Update()
 	InputManager::GetInstance().PollInput();
 	
 	if (_physicsRunning)
-		_PhysicsWold->_world.Step(deltaTimeFixed, 8, 3);
+		_PhysicsWorld->_world->Step(deltaTimeFixed, 8, 3);
 
 
 
