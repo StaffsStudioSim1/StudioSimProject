@@ -19,15 +19,17 @@ void PlayerController::Start()
 void PlayerController::Update(float deltaTime)
 {
 	//Check for input
-	if (_playerInput->IsActionDown(Movement))
+	/*if (_playerInput->IsActionDown(Movement))
 	{
 		MovePressed();
 	}
 	else if (_playerInput->IsActionUp(Movement))
 	{
 		MoveReleased();
-	}
-	else if (_playerInput->IsActionHeld(Jump))
+	}*/
+
+	//Jump
+	if (_playerInput->IsActionHeld(Jump))
 	{
 		JumpPressed();
 	}
@@ -35,11 +37,15 @@ void PlayerController::Update(float deltaTime)
 	{
 		JumpReleased();
 	}
-	else if (_playerInput->IsActionDown(Interact))
+
+	//Interact
+	if (_playerInput->IsActionDown(Interact))
 	{
 		InteractPressed();
 	}
-	else if (_playerInput->IsActionHeld(Magnet))
+
+	//Magnet
+	if (_playerInput->IsActionHeld(Magnet))
 	{
 		MagnetPressed();
 	}
@@ -47,7 +53,9 @@ void PlayerController::Update(float deltaTime)
 	{
 		MagnetReleased();
 	}
-	else if (_playerInput->IsActionDown(Pause))
+
+
+	if (_playerInput->IsActionDown(Pause))
 	{
 		PausePressed();
 	}
