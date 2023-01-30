@@ -22,7 +22,7 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	AudioManager::GetInstance();
 
 	_ex = new Examples();
-	
+
 	// Physics world for data processing
 	float gravity = -9.806f;
 	b2World* boxworld = new b2World(b2Vec2(0, gravity));
@@ -33,13 +33,13 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
-//#if EDIT_MODE
-//	_scene = new Scene("Resources/demo.json");
-//#else
-//	_scene = new Scene("Resources/demo.json");
-//#endif
+	//#if EDIT_MODE
+	//	_scene = new Scene("Resources/demo.json");
+	//#else
+	//	_scene = new Scene("Resources/demo.json");
+	//#endif
 	_scene = new Scene("Resources/demo.json");
-	return true; 
+	return true;
 }
 
 void ClayEngine::Destroy()
@@ -105,7 +105,7 @@ void ClayEngine::Update()
 	if (deltaTime < FPS_CAP)
 		return;
 	InputManager::GetInstance().PollInput();
-	
+
 	if (_physicsRunning)
 		_physicsWorld->world->Step(deltaTimeFixed, 8, 3);
 
@@ -131,10 +131,10 @@ void ClayEngine::Update()
 
 void ClayEngine::RenderFrame()
 {
-//#if EDIT_MODE
-//	gamefx.RenderFrame(_scene);
-//#else
-//	gamefx.RenderFrame(_scene);
-//#endif
+	//#if EDIT_MODE
+	//	gamefx.RenderFrame(_scene);
+	//#else
+	//	gamefx.RenderFrame(_scene);
+	//#endif
 	gamefx.RenderFrame(_scene);
 }
