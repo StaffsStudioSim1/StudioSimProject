@@ -17,6 +17,7 @@ void PressurePlateComponent::WeightReleased()
 
 void PressurePlateComponent::Update()
 {
-	//call interactable update
-
+	//check hitbox state
 }
+
+//physics trigger volume

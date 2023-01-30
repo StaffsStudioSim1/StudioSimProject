@@ -1,5 +1,6 @@
 #pragma once
 #include "Interactable.h"
+#include "Physics.h"
 
 class PressurePlateComponent : public Interactable
 {
@@ -9,5 +10,8 @@ public:
 	void WeighedDown();
 	void WeightReleased();
 	void Update();
+
+	
+
 };
 
