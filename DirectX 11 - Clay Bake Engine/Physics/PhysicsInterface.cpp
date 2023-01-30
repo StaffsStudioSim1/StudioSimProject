@@ -13,31 +13,6 @@ PhysicsInterface::~PhysicsInterface()
 	world = nullptr;
 }
 
-float PhysicsInterface::Deg2Rad(float degrees)
-{
-	degrees = CorrectDegrees(degrees);
-	float radians = degrees * 0.0174533f;
-	return radians;
-}
-
-float PhysicsInterface::Rad2Deg(float radians)
-{
-	float degrees = radians * 57.295754f;
-	degrees = CorrectDegrees(degrees);
-	return degrees;
-}
-float PhysicsInterface::CorrectDegrees(float degrees)
-{
-	while (degrees > 360.0f)
-	{
-		degrees -= 360.0f;
-	}
-	while (degrees < -360.0f)
-	{
-		degrees += 360.0f;
-	}
-	return degrees;
-}
 
 b2World* PhysicsInterface::Getworld()
 {
@@ -66,7 +41,7 @@ float PhysicsInterface::GetAngle(b2Body* body)
 
 float PhysicsInterface::GetAngleDegress(b2Body* body)
 {
-	return Rad2Deg(GetAngle(body));
+	return RAD2DEG(GetAngle(body));
 }
 
 float PhysicsInterface::GetAngleRadians(b2Body* body)
@@ -76,7 +51,7 @@ float PhysicsInterface::GetAngleRadians(b2Body* body)
 
 void PhysicsInterface::SetAngleDegress(b2Body* body, float angle)
 {
-	body->SetTransform(GetBodyPosition(body), Deg2Rad(angle));
+	body->SetTransform(GetBodyPosition(body), DEG2RAD(angle));
 }
 
 void PhysicsInterface::SetAngleRadians(b2Body* body, float angle)
@@ -86,7 +61,7 @@ void PhysicsInterface::SetAngleRadians(b2Body* body, float angle)
 
 void PhysicsInterface::SetTransform(b2Body* body, b2Vec2 position, float angleOfRotation)
 {
-	body->SetTransform(position, Deg2Rad(angleOfRotation));
+	body->SetTransform(position, DEG2RAD(angleOfRotation));
 }
 
 b2Transform PhysicsInterface::GetTransform(b2Body* objectBody)

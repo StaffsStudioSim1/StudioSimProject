@@ -13,7 +13,7 @@ Physics::~Physics()
 
 void Physics::Update(float deltaTime) // Update physics
 {
-	_pPhysicsInterface->Update(deltaTime);
+//	_pPhysicsInterface->Update(deltaTime);
 
 }
 
@@ -27,11 +27,10 @@ PhysicsWorld* Physics::Getworld()
 	return _pWolrd;
 }
 
-PhysicsBody* Physics::CreateBody(BodyDefinition* _bodyDefinition)
+PhysicsBody* Physics::CreateBody(PhysicsBody* _body)
 {
-	PhysicsBody output;
-	output._body = _pPhysicsInterface->CreateBody(&(_bodyDefinition->_bodyDef)); // _pPhysicsInterface->CreateBody(&_bodyDefinition->_bodyDef);
-	return &output;
+	_body->_body = _pPhysicsInterface->CreateBody(&_body->_bodyDef._bodyDef);
+	return _body;
 }
 
 void Physics::DestroyBody(PhysicsBody* body)
@@ -143,4 +142,55 @@ void Physics::DeleteHitBox(PhysicsBody* body, b2Fixture* fixture)
 
 void Physics::UpdateObject(PhysicsBody* body)
 {
+	
+}
+
+BodyDefinition Physics::SetCorrectBodyDef(PhysicsBody input, PhysicsBodyType type)
+{
+	BodyDefinition output = input._bodyDef;
+	switch (type)
+	{
+	case _Static:
+		output._bodyDef.type = b2_staticBody;
+		break;
+	case _kinematic:
+		output._bodyDef.type = b2_kinematicBody;
+		break;
+	case _Dynmaic:
+		output._bodyDef.type = b2_dynamicBody;
+		break;
+	default:
+		output._bodyDef.type = b2_dynamicBody;
+		break;
+	}
+	return output;
+}
+
+PhysicsBody Physics::InitPhysicsBody(PhysicsBody* body, PhysicsWorld* world)
+{
+
+	
+	body->_bodyDef = SetCorrectBodyDef(*body, body->hitboxdef._BodyType);
+
+	SetTransform(body, body->_bodyDef.StartPos, body->_bodyDef.StartingRoatation);
+
+	body->_body = world->_world.CreateBody(&body->_bodyDef._bodyDef);
+
+	body->hitboxdef = CreateHitBox(Vector2(body->hitboxdef._scaleX, body->hitboxdef._ScaleY));
+	
+
+	body->_bodyDef._fixture = *body->_body->CreateFixture(&body->hitboxdef._HitBox, body->_bodyDef.density);
+
+
+	return *body;
+
+}
+
+
+b2World* Physics::CreatePhysicsWorld(float gravity)
+{
+	
+	b2World boxWorld(b2Vec2(0.0f, gravity));
+
+	return &boxWorld;
 }

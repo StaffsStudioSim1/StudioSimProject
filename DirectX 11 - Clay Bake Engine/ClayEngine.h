@@ -30,8 +30,9 @@ private:
 
 	Scene* _scene = nullptr;
 	Examples* _ex;
-	PhysicsWorld* _PhysicsWoldSimulation;
-	b2World* boxWorld;
+	PhysicsWorld* _PhysicsWold;
+	Physics* _physicsAccess;
+	bool _physicsRunning;
 
 #if EDIT_MODE
 	SceneEditor* _editor;

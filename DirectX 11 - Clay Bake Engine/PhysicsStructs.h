@@ -16,31 +16,28 @@ enum HitboxShape
 	_circular
 };
 
-struct PhysicsWorld
+typedef struct PhysicsWorld
 {
+
 	b2World _world;
-};
+//	inline PhysicsWorld() : _wolrd(b2Vec2 in) { }
+	//inline PhysicsWorld(_world) : _wolrd(b2Vec2 in) { }
+
+}PhysicsWorld;
 
 struct PhysicsTransform
 {
 	b2Transform _Transformation;
 };
 
-struct PhysicsBody
-{
-	b2Body* _body;
-	
-};
-
-struct BindObjectsDef
-{
-	b2JointDef _jointdefinition;
-};
-
 
 struct BodyDefinition
 {
 	b2BodyDef _bodyDef;
+	Vector2 StartPos;
+	float StartingRoatation;
+	float density, friction;
+	b2Fixture _fixture;
 };
 
 struct HitBoxDefnintions
@@ -50,3 +47,17 @@ struct HitBoxDefnintions
 	HitboxShape _Shape;
 	float _scaleX, _ScaleY;
 };
+
+struct BindObjectsDef
+{
+	b2JointDef _jointdefinition;
+};
+
+typedef struct PhysicsBody
+{
+	b2Body* _body;
+	//PhysicsBodyType _BodyType;
+	BodyDefinition _bodyDef;
+	HitBoxDefnintions hitboxdef;
+};
+

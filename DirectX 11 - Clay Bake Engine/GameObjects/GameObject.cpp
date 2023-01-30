@@ -75,7 +75,10 @@ void GameObject::Update(float deltaTime)
 	_transform.Update();
 
 	if (_physics)
+	{
 		_physics->Update(deltaTime);
+		_transform.SetPosition(_physics->GetPosition(_ObjectPhysicsBody));
+	}
 
 	for (Component* component : _components)
 		component->Update(deltaTime);

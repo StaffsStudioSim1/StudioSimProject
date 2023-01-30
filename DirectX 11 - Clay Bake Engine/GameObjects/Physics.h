@@ -14,10 +14,10 @@ public:
 	 PhysicsInterface GetPhysicInterface();
 
 	
-	
+	 b2World* CreatePhysicsWorld(float gravity);
 	 PhysicsWorld* Getworld();
 
-	 PhysicsBody* CreateBody(BodyDefinition* _bodyDefinition);
+	 PhysicsBody* CreateBody(PhysicsBody* _body);
 	 void DestroyBody(PhysicsBody* body);
 	 Vector2 GetPosition(PhysicsBody* body);
 	//float GetAngle(PhysicsBody* body);
@@ -38,7 +38,9 @@ public:
 	void FixHitboxToBody(PhysicsBody* body, HitBoxDefnintions* hitbox, float density);
 	void DeleteHitBox(PhysicsBody* body, b2Fixture* fixture);
 	void UpdateObject(PhysicsBody* body);
-
+	
+	BodyDefinition SetCorrectBodyDef(PhysicsBody input, PhysicsBodyType type);
+	PhysicsBody InitPhysicsBody(PhysicsBody* body, PhysicsWorld* world);
 private:
 	 Transform* _pTransform;
 	 PhysicsInterface* _pPhysicsInterface;

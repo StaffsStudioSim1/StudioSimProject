@@ -58,6 +58,7 @@ private:
 
 	Transform _transform = {};
 	Physics* _physics = {};
+	PhysicsBody* _ObjectPhysicsBody;
 
 	std::vector<Component*> _components;
 };
