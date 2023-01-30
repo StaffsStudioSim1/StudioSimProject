@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{c7b938f2-1452-45c0-9623-26383123a89e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameObject">
+      <UniqueIdentifier>{d6a64ab4-98b4-49f2-ac37-36f5e33602cf}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{c1dc05b9-99c3-426f-b25a-8de067167ff4}</UniqueIdentifier>
     </Filter>
@@ -63,9 +66,6 @@
     </Filter>
     <Filter Include="Source Files\GameObject">
       <UniqueIdentifier>{056e41aa-952b-4889-b444-4537261d9217}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GameObject">
-      <UniqueIdentifier>{d6a64ab4-98b4-49f2-ac37-36f5e33602cf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +147,9 @@
     <ClCompile Include="Physics\PhysicsInterface.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\Physics.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
     <ClCompile Include="Input\Mouse\MousePicking.cpp">
       <Filter>Source Files\Input\Mouse</Filter>
     </ClCompile>
@@ -170,9 +173,6 @@
     </ClCompile>
     <ClCompile Include="Physics\FixedFunctionPrimatives.cpp">
       <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Physics.cpp">
-      <Filter>Source Files\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
