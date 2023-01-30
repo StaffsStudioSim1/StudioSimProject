@@ -30,8 +30,4 @@ private:
 	Examples* _ex;
 	PhysicsWorld* _PhysicsWoldSimulation;
 	b2World* boxWorld;
-
-#if EDIT_MODE
-	//SceneEditor* _editor;
-#endif
 };

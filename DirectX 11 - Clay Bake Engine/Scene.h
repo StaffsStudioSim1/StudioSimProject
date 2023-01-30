@@ -4,7 +4,7 @@
 #include "GameObjects/GameObject.h"
 #include "Graphics/ConstantBuffer.h"
 
-#define EDIT_MODE true 
+#define EDIT_MODE false
 
 #if EDIT_MODE
 #include "Input/Mouse/MousePicking.h"
