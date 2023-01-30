@@ -2,6 +2,7 @@
 #include "WindowContainer.h"
 #include "Examples.h"
 #include "Scene.h"
+#include "GameObjects/Physics.h"
 #include "PhysicsStructs.h"
 
 #define FPS_5 1.0f/5.0f
@@ -28,6 +29,7 @@ private:
 
 	Scene* _scene = nullptr;
 	Examples* _ex;
-	PhysicsWorld* _PhysicsWoldSimulation;
-	b2World* boxWorld;
+	PhysicsWorld* _physicsWorld;
+	Physics* _physicsAccess;
+	bool _physicsRunning;
 };
