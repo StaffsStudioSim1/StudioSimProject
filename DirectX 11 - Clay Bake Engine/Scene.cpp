@@ -49,6 +49,7 @@ void Scene::Update(float deltaTime)
 {
 #if EDIT_MODE
 	static int selectedObj = -1;
+	static DirectX::XMINT2 startingPos = { 0, 0 };
 
 	MouseClass* mouse = InputManager::GetInstance().GetMouse();
 	DirectX::XMINT2 mousePos = { mouse->GetPosX(), mouse->GetPosY() };
@@ -59,12 +60,25 @@ void Scene::Update(float deltaTime)
 		if (me.GetType() == MouseEvent::EventType::LPress && selectedObj == -1) // Probably can be changed to a switch statement
 		{
 			selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y, selectedObj);
+			Vector2 pos = ObjectHandler::GetInstance().GetGameObject(selectedObj)->GetTransform()->GetPosition();
+			startingPos = { (int)pos.x, (int)pos.y };
 		}
 		else if (me.GetType() == MouseEvent::EventType::LRelease && selectedObj != -1)
 		{
 			GameObject* object = ObjectHandler::GetInstance().GetGameObject(selectedObj);
 			Vector2 objectPos = object->GetTransform()->GetPosition();
 			DirectX::XMINT2 snapPos = _mousePicking.SnapCoordinatesToGrid(objectPos.x, objectPos.y);
+
+			for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+			{
+				if (object != ObjectHandler::GetInstance().GetGameObject(selectedObj) && object->GetTransform()->GetPosition().x == snapPos.x && object->GetTransform()->GetPosition().y == snapPos.y)
+				{
+					ObjectHandler::GetInstance().GetGameObject(selectedObj)->GetTransform()->SetPosition(startingPos.x, startingPos.y);
+					selectedObj = -1;
+					return;
+				}
+			}
+
 			object->GetTransform()->SetPosition(snapPos.x, snapPos.y);
 			selectedObj = -1;
 		}
@@ -113,10 +127,10 @@ void Scene::Update(float deltaTime)
 				_textureNum = _textureNames.size() - 1;
 		}
 	}
-#endif
-
+#else
 	for (GameObject* obj : _children)
 		obj->Update(deltaTime);
+#endif
 }
 
 void Scene::FixedUpdate(float timeStep)

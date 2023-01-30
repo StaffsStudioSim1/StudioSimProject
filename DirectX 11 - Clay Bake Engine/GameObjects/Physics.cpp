@@ -29,8 +29,7 @@ Physics::~Physics()
 void Physics::Update(float deltaTime) // Update physics
 {
 	//	_pPhysicsInterface->Update(deltaTime);
-	_gameObject->GetTransform()->SetPosition(GetPosition());
-	
+	_gameObject->GetTransform()->SetPosition(GetPosition());	
 }
 
 PhysicsInterface Physics::GetPhysicInterface()

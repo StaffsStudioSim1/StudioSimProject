@@ -131,10 +131,5 @@ void ClayEngine::Update()
 
 void ClayEngine::RenderFrame()
 {
-	//#if EDIT_MODE
-	//	gamefx.RenderFrame(_scene);
-	//#else
-	//	gamefx.RenderFrame(_scene);
-	//#endif
 	gamefx.RenderFrame(_scene);
 }
