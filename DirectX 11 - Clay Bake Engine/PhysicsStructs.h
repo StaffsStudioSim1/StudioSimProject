@@ -18,7 +18,7 @@ enum HitboxShape
 
 typedef struct PhysicsWorld
 {
-	PhysicsWorld() { _world = nullptr; };
+	PhysicsWorld() { _world = nullptr; }
 
 	b2World* _world;
 	//inline PhysicsWorld() : _world(b2Vec2 in) { }
@@ -34,11 +34,12 @@ struct PhysicsTransform
 
 struct BodyDefinition
 {
+	BodyDefinition() {};
 	b2BodyDef _bodyDef;
 	Vector2 StartPos;
 	float StartingRoatation;
 	float density, friction;
-	b2Fixture _fixture;
+	//b2Fixture _fixture;
 };
 
 struct HitBoxDefnintions
@@ -56,6 +57,8 @@ struct BindObjectsDef
 
 typedef struct PhysicsBody
 {
+	PhysicsBody()  { }
+
 	b2Body* _body;
 	//PhysicsBodyType _BodyType;
 	BodyDefinition _bodyDef;

@@ -2,6 +2,7 @@
 #include "Input/InputManager.h"
 #include "Audio/AudioManager.h"
 #include "SceneManager.h"
+#include "GameObjects/ObjectHandler.h"
 
 bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
 {
@@ -23,10 +24,11 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	_ex = new Examples();
 	
 	// Physics world for data processing
-	float gravity = 9.806f;
+	float gravity = -9.806f;
 	b2World* boxworld = new b2World(b2Vec2(0, gravity));
 	_PhysicsWorld = new PhysicsWorld();
 	_PhysicsWorld->_world = boxworld;// = *_physicsAccess->CreatePhysicsWorld(gravity);
+	ObjectHandler::GetInstance().SetPhysicsWorld(_PhysicsWorld);
 
 	// initialise graphics here
 

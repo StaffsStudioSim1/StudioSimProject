@@ -5,6 +5,7 @@
 #include "Appearance.h"
 #include "GameObject.h"
 #include "TextureInfo.h"
+#include "Physics.h"
 
 class ObjectHandler
 {
@@ -31,6 +32,9 @@ public:
 
 	Geometry GetSquareGeometry() { return _squareGeometry; }
 	void SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride);
+	
+	PhysicsWorld* GetPhysicsWorld() { return _pPhysicsWorld; }
+	void SetPhysicsWorld(PhysicsWorld* physics) { _pPhysicsWorld = physics; }
 private:
 	ObjectHandler();
 	~ObjectHandler();
@@ -44,5 +48,7 @@ private:
 	std::unordered_map<std::string, TextureInfo> _loadedTextures = {};
 
 	Geometry _squareGeometry;
+
+	PhysicsWorld* _pPhysicsWorld;
 };
 
