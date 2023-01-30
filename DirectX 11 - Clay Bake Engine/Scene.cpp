@@ -16,7 +16,7 @@ Scene::Scene(std::string filePath)
 	if (!f.good())
 		ErrorLogger::Log("Unable to find scene file " + filePath);
 
-	json data = json::parse(f);
+	data = json::parse(f);
 
 	std::string image = data["background_image"];
 
@@ -130,6 +130,24 @@ void Scene::Stop()
 {
 	for (GameObject* obj : _children)
 		obj->Stop();
+}
+
+void Scene::SaveScene()
+{
+	json scene;
+	json gameObjects;
+
+	for (GameObject* obj : _children)
+	{
+		gameObjects.push_back(obj->Write());
+	}
+
+	scene["gameObjects"] = gameObjects;
+	scene["background_image"] = "";
+
+	std::ofstream o("Resources/scene_demo.json");
+	o << std::setw(4) << scene << std::endl;
+	o.close();
 }
 
 void Scene::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)

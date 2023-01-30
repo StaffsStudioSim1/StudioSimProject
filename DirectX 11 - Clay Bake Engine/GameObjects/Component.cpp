@@ -1,6 +1,13 @@
 #include "Component.h"
 #include "GameObject.h"
 
+
+
+json Component::Write()
+{
+	return json();
+}
+
 void Component::SetObject(GameObject* gameObject)
 {
 	_gameObject = gameObject;

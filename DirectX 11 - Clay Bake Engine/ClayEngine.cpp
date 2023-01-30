@@ -38,7 +38,7 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	//#else
 	//	_scene = new Scene("Resources/demo.json");
 	//#endif
-	_scene = new Scene("Resources/demo.json");
+	_scene = new Scene("Resources/scene_demo.json");
 	return true;
 }
 

@@ -45,6 +45,7 @@ public:
 	void Start();
 	void Update(float deltaTime);
 	void FixedUpdate(float timeStep);
+	json Write();
 	void Stop();
 
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
