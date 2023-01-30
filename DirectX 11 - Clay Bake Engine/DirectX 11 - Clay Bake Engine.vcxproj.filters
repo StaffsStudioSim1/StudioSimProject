@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{c7b938f2-1452-45c0-9623-26383123a89e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObjects">
+      <UniqueIdentifier>{056e41aa-952b-4889-b444-4537261d9217}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\GameObject">
       <UniqueIdentifier>{d6a64ab4-98b4-49f2-ac37-36f5e33602cf}</UniqueIdentifier>
     </Filter>
@@ -64,9 +67,6 @@
     <Filter Include="Source Files\Physics">
       <UniqueIdentifier>{3419657b-46a5-4d82-8c85-22a3d4b56e9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameObject">
-      <UniqueIdentifier>{056e41aa-952b-4889-b444-4537261d9217}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -109,13 +109,13 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\GameObject.cpp">
-      <Filter>Source Files\GameObject</Filter>
+      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Transform.cpp">
-      <Filter>Source Files\GameObject</Filter>
+      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Appearance.cpp">
-      <Filter>Source Files\GameObject</Filter>
+      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Source Files\Input</Filter>
@@ -139,7 +139,7 @@
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Component.cpp">
-      <Filter>Source Files\GameObject</Filter>
+      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\ObjectHandler.cpp">
       <Filter>Source Files</Filter>
@@ -260,10 +260,18 @@
     <ClInclude Include="GameObjects\Physics.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsStructs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\TextureInfo.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="Input\Mouse\MousePicking.h">
       <Filter>Header Files\Input\Mouse</Filter>
-    </ClInclude>
     <ClInclude Include="Physics\PhysicsMaths.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsStructs.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Vectors.h">
@@ -288,12 +296,6 @@
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\FixedFunctionPrimitives.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsStructs.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
