@@ -2,10 +2,14 @@
 #include <wrl/client.h>
 #include <d3d11.h>
 #include "../Graphics/ConstantBuffer.h"
+#include "../nlohmann/json.hpp"
+using nlohmann::json;
 
 class Component
 {
 public:
+	virtual json Write();
+
 	virtual void Start();
 	virtual void Update(float deltaTime);
 	virtual void FixedUpdate(float timeStep);

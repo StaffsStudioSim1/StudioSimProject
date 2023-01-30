@@ -286,5 +286,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="..\..\..\..\..\OneDrive - Staffordshire University\StudioSimProject-ImGui-Implementation\StudioSimProject-ImGui-Implementation\DirectX 11 - Clay Bake Engine\Resources\scene_demo.json" />
   </ItemGroup>
 </Project>

@@ -242,6 +242,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\OneDrive - Staffordshire University\StudioSimProject-ImGui-Implementation\StudioSimProject-ImGui-Implementation\DirectX 11 - Clay Bake Engine\Resources\scene_demo.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

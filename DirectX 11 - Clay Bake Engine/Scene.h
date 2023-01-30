@@ -14,9 +14,12 @@ public:
 	void Update(float deltaTime);
 	void FixedUpdate(float timeStep);
 	void Stop();
+	void SaveScene();
+
 
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 private:
 	std::vector<GameObject*> _children;
+	json data;
 };
 

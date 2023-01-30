@@ -51,6 +51,7 @@ public:
 	void Start();
 	void Update(float deltaTime);
 	void FixedUpdate(float timeStep);
+	json Write();
 	void Stop();
 
 

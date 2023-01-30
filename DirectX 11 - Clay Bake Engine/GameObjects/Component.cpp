@@ -1,5 +1,10 @@
 #include "Component.h"
 
+json Component::Write()
+{
+	return json();
+}
+
 void Component::Start()
 {
 }

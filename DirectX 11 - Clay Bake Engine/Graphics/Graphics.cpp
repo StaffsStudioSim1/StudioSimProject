@@ -413,6 +413,8 @@ void Graphics::RenderFrame(Scene* scene)
 				}
 				if (ImGui::Button("Save"))
 				{
+					scene->SaveScene();
+
 				}
 				ImGui::TreePop();
 			}
