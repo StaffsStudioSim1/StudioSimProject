@@ -61,12 +61,6 @@
     <Filter Include="Source Files\Physics">
       <UniqueIdentifier>{92b9bd95-7637-4208-8383-017852e76d2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Physics">
-      <UniqueIdentifier>{48c7d6ad-85b3-4609-805a-b379b94a5cbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Physics">
-      <UniqueIdentifier>{3419657b-46a5-4d82-8c85-22a3d4b56e9e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -150,29 +144,11 @@
     <ClCompile Include="GameObjects\Physics.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Input\Mouse\MousePicking.cpp">
-      <Filter>Source Files\Input\Mouse</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PhysicsMaths.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="Physics\Vectors.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Physics\Matrices.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PhysicsSystem.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\Rigidbody.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\Geometry2D.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\FixedFunctionPrimatives.cpp">
-      <Filter>Source Files\Physics</Filter>
+    <ClCompile Include="Input\Mouse\MousePicking.cpp">
+      <Filter>Source Files\Input\Mouse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,37 +242,11 @@
     <ClInclude Include="GameObjects\TextureInfo.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Input\Mouse\MousePicking.h">
-      <Filter>Header Files\Input\Mouse</Filter>
-    <ClInclude Include="Physics\PhysicsMaths.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\PhysicsStructs.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="Physics\Vectors.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\Matrices.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\Compare.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\PhysicsSystem.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\Rigidbody.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\Geometry3D.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\Geometry2D.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\FixedFunctionPrimitives.h">
-      <Filter>Header Files\Physics</Filter>
+    <ClInclude Include="Input\Mouse\MousePicking.h">
+      <Filter>Header Files\Input\Mouse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

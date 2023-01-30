@@ -154,8 +154,6 @@
     <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="GameObjects\ObjectHandler.cpp" />
     <ClCompile Include="GameObjects\Physics.cpp" />
-    <ClCompile Include="Physics\FixedFunctionPrimatives.cpp" />
-    <ClCompile Include="Physics\Geometry2D.cpp" />
     <ClCompile Include="Graphics\AdapterReader.cpp" />
     <ClCompile Include="ClayEngine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
@@ -177,10 +175,6 @@
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="StringConverter.cpp" />
     <ClCompile Include="GameObjects\Transform.cpp" />
-    <ClCompile Include="Physics\PhysicsSystem.cpp" />
-    <ClCompile Include="Physics\Matrices.cpp" />
-    <ClCompile Include="Physics\PhysicsMaths.cpp" />
-    <ClCompile Include="Physics\Rigidbody.cpp" />
     <ClCompile Include="Physics\Vectors.cpp" />
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
@@ -192,11 +186,6 @@
     <ClInclude Include="GameObjects\ObjectHandler.h" />
     <ClInclude Include="GameObjects\Physics.h" />
     <ClInclude Include="Input\PlayerInput.h" />
-    <ClInclude Include="Physics\FixedFunctionPrimitives.h" />
-    <ClInclude Include="Physics\Geometry2D.h" />
-    <ClInclude Include="Physics\Geometry3D.h" />
-    <ClInclude Include="Physics\PhysicsSystem.h" />
-    <ClInclude Include="Physics\Compare.h" />
     <ClInclude Include="Graphics\AdapterReader.h" />
     <ClInclude Include="ClayEngine.h" />
     <ClInclude Include="ErrorLogger.h" />
@@ -219,10 +208,6 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="GameObjects\Transform.h" />
-    <ClInclude Include="Physics\Matrices.h" />
-    <ClInclude Include="Physics\PhysicsMaths.h" />
-    <ClInclude Include="Physics\Rigidbody.h" />
-    <ClInclude Include="Graphics\Vertex.h" />
     <ClInclude Include="Physics\Vectors.h" />
     <ClInclude Include="WindowContainer.h" />
   </ItemGroup>

@@ -43,9 +43,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		if (adapters.size() >= 2)
 		{
 			// use this to add a thing to chose gpu's over cpu virtal gpu if available otherwise is set to default 1st gpu available 
-		}else
-		{ 
-			// this will be for if only 1 renderer is availbe if toggle stuff is set up
 		}
 
 		D3D11_TEXTURE2D_DESC depthStencilDesc;
