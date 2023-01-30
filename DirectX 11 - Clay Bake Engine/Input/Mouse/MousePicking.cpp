@@ -11,19 +11,20 @@ void MousePicking::Initialise(int width, int height) // Currently only being use
 
 int MousePicking::TestForObjectIntersection(int mouseX, int mouseY, int currentObj)
 {
-	DirectX::BoundingBox objBox, mouseBox;
-	DirectX::XMINT2 mousePos = GetRelativeMousePos(mouseX * 1, mouseY * 1);
+	DirectX::BoundingBox objBox;
+	DirectX::BoundingSphere mouseSphere;
+	DirectX::XMINT2 mousePos = GetRelativeMousePos(mouseX, mouseY);
 
 	int objectNum = 0;
 	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 	{
 		objBox.Center = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y, object->GetTransform()->GetDepthPos() };
 		objBox.Extents = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y, 0.0f };
+		
+		mouseSphere.Center = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y), 0.0f };
+		mouseSphere.Radius = 10.0f;
 
-		mouseBox.Center = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y), 0.0f };
-		mouseBox.Extents = { 15.0f, 15.0f, 10.0f }; // The hitbox for the cursor
-
-		if (mouseBox.Intersects(objBox))
+		if (mouseSphere.Intersects(objBox))
 		{
 			return objectNum;
 		}
@@ -60,4 +61,31 @@ DirectX::XMINT2 MousePicking::GetRelativeMousePos(int mouseX, int mouseY)
 	}
 
 	return { mouseX - (width / 2), -(mouseY - (height / 2)) };
+}
+
+DirectX::XMINT2 MousePicking::SnapCoordinatesToGrid(int posX, int posY)
+{
+	int snapScale = 20; // Edit this to change the snapping
+	DirectX::XMINT2 returnPos = { posX, posY };
+
+	int roundedX = (returnPos.x / snapScale) * snapScale;
+	int roundedY = (returnPos.y / snapScale) * snapScale;
+	int xDiff = returnPos.x - roundedX;
+	int yDiff = returnPos.y - roundedY;
+
+	if (xDiff >= snapScale / 2)
+		returnPos.x = roundedX + snapScale;
+	else if (xDiff <= -snapScale / 2)
+		returnPos.x = roundedX - snapScale;
+	else
+		returnPos.x = roundedX;
+
+	if (yDiff >= snapScale / 2)
+		returnPos.y = roundedY + snapScale;
+	else if (yDiff <= -snapScale / 2)
+		returnPos.y = roundedY - snapScale;
+	else
+		returnPos.y = roundedY;
+
+	return returnPos;
 }
