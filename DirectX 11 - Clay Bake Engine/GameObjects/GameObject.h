@@ -38,8 +38,6 @@ public:
 	void AddComponent(Component* component);
 
 	Transform* GetTransform() { return &_transform; }
-	Physics* GetPhysics() const noexcept { return _physics; }
-	void AddPhysics(Physics* physics) { _physics = physics; }
 
 	// Stores a name for the object - might not be used
 	std::string GetName() const noexcept { return _name; }
@@ -57,7 +55,6 @@ private:
 	std::string _name;
 
 	Transform _transform = {};
-	Physics* _physics = {};
 
 	std::vector<Component*> _components;
 };

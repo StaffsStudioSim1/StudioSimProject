@@ -2,46 +2,51 @@
 #include "../Transform.h"
 #include "../../Physics/PhysicsInterface.h"
 #include "../../Physics/PhysicsStructs.h"
+#include "Transform.h"
+#include "../Physics/PhysicsInterface.h"
+#include "../PhysicsStructs.h"
+#include "Component.h"
 
-class Physics
+class Physics : public Component
 {
 public:
-	Physics(Transform* transform, PhysicsWorld* _world);
+	Physics(PhysicsBody* body, PhysicsWorld* world);
 	~Physics();
 
 	void Update(float deltaTime);
 	//GetPhysicInterface();
-	 PhysicsInterface GetPhysicInterface();
+	PhysicsInterface GetPhysicInterface();
 
-	
-	
-	 PhysicsWorld* Getworld();
 
-	 PhysicsBody* CreateBody(BodyDefinition* _bodyDefinition);
-	 void DestroyBody(PhysicsBody* body);
-	 Vector2 GetPosition(PhysicsBody* body);
-	//float GetAngle(PhysicsBody* body);
-	float GetAngleDegress(PhysicsBody* body);
-	float GetAngleRadians(PhysicsBody* body);
-	void SetAngleDegress(PhysicsBody* body, float angle);
-	void SetAngleRadians(PhysicsBody* body, float angle);
-	void SetTransform(PhysicsBody* body, Vector2 position, float angleOfRotation);
-	PhysicsTransform GetTransform(PhysicsBody* objectBody);
+	b2World* CreatePhysicsWorld(float gravity);
+	PhysicsWorld* Getworld();
+
+	PhysicsBody* CreateBody(PhysicsBody* _body);
+	void DestroyBody();
+	Vector2 GetPosition();
+	//float GetAngle();
+	float GetAngleDegress();
+	float GetAngleRadians();
+	void SetAngleDegress(float angle);
+	void SetAngleRadians(float angle);
+	void SetTransform(Vector2 position, float angleOfRotation);
+	PhysicsTransform GetTransform();
 	b2Joint* Createjoint(BindObjectsDef* jointDefinition);
-	void SetLinearVelocity(PhysicsBody* objectBody, Vector2* Velocity);
-	Vector2* GetLinearVelocity(PhysicsBody* objectBody);
-	void SetAngularVelocity(PhysicsBody* objectBody, float omega);
-	void ApplyForceToPointOnObj(PhysicsBody* objbody, Vector2& force, Vector2& point, bool wake);
-	void ApplyForceToObj(PhysicsBody* objBody, Vector2 force, bool wake);
+	void SetLinearVelocity(Vector2* Velocity);
+	Vector2* GetLinearVelocity();
+	void SetAngularVelocity(float omega);
+	void ApplyForceToPointOnObj(Vector2& force, Vector2& point, bool wake);
+	void ApplyForceToObj(Vector2 force, bool wake);
 
 	HitBoxDefnintions CreateHitBox(Vector2 scale);
-	void FixHitboxToBody(PhysicsBody* body, HitBoxDefnintions* hitbox, float density);
-	void DeleteHitBox(PhysicsBody* body, b2Fixture* fixture);
-	void UpdateObject(PhysicsBody* body);
+	void FixHitboxToBody(HitBoxDefnintions* hitbox, float density);
+	void DeleteHitBox(b2Fixture* fixture);
 
+	BodyDefinition SetCorrectBodyDef(PhysicsBody input, PhysicsBodyType type);
 private:
-	 Transform* _pTransform;
-	 PhysicsInterface* _pPhysicsInterface;
-	 PhysicsWorld* _pWolrd;
+	Transform* _pTransform;
+	PhysicsInterface* _pPhysicsInterface;
+	PhysicsWorld* _pWorld;
+	PhysicsBody* _objectPhysicsBody;
 };
 
