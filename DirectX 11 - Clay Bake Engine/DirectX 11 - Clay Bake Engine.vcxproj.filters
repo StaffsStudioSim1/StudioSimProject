@@ -147,6 +147,9 @@
     <ClCompile Include="Physics\Vectors.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Input\Mouse\MousePicking.cpp">
+      <Filter>Source Files\Input\Mouse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StringConverter.h">
@@ -241,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="Physics\Vectors.h">
       <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Mouse\MousePicking.h">
+      <Filter>Header Files\Input\Mouse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

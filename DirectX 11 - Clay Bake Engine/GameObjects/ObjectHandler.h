@@ -23,6 +23,7 @@ public:
 	void Initialise(Microsoft::WRL::ComPtr <ID3D11Device> device);
 
 	std::vector<GameObject*> GetAllObjects() { return _gameObjects; }
+	GameObject* GetGameObject(int objNum) { return _gameObjects[objNum]; }
 
 	void Register(GameObject* object);
 	void Unregister(GameObject* object);

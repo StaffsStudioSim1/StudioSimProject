@@ -12,7 +12,12 @@ bool RenderWindow::Initialize(WindowContainer* pWindowContainer, HINSTANCE hInst
 
 	this->RegisterWindowClass();
 
-	this->handle = CreateWindowEx(0, this->window_class_wide.c_str(), this->window_title_wide.c_str(), WS_CAPTION | WS_MAXIMIZEBOX | WS_SYSMENU, 0, 0, this->width, this->height, NULL, NULL, this->hInstance, pWindowContainer);
+	int centreOfScreenX = GetSystemMetrics(SM_CXSCREEN) / 2 - width / 2;
+	int centreOfScreenY = GetSystemMetrics(SM_CYSCREEN) / 2 - height / 2;
+	RECT rc = { centreOfScreenX, centreOfScreenY, centreOfScreenX + width, centreOfScreenY + height };
+	AdjustWindowRect(&rc, WS_CAPTION | WS_MAXIMIZEBOX | WS_SYSMENU, FALSE);
+
+	this->handle = CreateWindowEx(0, this->window_class_wide.c_str(), this->window_title_wide.c_str(), WS_CAPTION | WS_MAXIMIZEBOX | WS_SYSMENU, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, this->hInstance, pWindowContainer);
 							// extended window style, class name, class title, windows style, window X pos, window Y pos, window width, window height, handle parent of window, handle child of window, handle instance, param to create window to be set later
 	if (this->handle == NULL)
 	{

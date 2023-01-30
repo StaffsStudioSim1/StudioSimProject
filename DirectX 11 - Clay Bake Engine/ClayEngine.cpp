@@ -33,11 +33,12 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
-#if EDIT_MODE
-	_editor = new Scene("Resources/demo.json");
-#else
+//#if EDIT_MODE
+//	_scene = new Scene("Resources/demo.json");
+//#else
+//	_scene = new Scene("Resources/demo.json");
+//#endif
 	_scene = new Scene("Resources/demo.json");
-#endif
 	return true;
 }
 
@@ -67,8 +68,8 @@ bool ClayEngine::ProcessMessages()
 void ClayEngine::Update()
 {
 #if EDIT_MODE
-	if (_editor != nullptr)
-		_editor->Update(0);
+	if (_scene != nullptr)
+		_scene->Update(0);
 #else
 	AudioManager::GetInstance().Update();
 
@@ -130,9 +131,10 @@ void ClayEngine::Update()
 
 void ClayEngine::RenderFrame()
 {
-#if EDIT_MODE
-	gamefx.RenderFrame(_editor);
-#else
+//#if EDIT_MODE
+//	gamefx.RenderFrame(_scene);
+//#else
+//	gamefx.RenderFrame(_scene);
+//#endif
 	gamefx.RenderFrame(_scene);
-#endif
 }

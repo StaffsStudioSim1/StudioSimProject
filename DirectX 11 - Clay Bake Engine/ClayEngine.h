@@ -12,8 +12,6 @@
 
 #define FIXED_TIMESTEP 1.0f/50.0f
 
-#define EDIT_MODE false
-
 class ClayEngine : WindowContainer
 {
 
@@ -34,8 +32,4 @@ private:
 	PhysicsWorld* _PhysicsWorld;
 	Physics* _physicsAccess;
 	bool _physicsRunning;
-
-#if EDIT_MODE
-	SceneEditor* _editor;
-#endif
 };
