@@ -25,7 +25,7 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
-	_scene = new Scene("Resources/secene_demo.json");
+	_scene = new Scene("Resources/scene_demo.json");
 	return true;
 }
 
