@@ -85,6 +85,10 @@ void Scene::Update(float deltaTime)
 				startingPos = { (int)pos.x, (int)pos.y };
 			}
 		}
+		else if (selectedObj == -1 && me.GetType() == MouseEvent::EventType::MPress)
+		{
+			Save();
+		}
 		else if (me.GetType() == MouseEvent::EventType::LRelease && selectedObj != -1)
 		{
 			GameObject* object = ObjectHandler::GetInstance().GetGameObject(selectedObj);
