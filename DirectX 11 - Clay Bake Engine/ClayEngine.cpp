@@ -2,6 +2,7 @@
 #include "Input/InputManager.h"
 #include "Audio/AudioManager.h"
 #include "SceneManager.h"
+#include "GameObjects/ObjectHandler.h"
 
 bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
 {
@@ -23,23 +24,23 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	_ex = new Examples();
 
 	// Physics world for data processing
-	b2World boxWorld(b2Vec2(0.0f, -9.81f));
-	//_PhysicsWoldSimulation = new _mPhysicsWorld();
-	//->_world = boxWorld;
+	float gravity = -9.806f;
+	b2World* boxworld = new b2World(b2Vec2(0, gravity));
+	_physicsWorld = new PhysicsWorld();
+	_physicsWorld->world = boxworld;// = *_physicsAccess->CreatePhysicsWorld(gravity);
+	ObjectHandler::GetInstance().SetPhysicsWorld(_physicsWorld);
 
 	// initialise graphics here
 
 	_initialised = true;
-#if EDIT_MODE
-	_editor = new Scene("Resources/demo.json");
-#else
 	SceneManager::GetInstance().LoadScene("Resources/demo.json");
-#endif
 	return true;
 }
 
 void ClayEngine::Destroy()
 {
+	if (_scene)
+		delete _scene;
 	delete _ex;
 }
 
@@ -64,8 +65,8 @@ bool ClayEngine::ProcessMessages()
 void ClayEngine::Update()
 {
 #if EDIT_MODE
-	if (_editor != nullptr)
-		_editor->Update(0);
+	if (_scene != nullptr)
+		_scene->Update(0);
 #else
 	AudioManager::GetInstance().Update();
 
@@ -102,6 +103,11 @@ void ClayEngine::Update()
 		return;
 	InputManager::GetInstance().PollInput();
 
+	if (_physicsRunning)
+		_physicsWorld->world->Step(deltaTimeFixed, 8, 3);
+
+
+
 	_ex->Update();
 	if (_scene != nullptr)
 		_scene->Update(deltaTime);
@@ -122,11 +128,6 @@ void ClayEngine::Update()
 
 void ClayEngine::RenderFrame()
 {
-#if EDIT_MODE
-  if (_editor != nullptr)
-    gamefx.Render(_editor)
-#else
-	if (_scene != nullptr)
+	if (_scene)
 		gamefx.RenderFrame(_scene);
-#endif
 }

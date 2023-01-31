@@ -2,6 +2,7 @@
 #include <Box2D/box2d.h>
 #include <iostream>
 #include <box2d/b2_math.h>
+#include "Vectors.h"
 //#include "PhysicsStructs.h"
 
 class PhysicsInterface
@@ -9,9 +10,6 @@ class PhysicsInterface
 public:
 	PhysicsInterface(b2World* _world);
 	~PhysicsInterface();
-	float Deg2Rad(float degress);
-	float Rad2Deg(float radians);
-	float CorrectDegrees(float degrees);
 	b2World* Getworld();
 
 	b2Body* CreateBody(b2BodyDef* bodyDefinition);
@@ -32,6 +30,7 @@ public:
 	void ApplyForceToPointOnObj(b2Body* objbody, b2Vec2& force, b2Vec2& point, bool wake);
 	void ApplyForceToObj(b2Body* objBody, b2Vec2 force, bool wake);
 	void Update(float deltaTime);
+
 
 
 	b2PolygonShape CreateHitBox(b2Vec2 Halfscale);

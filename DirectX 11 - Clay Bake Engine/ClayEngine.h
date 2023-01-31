@@ -2,6 +2,7 @@
 #include "WindowContainer.h"
 #include "Examples.h"
 #include "Scene.h"
+#include "GameObjects/Physics.h"
 #include "PhysicsStructs.h"
 
 #define FPS_5 1.0f/5.0f
@@ -10,8 +11,6 @@
 #define FPS_CAP FPS_60
 
 #define FIXED_TIMESTEP 1.0f/50.0f
-
-#define EDIT_MODE false
 
 class ClayEngine : WindowContainer
 {
@@ -28,12 +27,10 @@ protected:
 private:
 	bool _initialised = false;
 
+	// DO NOT SET DIRECTLY - Use SceneManager::GetInstance().LoadScene("file/path.json");
 	Scene* _scene = nullptr;
 	Examples* _ex;
-	PhysicsWorld* _PhysicsWoldSimulation;
-	b2World* boxWorld;
-
-#if EDIT_MODE
-	SceneEditor* _editor;
-#endif
+	PhysicsWorld* _physicsWorld;
+	Physics* _physicsAccess;
+	bool _physicsRunning;
 };

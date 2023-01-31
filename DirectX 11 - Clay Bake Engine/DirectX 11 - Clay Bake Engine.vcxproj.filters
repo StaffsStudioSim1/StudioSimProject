@@ -141,9 +141,6 @@
     <ClCompile Include="Physics\PhysicsInterface.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Physics.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Physics\Vectors.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
@@ -158,6 +155,12 @@
     </ClCompile>
     <ClCompile Include="GameObjects\MagnetBox.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Mouse\MousePicking.cpp">
+      <Filter>Source Files\Input\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Physics.cpp">
+      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +268,12 @@
     </ClInclude>
     <ClInclude Include="GameObjects\MagnetBox.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Vectors.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Mouse\MousePicking.h">
+      <Filter>Header Files\Input\Mouse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

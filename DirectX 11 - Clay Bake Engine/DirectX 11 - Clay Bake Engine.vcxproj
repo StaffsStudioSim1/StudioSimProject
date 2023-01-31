@@ -169,6 +169,7 @@
     <ClCompile Include="GameObjects\MagnetismObject.cpp" />
     <ClCompile Include="GameObjects\PlayerController.cpp" />
     <ClCompile Include="GameObjects\MagnetBox.cpp" />
+    <ClCompile Include="Input\Mouse\MousePicking.cpp" />
     <ClCompile Include="Physics\PhysicsInterface.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="Examples.h" />
     <ClInclude Include="GameObjects\MagnetismObject.h" />
     <ClInclude Include="GameObjects\MagnetBox.h" />
+    <ClInclude Include="Input\Mouse\MousePicking.h" />
     <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="GameObjects\PlayerMagnetism.h" />
     <ClInclude Include="GameObjects\PlayerController.h" />
