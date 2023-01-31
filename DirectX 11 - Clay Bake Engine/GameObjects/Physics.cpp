@@ -23,13 +23,13 @@ Physics::Physics(PhysicsBody* body, PhysicsWorld* world) // Initilaise transform
 
 Physics::~Physics()
 {
-	// TODO Destroy Body
+	if (_objectPhysicsBody)
+		delete _objectPhysicsBody;
 }
 
-void Physics::Update(float deltaTime) // Update physics
+void Physics::Update(float deltaTime)
 {
-	//	_pPhysicsInterface->Update(deltaTime);
-	_gameObject->GetTransform()->SetPosition(GetPosition());	
+	_gameObject->GetTransform()->SetPosition(GetPosition());
 }
 
 PhysicsInterface Physics::GetPhysicInterface()
@@ -37,15 +37,9 @@ PhysicsInterface Physics::GetPhysicInterface()
 	return *_pPhysicsInterface;
 }
 
-PhysicsWorld* Physics::Getworld()
+PhysicsWorld* Physics::GetWorld()
 {
 	return _pWorld;
-}
-
-PhysicsBody* Physics::CreateBody(PhysicsBody* body)
-{
-	body->body = _pPhysicsInterface->CreateBody(&body->bodyDef.bodyDef);
-	return body;
 }
 
 Vector2 Physics::GetPosition()
@@ -53,11 +47,6 @@ Vector2 Physics::GetPosition()
 	Vector2 output(_objectPhysicsBody->body->GetPosition().x, _objectPhysicsBody->body->GetPosition().y);
 	return output;
 }
-
-//float Physics::GetAngle()
-//{
-//	
-//}
 
 float Physics::GetAngleDegress()
 {
@@ -93,24 +82,23 @@ PhysicsTransform Physics::GetTransform()
 	return output;
 }
 
-b2Joint* Physics::Createjoint(BindObjectsDef* jointDefinition)
+b2Joint* Physics::CreateJoint(BindObjectsDef* jointDefinition)
 {
 	return _pWorld->world->CreateJoint(&jointDefinition->_jointdefinition);
 }
 
-void Physics::SetLinearVelocity(Vector2* Velocity)
+void Physics::SetLinearVelocity(Vector2 velocity)
 {
 	b2Vec2 input;
-	input.x = Velocity->x; input.y = Velocity->y;
+	input.x = velocity.x;
+	input.y = velocity.y;
 	_pPhysicsInterface->SetLinearVelocity(_objectPhysicsBody->body, &input);
 }
 
-Vector2* Physics::GetLinearVelocity()
+Vector2 Physics::GetLinearVelocity()
 {
-	Vector2 output;
 	b2Vec2* swapper = _pPhysicsInterface->GetLinearVelocity(_objectPhysicsBody->body);
-	output.x = swapper->x; output.y = swapper->y;
-	return &output;
+	return Vector2(swapper->x, swapper->y);
 }
 
 void Physics::SetAngularVelocity(float omega)
