@@ -1,6 +1,9 @@
 #pragma once
 #include "Component.h"
 #include "../Input/PlayerInput.h"
+#include "../Physics/Vectors.h"
+#include "Physics.h"
+#include "GameObject.h"
 
 class PlayerController : public Component
 {
@@ -19,9 +22,10 @@ private:
 
     //Variables
     PlayerInput* _playerInput;
+    Physics* _physicsBody;
 
     float _moveSpeed;
-    float _topSpeed;
+    float _topSpeed = 10.0f;
     float _midAirControlDelay;
     float _jumpTimer;
 
@@ -29,8 +33,11 @@ private:
     bool _isJumping;
     bool _movementEnabled = true;
 
+    Vector2 _currentMovement;
+    Vector2 _jumpForce = {0.0f, 10.0f};
+
     //Functions
-    void MovePressed();
+    void MovePressed(Vector2 direction);
     void MoveReleased();
     void JumpPressed();
     void JumpReleased();
@@ -41,8 +48,6 @@ private:
 
 
     //Physics Reliant Vars
-    //Vector2 _currentMovementVector;
-    //Vector2 _jumpForce;
     //BoxCollider2D _groundDetector (change to raycast);
     //FacingDirection _facing;
     //Rigidbody2D _rb;

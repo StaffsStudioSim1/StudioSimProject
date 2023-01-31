@@ -1,5 +1,6 @@
 #include "PlayerController.h"
 
+
 //Treat this just like the old Unity Input System
 
 //Start does not get called
@@ -11,6 +12,9 @@ void PlayerController::Start()
 	//Create new PlayerInput
 	_playerInput = new PlayerInput();
 
+	//Get the player's PhysicsBody
+	_physicsBody = _gameObject->GetComponent<Physics>();
+
 	//Set player device type
 	//TODO: Change depending on what was pressed
 	_playerInput->SetDeviceType(KeyboardLeft);
@@ -18,15 +22,17 @@ void PlayerController::Start()
 
 void PlayerController::Update(float deltaTime)
 {
-	//Check for input
-	/*if (_playerInput->IsActionDown(Movement))
+	//Movement
+	_currentMovement = _playerInput->ReadAxis(Movement);
+
+	if (Magnitude(_currentMovement) != 0)
 	{
-		MovePressed();
+		MovePressed(_currentMovement);
 	}
 	else if (_playerInput->IsActionUp(Movement))
 	{
 		MoveReleased();
-	}*/
+	}
 
 	//Jump
 	if (_playerInput->IsActionHeld(Jump))
@@ -72,15 +78,29 @@ void PlayerController::FixedUpdate(float timeStep)
 {
 	if (_movementEnabled)
 	{
-		//accelerate in direction of pressed input
-		//if (rb.velocity.magnitude < m_topSpeed)
-		//{
-		//	rb.AddForce(m_currentMove * moveSpeed);
-		//}
+		if (Magnitude(*_physicsBody->GetLinearVelocity()) < _topSpeed)
+		{
+			_physicsBody->ApplyForceToObj(_currentMovement, true);
+		}
 	}
 
 	if (_isJumping)
 	{
+		Vector2 currentVelocity = *_physicsBody->GetLinearVelocity();
+
+		if (currentVelocity.y < _jumpForce.y)
+		{
+			if (!isFlipped)
+			{
+				_physicsBody->ApplyForceToObj(_jumpForce, true);
+			}
+			else
+			{
+				_physicsBody->ApplyForceToObj(Vector2(0.0f, -_jumpForce.y), true);
+			}
+
+		}
+
 		//if flipped
 		//float currentVelocity = rb.velocity.y;
 
@@ -92,7 +112,7 @@ void PlayerController::FixedUpdate(float timeStep)
 	}
 }
 
-void PlayerController::MovePressed()
+void PlayerController::MovePressed(Vector2 direction)
 {
 	_movementEnabled = true;
 }
