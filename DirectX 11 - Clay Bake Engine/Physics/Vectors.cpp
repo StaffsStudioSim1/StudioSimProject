@@ -286,6 +286,25 @@ Vector3 Normalized(const Vector3& v)
 	return v * (1.0f / Magnitude(v));
 }
 
+Vector2 GetNegVer(const Vector2& v)
+{
+	Vector2 output;
+	output.x = -v.x;
+	output.y = -v.y;
+
+	return output;
+}
+Vector3 GetNegVer(const Vector3& v)
+{
+	Vector3 output;
+	output.x = -v.x;
+	output.y = -v.y;
+	output.z = -v.z;
+
+	return output;
+}
+
+
 Vector2 Project(const Vector2& length, const Vector2& direction)
 {
 	float dot = Dot(length, direction);
