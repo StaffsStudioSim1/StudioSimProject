@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include "Appearance.h"
 #include "GameObject.h"
-#include "TextureInfo.h"
+#include "../Graphics/TextureInfo.h"
 #include "Physics.h"
 
 class ObjectHandler

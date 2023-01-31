@@ -185,6 +185,9 @@
     <ClInclude Include="Audio\AudioManager.h" />
     <ClInclude Include="GameObjects\ObjectHandler.h" />
     <ClInclude Include="GameObjects\Physics.h" />
+    <ClInclude Include="Graphics\ConstantBuffer.h" />
+    <ClInclude Include="Graphics\Geometry.h" />
+    <ClInclude Include="Graphics\TextureInfo.h" />
     <ClInclude Include="Input\PlayerInput.h" />
     <ClInclude Include="Graphics\AdapterReader.h" />
     <ClInclude Include="ClayEngine.h" />

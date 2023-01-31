@@ -18,9 +18,9 @@ Scene::Scene(std::string filePath)
 
 	json data = json::parse(f);
 
-	std::string image = data["background_image"];
+	std::string image = data[JSON_SCENE_BACKGROUND];
 
-	for (json objectData : data["gameObjects"])
+	for (json objectData : data[JSON_SCENE_GAMEOBJECTS])
 		_children.push_back(new GameObject(objectData));
 
 #if EDIT_MODE
@@ -37,6 +37,25 @@ Scene::~Scene()
 	for (GameObject* obj : _children)
 		delete obj;
 	_children.clear();
+}
+
+void Scene::Save()
+{
+	json scene;
+	json gameObjects;
+
+	scene[JSON_SCENE_BACKGROUND] = "";
+
+	for (GameObject* obj : _children)
+	{
+		gameObjects.push_back(obj->Write());
+	}
+
+	scene["gameObjects"] = gameObjects;
+
+	std::ofstream o("Resources/saved_scene.json");
+	o << std::setw(4) << scene << std::endl;
+	o.close();
 }
 
 void Scene::Start()

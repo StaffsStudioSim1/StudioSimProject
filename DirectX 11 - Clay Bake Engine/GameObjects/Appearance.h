@@ -6,13 +6,15 @@
 #include <string>
 #include "Component.h"
 #include "../Graphics/Geometry.h"
-#include "../GameObjects/TextureInfo.h"
+#include "../Graphics/TextureInfo.h"
 
 class Appearance : public Component
 {
 public:
 	Appearance(std::string textureName = "", DirectX::XMFLOAT4 texCoords = { 1.0f, 1.0f, 0.0f, 0.0f }, float alphaMultiplier = 1.0f);
 	~Appearance();
+
+	json Write();
 
 	// For loaded models
 	Geometry GetGeometryData() const noexcept { return _geometry; }

@@ -3,6 +3,7 @@
 #include <string>
 #include "GameObjects/GameObject.h"
 #include "Graphics/ConstantBuffer.h"
+#include "Graphics/TextureInfo.h"
 
 #define EDIT_MODE true
 
@@ -16,6 +17,8 @@ public:
 	Scene(std::string filePath);
 	~Scene();
 
+	void Save();
+
 	void Start();
 	void Update(float deltaTime);
 	void FixedUpdate(float timeStep);
@@ -25,9 +28,11 @@ public:
 private:
 	std::vector<GameObject*> _children;
 
+	TextureInfo _texture;
+
 #if EDIT_MODE
 	MousePicking _mousePicking = {};
-	std::vector<std::string> _textureNames = { "Test.dds", "Test2.dds" };
+	std::vector<std::string> _textureNames = { "temp_tile.dds", "Test.dds", "Test2.dds" };
 	int _textureNum = 0;
 #endif
 };

@@ -76,6 +76,22 @@ GameObject::~GameObject()
 	ObjectHandler::GetInstance().Unregister(this);
 }
 
+json GameObject::Write()
+{
+	json me;
+	me[JSON_GO_NAME] = _name;
+	me[JSON_GO_POSITION] = { _transform.GetPosition().x, _transform.GetPosition().y, _transform.GetDepthPos() };
+	me[JSON_GO_ROTATION] = DirectX::XMConvertToDegrees(_transform.GetRotation());
+	me[JSON_GO_SCALE] = { _transform.GetScale().x, _transform.GetScale().y };
+
+	for (Component* component : _components)
+	{
+		me[JSON_GO_COMPONENTS].push_back(component->Write());
+	}
+
+	return me;
+}
+
 void GameObject::AddComponent(Component* component)
 {
 	component->SetObject(this);

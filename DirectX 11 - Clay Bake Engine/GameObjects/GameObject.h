@@ -6,6 +6,9 @@
 #include "../nlohmann/json.hpp"
 using json = nlohmann::json;
 
+#define JSON_SCENE_BACKGROUND "backgroundImage"
+#define JSON_SCENE_GAMEOBJECTS "gameObjects"
+
 #define JSON_GO_NAME "name"
 #define JSON_GO_POSITION "position"
 #define JSON_GO_ROTATION "rotation"
@@ -22,6 +25,8 @@ public:
 	GameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation);
 	GameObject(json objectJson);
 	~GameObject();
+
+	json Write();
 
 	int GetType() const noexcept { return _type; }
 	void SetType(int type) { _type = type; }
