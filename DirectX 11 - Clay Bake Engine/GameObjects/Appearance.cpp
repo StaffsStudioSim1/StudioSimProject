@@ -15,6 +15,15 @@ Appearance::~Appearance()
 {
 }
 
+json Appearance::Write()
+{
+	json component;
+	component[JSON_COMPONENT_CLASS] = "Appearance";
+	//component[JSON_COMPONENT_CONSTRUCTORS].push_back(ObjectHandler::GetInstance().GetTextureInfo);
+	//component[JSON_COMPONENT_CONSTRUCTORS].push_back();
+	return component;
+}
+
 void Appearance::SetTexCoords(float numOfXFrames, float numOfYFrames, float xFramePos, float yFramePos)
 {
 	//Width and height gives an area of the texture
