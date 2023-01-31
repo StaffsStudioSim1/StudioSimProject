@@ -6,7 +6,7 @@ void MagnetBox::isBeingMagnetised(Vector2 pushingPlayerPos, MagnetDirection forc
 	{
 	case PullTowards:
 		//Force to add pushingPlayerPos - (Vector2)transform.position)*m_pushForce
-		m_attachedPhysics->ApplyForceToObj();
+		m_Physics->ApplyForceToObj(pushingPlayerPos - (Vector2)_gameObject->GetTransform()* m_pushForce);
 		break;
 	case PushAway:
 		//Force to add -(pushingPlayerPos - (Vector2)transform.position)*m_pushForce
@@ -19,7 +19,8 @@ void MagnetBox::isBeingMagnetised(Vector2 pushingPlayerPos, MagnetDirection forc
 void MagnetBox::Start()
 {
 	//TODO: Gett attached physiscs component
-	m_attachedPhysics;
+	m_Physics = _gameObject->GetComponent<Physics>();
+	
 }
 
 void MagnetBox::Stop()

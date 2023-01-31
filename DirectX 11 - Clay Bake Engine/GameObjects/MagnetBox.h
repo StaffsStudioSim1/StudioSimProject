@@ -1,6 +1,8 @@
 #pragma once
 #include "MagnetismObject.h"
-#include "../Physics/PhysicsInterface.h"
+#include "Physics.h"
+#include "GameObject.h"
+
 class MagnetBox :
     public MagnetismObject
 {
@@ -9,7 +11,7 @@ public:
     void Start();
     void Stop();
 
-    PhysicsInterface* m_attachedPhysics;
+    Physics* m_Physics;
 };
 
 
