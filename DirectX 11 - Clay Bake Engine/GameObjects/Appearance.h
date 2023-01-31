@@ -38,6 +38,10 @@ public:
 private:
 	Geometry _geometry;
 	TextureInfo _texture;
+	float _numOfXFrames;
+	float _numOfYFrames;
+	float _xFramePos;
+	float _yFramePos;
 
 	DirectX::XMFLOAT4X4 _texMatrix =
 	{
