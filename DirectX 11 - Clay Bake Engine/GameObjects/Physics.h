@@ -19,6 +19,7 @@ public:
 	PhysicsWorld* Getworld();
 
 	PhysicsBody* CreateBody(PhysicsBody* _body);
+	PhysicsBody* GetPhysicsBody();
 	void DestroyBody();
 	Vector2 GetPosition();
 	//float GetAngle();

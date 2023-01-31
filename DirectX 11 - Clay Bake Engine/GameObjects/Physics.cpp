@@ -49,6 +49,11 @@ PhysicsBody* Physics::CreateBody(PhysicsBody* _body)
 	return _body;
 }
 
+PhysicsBody* Physics::GetPhysicsBody()
+{
+	return _objectPhysicsBody;
+}
+
 Vector2 Physics::GetPosition()
 {
 	Vector2 output(_objectPhysicsBody->body->GetPosition().x, _objectPhysicsBody->body->GetPosition().y);
@@ -200,17 +205,20 @@ PhysicsBody Physics::GetCollisionsWithBody()
 bool Physics::IsObjectCollidingwith(PhysicsBody input)
 {
 	BodyEdgeCollision collisioncheck;
-	b2Fixture* collidingWith;
+	b2Fixture* collidingWith = new b2Fixture();
+	b2Body* test;
 	for (collisioncheck.edge = _objectPhysicsBody->body->GetContactList(); &collisioncheck.edge; collisioncheck.edge = collisioncheck.edge->next)
 	{
 		collidingWith = collisioncheck.edge->contact->GetFixtureB();
 	}
-
-	if (collidingWith->GetBody() == input.body)
+	test = collidingWith->GetBody();
+	if (test == input.body)
 	{
 		return true;
 	}else
 	{
 		return false;
 	}
+
+	return false;
 }

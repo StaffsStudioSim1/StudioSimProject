@@ -123,7 +123,10 @@ void ClayEngine::Update()
 		_scene->Start();
 	}
 
-//	if(ObjectHandler::GetInstance().GetGameObject(0)->GetComponent()
+	if (ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->GetPhysicsBody()))
+	{
+		OutputDebugStringA("obj1 and 2 have colided");
+	}
 
 	dwTimeStart = dwTimeCur;
 #endif
