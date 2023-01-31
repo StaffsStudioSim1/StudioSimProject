@@ -110,7 +110,7 @@ void Scene::Update(float deltaTime)
 					return;
 			}
 
-			GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { float(relPos.x), float(relPos.y), 0.0f }, { 3.0f, 3.0f }, 0.0f);
+			GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { float(relPos.x), float(relPos.y), 1.0f }, { 2.5f, 2.5f }, 0.0f);
 			objNum++;
 
 			Component* component = new Appearance("Resources/Textures/" + _textureNames[_textureNum]);

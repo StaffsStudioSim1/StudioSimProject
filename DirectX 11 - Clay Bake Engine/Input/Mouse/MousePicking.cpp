@@ -20,7 +20,7 @@ int MousePicking::TestForObjectIntersection(int mouseX, int mouseY, int currentO
 	{
 		objBox.Center = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y, object->GetTransform()->GetDepthPos() };
 		objBox.Extents = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y, 0.0f };
-		
+
 		mouseSphere.Center = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y), 0.0f };
 		mouseSphere.Radius = 20.0f; // Cursor picking size
 
@@ -65,27 +65,16 @@ DirectX::XMINT2 MousePicking::GetRelativeMousePos(int mouseX, int mouseY)
 
 DirectX::XMINT2 MousePicking::SnapCoordinatesToGrid(int posX, int posY)
 {
-	int snapScale = 60; // Edit this to change the snapping
-	DirectX::XMINT2 returnPos = { posX, posY };
+	DirectX::XMINT2 returnPos = { posX + _width / 2, posY + _height / 2};
 
-	int roundedX = (returnPos.x / snapScale) * snapScale;
-	int roundedY = (returnPos.y / snapScale) * snapScale;
-	int xDiff = returnPos.x - roundedX;
-	int yDiff = returnPos.y - roundedY;
-
-	if (xDiff >= snapScale / 2)
-		returnPos.x = roundedX + snapScale;
-	else if (xDiff <= -snapScale / 2)
-		returnPos.x = roundedX - snapScale;
-	else
-		returnPos.x = roundedX;
-
-	if (yDiff >= snapScale / 2)
-		returnPos.y = roundedY + snapScale;
-	else if (yDiff <= -snapScale / 2)
-		returnPos.y = roundedY - snapScale;
-	else
-		returnPos.y = roundedY;
+	returnPos.x /= snapScale;
+	returnPos.y /= snapScale;
+	returnPos.x *= snapScale;
+	returnPos.y *= snapScale;
+	returnPos.x -= _width / 2;
+	returnPos.y -= _height / 2;
+	returnPos.x += snapScale / 2;
+	returnPos.y += snapScale / 2;
 
 	return returnPos;
 }
