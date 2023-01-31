@@ -362,13 +362,13 @@ void Graphics::RenderFrame(Scene* scene)
 
 	scene->Render(this->_deviceContext, cb, _constantBuffer);
 
+#if EDIT_MODE
 	//UI
 //CREATE FRAME
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	//UI WINDOWS
-
 
 	ImGui::Begin("Inspector");
 	if (ImGui::TreeNode("Basic trees"))
@@ -381,37 +381,49 @@ void Graphics::RenderFrame(Scene* scene)
 			// Use SetNextItemOpen() so set the default state of a node to be open. We could
 			// also use TreeNodeEx() with the ImGuiTreeNodeFlags_DefaultOpen flag to achieve the same thing!
 			if (loopNum == 0)
-				ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+				ImGui::SetNextItemOpen(false, ImGuiCond_Once);
 
 			if (ImGui::TreeNode((void*)(intptr_t)loopNum, "GameObject %d", loopNum))
 			{
-				float position[3] = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y, object->GetTransform()->GetDepthPos() };
+				float position[2] = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y };
+				float depth = { object->GetTransform()->GetDepthPos() };
 				float rotation = { object->GetTransform()->GetRotation() };
 				float scale[2] = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y };
 
-				ImGui::DragFloat3("Translation XYZ", position, 0.1, -500, 500);
-				ImGui::DragFloat("Rotation", &rotation, 0.05, (-1 * DirectX::XM_2PI), DirectX::XM_2PI);
-				ImGui::DragFloat2("Scale", scale, 0.1, -1000, 1000);
+				ImGui::DragFloat2("Translation XY", position, 1.0, -1000, 1000);
+				ImGui::DragFloat("Depth", &depth, 0.005f, 0.0f, 1.0f);
+				ImGui::DragFloat("Rotation", &rotation, 0.025f, 0.0f, DirectX::XM_2PI);
+				ImGui::DragFloat2("Scale", scale, 0.1, -100, 100);
 				ImGui::SameLine();
 				if (ImGui::Button("Scale Up"))
 				{
-					object->GetTransform()->SetScaleChange(10, 10);
+					scale[0] += 1.0f;
+					scale[1] += 1.0f;
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Scale Down"))
 				{
-					object->GetTransform()->SetScaleChange(-10, -10);
+					scale[0] -= 1.0f;
+					scale[1] -= 1.0f;
 				}
 				if (ImGui::Button("Reset"))
 				{
-					object->GetTransform()->SetPosition(0, 0);
-					object->GetTransform()->SetScale(2.5, 2.5);
-					object->GetTransform()->SetRotation(0);
+					position[0] = 0.0f;
+					position[1] = 0.0f;
+					depth = 1.0f;
+					scale[0] = 2.5f;
+					scale[1] = 2.5f;
+					rotation = 0.0f;
 				}
 				if (ImGui::Button("Save"))
 				{
 				}
 				ImGui::TreePop();
+
+				object->GetTransform()->SetPosition(position[0], position[1]);
+				object->GetTransform()->SetDepthPos(depth);
+				object->GetTransform()->SetScale(scale[0], scale[1]);
+				object->GetTransform()->SetRotation(rotation);
 			}
 			loopNum++;
 		}
@@ -422,6 +434,7 @@ void Graphics::RenderFrame(Scene* scene)
 	//ASSEMBLE AND RENDER DRAW DATA
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+#endif
 
 	this->_swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }
