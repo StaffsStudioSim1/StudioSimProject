@@ -12,6 +12,8 @@ public:
     void Stop();
 
     Physics* m_Physics;
+
+    float m_PushForce = 100.0f;
 };
 
 
