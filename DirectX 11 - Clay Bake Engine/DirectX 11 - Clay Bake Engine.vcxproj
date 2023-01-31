@@ -158,6 +158,12 @@
     <ClCompile Include="ClayEngine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
     <ClCompile Include="Graphics\Graphics.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Input\PlayerInput.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Input\Keyboard\KeyboardClass.cpp" />
@@ -188,6 +194,14 @@
     <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="Graphics\Geometry.h" />
     <ClInclude Include="Graphics\TextureInfo.h" />
+    <ClInclude Include="Graphics\ImGui\imconfig.h" />
+    <ClInclude Include="Graphics\ImGui\imgui.h" />
+    <ClInclude Include="Graphics\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="Graphics\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="Graphics\ImGui\imgui_internal.h" />
+    <ClInclude Include="Graphics\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Graphics\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Graphics\ImGui\imstb_truetype.h" />
     <ClInclude Include="Input\PlayerInput.h" />
     <ClInclude Include="Graphics\AdapterReader.h" />
     <ClInclude Include="ClayEngine.h" />
