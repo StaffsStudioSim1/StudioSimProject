@@ -125,6 +125,9 @@ void Normalize(Vector3& v);
 Vector2 Normalized(const Vector2& v);
 Vector3 Normalized(const Vector3& v);
 
+Vector2 GetNegVer(const Vector2& v);
+Vector3 GetNegVer(const Vector3& v);
+
 Vector2 Project(const Vector2& length, const Vector2& direction);
 Vector3 Project(const Vector3& length, const Vector3& direction);
 
