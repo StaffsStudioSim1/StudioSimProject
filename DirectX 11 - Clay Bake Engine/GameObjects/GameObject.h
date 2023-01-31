@@ -19,7 +19,7 @@ class GameObject
 {
 public:
 	GameObject(std::string name);
-	GameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation);
+	GameObject(std::string name, Vector3 position, Vector2 scale, float rotation);
 	GameObject(json objectJson);
 	~GameObject();
 
