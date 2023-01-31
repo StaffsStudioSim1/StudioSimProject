@@ -4,17 +4,16 @@
 #include "Physics.h"
 #include "../Input/PlayerInput.h"
 
-GameObject::GameObject(std::string name)
+GameObject::GameObject(std::string name) : GameObject(name, Vector3(0.0f, 0.0f, 0.0f), Vector2(1.0f, 1.0f), 0.0f)
 {
-	_name = name;
-	ObjectHandler::GetInstance().Register(this);
 }
 
-GameObject::GameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation) : GameObject(name)
+GameObject::GameObject(std::string name, Vector3 position, Vector2 scale, float rotation) : GameObject(name)
 {
 	_transform.SetPosition(position);
 	_transform.SetScale(scale);
 	_transform.SetRotation(rotation);
+	ObjectHandler::GetInstance().Register(this);
 }
 
 GameObject::GameObject(json objectJson)
@@ -32,7 +31,7 @@ GameObject::GameObject(json objectJson)
 		if (type == "Appearance")
 		{
 			std::string textureName = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
-			DirectX::XMFLOAT4 texCoords = { 
+			DirectX::XMFLOAT4 texCoords = {
 				componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(2),
 				componentJson[JSON_COMPONENT_CONSTRUCTORS].at(3), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(4)
 			};
@@ -43,7 +42,7 @@ GameObject::GameObject(json objectJson)
 		{
 			// TODO add yo stuff here
 		}
-		else if(type == "Physics")
+		else if (type == "Physics")
 		{
 			bool dynamic = componentJson.contains(JSON_COMPONENT_CONSTRUCTORS) && componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
 

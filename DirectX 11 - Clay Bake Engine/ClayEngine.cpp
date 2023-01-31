@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "GameObjects/ObjectHandler.h"
 
+
 bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
 {
 	if (!this->render_window.Initialize(this, hInstance, window_title, window_class, width, height))
@@ -123,7 +124,11 @@ void ClayEngine::Update()
 			_scene->Stop();
 		_scene = SceneManager::GetInstance().ReadScene();
 		_scene->Start();
-}
+	}
+
+
+	dwTimeStart = dwTimeCur;
+#endif
 }
 
 void ClayEngine::RenderFrame()
