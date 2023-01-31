@@ -33,17 +33,14 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
-	//#if EDIT_MODE
-	//	_scene = new Scene("Resources/demo.json");
-	//#else
-	//	_scene = new Scene("Resources/demo.json");
-	//#endif
-	_scene = new Scene("Resources/demo.json");
+	SceneManager::GetInstance().LoadScene("Resources/demo.json");
 	return true;
 }
 
 void ClayEngine::Destroy()
 {
+	if (_scene)
+		delete _scene;
 	delete _ex;
 }
 
@@ -131,5 +128,6 @@ void ClayEngine::Update()
 
 void ClayEngine::RenderFrame()
 {
-	gamefx.RenderFrame(_scene);
+	if (_scene)
+		gamefx.RenderFrame(_scene);
 }
