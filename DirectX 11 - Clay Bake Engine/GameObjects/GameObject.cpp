@@ -8,8 +8,9 @@ GameObject::GameObject(std::string name) : GameObject(name, Vector3(0.0f, 0.0f, 
 {
 }
 
-GameObject::GameObject(std::string name, Vector3 position, Vector2 scale, float rotation) : GameObject(name)
+GameObject::GameObject(std::string name, Vector3 position, Vector2 scale, float rotation)
 {
+	_name = name;
 	_transform.SetPosition(position);
 	_transform.SetScale(scale);
 	_transform.SetRotation(rotation);
