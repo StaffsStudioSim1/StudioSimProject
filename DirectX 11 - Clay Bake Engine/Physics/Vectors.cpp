@@ -43,9 +43,24 @@ Vector2 operator+(const Vector2& j, const Vector2& k)
 	return { j.x + k.x, j.y + k.y };
 }
 
+Vector2 operator+(const Vector2& j, const float& k)
+{
+	return { j.x + k, j.y + k };
+}
+
 Vector2 operator-(const Vector2& j, const Vector2& k)
 {
 	return { j.x - k.x, j.y - k.y };
+}
+
+Vector2 operator-(const Vector2& j, const float& k)
+{
+	return { j.x - k, j.y - k };
+}
+
+Vector2 operator-(const Vector2& j)
+{
+	return { -j.x, -j.y };
 }
 
 Vector2 operator*(const Vector2& j, const Vector2& k)
@@ -73,9 +88,23 @@ Vector3 operator+(const Vector3& j, const Vector3& k)
 	return { j.x + k.x, j.y + k.y, j.z + k.z };
 }
 
+Vector3 operator+(const Vector3& j, const float& k)
+{
+	return { j.x + k, j.y + k, j.z + k };
+}
 Vector3 operator-(const Vector3& j, const Vector3& k)
 {
 	return { j.x - k.x, j.y - k.y, j.z - k.z };
+}
+
+Vector3 operator-(const Vector3& j, const float& k)
+{
+	return { j.x - k, j.y - k, j.z - k };
+}
+
+Vector3 operator-(const Vector3& j)
+{
+	return { -j.x, -j.y , -j.z};
 }
 
 Vector3 operator*(const Vector3& j, const Vector3& k)
