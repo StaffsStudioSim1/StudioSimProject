@@ -55,7 +55,7 @@ Vector2 operator*(const Vector2& j, const Vector2& k)
 
 Vector2 operator*(const Vector2& j, float k)
 {
-	return { j.x + k, j.y + k };
+	return { j.x * k, j.y * k };
 }
 
 bool operator==(const Vector2& j, const Vector2& k)

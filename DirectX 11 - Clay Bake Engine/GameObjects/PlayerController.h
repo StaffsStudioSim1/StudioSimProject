@@ -24,21 +24,19 @@ private:
     PlayerInput* _playerInput;
     Physics* _physicsBody;
 
-    float _moveSpeed;
-    float _topSpeed = 10.0f;
+    float _moveSpeed = 10000.0f;
+    float _topSpeed = 10000.0f;
     float _midAirControlDelay;
     float _jumpTimer;
 
-    bool _jumpReset;
-    bool _isJumping;
+    bool _jumpReset = true;
+    bool _isJumping = false;
     bool _movementEnabled = true;
 
     Vector2 _currentMovement;
-    Vector2 _jumpForce = {0.0f, 10.0f};
+    Vector2 _jumpForce = {0.0f, 1000.0f};
 
     //Functions
-    void MovePressed(Vector2 direction);
-    void MoveReleased();
     void JumpPressed();
     void JumpReleased();
     void InteractPressed();
@@ -46,11 +44,8 @@ private:
     void MagnetReleased();
     void PausePressed();
 
-
     //Physics Reliant Vars
     //BoxCollider2D _groundDetector (change to raycast);
     //FacingDirection _facing;
-    //Rigidbody2D _rb;
-
 };
 

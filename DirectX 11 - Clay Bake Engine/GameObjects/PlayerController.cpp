@@ -1,10 +1,5 @@
 #include "PlayerController.h"
 
-
-//Treat this just like the old Unity Input System
-
-//Start does not get called
-
 void PlayerController::Start()
 {
 	int ActivePlayerCount = 0;
@@ -25,17 +20,8 @@ void PlayerController::Update(float deltaTime)
 	//Movement
 	_currentMovement = _playerInput->ReadAxis(Movement);
 
-	if (Magnitude(_currentMovement) != 0)
-	{
-		MovePressed(_currentMovement);
-	}
-	else if (_playerInput->IsActionUp(Movement))
-	{
-		MoveReleased();
-	}
-
 	//Jump
-	if (_playerInput->IsActionHeld(Jump))
+	if (_playerInput->IsActionDown(Jump))
 	{
 		JumpPressed();
 	}
@@ -49,7 +35,7 @@ void PlayerController::Update(float deltaTime)
 	{
 		InteractPressed();
 	}
-
+	
 	//Magnet
 	if (_playerInput->IsActionHeld(Magnet))
 	{
@@ -76,57 +62,38 @@ void PlayerController::Update(float deltaTime)
 
 void PlayerController::FixedUpdate(float timeStep)
 {
-	if (_movementEnabled)
+	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
-		if (Magnitude(*_physicsBody->GetLinearVelocity()) < _topSpeed)
-		{
-			_physicsBody->ApplyForceToObj(_currentMovement, true);
-		}
+		_physicsBody->ApplyForceToObj(_currentMovement * _moveSpeed, true);
 	}
 
 	if (_isJumping)
 	{
-		Vector2 currentVelocity = *_physicsBody->GetLinearVelocity();
+		Vector2 currentVelocity = _physicsBody->GetLinearVelocity();
 
 		if (currentVelocity.y < _jumpForce.y)
 		{
 			if (!isFlipped)
 			{
-				_physicsBody->ApplyForceToObj(_jumpForce, true);
+				_physicsBody->ApplyForceToObj(_jumpForce * 1000, true);
 			}
 			else
 			{
 				_physicsBody->ApplyForceToObj(Vector2(0.0f, -_jumpForce.y), true);
 			}
-
 		}
-
-		//if flipped
-		//float currentVelocity = rb.velocity.y;
-
-		//if (rb.velocity.y < jumpForce.y)
-		//{
-		//	rb.AddForce(jumpForce, ForceMode2D.Impulse);
-		//	isJumping = false;
-		//}
+		else if (currentVelocity.y >= _jumpForce.y)
+		{
+			_isJumping = false;
+		}
 	}
 }
 
-void PlayerController::MovePressed(Vector2 direction)
-{
-	_movementEnabled = true;
-}
-
-void PlayerController::MoveReleased()
-{
-	_movementEnabled = false;
-}
 
 void PlayerController::JumpPressed()
 {
 	if (_jumpReset)
 		_isJumping = true;
-	//Add velocity 
 }
 
 void PlayerController::JumpReleased()
