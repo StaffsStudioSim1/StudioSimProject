@@ -27,6 +27,7 @@ protected:
 private:
 	bool _initialised = false;
 
+	// DO NOT SET DIRECTLY - Use SceneManager::GetInstance().LoadScene("file/path.json");
 	Scene* _scene = nullptr;
 	Examples* _ex;
 	PhysicsWorld* _physicsWorld;
