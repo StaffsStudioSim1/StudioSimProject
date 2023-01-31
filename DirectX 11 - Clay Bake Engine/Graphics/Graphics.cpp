@@ -1,5 +1,8 @@
 #include "Graphics.h"
 #include "../GameObjects/ObjectHandler.h"
+#include "ImGui/imgui_impl_win32.h"
+#include "ImGui/imgui_impl_dx11.h"
+
 
 bool Graphics::Initialize(HWND hwnd, int width, int height)
 {
@@ -26,6 +29,14 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 
 	// Projection matrix
 	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixOrthographicLH(width, height, 0.01f, 100.0f));
+
+	//IMGUI SETUP
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui_ImplWin32_Init(hwnd);
+	ImGui_ImplDX11_Init(this->_device.Get(), this->_deviceContext.Get());
+	ImGui::StyleColorsDark();
 
 	return true;
 }
@@ -349,6 +360,67 @@ void Graphics::RenderFrame(Scene* scene)
 	this->_deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
 	scene->Render(this->_deviceContext, cb, _constantBuffer);
+
+	//UI
+//CREATE FRAME
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	//UI WINDOWS
+
+
+	ImGui::Begin("Inspector");
+	if (ImGui::TreeNode("Basic trees"))
+	{
+		int loopNum = 0;
+		for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+		{
+
+
+			// Use SetNextItemOpen() so set the default state of a node to be open. We could
+			// also use TreeNodeEx() with the ImGuiTreeNodeFlags_DefaultOpen flag to achieve the same thing!
+			if (loopNum == 0)
+				ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
+			if (ImGui::TreeNode((void*)(intptr_t)loopNum, "GameObject %d", loopNum))
+			{
+				float position[3] = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y, object->GetTransform()->GetDepthPos() };
+				float rotation = { object->GetTransform()->GetRotation() };
+				float scale[2] = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y };
+
+				ImGui::DragFloat3("Translation XYZ", position, 0.1, -500, 500);
+				ImGui::DragFloat("Rotation", &rotation, 0.05, (-1 * DirectX::XM_2PI), DirectX::XM_2PI);
+				ImGui::DragFloat2("Scale", scale, 0.1, -1000, 1000);
+				ImGui::SameLine();
+				if (ImGui::Button("Scale Up"))
+				{
+					object->GetTransform()->SetScaleChange(10, 10);
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Scale Down"))
+				{
+					object->GetTransform()->SetScaleChange(-10, -10);
+				}
+				if (ImGui::Button("Reset"))
+				{
+					object->GetTransform()->SetPosition(0, 0);
+					object->GetTransform()->SetScale(2.5, 2.5);
+					object->GetTransform()->SetRotation(0);
+				}
+				if (ImGui::Button("Save"))
+				{
+				}
+				ImGui::TreePop();
+			}
+			loopNum++;
+		}
+		ImGui::TreePop();
+	}
+	ImGui::End();
+
+	//ASSEMBLE AND RENDER DRAW DATA
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	this->_swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }
