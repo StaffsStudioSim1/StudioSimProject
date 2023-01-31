@@ -60,8 +60,11 @@ void Scene::Update(float deltaTime)
 		if (me.GetType() == MouseEvent::EventType::LPress && selectedObj == -1) // Probably can be changed to a switch statement
 		{
 			selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y, selectedObj);
-			Vector2 pos = ObjectHandler::GetInstance().GetGameObject(selectedObj)->GetTransform()->GetPosition();
-			startingPos = { (int)pos.x, (int)pos.y };
+			if (selectedObj != -1)
+			{
+				Vector2 pos = ObjectHandler::GetInstance().GetGameObject(selectedObj)->GetTransform()->GetPosition();
+				startingPos = { (int)pos.x, (int)pos.y };
+			}
 		}
 		else if (me.GetType() == MouseEvent::EventType::LRelease && selectedObj != -1)
 		{
@@ -107,7 +110,7 @@ void Scene::Update(float deltaTime)
 					return;
 			}
 
-			GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { float(relPos.x), float(relPos.y), 0.0f }, { 1.0f, 1.0f }, 0.0f);
+			GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { float(relPos.x), float(relPos.y), 0.0f }, { 3.0f, 3.0f }, 0.0f);
 			objNum++;
 
 			Component* component = new Appearance("Resources/Textures/" + _textureNames[_textureNum]);

@@ -22,7 +22,7 @@ int MousePicking::TestForObjectIntersection(int mouseX, int mouseY, int currentO
 		objBox.Extents = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y, 0.0f };
 		
 		mouseSphere.Center = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y), 0.0f };
-		mouseSphere.Radius = 10.0f;
+		mouseSphere.Radius = 20.0f; // Cursor picking size
 
 		if (mouseSphere.Intersects(objBox))
 		{
@@ -65,7 +65,7 @@ DirectX::XMINT2 MousePicking::GetRelativeMousePos(int mouseX, int mouseY)
 
 DirectX::XMINT2 MousePicking::SnapCoordinatesToGrid(int posX, int posY)
 {
-	int snapScale = 20; // Edit this to change the snapping
+	int snapScale = 60; // Edit this to change the snapping
 	DirectX::XMINT2 returnPos = { posX, posY };
 
 	int roundedX = (returnPos.x / snapScale) * snapScale;
