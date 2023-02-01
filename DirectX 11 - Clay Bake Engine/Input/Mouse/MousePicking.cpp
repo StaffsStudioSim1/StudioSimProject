@@ -1,5 +1,6 @@
 #include "MousePicking.h"
 #include "../../GameObjects/ObjectHandler.h"
+#include "../../Graphics/Graphics.h"
 
 #include <DirectXCollision.h>
 
@@ -38,7 +39,7 @@ GameObject* MousePicking::TestForObjectIntersection(int mouseX, int mouseY)
 
 DirectX::XMINT2 MousePicking::GetRelativeMousePos(int mouseX, int mouseY)
 {
-	int width = 0;
+	/*int width = 0;
 	int height = 0;
 
 	RECT rc;
@@ -60,9 +61,11 @@ DirectX::XMINT2 MousePicking::GetRelativeMousePos(int mouseX, int mouseY)
 		float diff = height / monitorHeight;
 		mouseX *= (width / monitorWidth);
 		mouseY *= (height / (monitorHeight - 39));
-	}
+	}*/
 
-	return { mouseX - (width / 2), -(mouseY - (height / 2)) };
+	float scaleX = _width / INTERNAL_RESOLUTION_X;
+	float scaleY = _height / INTERNAL_RESOLUTION_Y;
+	return DirectX::XMINT2((mouseX - (_width / 2)) / scaleX, -(mouseY - (_height / 2)) / scaleY);
 }
 
 DirectX::XMINT2 MousePicking::SnapCoordinatesToGrid(int posX, int posY)

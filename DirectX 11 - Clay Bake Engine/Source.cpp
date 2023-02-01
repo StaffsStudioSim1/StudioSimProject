@@ -5,7 +5,7 @@
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	ClayEngine engine;
-	if (engine.Initialize(hInstance, "title", "myWindowClass", 648, 360))
+	if (engine.Initialize(hInstance, "title", "myWindowClass", 648 * 2, 360 * 2))
 	{
 		while (engine.ProcessMessages() == true)
 		{
