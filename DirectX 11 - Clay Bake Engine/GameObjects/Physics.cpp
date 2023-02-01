@@ -189,7 +189,7 @@ b2World* Physics::CreatePhysicsWorld(float gravity)
 PhysicsBody Physics::GetCollisionsWithBody()
 {
 	BodyEdgeCollision collisioncheck;
-	b2Fixture* collidingWith;
+	b2Fixture* collidingWith = nullptr;
 	for (collisioncheck.edge = _objectPhysicsBody->body->GetContactList(); &collisioncheck.edge; collisioncheck.edge = collisioncheck.edge->next)
 	{
 		collidingWith = collisioncheck.edge->contact->GetFixtureB();
@@ -204,21 +204,18 @@ PhysicsBody Physics::GetCollisionsWithBody()
 
 bool Physics::IsObjectCollidingwith(PhysicsBody input)
 {
-	BodyEdgeCollision collisioncheck;
-	b2Fixture* collidingWith = new b2Fixture();
 	b2Body* test;
-	for (collisioncheck.edge = _objectPhysicsBody->body->GetContactList(); &collisioncheck.edge; collisioncheck.edge = collisioncheck.edge->next)
-	{
-		collidingWith = collisioncheck.edge->contact->GetFixtureB();
-	}
-	test = collidingWith->GetBody();
-	if (test == input.body)
-	{
-		return true;
-	}else
-	{
-		return false;
-	}
+	bool contact = false;
+	
+		for (b2ContactEdge* edge = _objectPhysicsBody->body->GetContactList(); edge != nullptr; edge = edge->next)
+		{
+			if (edge->other == input.body && edge->contact->IsTouching())
+			{
+			
+					contact = true;
+				
+			}
+		}
 
-	return false;
+	return contact;
 }
