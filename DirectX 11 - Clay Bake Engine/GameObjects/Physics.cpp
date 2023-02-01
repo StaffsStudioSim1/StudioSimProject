@@ -211,9 +211,7 @@ bool Physics::IsObjectCollidingwith(PhysicsBody input)
 		{
 			if (edge->other == input.body && edge->contact->IsTouching())
 			{
-			
 					contact = true;
-				
 			}
 		}
 
