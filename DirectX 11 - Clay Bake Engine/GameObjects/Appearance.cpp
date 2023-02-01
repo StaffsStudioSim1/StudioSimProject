@@ -55,9 +55,9 @@ void Appearance::SetTexCoords(float numOfXFrames, float numOfYFrames, float xFra
 void Appearance::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
 {
 	DirectX::XMMATRIX world =
-		DirectX::XMMatrixScaling(_gameObject->GetTransform()->GetScale().x * _texture.width * _texCoords.x, _gameObject->GetTransform()->GetScale().y * _texture.height * _texCoords.y, 1.0f) *
-		DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, _gameObject->GetTransform()->GetRotation()) *
-		DirectX::XMMatrixTranslation(_gameObject->GetTransform()->GetPosition().x, _gameObject->GetTransform()->GetPosition().y, _gameObject->GetTransform()->GetDepthPos());
+		DirectX::XMMatrixScaling(_gameObject->GetTransform()->GetScale().x * _texture.width * _texCoords.x / 2, _gameObject->GetTransform()->GetScale().y * _texture.height * _texCoords.y / 2, 1.0f)
+		* DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, _gameObject->GetTransform()->GetRotation())
+		* DirectX::XMMatrixTranslation(_gameObject->GetTransform()->GetPosition().x, _gameObject->GetTransform()->GetPosition().y, _gameObject->GetTransform()->GetDepthPos());
 
 	if (_gameObject->GetTransform()->HasTransformParent())
 		world = world * _gameObject->GetTransform()->GetTransformParent()->GetWorldMatrix();

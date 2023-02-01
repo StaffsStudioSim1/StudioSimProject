@@ -29,7 +29,7 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	DirectX::XMStoreFloat4x4(&_view, DirectX::XMMatrixLookAtLH(eye, at, up));
 
 	// Projection matrix
-	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixOrthographicLH(648 * 2, 360 * 2, 0.01f, 100.0f));
+	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixOrthographicLH(648, 360, 0.01f, 100.0f));
 
 	//IMGUI SETUP
 	IMGUI_CHECKVERSION();

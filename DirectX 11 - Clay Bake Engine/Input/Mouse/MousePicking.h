@@ -13,6 +13,6 @@ public:
 	int GetSnapScale() const { return snapScale; }
 private:
 	int _height, _width;
-	int snapScale = 50; // Edit this to change the snapping
+	int snapScale = 18; // Edit this to change the snapping
 };
 

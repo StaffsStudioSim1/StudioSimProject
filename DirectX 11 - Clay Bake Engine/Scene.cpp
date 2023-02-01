@@ -20,6 +20,7 @@ Scene::Scene(std::string filePath)
 
 	std::string imagePath = data[JSON_SCENE_BACKGROUND];
 	_backgroundImage = new GameObject((std::string) JSON_SCENE_BACKGROUND);
+	_backgroundImage->GetTransform()->SetDepthPos(1.0f);
 	_backgroundImage->AddComponent(new Appearance(imagePath));
 
 	for (json objectData : data[JSON_SCENE_GAMEOBJECTS])
@@ -80,7 +81,11 @@ void Scene::Update(float deltaTime)
 	while (!mouse->EventBufferIsEmpty()) // Handles moving, creating and deleting objects with the mouse in edit mode
 	{
 		MouseEvent me = mouse->ReadEvent();
-		if (me.GetType() == MouseEvent::EventType::LPress && !selectedObj) // Probably can be changed to a switch statement
+		// TEMP Save Scene
+		if (!selectedObj && me.GetType() == MouseEvent::EventType::MPress)
+			Save();
+		// Pickup Tile
+		else if (me.GetType() == MouseEvent::EventType::LPress && !selectedObj) // Probably can be changed to a switch statement
 		{
 			selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y);
 			if (selectedObj)
@@ -89,10 +94,7 @@ void Scene::Update(float deltaTime)
 				startingPos = { (int)pos.x, (int)pos.y };
 			}
 		}
-		else if (!selectedObj && me.GetType() == MouseEvent::EventType::MPress)
-		{
-			Save();
-		}
+		// Drop tile at position
 		else if (me.GetType() == MouseEvent::EventType::LRelease && selectedObj)
 		{
 			Vector2 objectPos = selectedObj->GetTransform()->GetPosition();
@@ -111,6 +113,7 @@ void Scene::Update(float deltaTime)
 			selectedObj->GetTransform()->SetPosition(snapPos.x, snapPos.y);
 			selectedObj = nullptr;
 		}
+		// ??
 		else if (selectedObj)
 		{
 			DirectX::XMINT2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
@@ -123,6 +126,7 @@ void Scene::Update(float deltaTime)
 				selectedObj = nullptr;
 			}
 		}
+		// Create a new tile
 		else if (me.GetType() == MouseEvent::EventType::RPress && !selectedObj) // Creates a new game object
 		{
 			static int objNum = 0;
@@ -135,19 +139,21 @@ void Scene::Update(float deltaTime)
 					return;
 			}
 
-			GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { float(relPos.x), float(relPos.y), 1.0f }, { 2.5f, 2.5f }, 0.0f);
+			GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { float(relPos.x), float(relPos.y), 0.0f }, { 1.0f, 1.0f }, 0.0f);
 			objNum++;
 
 			Component* component = new Appearance("Resources/Textures/" + _textureNames[_textureNum]);
 			tempObj->AddComponent(component);
 			_children.push_back(tempObj);
 		}
+		// Change tile type to be made
 		else if (me.GetType() == MouseEvent::EventType::WheelUp && !selectedObj) // Changes the texture that the next game object will be created with
 		{
 			_textureNum += 1;
 			if (_textureNum == _textureNames.size())
 				_textureNum = 0;
 		}
+		// Change tile type to be made
 		else if (me.GetType() == MouseEvent::EventType::WheelDown && !selectedObj)
 		{
 			_textureNum -= 1;
