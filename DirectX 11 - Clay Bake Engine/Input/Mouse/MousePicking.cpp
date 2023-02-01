@@ -9,15 +9,17 @@ void MousePicking::Initialise(int width, int height) // Currently only being use
 	_height = height;
 }
 
-int MousePicking::TestForObjectIntersection(int mouseX, int mouseY, int currentObj)
+GameObject* MousePicking::TestForObjectIntersection(int mouseX, int mouseY)
 {
 	DirectX::BoundingBox objBox;
 	DirectX::BoundingSphere mouseSphere;
 	DirectX::XMINT2 mousePos = GetRelativeMousePos(mouseX, mouseY);
 
-	int objectNum = 0;
 	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 	{
+		if (object->GetName() == JSON_SCENE_BACKGROUND)
+			continue;
+
 		objBox.Center = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y, object->GetTransform()->GetDepthPos() };
 		objBox.Extents = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y, 0.0f };
 
@@ -25,13 +27,10 @@ int MousePicking::TestForObjectIntersection(int mouseX, int mouseY, int currentO
 		mouseSphere.Radius = 20.0f; // Cursor picking size
 
 		if (mouseSphere.Intersects(objBox))
-		{
-			return objectNum;
-		}
-		objectNum++;
+			return object;
 	}
 
-	return -1;
+	return nullptr;
 }
 
 DirectX::XMINT2 MousePicking::GetRelativeMousePos(int mouseX, int mouseY)

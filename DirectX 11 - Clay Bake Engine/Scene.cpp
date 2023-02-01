@@ -71,7 +71,7 @@ void Scene::Start()
 void Scene::Update(float deltaTime)
 {
 #if EDIT_MODE
-	static int selectedObj = -1;
+	static GameObject* selectedObj = nullptr;
 	static DirectX::XMINT2 startingPos = { 0, 0 };
 
 	MouseClass* mouse = InputManager::GetInstance().GetMouse();
@@ -80,52 +80,50 @@ void Scene::Update(float deltaTime)
 	while (!mouse->EventBufferIsEmpty()) // Handles moving, creating and deleting objects with the mouse in edit mode
 	{
 		MouseEvent me = mouse->ReadEvent();
-		if (me.GetType() == MouseEvent::EventType::LPress && selectedObj == -1) // Probably can be changed to a switch statement
+		if (me.GetType() == MouseEvent::EventType::LPress && !selectedObj) // Probably can be changed to a switch statement
 		{
-			selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y, selectedObj);
-			if (selectedObj != -1)
+			selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y);
+			if (selectedObj)
 			{
-				Vector2 pos = ObjectHandler::GetInstance().GetGameObject(selectedObj)->GetTransform()->GetPosition();
+				Vector2 pos = selectedObj->GetTransform()->GetPosition();
 				startingPos = { (int)pos.x, (int)pos.y };
 			}
 		}
-		else if (selectedObj == -1 && me.GetType() == MouseEvent::EventType::MPress)
+		else if (!selectedObj && me.GetType() == MouseEvent::EventType::MPress)
 		{
 			Save();
 		}
-		else if (me.GetType() == MouseEvent::EventType::LRelease && selectedObj != -1)
+		else if (me.GetType() == MouseEvent::EventType::LRelease && selectedObj)
 		{
-			GameObject* object = ObjectHandler::GetInstance().GetGameObject(selectedObj);
-			Vector2 objectPos = object->GetTransform()->GetPosition();
+			Vector2 objectPos = selectedObj->GetTransform()->GetPosition();
 			DirectX::XMINT2 snapPos = _mousePicking.SnapCoordinatesToGrid(objectPos.x, objectPos.y);
 
 			for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 			{
-				if (object != ObjectHandler::GetInstance().GetGameObject(selectedObj) && object->GetTransform()->GetPosition().x == snapPos.x && object->GetTransform()->GetPosition().y == snapPos.y)
+				if (object != selectedObj && object->GetTransform()->GetPosition().x == snapPos.x && object->GetTransform()->GetPosition().y == snapPos.y)
 				{
-					ObjectHandler::GetInstance().GetGameObject(selectedObj)->GetTransform()->SetPosition(startingPos.x, startingPos.y);
-					selectedObj = -1;
+					selectedObj->GetTransform()->SetPosition(startingPos.x, startingPos.y);
+					selectedObj = nullptr;
 					return;
 				}
 			}
 
-			object->GetTransform()->SetPosition(snapPos.x, snapPos.y);
-			selectedObj = -1;
+			selectedObj->GetTransform()->SetPosition(snapPos.x, snapPos.y);
+			selectedObj = nullptr;
 		}
-		else if (selectedObj != -1)
+		else if (selectedObj)
 		{
-			GameObject* object = ObjectHandler::GetInstance().GetGameObject(selectedObj);
 			DirectX::XMINT2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
-			object->GetTransform()->SetPosition(relativeMousePos.x, relativeMousePos.y);
+			selectedObj->GetTransform()->SetPosition(relativeMousePos.x, relativeMousePos.y);
 
 			if (me.GetType() == MouseEvent::EventType::MPress) // Remove the currently selected game object
 			{
-				_children.erase(_children.begin() + selectedObj);
-				ObjectHandler::GetInstance().Unregister(object);
-				selectedObj = -1;
+				_children.erase(std::remove(_children.begin(), _children.end(), selectedObj), _children.end());
+				delete selectedObj;
+				selectedObj = nullptr;
 			}
 		}
-		else if (me.GetType() == MouseEvent::EventType::RPress && selectedObj == -1) // Creates a new game object
+		else if (me.GetType() == MouseEvent::EventType::RPress && !selectedObj) // Creates a new game object
 		{
 			static int objNum = 0;
 			DirectX::XMINT2 relPos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
@@ -144,13 +142,13 @@ void Scene::Update(float deltaTime)
 			tempObj->AddComponent(component);
 			_children.push_back(tempObj);
 		}
-		else if (me.GetType() == MouseEvent::EventType::WheelUp && selectedObj == -1) // Changes the texture that the next game object will be created with
+		else if (me.GetType() == MouseEvent::EventType::WheelUp && !selectedObj) // Changes the texture that the next game object will be created with
 		{
 			_textureNum += 1;
 			if (_textureNum == _textureNames.size())
 				_textureNum = 0;
 		}
-		else if (me.GetType() == MouseEvent::EventType::WheelDown && selectedObj == -1)
+		else if (me.GetType() == MouseEvent::EventType::WheelDown && !selectedObj)
 		{
 			_textureNum -= 1;
 			if (_textureNum < 0)
