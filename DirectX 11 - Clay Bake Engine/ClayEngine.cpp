@@ -125,7 +125,7 @@ void ClayEngine::Update()
 
 	if (ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->GetPhysicsBody()))
 	{
-		OutputDebugStringA("obj1 and 2 have colided");
+		OutputDebugStringA("obj 1 and 2 have collided \n");
 	}
 
 	dwTimeStart = dwTimeCur;
