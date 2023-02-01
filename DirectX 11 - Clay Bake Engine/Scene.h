@@ -27,6 +27,7 @@ public:
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 private:
 	std::vector<GameObject*> _children;
+	GameObject* _backgroundImage;
 
 	TextureInfo _texture;
 

@@ -113,8 +113,6 @@ void ClayEngine::Update()
 	if (_scene != nullptr)
 		_scene->Update(deltaTime);
 
-
-
 	dwTimeStart = dwTimeCur;
 #endif
 
@@ -125,10 +123,6 @@ void ClayEngine::Update()
 		_scene = SceneManager::GetInstance().ReadScene();
 		_scene->Start();
 	}
-
-
-	dwTimeStart = dwTimeCur;
-#endif
 }
 
 void ClayEngine::RenderFrame()

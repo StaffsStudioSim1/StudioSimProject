@@ -18,7 +18,9 @@ Scene::Scene(std::string filePath)
 
 	json data = json::parse(f);
 
-	std::string image = data[JSON_SCENE_BACKGROUND];
+	std::string imagePath = data[JSON_SCENE_BACKGROUND];
+	_backgroundImage = new GameObject((std::string) JSON_SCENE_BACKGROUND);
+	_backgroundImage->AddComponent(new Appearance(imagePath));
 
 	for (json objectData : data[JSON_SCENE_GAMEOBJECTS])
 		_children.push_back(new GameObject(objectData));
@@ -37,6 +39,8 @@ Scene::~Scene()
 	for (GameObject* obj : _children)
 		delete obj;
 	_children.clear();
+
+	delete _backgroundImage;
 }
 
 void Scene::Save()
@@ -176,4 +180,5 @@ void Scene::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, Constant
 {
 	for (GameObject* object : _children)
 		object->Render(context, constantBuffer, globalBuffer);
+	_backgroundImage->Render(context, constantBuffer, globalBuffer);
 }
