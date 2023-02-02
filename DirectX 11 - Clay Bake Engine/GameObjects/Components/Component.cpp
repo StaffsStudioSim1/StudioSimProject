@@ -1,6 +1,13 @@
 #include "Component.h"
 #include "../GameObject.h"
 
+json Component::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "NOT_OVERRIDDEN";
+	return me;
+}
+
 void Component::SetObject(GameObject* gameObject)
 {
 	_gameObject = gameObject;

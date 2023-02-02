@@ -6,17 +6,17 @@
 #include "Components/Physics.h"
 #include "../Input/PlayerInput.h"
 
-GameObject::GameObject(std::string name)
+GameObject::GameObject(std::string name) : GameObject(name, Vector3(0.0f, 0.0f, 0.0f), Vector2(1.0f, 1.0f), 0.0f)
 {
-	_name = name;
-	ObjectHandler::GetInstance().Register(this);
 }
 
-GameObject::GameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation) : GameObject(name)
+GameObject::GameObject(std::string name, Vector3 position, Vector2 scale, float rotation)
 {
+	_name = name;
 	_transform.SetPosition(position);
 	_transform.SetScale(scale);
 	_transform.SetRotation(rotation);
+	ObjectHandler::GetInstance().Register(this);
 }
 
 GameObject::GameObject(json objectJson)
@@ -34,7 +34,7 @@ GameObject::GameObject(json objectJson)
 		if (type == "Appearance")
 		{
 			std::string textureName = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
-			DirectX::XMFLOAT4 texCoords = { 
+			DirectX::XMFLOAT4 texCoords = {
 				componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(2),
 				componentJson[JSON_COMPONENT_CONSTRUCTORS].at(3), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(4)
 			};
@@ -80,6 +80,22 @@ GameObject::~GameObject()
 	_components.clear();
 
 	ObjectHandler::GetInstance().Unregister(this);
+}
+
+json GameObject::Write()
+{
+	json me;
+	me[JSON_GO_NAME] = _name;
+	me[JSON_GO_POSITION] = { _transform.GetPosition().x, _transform.GetPosition().y, _transform.GetDepthPos() };
+	me[JSON_GO_ROTATION] = DirectX::XMConvertToDegrees(_transform.GetRotation());
+	me[JSON_GO_SCALE] = { _transform.GetScale().x, _transform.GetScale().y };
+
+	for (Component* component : _components)
+	{
+		me[JSON_GO_COMPONENTS].push_back(component->Write());
+	}
+
+	return me;
 }
 
 void GameObject::AddComponent(Component* component)

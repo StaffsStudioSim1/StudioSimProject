@@ -43,9 +43,24 @@ Vector2 operator+(const Vector2& j, const Vector2& k)
 	return { j.x + k.x, j.y + k.y };
 }
 
+Vector2 operator+(const Vector2& j, const float& k)
+{
+	return { j.x + k, j.y + k };
+}
+
 Vector2 operator-(const Vector2& j, const Vector2& k)
 {
 	return { j.x - k.x, j.y - k.y };
+}
+
+Vector2 operator-(const Vector2& j, const float& k)
+{
+	return { j.x - k, j.y - k };
+}
+
+Vector2 operator-(const Vector2& j)
+{
+	return { -j.x, -j.y };
 }
 
 Vector2 operator*(const Vector2& j, const Vector2& k)
@@ -55,7 +70,7 @@ Vector2 operator*(const Vector2& j, const Vector2& k)
 
 Vector2 operator*(const Vector2& j, float k)
 {
-	return { j.x + k, j.y + k };
+	return { j.x * k, j.y * k };
 }
 
 bool operator==(const Vector2& j, const Vector2& k)
@@ -73,9 +88,23 @@ Vector3 operator+(const Vector3& j, const Vector3& k)
 	return { j.x + k.x, j.y + k.y, j.z + k.z };
 }
 
+Vector3 operator+(const Vector3& j, const float& k)
+{
+	return { j.x + k, j.y + k, j.z + k };
+}
 Vector3 operator-(const Vector3& j, const Vector3& k)
 {
 	return { j.x - k.x, j.y - k.y, j.z - k.z };
+}
+
+Vector3 operator-(const Vector3& j, const float& k)
+{
+	return { j.x - k, j.y - k, j.z - k };
+}
+
+Vector3 operator-(const Vector3& j)
+{
+	return { -j.x, -j.y , -j.z};
 }
 
 Vector3 operator*(const Vector3& j, const Vector3& k)
@@ -285,6 +314,25 @@ Vector3 Normalized(const Vector3& v)
 {
 	return v * (1.0f / Magnitude(v));
 }
+
+Vector2 GetNegVer(const Vector2& v)
+{
+	Vector2 output;
+	output.x = -v.x;
+	output.y = -v.y;
+
+	return output;
+}
+Vector3 GetNegVer(const Vector3& v)
+{
+	Vector3 output;
+	output.x = -v.x;
+	output.y = -v.y;
+	output.z = -v.z;
+
+	return output;
+}
+
 
 Vector2 Project(const Vector2& length, const Vector2& direction)
 {

@@ -13,8 +13,12 @@ InputManager::~InputManager()
 	_inputs.clear();
 }
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT InputManager::WindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(GetActiveWindow(), uMsg, wParam, lParam))
+		return true;
+
 	switch (uMsg)
 	{ // Keyboard Messages
 	case WM_KEYDOWN:
