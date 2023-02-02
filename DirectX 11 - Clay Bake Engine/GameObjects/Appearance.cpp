@@ -13,11 +13,27 @@ Appearance::~Appearance()
 {
 }
 
+json Appearance::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "Appearance";
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_texture.filePath);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_numOfXFrames);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_numOfYFrames);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_xFramePos);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_yFramePos);
+	return me;
+}
+
 void Appearance::SetTexCoords(float numOfXFrames, float numOfYFrames, float xFramePos, float yFramePos)
 {
 	//Width and height gives an area of the texture
 	//x and y are the starting coordinates of the area
 	//DirectX UV coordinates are normally 0,0 in the top left and 1,1 in the bottom right
+	_numOfXFrames = numOfXFrames;
+	_numOfYFrames = numOfYFrames;
+	_xFramePos = xFramePos;
+	_yFramePos = yFramePos;
 
 	float width = 1.0f / numOfXFrames;
 	float height = 1.0f / numOfYFrames;
@@ -39,9 +55,9 @@ void Appearance::SetTexCoords(float numOfXFrames, float numOfYFrames, float xFra
 void Appearance::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
 {
 	DirectX::XMMATRIX world =
-		DirectX::XMMatrixScaling(_gameObject->GetTransform()->GetScale().x * _texture.width * _texCoords.x, _gameObject->GetTransform()->GetScale().y * _texture.height * _texCoords.y, 1.0f) *
-		DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, _gameObject->GetTransform()->GetRotation()) *
-		DirectX::XMMatrixTranslation(_gameObject->GetTransform()->GetPosition().x, _gameObject->GetTransform()->GetPosition().y, _gameObject->GetTransform()->GetDepthPos());
+		DirectX::XMMatrixScaling(_gameObject->GetTransform()->GetScale().x * _texture.width * _texCoords.x / 2, _gameObject->GetTransform()->GetScale().y * _texture.height * _texCoords.y / 2, 1.0f)
+		* DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, _gameObject->GetTransform()->GetRotation())
+		* DirectX::XMMatrixTranslation(_gameObject->GetTransform()->GetPosition().x, _gameObject->GetTransform()->GetPosition().y, _gameObject->GetTransform()->GetDepthPos());
 
 	if (_gameObject->GetTransform()->HasTransformParent())
 		world = world * _gameObject->GetTransform()->GetTransformParent()->GetWorldMatrix();

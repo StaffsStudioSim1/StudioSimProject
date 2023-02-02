@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "GameObjects/ObjectHandler.h"
 
+
 bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
 {
 	if (!this->render_window.Initialize(this, hInstance, window_title, window_class, width, height))
@@ -22,7 +23,7 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	AudioManager::GetInstance();
 
 	_ex = new Examples();
-	
+
 	// Physics world for data processing
 	float gravity = -9.806f;
 	b2World* boxworld = new b2World(b2Vec2(0, gravity));
@@ -33,17 +34,14 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
-//#if EDIT_MODE
-//	_scene = new Scene("Resources/demo.json");
-//#else
-//	_scene = new Scene("Resources/demo.json");
-//#endif
-	_scene = new Scene("Resources/demo.json");
-	return true; 
+	SceneManager::GetInstance().LoadScene("Resources/demo.json");
+	return true;
 }
 
 void ClayEngine::Destroy()
 {
+	if (_scene)
+		delete _scene;
 	delete _ex;
 }
 
@@ -105,7 +103,7 @@ void ClayEngine::Update()
 	if (deltaTime < FPS_CAP)
 		return;
 	InputManager::GetInstance().PollInput();
-	
+
 	if (_physicsRunning)
 		_physicsWorld->world->Step(deltaTimeFixed, 8, 3);
 
@@ -115,13 +113,6 @@ void ClayEngine::Update()
 	if (_scene != nullptr)
 		_scene->Update(deltaTime);
 
-	if (SceneManager::GetInstance().ShouldSceneChange())
-	{
-		if (_scene != nullptr)
-			_scene->Stop();
-		_scene = SceneManager::GetInstance().ReadScene();
-		_scene->Start();
-	}
 
 	if (ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->GetPhysicsBody()))
 	{
@@ -130,14 +121,19 @@ void ClayEngine::Update()
 
 	dwTimeStart = dwTimeCur;
 #endif
+
+	if (SceneManager::GetInstance().ShouldSceneChange())
+	{
+		if (_scene != nullptr)
+			_scene->Stop();
+		_scene = SceneManager::GetInstance().ReadScene();
+		_scene->Start();
+	}
+
 }
 
 void ClayEngine::RenderFrame()
 {
-//#if EDIT_MODE
-//	gamefx.RenderFrame(_scene);
-//#else
-//	gamefx.RenderFrame(_scene);
-//#endif
-	gamefx.RenderFrame(_scene);
+	if (_scene)
+		gamefx.RenderFrame(_scene);
 }

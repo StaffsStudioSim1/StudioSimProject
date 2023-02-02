@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include "Appearance.h"
 #include "GameObject.h"
-#include "TextureInfo.h"
+#include "../Graphics/TextureInfo.h"
 #include "Physics.h"
 
 class ObjectHandler
@@ -24,6 +24,7 @@ public:
 
 	std::vector<GameObject*> GetAllObjects() { return _gameObjects; }
 	GameObject* GetGameObject(int objNum) { return _gameObjects[objNum]; }
+	GameObject* FindGameObject(std::string name);
 
 	void Register(GameObject* object);
 	void Unregister(GameObject* object);
