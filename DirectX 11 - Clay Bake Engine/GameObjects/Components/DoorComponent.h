@@ -1,14 +1,12 @@
 #pragma once
 #include "Interactable.h"
 
-class DoorComponent : public Interactable
+class DoorComponent : public GameObject
 {
 public:
 	bool m_Opened;
 	void start();
-	void Interact();
-
-
+	
 	void Open();
 	void Close();
 

@@ -9,4 +9,5 @@ void LeverComponent::start()
 void LeverComponent::Interact()
 {
 	//override lever functionality
+	SendSignal();
 }

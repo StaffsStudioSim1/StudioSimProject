@@ -8,17 +8,28 @@ class Interactable: public Component
 	enum InteractableLink
 	{
 		Default = 0,
-		DoorOpen = 1,
-		DoorClose = 2,
-		SwitchGravity = 3
+		SwitchState = 1, //used to open close doors
+		SwitchGravity = 2, //used to switch gravity
+		Signal3 = 3,	//spare signals
+		signal4 = 4
 	};
-public: 
-	InteractableLink interactableLink; //InteractableLink chooses what the function of each interactable is
-	 virtual void Interact(); //virtual method for interacting
 
+public: 
+	//member variables
+	InteractableLink interactableLink; //InteractableLink chooses what the function of each interactable is
+	std::string linkedObjectName; //name of object the signal is sent to
+
+	//void functions overridden by child interactables
+	virtual void Interact(); //virtual method for interacting
+
+
+	void SendSignal(); //send signal function for linked objects to open close etc.
+
+
+	//constructors
 	Interactable(InteractableLink switchType = Default, std::string linkedObject = "");
 
-
-	 //virtual void Update();
+	Interactable(InteractableLink switchType);
+	
 };
 

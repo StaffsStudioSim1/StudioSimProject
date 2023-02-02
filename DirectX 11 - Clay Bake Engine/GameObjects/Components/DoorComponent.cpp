@@ -6,19 +6,21 @@ void DoorComponent::start()
 	m_Opened = false;
 }
 
-void DoorComponent::Interact()
-{
-	//doors usually aren't interactable and are instead opened by other events
-}
-
-
 void DoorComponent::Open()
 {
+	//TODO: disable renderer if enabled
+
+	//TODO: disable collider if enabled
+
 	m_Opened = true;
 }
 
 void DoorComponent::Close()
 {
+	//TODO: enable renderer if disabled
+
+	//TODO: enable collider if disabled
+
 	m_Opened = false;
 }
 

@@ -153,7 +153,6 @@
     <ClCompile Include="GameObjects\Components\Component.cpp" />
     <ClCompile Include="GameObjects\Components\Appearance.cpp" />
     <ClCompile Include="GameObjects\Components\Interactable.cpp" />
-    <ClCompile Include="GameObjects\Components\InteractableStructs.cpp" />
     <ClCompile Include="GameObjects\Components\LeverComponent.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="GameObjects\Components\PressurePlateComponent.cpp" />
@@ -192,7 +191,6 @@
     <ClInclude Include="GameObjects\Components\Component.h" />
     <ClInclude Include="GameObjects\Components\DoorComponent.h" />
     <ClInclude Include="GameObjects\Components\Interactable.h" />
-    <ClInclude Include="GameObjects\Components\InteractableStructs.h" />
     <ClInclude Include="GameObjects\Components\PressurePlateComponent.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="Audio\AudioManager.h" />

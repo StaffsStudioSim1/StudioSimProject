@@ -5,8 +5,11 @@ class ButtonComponent : public Interactable
 {
 public:
 	float m_Timer;
-	bool m_Opened;
+	float m_TimeLimit;
+	bool m_Active;
 	void Interact();
 	void Start();
+	//TODO: finish button component constructor
+	// ButtonComponent(InteractableLink, std::string, float);
 };
 
