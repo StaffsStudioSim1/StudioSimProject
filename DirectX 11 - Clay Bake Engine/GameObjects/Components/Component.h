@@ -1,8 +1,8 @@
 #pragma once
 #include <wrl/client.h>
 #include <d3d11.h>
-#include "../Graphics/ConstantBuffer.h"
-#include "../nlohmann/json.hpp"
+#include "../../Graphics/ConstantBuffer.h"
+#include "../../nlohmann/json.hpp"
 using nlohmann::json;
 
 class GameObject;

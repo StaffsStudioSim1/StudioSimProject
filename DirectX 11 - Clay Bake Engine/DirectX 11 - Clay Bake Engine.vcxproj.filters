@@ -293,9 +293,6 @@
     <ClInclude Include="GameObjects\Components\LeverComponent.h">
       <Filter>Header Files\GameObject\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\ConstantBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjects\Components\Physics.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>

@@ -5,7 +5,7 @@
 #include "Components/Appearance.h"
 #include "GameObject.h"
 #include "../Graphics/TextureInfo.h"
-#include "Physics.h"
+#include "Components/Physics.h"
 
 class ObjectHandler
 {

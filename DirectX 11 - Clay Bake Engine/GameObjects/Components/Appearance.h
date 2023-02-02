@@ -5,8 +5,8 @@
 #include <wrl/client.h>
 #include <string>
 #include "Component.h"
-#include "../Graphics/Geometry.h"
-#include "../Graphics/TextureInfo.h"
+#include "../../Graphics/Geometry.h"
+#include "../../Graphics/TextureInfo.h"
 
 class Appearance : public Component
 {
