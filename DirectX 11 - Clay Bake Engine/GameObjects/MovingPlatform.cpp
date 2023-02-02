@@ -1,4 +1,5 @@
 #include "MovingPlatform.h"
+#include <cmath>
 
 void MovingPlatform::SetPlatfromDirection(PlatformDirection newDirection)
 {
@@ -48,5 +49,7 @@ void MovingPlatform::Stop()
 
 Vector2 MovingPlatform::MoveTowards(Vector2 currentPos, Vector2 Target, float deltaTime)
 {
+	Vector2 lerpResult;
+	lerpResult.x =  std::lerp(currentPos.x, Target.x, deltaTime);
 	return Vector2();
 }
