@@ -8,6 +8,7 @@
 #define EDIT_MODE false
 
 #if EDIT_MODE
+#include "Graphics/Geometry.h"
 #include "Input/Mouse/MousePicking.h"
 #endif
 
@@ -29,10 +30,11 @@ private:
 	std::vector<GameObject*> _children;
 	GameObject* _backgroundImage;
 
-	TextureInfo _texture;
-
 #if EDIT_MODE
 	MousePicking _mousePicking = {};
+	TextureInfo _texture;
+	Geometry _geometry;
+	Vector2 _ghost;
 	std::vector<std::string> _textureNames = { "temp_tile.dds", "Test.dds", "Test2.dds" };
 	int _textureNum = 0;
 #endif
