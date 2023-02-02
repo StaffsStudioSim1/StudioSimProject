@@ -81,11 +81,8 @@ void Scene::Update(float deltaTime)
 	while (!mouse->EventBufferIsEmpty()) // Handles moving, creating and deleting objects with the mouse in edit mode
 	{
 		MouseEvent me = mouse->ReadEvent();
-		// TEMP Save Scene
-		if (!selectedObj && me.GetType() == MouseEvent::EventType::MPress)
-			Save();
 		// Pickup Tile
-		else if (me.GetType() == MouseEvent::EventType::LPress && !selectedObj) // Probably can be changed to a switch statement
+		if (me.GetType() == MouseEvent::EventType::LPress && !selectedObj) // Probably can be changed to a switch statement
 		{
 			selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y);
 			if (selectedObj)
@@ -113,7 +110,7 @@ void Scene::Update(float deltaTime)
 			selectedObj->GetTransform()->SetPosition(snapPos.x, snapPos.y);
 			selectedObj = nullptr;
 		}
-		// ??
+		// If an object is following the cursor
 		else if (selectedObj)
 		{
 			DirectX::XMINT2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);

@@ -4,7 +4,6 @@
 #include "ImGui/imgui_impl_win32.h"
 #include "ImGui/imgui_impl_dx11.h"
 
-
 bool Graphics::Initialize(HWND hwnd, int width, int height)
 {
 	if (!InitializeDirectX(hwnd, width, height))
@@ -382,19 +381,45 @@ void Graphics::RenderFrame(Scene* scene)
 			if (loopNum == 0)
 				ImGui::SetNextItemOpen(false, ImGuiCond_Once);
 
-			//if (ImGui::TreeNode((void*)(intptr_t)loopNum, "GameObject %d", loopNum))
 			if (ImGui::TreeNode(object->GetName().c_str()))
 			{
 				std::string name = object->GetName();
+				char nameChar[20];
+				strcpy_s(nameChar, name.c_str());
+
 				float position[2] = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y };
 				float depth = { object->GetTransform()->GetDepthPos() };
 				float rotation = { object->GetTransform()->GetRotation() };
 				float scale[2] = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y };
 
+				bool hasPhysics = false;
+				bool hasAppearance = false;
+
+				float texCoords[4] = { 0 };
+				if (object->GetComponent<Appearance>())
+				{
+					hasAppearance = true;
+					DirectX::XMFLOAT4 coords = object->GetComponent<Appearance>()->GetTexCoordFrameValues();
+					texCoords[0] = coords.x;
+					texCoords[1] = coords.y;
+					texCoords[2] = coords.z;
+					texCoords[3] = coords.w;
+				}
+
+				float density, friction;
+				if (object->GetComponent<Physics>())
+				{
+					hasPhysics = true;
+					density = object->GetComponent<Physics>()->GetDensity();
+					friction = object->GetComponent<Physics>()->GetFriction();
+				}
+
 				ImGui::PushItemWidth(250); // Sets the pixel width of the input boxes
 
-				if (ImGui::InputText("Name", (char*)name.c_str(), 30, ImGuiInputTextFlags_EnterReturnsTrue))
-					object->SetName(name);
+				if (ImGui::InputText("Name", nameChar, 20, ImGuiInputTextFlags_EnterReturnsTrue))
+				{
+					object->SetName(nameChar);
+				}
 				ImGui::DragFloat("X Position", &position[0], 18.0f, -315.0f, 315.0f);
 				ImGui::DragFloat("Y Position", &position[1], 18.0f, -171.0f, 171.0f);
 				ImGui::DragFloat("Depth", &depth, 0.005f, 0.0f, 1.0f);
@@ -402,6 +427,15 @@ void Graphics::RenderFrame(Scene* scene)
 				ImGui::DragFloat2("Scale", scale, 0.05f, -100, 100);
 				ImGui::SameLine();
 				ImGui::Checkbox("Link scaling", &linkScaling);
+				if (hasAppearance)
+				{
+					ImGui::DragFloat4("Texture Coords", texCoords, 1.0f, 0.0f, 10.0f);
+				}
+				if (hasPhysics)
+				{
+					ImGui::DragFloat("Density", &density, 0.025f, 0.0f, 100.0f);
+					ImGui::DragFloat("Friction", &friction, 0.0025f, 0.0f, 1.0f);
+				}
 				if (ImGui::Button("Reset"))
 				{
 					depth = 0.0f;
@@ -417,6 +451,15 @@ void Graphics::RenderFrame(Scene* scene)
 					scale[1] = scale[0];
 				object->GetTransform()->SetScale(scale[0], scale[1]);
 				object->GetTransform()->SetRotation(rotation);
+				if (hasAppearance)
+				{
+					object->GetComponent<Appearance>()->SetTexCoords(texCoords[0], texCoords[1], texCoords[2], texCoords[3]);
+				}
+				if (hasPhysics)
+				{
+					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.density = density;
+					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.friction = friction;
+				}
 			}
 			loopNum++;
 		}
@@ -424,6 +467,7 @@ void Graphics::RenderFrame(Scene* scene)
 	}
 	if (ImGui::Button("Save"))
 	{
+		scene->Save();
 	}
 	ImGui::End();
 
