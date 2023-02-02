@@ -4,9 +4,7 @@
 Examples::Examples()
 {
 	// Instantiate the PlayerInput
-	playerInput = new PlayerInput();
-	// Make this PlayerInput use the left hand side of the keyboard
-	playerInput->SetDeviceType(KeyboardLeft);
+	playerInput = new PlayerInput(1);
 
 	// Create a SoundEffect with the specified file path
 	soundEffect = new SoundEffect("Resources/Laser_Shoot3.wav");
