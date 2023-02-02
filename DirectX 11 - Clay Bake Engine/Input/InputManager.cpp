@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <debugapi.h>
+#include "../ErrorLogger.h"
 
 InputManager::InputManager()
 {
@@ -13,8 +14,12 @@ InputManager::~InputManager()
 	_inputs.clear();
 }
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT InputManager::WindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(GetActiveWindow(), uMsg, wParam, lParam))
+		return true;
+
 	switch (uMsg)
 	{ // Keyboard Messages
 	case WM_KEYDOWN:
@@ -169,6 +174,19 @@ void InputManager::Debug()
 void InputManager::RegisterPlayerInput(PlayerInput* playerInput)
 {
 	_inputs.push_back(playerInput);
+
+	switch (playerInput->GetID())
+	{
+	case 1:
+		playerInput->SetDeviceType(KeyboardLeft);
+		break;
+	case 2:
+		playerInput->SetDeviceType(KeyboardRight);
+		break;
+	default:
+		ErrorLogger::Log("Invalid PlayerInput ID " + playerInput->GetID());
+		break;
+	}
 }
 
 void InputManager::UnregisterPlayerInput(PlayerInput* playerInput)

@@ -1,5 +1,6 @@
 #include "MousePicking.h"
 #include "../../GameObjects/ObjectHandler.h"
+#include "../../Graphics/Graphics.h"
 
 #include <DirectXCollision.h>
 
@@ -9,34 +10,36 @@ void MousePicking::Initialise(int width, int height) // Currently only being use
 	_height = height;
 }
 
-int MousePicking::TestForObjectIntersection(int mouseX, int mouseY, int currentObj)
+GameObject* MousePicking::TestForObjectIntersection(int mouseX, int mouseY)
 {
 	DirectX::BoundingBox objBox;
 	DirectX::BoundingSphere mouseSphere;
 	DirectX::XMINT2 mousePos = GetRelativeMousePos(mouseX, mouseY);
+	mousePos = SnapCoordinatesToGrid(mousePos.x, mousePos.y);
 
-	int objectNum = 0;
 	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 	{
-		objBox.Center = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y, object->GetTransform()->GetDepthPos() };
+		if (object->GetName() == JSON_SCENE_BACKGROUND)
+			continue;
+
+		/*objBox.Center = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y, object->GetTransform()->GetDepthPos() };
 		objBox.Extents = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y, 0.0f };
-		
+
 		mouseSphere.Center = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y), 0.0f };
-		mouseSphere.Radius = 10.0f;
+		mouseSphere.Radius = 20.0f; // Cursor picking size
 
 		if (mouseSphere.Intersects(objBox))
-		{
-			return objectNum;
-		}
-		objectNum++;
+			return object;*/
+		if (object->GetTransform()->GetPosition().x == mousePos.x && object->GetTransform()->GetPosition().y == mousePos.y)
+			return object;
 	}
 
-	return -1;
+	return nullptr;
 }
 
 DirectX::XMINT2 MousePicking::GetRelativeMousePos(int mouseX, int mouseY)
 {
-	int width = 0;
+	/*int width = 0;
 	int height = 0;
 
 	RECT rc;
@@ -58,34 +61,25 @@ DirectX::XMINT2 MousePicking::GetRelativeMousePos(int mouseX, int mouseY)
 		float diff = height / monitorHeight;
 		mouseX *= (width / monitorWidth);
 		mouseY *= (height / (monitorHeight - 39));
-	}
+	}*/
 
-	return { mouseX - (width / 2), -(mouseY - (height / 2)) };
+	float scaleX = _width / INTERNAL_RESOLUTION_X;
+	float scaleY = _height / INTERNAL_RESOLUTION_Y;
+	return DirectX::XMINT2((mouseX - (_width / 2)) / scaleX, -(mouseY - (_height / 2)) / scaleY);
 }
 
 DirectX::XMINT2 MousePicking::SnapCoordinatesToGrid(int posX, int posY)
 {
-	int snapScale = 20; // Edit this to change the snapping
-	DirectX::XMINT2 returnPos = { posX, posY };
+	DirectX::XMINT2 returnPos = { posX + _width / 2, posY + _height / 2 };
 
-	int roundedX = (returnPos.x / snapScale) * snapScale;
-	int roundedY = (returnPos.y / snapScale) * snapScale;
-	int xDiff = returnPos.x - roundedX;
-	int yDiff = returnPos.y - roundedY;
-
-	if (xDiff >= snapScale / 2)
-		returnPos.x = roundedX + snapScale;
-	else if (xDiff <= -snapScale / 2)
-		returnPos.x = roundedX - snapScale;
-	else
-		returnPos.x = roundedX;
-
-	if (yDiff >= snapScale / 2)
-		returnPos.y = roundedY + snapScale;
-	else if (yDiff <= -snapScale / 2)
-		returnPos.y = roundedY - snapScale;
-	else
-		returnPos.y = roundedY;
+	returnPos.x /= snapScale;
+	returnPos.y /= snapScale;
+	returnPos.x *= snapScale;
+	returnPos.y *= snapScale;
+	returnPos.x -= _width / 2;
+	returnPos.y -= _height / 2;
+	returnPos.x += snapScale / 2;
+	returnPos.y += snapScale / 2;
 
 	return returnPos;
 }

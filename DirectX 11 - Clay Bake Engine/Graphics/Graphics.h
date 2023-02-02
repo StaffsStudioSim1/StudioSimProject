@@ -8,6 +8,9 @@
 #include <DirectXMath.h>
 #include <DDSTextureLoader.h>
 
+#define INTERNAL_RESOLUTION_X 648
+#define INTERNAL_RESOLUTION_Y 360
+
 struct SimpleVertex
 {
 	DirectX::XMFLOAT3 Pos;

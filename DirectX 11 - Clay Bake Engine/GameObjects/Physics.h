@@ -18,6 +18,9 @@ public:
 	b2World* CreatePhysicsWorld(float gravity);
 	PhysicsWorld* GetWorld();
 
+	PhysicsBody* CreateBody(PhysicsBody* _body);
+	PhysicsBody* GetPhysicsBody();
+//	void DestroyBody();
 	Vector2 GetPosition();
 	float GetAngleDegress();
 	float GetAngleRadians();
@@ -32,11 +35,16 @@ public:
 	void ApplyForceToPointOnObj(Vector2& force, Vector2& point, bool wake);
 	void ApplyForceToObj(Vector2 force, bool wake);
 
+	float GetDensity() { return _objectPhysicsBody->bodyDef.density; }
+	float GetFriction() { return _objectPhysicsBody->bodyDef.friction; }
+
 	HitBoxDefnintions CreateHitBox(Vector2 scale);
 	void FixHitboxToBody(HitBoxDefnintions* hitbox, float density);
 	void DeleteHitBox(b2Fixture* fixture);
 
 	BodyDefinition SetCorrectBodyDef(PhysicsBody input, PhysicsBodyType type);
+	PhysicsBody GetCollisionsWithBody();
+	bool IsObjectCollidingwith(PhysicsBody input);
 private:
 	Transform* _pTransform;
 	PhysicsInterface* _pPhysicsInterface;

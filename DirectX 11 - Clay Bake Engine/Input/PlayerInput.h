@@ -10,7 +10,7 @@ enum Action { Movement, Jump, Interact, Magnet, Pause };
 class PlayerInput
 {
 public:
-	PlayerInput();
+	PlayerInput(int id);
 	~PlayerInput();
 
 	// Only call from InputManager
@@ -32,7 +32,10 @@ public:
 	DeviceType GetDeviceType();
 	// Bind this to the specified DeviceType
 	void SetDeviceType(DeviceType deviceType);
+
+	int GetID();
 private:
+	int _id;
 	DeviceType _deviceType;
 	ActionMap _actionMap;
 

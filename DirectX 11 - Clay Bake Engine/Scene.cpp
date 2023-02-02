@@ -18,9 +18,12 @@ Scene::Scene(std::string filePath)
 
 	json data = json::parse(f);
 
-	std::string image = data["background_image"];
+	std::string imagePath = data[JSON_SCENE_BACKGROUND];
+	_backgroundImage = new GameObject((std::string) JSON_SCENE_BACKGROUND);
+	_backgroundImage->GetTransform()->SetDepthPos(1.0f);
+	_backgroundImage->AddComponent(new Appearance(imagePath));
 
-	for (json objectData : data["gameObjects"])
+	for (json objectData : data[JSON_SCENE_GAMEOBJECTS])
 		_children.push_back(new GameObject(objectData));
 
 #if EDIT_MODE
@@ -29,6 +32,8 @@ Scene::Scene(std::string filePath)
 	int width = (rc.right - rc.left) - 16;
 	int height = (rc.bottom - rc.top) - 39;
 	_mousePicking.Initialise(width, height);
+	_geometry = ObjectHandler::GetInstance().GetSquareGeometry();
+	_texture = ObjectHandler::GetInstance().LoadDDSTextureFile("Resources/Textures/" + _textureNames[_textureNum]);
 #endif
 }
 
@@ -37,6 +42,27 @@ Scene::~Scene()
 	for (GameObject* obj : _children)
 		delete obj;
 	_children.clear();
+
+	delete _backgroundImage;
+}
+
+void Scene::Save()
+{
+	json scene;
+	json gameObjects;
+
+	scene[JSON_SCENE_BACKGROUND] = "";
+
+	for (GameObject* obj : _children)
+	{
+		gameObjects.push_back(obj->Write());
+	}
+
+	scene["gameObjects"] = gameObjects;
+
+	std::ofstream o("Resources/saved_scene.json");
+	o << std::setw(4) << scene << std::endl;
+	o.close();
 }
 
 void Scene::Start()
@@ -48,44 +74,66 @@ void Scene::Start()
 void Scene::Update(float deltaTime)
 {
 #if EDIT_MODE
-	static int selectedObj = -1;
+	static GameObject* selectedObj = nullptr;
+	static DirectX::XMINT2 startingPos = { 0, 0 };
 
 	MouseClass* mouse = InputManager::GetInstance().GetMouse();
 	DirectX::XMINT2 mousePos = { mouse->GetPosX(), mouse->GetPosY() };
 
+	DirectX::XMINT2 relPos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
+	relPos = _mousePicking.SnapCoordinatesToGrid(relPos.x, relPos.y);
+	_ghost.x = relPos.x;
+	_ghost.y = relPos.y;
+
 	while (!mouse->EventBufferIsEmpty()) // Handles moving, creating and deleting objects with the mouse in edit mode
 	{
 		MouseEvent me = mouse->ReadEvent();
-		if (me.GetType() == MouseEvent::EventType::LPress && selectedObj == -1) // Probably can be changed to a switch statement
+		// Pickup Tile
+		if (me.GetType() == MouseEvent::EventType::LPress && !selectedObj) // Probably can be changed to a switch statement
 		{
-			selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y, selectedObj);
+			selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y);
+			if (selectedObj)
+			{
+				Vector2 pos = selectedObj->GetTransform()->GetPosition();
+				startingPos = { (int)pos.x, (int)pos.y };
+			}
 		}
-		else if (me.GetType() == MouseEvent::EventType::LRelease && selectedObj != -1)
+		// Drop tile at position
+		else if (me.GetType() == MouseEvent::EventType::LRelease && selectedObj)
 		{
-			GameObject* object = ObjectHandler::GetInstance().GetGameObject(selectedObj);
-			Vector2 objectPos = object->GetTransform()->GetPosition();
+			Vector2 objectPos = selectedObj->GetTransform()->GetPosition();
 			DirectX::XMINT2 snapPos = _mousePicking.SnapCoordinatesToGrid(objectPos.x, objectPos.y);
-			object->GetTransform()->SetPosition(snapPos.x, snapPos.y);
-			selectedObj = -1;
+
+			for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+			{
+				if (object != selectedObj && object->GetTransform()->GetPosition().x == snapPos.x && object->GetTransform()->GetPosition().y == snapPos.y)
+				{
+					selectedObj->GetTransform()->SetPosition(startingPos.x, startingPos.y);
+					selectedObj = nullptr;
+					return;
+				}
+			}
+
+			selectedObj->GetTransform()->SetPosition(snapPos.x, snapPos.y);
+			selectedObj = nullptr;
 		}
-		else if (selectedObj != -1)
+		// If an object is following the cursor
+		else if (selectedObj)
 		{
-			GameObject* object = ObjectHandler::GetInstance().GetGameObject(selectedObj);
 			DirectX::XMINT2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
-			object->GetTransform()->SetPosition(relativeMousePos.x, relativeMousePos.y);
+			selectedObj->GetTransform()->SetPosition(relativeMousePos.x, relativeMousePos.y);
 
 			if (me.GetType() == MouseEvent::EventType::MPress) // Remove the currently selected game object
 			{
-				_children.erase(_children.begin() + selectedObj);
-				ObjectHandler::GetInstance().Unregister(object);
-				selectedObj = -1;
+				_children.erase(std::remove(_children.begin(), _children.end(), selectedObj), _children.end());
+				delete selectedObj;
+				selectedObj = nullptr;
 			}
 		}
-		else if (me.GetType() == MouseEvent::EventType::RPress && selectedObj == -1) // Creates a new game object
+		// Create a new tile
+		else if (me.GetType() == MouseEvent::EventType::RPress && !selectedObj) // Creates a new game object
 		{
 			static int objNum = 0;
-			DirectX::XMINT2 relPos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
-			relPos = _mousePicking.SnapCoordinatesToGrid(relPos.x, relPos.y);
 
 			for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 			{
@@ -100,23 +148,27 @@ void Scene::Update(float deltaTime)
 			tempObj->AddComponent(component);
 			_children.push_back(tempObj);
 		}
-		else if (me.GetType() == MouseEvent::EventType::WheelUp && selectedObj == -1) // Changes the texture that the next game object will be created with
+		// Change tile type to be made
+		else if (me.GetType() == MouseEvent::EventType::WheelUp && !selectedObj) // Changes the texture that the next game object will be created with
 		{
 			_textureNum += 1;
 			if (_textureNum == _textureNames.size())
 				_textureNum = 0;
+			_texture = ObjectHandler::GetInstance().LoadDDSTextureFile("Resources/Textures/" + _textureNames[_textureNum]);
 		}
-		else if (me.GetType() == MouseEvent::EventType::WheelDown && selectedObj == -1)
+		// Change tile type to be made
+		else if (me.GetType() == MouseEvent::EventType::WheelDown && !selectedObj)
 		{
 			_textureNum -= 1;
 			if (_textureNum < 0)
 				_textureNum = _textureNames.size() - 1;
+			_texture = ObjectHandler::GetInstance().LoadDDSTextureFile("Resources/Textures/" + _textureNames[_textureNum]);
 		}
 	}
-#endif
-
+#else
 	for (GameObject* obj : _children)
 		obj->Update(deltaTime);
+#endif
 }
 
 void Scene::FixedUpdate(float timeStep)
@@ -136,4 +188,27 @@ void Scene::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, Constant
 {
 	for (GameObject* object : _children)
 		object->Render(context, constantBuffer, globalBuffer);
+	_backgroundImage->Render(context, constantBuffer, globalBuffer);
+#if EDIT_MODE
+	DirectX::XMMATRIX world =
+		DirectX::XMMatrixScaling(_texture.width / 2,_texture.height / 2, 1.0f)
+		* DirectX::XMMatrixTranslation(_ghost.x, _ghost.y, 0.0f);
+
+	constantBuffer.mWorld = DirectX::XMMatrixTranspose(world);
+	constantBuffer.mTexCoord = {
+		1.0f, 0.0f, 0.0f, (float)_texture.width,
+		0.0f, 1.0f, 0.0f, (float)_texture.height,
+		0.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f
+	};
+	constantBuffer.mAlphaMultiplier = 0.2f;
+
+	context->UpdateSubresource(globalBuffer.Get(), 0, nullptr, &constantBuffer, 0, 0);
+
+	// Draw object
+	context->PSSetShaderResources(0, 1, &_texture.texture);
+	context->IASetVertexBuffers(0, 1, _geometry.vertexBuffer.GetAddressOf(), &_geometry.vertexBufferStride, &_geometry.vertexBufferOffset);
+	context->IASetIndexBuffer(_geometry.indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+	context->DrawIndexed(_geometry.numOfIndices, 0, 0);
+#endif
 }

@@ -1,8 +1,9 @@
 #include "PlayerInput.h"
 #include "InputManager.h"
 
-PlayerInput::PlayerInput()
+PlayerInput::PlayerInput(int id)
 {
+	_id = id;
 	InputManager::GetInstance().RegisterPlayerInput(this);
 	FillButtonMap(_actionDown);
 	FillButtonMap(_actionHeld);
@@ -179,6 +180,11 @@ void PlayerInput::SetDeviceType(DeviceType deviceType)
 		_actionMap.pauseKeyCode = -1;
 		break;
 	}
+}
+
+int PlayerInput::GetID()
+{
+	return _id;
 }
 
 bool PlayerInput::GetValue(std::map<Action, bool>& map, Action action)
