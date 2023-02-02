@@ -1,7 +1,10 @@
 #pragma once
 #include "Component.h"
 #include "Physics.h"
+
 #include <string>
+#include <iostream>
+using namespace std;
 
 class GameManager :
     public Component
