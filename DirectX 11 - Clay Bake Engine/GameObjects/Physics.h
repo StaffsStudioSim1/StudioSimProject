@@ -20,7 +20,7 @@ public:
 
 	PhysicsBody* CreateBody(PhysicsBody* _body);
 	PhysicsBody* GetPhysicsBody();
-	void DestroyBody();
+//	void DestroyBody();
 	Vector2 GetPosition();
 	float GetAngleDegress();
 	float GetAngleRadians();
@@ -35,7 +35,6 @@ public:
 	void ApplyForceToPointOnObj(Vector2& force, Vector2& point, bool wake);
 	void ApplyForceToObj(Vector2 force, bool wake);
 
-	PhysicsBody* GetPhysicsBody() { return _objectPhysicsBody; }
 	float GetDensity() { return _objectPhysicsBody->bodyDef.density; }
 	float GetFriction() { return _objectPhysicsBody->bodyDef.friction; }
 

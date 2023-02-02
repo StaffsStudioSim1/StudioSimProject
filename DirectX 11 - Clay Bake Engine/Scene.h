@@ -5,7 +5,7 @@
 #include "Graphics/ConstantBuffer.h"
 #include "Graphics/TextureInfo.h"
 
-#define EDIT_MODE true
+#define EDIT_MODE false
 
 #if EDIT_MODE
 #include "Input/Mouse/MousePicking.h"

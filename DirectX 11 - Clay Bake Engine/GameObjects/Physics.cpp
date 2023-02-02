@@ -132,7 +132,7 @@ void Physics::ApplyForceToObj(Vector2 force, bool wake)
 
 HitBoxDefnintions Physics::CreateHitBox(Vector2 scale)
 {
-	b2Vec2 halfScale; halfScale.x = scale.x * 13; halfScale.y = scale.y * 13;
+	b2Vec2 halfScale; halfScale.x = scale.x * 6.5f; halfScale.y = scale.y * 6.5f;
 
 	HitBoxDefnintions output; output.hitBox = _pPhysicsInterface->CreateHitBox(halfScale);
 	return output;
@@ -200,11 +200,13 @@ bool Physics::IsObjectCollidingwith(PhysicsBody input)
 	b2Body* test;
 	bool contact = false;
 	
+
 		for (b2ContactEdge* edge = _objectPhysicsBody->body->GetContactList(); edge != nullptr; edge = edge->next)
 		{
 			if (edge->other == input.body && edge->contact->IsTouching())
 			{
 					contact = true;
+					break;
 			}
 		}
 

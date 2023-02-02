@@ -104,17 +104,11 @@ void ClayEngine::Update()
 		return;
 	InputManager::GetInstance().PollInput();
 
-	if (_physicsRunning)
-		_physicsWorld->world->Step(deltaTimeFixed, 8, 3);
-
-
-
 	_ex->Update();
 	if (_scene != nullptr)
 		_scene->Update(deltaTime);
 
-
-	if (ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->GetPhysicsBody()))
+	if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()->GetPhysicsBody()))
 	{
 		OutputDebugStringA("obj 1 and 2 have collided \n");
 	}
@@ -129,6 +123,7 @@ void ClayEngine::Update()
 		_scene = SceneManager::GetInstance().ReadScene();
 		_scene->Start();
 	}
+
 
 }
 
