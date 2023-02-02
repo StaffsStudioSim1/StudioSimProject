@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "GameObjects/ObjectHandler.h"
 
+
 bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
 {
 	if (!this->render_window.Initialize(this, hInstance, window_title, window_class, width, height))
@@ -33,17 +34,14 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
-	//#if EDIT_MODE
-	//	_scene = new Scene("Resources/demo.json");
-	//#else
-	//	_scene = new Scene("Resources/demo.json");
-	//#endif
-	_scene = new Scene("Resources/demo.json");
+	SceneManager::GetInstance().LoadScene("Resources/demo.json");
 	return true;
 }
 
 void ClayEngine::Destroy()
 {
+	if (_scene)
+		delete _scene;
 	delete _ex;
 }
 
@@ -124,17 +122,12 @@ void ClayEngine::Update()
 	}
 
 
-
 	dwTimeStart = dwTimeCur;
 #endif
 }
 
 void ClayEngine::RenderFrame()
 {
-	//#if EDIT_MODE
-	//	gamefx.RenderFrame(_scene);
-	//#else
-	//	gamefx.RenderFrame(_scene);
-	//#endif
-	gamefx.RenderFrame(_scene);
+	if (_scene)
+		gamefx.RenderFrame(_scene);
 }

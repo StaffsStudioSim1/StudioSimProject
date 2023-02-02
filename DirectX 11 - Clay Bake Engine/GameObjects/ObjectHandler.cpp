@@ -46,6 +46,14 @@ void ObjectHandler::Initialise(Microsoft::WRL::ComPtr<ID3D11Device> device)
 	_device = device;
 }
 
+GameObject* ObjectHandler::FindGameObject(std::string name)
+{
+	for (GameObject* object : _gameObjects)
+		if (object->GetName() == name)
+			return object;
+	return nullptr;
+}
+
 void ObjectHandler::Register(GameObject* object)
 {
 	_gameObjects.push_back(object);
