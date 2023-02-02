@@ -46,7 +46,7 @@ void PlayerController::Update(float deltaTime)
 		MagnetReleased();
 	}
 
-
+	//Pause
 	if (_playerInput->IsActionDown(Pause))
 	{
 		PausePressed();
@@ -75,7 +75,7 @@ void PlayerController::FixedUpdate(float timeStep)
 		{
 			if (!isFlipped)
 			{
-				_physicsBody->ApplyForceToObj(_jumpForce * 1000, true);
+				_physicsBody->ApplyForceToObj(_jumpForce, true);
 			}
 			else
 			{

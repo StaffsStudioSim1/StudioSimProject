@@ -34,7 +34,7 @@ private:
     bool _movementEnabled = true;
 
     Vector2 _currentMovement;
-    Vector2 _jumpForce = {0.0f, 1000.0f};
+    Vector2 _jumpForce = {0.0f, 10000.0f};
 
     //Functions
     void JumpPressed();

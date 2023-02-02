@@ -52,7 +52,7 @@ GameObject::GameObject(json objectJson)
 			PhysicsBody* body = new PhysicsBody();
 			body->bodyDef.startPos = _transform.GetPosition();
 			body->bodyDef.startingRoatation = _transform.GetRotation();
-			body->bodyDef.density = 0.1f;
+			body->bodyDef.density = 0.5f;
 			body->bodyDef.friction = 1.0f;
 			body->hitboxdef.bodyType = dynamic ? Dynmaic : Static;
 			body->hitboxdef.scaleX = _transform.GetScale().x;
