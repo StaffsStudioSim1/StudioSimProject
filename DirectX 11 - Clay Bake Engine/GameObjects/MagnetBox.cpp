@@ -10,7 +10,7 @@ void MagnetBox::isBeingMagnetised(Vector2 pushingPlayerPos, MagnetDirection forc
 		break;
 	case PushAway:
 		//Force to add -(pushingPlayerPos - (Vector2)transform.position)*m_pushForce
-		m_Physics->ApplyForceToObj(-(pushingPlayerPos - (Vector2)m_Physics->GetPosition() * m_PushForce), true);
+		m_Physics->ApplyForceToObj(GetNegVer(pushingPlayerPos - (Vector2)m_Physics->GetPosition() * m_PushForce), true);
 
 		break;
 	default:
@@ -27,5 +27,5 @@ void MagnetBox::Start()
 
 void MagnetBox::Stop()
 {
-
+	
 }
