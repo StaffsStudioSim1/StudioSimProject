@@ -162,6 +162,9 @@
     <ClCompile Include="GameObjects\Physics.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\MovingPlatform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StringConverter.h">
@@ -275,6 +278,9 @@
     <ClInclude Include="Input\Mouse\MousePicking.h">
       <Filter>Header Files\Input\Mouse</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjects\MovingPlatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="vertexshader.hlsl">
@@ -286,5 +292,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\MovingPlatform.dds" />
+    <Image Include="Resources\Textures\MovingPlatform.dds" />
   </ItemGroup>
 </Project>

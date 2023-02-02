@@ -18,20 +18,38 @@
 			]
 		},
 		{
-			"name" : "test2",
-			"position" : [0.0, -100.0, 1.0],
-			"rotation" : 0.0,
-			"scale" : [1.0, 1.0],
-			"components" : [
+			"name": "test2",
+			"position": [ 0.0, -100.0, 1.0 ],
+			"rotation": 0.0,
+			"scale": [ 1.0, 1.0 ],
+			"components": [
 				{
-					"class" : "Appearance",
-					"constructors" : ["Resources/Textures/Test2.dds", 3.0, 2.0, 0.0, 0.0, 1.0]
+					"class": "Appearance",
+					"constructors": [ "Resources/Textures/Test2.dds", 3.0, 2.0, 0.0, 0.0, 1.0 ]
 				},
 				{
-					"class" : "PlayerController"
+					"class": "PlayerController"
 				},
 				{
-					"class" : "Physics"
+					"class": "Physics"
+				}
+			]
+		},
+		{
+			"name": "MovingPlatfrom",
+			"position": [ 0.0, -200.0, 0.0 ],
+			"rotation": 0.0,
+			"scale": [ 1.0, 1.0 ],
+			"components": [
+				{
+					"class": "Appearance",
+					"constructors": [ "Resources/Textures/MovingPlatform.dds", 1.0, 1.0, 0.0, 0.0, 1.0 ]
+				},
+				{
+					"class": "Physics"
+				},
+				{
+					"class": "MovingPlatfrom"
 				}
 			]
 		}

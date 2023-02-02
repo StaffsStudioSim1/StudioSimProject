@@ -7,6 +7,7 @@
 #include "PlayerMagnetism.h"
 #include "MagnetismObject.h"
 #include "MagnetBox.h"
+#include "MovingPlatform.h"
 
 GameObject::GameObject(std::string name) : GameObject(name, Vector3(0.0f, 0.0f, 0.0f), Vector2(1.0f, 1.0f), 0.0f)
 {
@@ -55,6 +56,10 @@ GameObject::GameObject(json objectJson)
 		else if (type == "MagnetBox")
 		{
 			component = new MagnetBox();
+		}
+		else if (type == "MovingPlatform")
+		{
+			component = new MovingPlatform();
 		}
 		else if (type == "Physics")
 		{

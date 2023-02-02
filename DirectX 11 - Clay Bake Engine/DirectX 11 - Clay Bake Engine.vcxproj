@@ -170,6 +170,7 @@
     <ClCompile Include="GameObjects\PlayerController.cpp" />
     <ClCompile Include="GameObjects\MagnetBox.cpp" />
     <ClCompile Include="Input\Mouse\MousePicking.cpp" />
+    <ClCompile Include="GameObjects\MovingPlatform.cpp" />
     <ClCompile Include="Physics\PhysicsInterface.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="GameObjects\MagnetismObject.h" />
     <ClInclude Include="GameObjects\MagnetBox.h" />
     <ClInclude Include="Input\Mouse\MousePicking.h" />
+    <ClInclude Include="GameObjects\MovingPlatform.h" />
     <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="GameObjects\PlayerMagnetism.h" />
     <ClInclude Include="GameObjects\PlayerController.h" />
@@ -247,6 +249,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\MovingPlatform.dds" />
+    <Image Include="Resources\Textures\MovingPlatform.dds" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
