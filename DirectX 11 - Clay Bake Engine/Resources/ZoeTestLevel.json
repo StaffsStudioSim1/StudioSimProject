@@ -1,5 +1,5 @@
 {
-	"background_image" : "Resources/DemoLevel.dds",
+	"backgroundImage" : "Resources/Textures/ZoeLevel.dds",
 	"gameObjects" : [
 		{
 			"name" : "test",
@@ -12,7 +12,8 @@
 					"constructors" : ["Resources/Textures/Test.dds", 1.0, 1.0, 0.0, 0.0, 1.0]
 				},
 				{
-					"class" : "PlayerController"
+					"class" : "PlayerController",
+					"constructors" : [1]
 				},
 				{
 					"class" : "Physics",

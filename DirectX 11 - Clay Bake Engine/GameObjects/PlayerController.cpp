@@ -1,18 +1,45 @@
 #include "PlayerController.h"
 
+PlayerController::PlayerController(int id)
+{
+	_playerID = id;
+}
+
+PlayerController::~PlayerController()
+{
+
+}
+
+json PlayerController::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "PlayerController";
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_playerID);
+	return me;
+}
+
 void PlayerController::Start()
 {
 	int ActivePlayerCount = 0;
 
 	//Create new PlayerInput
-	_playerInput = new PlayerInput();
+	_playerInput = new PlayerInput(_playerID);
 
 	//Get the player's PhysicsBody
 	_physicsBody = _gameObject->GetComponent<Physics>();
 
-	//Set player device type
-	//TODO: Change depending on what was pressed
-	_playerInput->SetDeviceType(KeyboardLeft);
+	//TEMP
+	switch (_playerID)
+	{
+	default:
+		//leave unassigned
+	case 1:
+		_playerInput->SetDeviceType(KeyboardLeft);
+		break;
+	case 2:
+		_playerInput->SetDeviceType(KeyboardRight);
+		break;
+	}
 }
 
 void PlayerController::Update(float deltaTime)
@@ -35,7 +62,7 @@ void PlayerController::Update(float deltaTime)
 	{
 		InteractPressed();
 	}
-	
+
 	//Magnet
 	if (_playerInput->IsActionHeld(Magnet))
 	{
@@ -86,6 +113,7 @@ void PlayerController::FixedUpdate(float timeStep)
 		{
 			_isJumping = false;
 		}
+		_isJumping = false;
 	}
 }
 

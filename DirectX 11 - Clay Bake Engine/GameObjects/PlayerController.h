@@ -10,9 +10,13 @@ class PlayerController : public Component
 public:
 
     //Variables
-    bool isFlipped;
+    bool isFlipped = false;
 
     //Functions
+    PlayerController(int id);
+    ~PlayerController();
+
+    json Write() override;
     void Start() override;
     void Update(float deltaTime) override;
     void FixedUpdate(float timeStep) override;
@@ -24,6 +28,7 @@ private:
     PlayerInput* _playerInput;
     Physics* _physicsBody;
 
+    int _playerID;
     float _moveSpeed = 10000.0f;
     float _topSpeed = 10000.0f;
     float _midAirControlDelay;
