@@ -71,14 +71,20 @@ typedef struct Vector3
 
 
 Vector2 operator+(const Vector2& j, const Vector2& k);
+Vector2 operator+(const Vector2& j, const float& k);
 Vector2 operator-(const Vector2& j, const Vector2& k);
+Vector2 operator-(const Vector2& j, const float& k);
+Vector2 operator-(const Vector2& j);
 Vector2 operator*(const Vector2& j, const Vector2& k);
 Vector2 operator*(const Vector2& j, float k);
 bool operator==(const Vector2& j, const Vector2& k);
 bool operator!=(const Vector2& j, const Vector2& k);
 
 Vector3 operator+(const Vector3& j, const Vector3& k);
+Vector3 operator+(const Vector3& j, const float& k);
 Vector3 operator-(const Vector3& j, const Vector3& k);
+Vector3 operator-(const Vector3& j, const float& k);
+Vector3 operator-(const Vector3& j);
 Vector3 operator*(const Vector3& j, const Vector3& k);
 Vector3 operator*(const Vector3& j, float k);
 bool operator==(const Vector3& j, const Vector3& k);
