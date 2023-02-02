@@ -1,5 +1,8 @@
 #include "Graphics.h"
 #include "../GameObjects/ObjectHandler.h"
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_win32.h"
+#include "ImGui/imgui_impl_dx11.h"
 
 bool Graphics::Initialize(HWND hwnd, int width, int height)
 {
@@ -25,7 +28,15 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	DirectX::XMStoreFloat4x4(&_view, DirectX::XMMatrixLookAtLH(eye, at, up));
 
 	// Projection matrix
-	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixOrthographicLH(width, height, 0.01f, 100.0f));
+	DirectX::XMStoreFloat4x4(&_projection, DirectX::XMMatrixOrthographicLH(INTERNAL_RESOLUTION_X, INTERNAL_RESOLUTION_Y, 0.01f, 100.0f));
+
+	//IMGUI SETUP
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui_ImplWin32_Init(hwnd);
+	ImGui_ImplDX11_Init(this->_device.Get(), this->_deviceContext.Get());
+	ImGui::StyleColorsDark();
 
 	return true;
 }
@@ -126,7 +137,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		viewport.TopLeftX = 0;
 		viewport.TopLeftY = 0;
 		viewport.Width = width;
-		viewport.Height = height + 1;
+		viewport.Height = height;
 		viewport.MinDepth = 0;
 		viewport.MaxDepth = 1;
 
@@ -349,6 +360,121 @@ void Graphics::RenderFrame(Scene* scene)
 	this->_deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
 	scene->Render(this->_deviceContext, cb, _constantBuffer);
+
+#if EDIT_MODE
+	//UI
+//CREATE FRAME
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	//UI WINDOWS
+
+	static bool linkScaling = true;
+	ImGui::Begin("Inspector");
+	if (ImGui::TreeNode("Game Objects"))
+	{
+		int loopNum = 0;
+		for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+		{
+			// Use SetNextItemOpen() so set the default state of a node to be open. We could
+			// also use TreeNodeEx() with the ImGuiTreeNodeFlags_DefaultOpen flag to achieve the same thing!
+			if (loopNum == 0)
+				ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+
+			if (ImGui::TreeNode(object->GetName().c_str()))
+			{
+				std::string name = object->GetName();
+				char nameChar[20];
+				strcpy_s(nameChar, name.c_str());
+
+				float position[2] = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y };
+				float depth = { object->GetTransform()->GetDepthPos() };
+				float rotation = { object->GetTransform()->GetRotation() };
+				float scale[2] = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y };
+
+				bool hasPhysics = false;
+				bool hasAppearance = false;
+
+				float texCoords[4] = { 0 };
+				if (object->GetComponent<Appearance>())
+				{
+					hasAppearance = true;
+					DirectX::XMFLOAT4 coords = object->GetComponent<Appearance>()->GetTexCoordFrameValues();
+					texCoords[0] = coords.x;
+					texCoords[1] = coords.y;
+					texCoords[2] = coords.z;
+					texCoords[3] = coords.w;
+				}
+
+				float density, friction;
+				if (object->GetComponent<Physics>())
+				{
+					hasPhysics = true;
+					density = object->GetComponent<Physics>()->GetDensity();
+					friction = object->GetComponent<Physics>()->GetFriction();
+				}
+
+				ImGui::PushItemWidth(250); // Sets the pixel width of the input boxes
+
+				if (ImGui::InputText("Name", nameChar, 20, ImGuiInputTextFlags_EnterReturnsTrue))
+				{
+					object->SetName(nameChar);
+				}
+				ImGui::DragFloat("X Position", &position[0], 18.0f, -315.0f, 315.0f);
+				ImGui::DragFloat("Y Position", &position[1], 18.0f, -171.0f, 171.0f);
+				ImGui::DragFloat("Depth", &depth, 0.005f, 0.0f, 1.0f);
+				ImGui::DragFloat("Rotation", &rotation, 0.025f, 0.0f, DirectX::XM_2PI);
+				ImGui::DragFloat2("Scale", scale, 0.05f, -100, 100);
+				ImGui::SameLine();
+				ImGui::Checkbox("Link scaling", &linkScaling);
+				if (hasAppearance)
+				{
+					ImGui::DragFloat4("Texture Coords", texCoords, 1.0f, 0.0f, 10.0f);
+				}
+				if (hasPhysics)
+				{
+					ImGui::DragFloat("Density", &density, 0.025f, 0.0f, 100.0f);
+					ImGui::DragFloat("Friction", &friction, 0.0025f, 0.0f, 1.0f);
+				}
+				if (ImGui::Button("Reset"))
+				{
+					depth = 0.0f;
+					scale[0] = 1.0f;
+					scale[1] = 1.0f;
+					rotation = 0.0f;
+				}
+				ImGui::TreePop();
+
+				object->GetTransform()->SetPosition(position[0], position[1]);
+				object->GetTransform()->SetDepthPos(depth);
+				if (linkScaling)
+					scale[1] = scale[0];
+				object->GetTransform()->SetScale(scale[0], scale[1]);
+				object->GetTransform()->SetRotation(rotation);
+				if (hasAppearance)
+				{
+					object->GetComponent<Appearance>()->SetTexCoords(texCoords[0], texCoords[1], texCoords[2], texCoords[3]);
+				}
+				if (hasPhysics)
+				{
+					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.density = density;
+					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.friction = friction;
+				}
+			}
+			loopNum++;
+		}
+		ImGui::TreePop();
+	}
+	if (ImGui::Button("Save"))
+	{
+		scene->Save();
+	}
+	ImGui::End();
+
+	//ASSEMBLE AND RENDER DRAW DATA
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+#endif
 
 	this->_swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }

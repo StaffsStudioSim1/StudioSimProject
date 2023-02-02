@@ -65,3 +65,8 @@ typedef struct PhysicsBody
 	HitBoxDefnintions hitboxdef;
 };
 
+
+struct BodyEdgeCollision
+{
+	b2ContactEdge* edge;
+};
