@@ -53,7 +53,7 @@ void Scene::Save()
 	json scene;
 	json gameObjects;
 
-	scene[JSON_SCENE_BACKGROUND] = "";
+	scene[JSON_SCENE_BACKGROUND] = "Resources/Textures/ZoeLevel.dds";
 
 	for (GameObject* obj : _children)
 	{

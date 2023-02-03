@@ -59,8 +59,16 @@ GameObject::GameObject(json objectJson)
 			PhysicsBody* body = new PhysicsBody();
 			body->bodyDef.startPos = _transform.GetPosition();
 			body->bodyDef.startingRoatation = _transform.GetRotation();
-			body->bodyDef.density = 0.1f;
-			body->bodyDef.friction = 1.0f;
+			if (componentJson.contains(JSON_COMPONENT_CONSTRUCTORS)) // So object with no constructor info in the files don't crash
+			{
+				body->bodyDef.density = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
+				body->bodyDef.friction = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(2);
+			}
+			else
+			{
+				body->bodyDef.density = 0.1f;
+				body->bodyDef.friction = 1.0f;
+			}
 			body->hitboxdef.bodyType = dynamic ? Dynmaic : Static;
 			body->hitboxdef.scaleX = _transform.GetScale().x;
 			body->hitboxdef.scaleY = _transform.GetScale().y;
