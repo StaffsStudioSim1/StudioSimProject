@@ -139,16 +139,14 @@ void Scene::Update(float deltaTime)
 		// Create a new tile
 		else if (me.GetType() == MouseEvent::EventType::RPress && !selectedObj) // Creates a new game object
 		{
-			static int objNum = 0;
-
 			for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 			{
 				if (object->GetTransform()->GetPosition().x == relPos.x && object->GetTransform()->GetPosition().y == relPos.y)
 					return;
 			}
 
-			GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { float(relPos.x), float(relPos.y), 0.0f }, { 1.0f, 1.0f }, 0.0f);
-			objNum++;
+			GameObject* tempObj = new GameObject("Object" + std::to_string(_objNum), { float(relPos.x), float(relPos.y), 0.0f }, { 1.0f, 1.0f }, 0.0f);
+			_objNum++;
 
 			Component* component = new Appearance("Resources/Textures/" + _textureNames[_textureNum]);
 			tempObj->AddComponent(component);

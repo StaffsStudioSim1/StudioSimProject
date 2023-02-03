@@ -64,6 +64,12 @@ GameObject* ObjectHandler::FindGameObject(int id)
 	return nullptr;
 }
 
+int ObjectHandler::SetObjectID()
+{
+	_objectID++;
+	return _objectID - 1;
+}
+
 void ObjectHandler::Register(GameObject* object)
 {
 	_gameObjects.push_back(object);

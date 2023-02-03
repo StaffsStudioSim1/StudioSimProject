@@ -4,8 +4,6 @@
 #include "Physics.h"
 #include "../Input/PlayerInput.h"
 
-static int idNumber = 0; // Gives each object a unique ID number
-
 GameObject::GameObject(std::string name) : GameObject(name, Vector3(0.0f, 0.0f, 0.0f), Vector2(1.0f, 1.0f), 0.0f)
 {
 }
@@ -17,8 +15,7 @@ GameObject::GameObject(std::string name, Vector3 position, Vector2 scale, float 
 	_transform.SetScale(scale);
 	_transform.SetRotation(rotation);
 
-	_id = idNumber;
-	idNumber++;
+	_id = ObjectHandler::GetInstance().SetObjectID();
 
 	ObjectHandler::GetInstance().Register(this);
 }
@@ -31,8 +28,7 @@ GameObject::GameObject(json objectJson)
 	_transform.SetScale(objectJson[JSON_GO_SCALE].at(0), objectJson[JSON_GO_SCALE].at(1));
 	_transform.SetRotation(DirectX::XMConvertToRadians(objectJson[JSON_GO_ROTATION]));
 
-	_id = idNumber;
-	idNumber++;
+	_id = ObjectHandler::GetInstance().SetObjectID();
 
 	for (json componentJson : objectJson[JSON_GO_COMPONENTS])
 	{

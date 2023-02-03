@@ -41,6 +41,7 @@ private:
 	Geometry _geometry;
 	Vector2 _ghost;
 	std::string _fileName = "";
+	int _objNum = 0;
 	std::vector<std::string> _textureNames = { "temp_tile.dds", "Test.dds", "Test2.dds" };
 	int _textureNum = 0;
 #endif

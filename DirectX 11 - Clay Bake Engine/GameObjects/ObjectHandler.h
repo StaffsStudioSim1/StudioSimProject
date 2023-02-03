@@ -27,6 +27,8 @@ public:
 	GameObject* FindGameObject(std::string name);
 	GameObject* FindGameObject(int id);
 
+	int SetObjectID();
+
 	void Register(GameObject* object);
 	void Unregister(GameObject* object);
 
@@ -43,6 +45,8 @@ private:
 	~ObjectHandler();
 
 	bool _initialised = false;
+
+	int _objectID = 0;
 
 	Microsoft::WRL::ComPtr <ID3D11Device>	_device;
 
