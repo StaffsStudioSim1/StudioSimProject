@@ -28,8 +28,18 @@ public:
 
 	json Write();
 
+	enum OBJECT_TYPE
+	{
+		OBJECT_DEFAULT = 0,
+		OBJECT_STATIC,
+		OBJECT_DYNAMIC,
+	};
+
 	int GetType() const noexcept { return _type; }
 	void SetType(int type) { _type = type; }
+
+	int GetID() const noexcept { return _id; }
+	void SetID(int id) { _id = id; }
 
 	template<typename T>
 	T* GetComponent()
@@ -43,7 +53,7 @@ public:
 
 	Transform* GetTransform() { return &_transform; }
 
-	// Stores a name for the object - might not be used
+	// Stores a name for the object
 	std::string GetName() const noexcept { return _name; }
 	void SetName(std::string name) { _name = name; }
 
@@ -55,6 +65,7 @@ public:
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 private:
 	int _type = 0;
+	int _id = 0;
 
 	std::string _name;
 

@@ -25,6 +25,7 @@ public:
 	std::vector<GameObject*> GetAllObjects() { return _gameObjects; }
 	GameObject* GetGameObject(int objNum) { return _gameObjects[objNum]; }
 	GameObject* FindGameObject(std::string name);
+	GameObject* FindGameObject(int id);
 
 	void Register(GameObject* object);
 	void Unregister(GameObject* object);

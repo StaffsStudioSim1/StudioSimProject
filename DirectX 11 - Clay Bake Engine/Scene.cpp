@@ -32,6 +32,10 @@ Scene::Scene(std::string filePath)
 	int width = (rc.right - rc.left) - 16;
 	int height = (rc.bottom - rc.top) - 39;
 	_mousePicking.Initialise(width, height);
+	_geometry = ObjectHandler::GetInstance().GetSquareGeometry();
+	_texture = ObjectHandler::GetInstance().LoadDDSTextureFile("Resources/Textures/" + _textureNames[_textureNum]);
+
+	_fileName = filePath;
 #endif
 }
 
@@ -49,7 +53,7 @@ void Scene::Save()
 	json scene;
 	json gameObjects;
 
-	scene[JSON_SCENE_BACKGROUND] = "";
+	scene[JSON_SCENE_BACKGROUND] = "Resources/Textures/ZoeLevel.dds";
 
 	for (GameObject* obj : _children)
 	{
@@ -58,7 +62,11 @@ void Scene::Save()
 
 	scene["gameObjects"] = gameObjects;
 
+#if EDIT_MODE
+	std::ofstream o(_fileName);
+#else
 	std::ofstream o("Resources/saved_scene.json");
+#endif
 	o << std::setw(4) << scene << std::endl;
 	o.close();
 }
@@ -77,6 +85,11 @@ void Scene::Update(float deltaTime)
 
 	MouseClass* mouse = InputManager::GetInstance().GetMouse();
 	DirectX::XMINT2 mousePos = { mouse->GetPosX(), mouse->GetPosY() };
+
+	DirectX::XMINT2 relPos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
+	relPos = _mousePicking.SnapCoordinatesToGrid(relPos.x, relPos.y);
+	_ghost.x = relPos.x;
+	_ghost.y = relPos.y;
 
 	while (!mouse->EventBufferIsEmpty()) // Handles moving, creating and deleting objects with the mouse in edit mode
 	{
@@ -127,8 +140,6 @@ void Scene::Update(float deltaTime)
 		else if (me.GetType() == MouseEvent::EventType::RPress && !selectedObj) // Creates a new game object
 		{
 			static int objNum = 0;
-			DirectX::XMINT2 relPos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
-			relPos = _mousePicking.SnapCoordinatesToGrid(relPos.x, relPos.y);
 
 			for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 			{
@@ -149,6 +160,7 @@ void Scene::Update(float deltaTime)
 			_textureNum += 1;
 			if (_textureNum == _textureNames.size())
 				_textureNum = 0;
+			_texture = ObjectHandler::GetInstance().LoadDDSTextureFile("Resources/Textures/" + _textureNames[_textureNum]);
 		}
 		// Change tile type to be made
 		else if (me.GetType() == MouseEvent::EventType::WheelDown && !selectedObj)
@@ -156,6 +168,7 @@ void Scene::Update(float deltaTime)
 			_textureNum -= 1;
 			if (_textureNum < 0)
 				_textureNum = _textureNames.size() - 1;
+			_texture = ObjectHandler::GetInstance().LoadDDSTextureFile("Resources/Textures/" + _textureNames[_textureNum]);
 		}
 	}
 #else
@@ -182,4 +195,26 @@ void Scene::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, Constant
 	for (GameObject* object : _children)
 		object->Render(context, constantBuffer, globalBuffer);
 	_backgroundImage->Render(context, constantBuffer, globalBuffer);
+#if EDIT_MODE
+	DirectX::XMMATRIX world =
+		DirectX::XMMatrixScaling(_texture.width / 2,_texture.height / 2, 1.0f)
+		* DirectX::XMMatrixTranslation(_ghost.x, _ghost.y, 0.0f);
+
+	constantBuffer.mWorld = DirectX::XMMatrixTranspose(world);
+	constantBuffer.mTexCoord = {
+		1.0f, 0.0f, 0.0f, (float)_texture.width,
+		0.0f, 1.0f, 0.0f, (float)_texture.height,
+		0.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f
+	};
+	constantBuffer.mAlphaMultiplier = 0.2f;
+
+	context->UpdateSubresource(globalBuffer.Get(), 0, nullptr, &constantBuffer, 0, 0);
+
+	// Draw object
+	context->PSSetShaderResources(0, 1, &_texture.texture);
+	context->IASetVertexBuffers(0, 1, _geometry.vertexBuffer.GetAddressOf(), &_geometry.vertexBufferStride, &_geometry.vertexBufferOffset);
+	context->IASetIndexBuffer(_geometry.indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+	context->DrawIndexed(_geometry.numOfIndices, 0, 0);
+#endif
 }
