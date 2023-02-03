@@ -101,9 +101,19 @@ void PhysicsInterface::ApplyForceToObj(b2Body* objBody, b2Vec2 force, bool wake)
 
 }
 
+void PhysicsInterface::ApplyImpulseForceToPointOnObj(b2Body* objbody, b2Vec2& force, b2Vec2& point, bool wake)
+{
+	objbody->ApplyLinearImpulse(force, point, wake);
+}
+
+void PhysicsInterface::ApplyImpulseForceToObj(b2Body* objBody, b2Vec2 force, bool wake)
+{
+	objBody->ApplyLinearImpulseToCenter(force, wake);
+}
+
 void PhysicsInterface::Update(float deltaTime /*, int VelocityIterations, int positionIterations*/) // noted out code is so dynamic functionality can be added easily if needed
 {
-	//world->Step(deltaTime, 8, 3);
+	world->Step(deltaTime, 8, 3);
 	//world->Step(deltaTime, velocityIterations, positionIterations);
 
 }

@@ -130,6 +130,20 @@ void Physics::ApplyForceToObj(Vector2 force, bool wake)
 	_pPhysicsInterface->ApplyForceToObj(_objectPhysicsBody->body, b2ForceIn, wake);
 }
 
+void Physics::ApplyImpulseForceToPointOnObj(Vector2& force, Vector2& point, bool wake)
+{
+	b2Vec2 b2forceIn; b2forceIn.x = force.x; b2forceIn.y = force.y;
+	b2Vec2 b2PointIn; b2PointIn.x = point.x; b2PointIn.y = force.y;
+	_pPhysicsInterface->ApplyImpulseForceToPointOnObj(_objectPhysicsBody->body, b2forceIn, b2PointIn, wake);
+
+}
+
+void Physics::ApplyImpulseForceToObj(Vector2 force, bool wake)
+{
+	b2Vec2 b2forceIn; b2forceIn.x = force.x; b2forceIn.y = force.y;
+	_pPhysicsInterface->ApplyImpulseForceToObj(_objectPhysicsBody->body, b2forceIn, wake);
+}
+
 HitBoxDefnintions Physics::CreateHitBox(Vector2 scale)
 {
 	b2Vec2 halfScale; halfScale.x = scale.x * 6.5f; halfScale.y = scale.y * 6.5f;
