@@ -54,6 +54,16 @@ GameObject* ObjectHandler::FindGameObject(std::string name)
 	return nullptr;
 }
 
+GameObject* ObjectHandler::FindGameObject(int id)
+{
+	for (GameObject* object : _gameObjects)
+	{
+		if (object->GetID() == id)
+			return object;
+	}
+	return nullptr;
+}
+
 void ObjectHandler::Register(GameObject* object)
 {
 	_gameObjects.push_back(object);
