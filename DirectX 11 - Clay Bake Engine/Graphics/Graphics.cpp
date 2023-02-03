@@ -370,6 +370,9 @@ void Graphics::RenderFrame(Scene* scene)
 	//UI WINDOWS
 
 	static bool linkScaling = true;
+	char fileName[30]; // For saving the file
+	strcpy_s(fileName, scene->GetFileName().c_str());
+
 	ImGui::Begin("Inspector");
 	if (ImGui::TreeNode("Game Objects"))
 	{
@@ -465,10 +468,12 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		ImGui::TreePop();
 	}
+	ImGui::PushItemWidth(200);
+	if (ImGui::InputText("File Name", fileName, 30))
+		scene->SetFileName(fileName);
+	ImGui::SameLine();
 	if (ImGui::Button("Save"))
-	{
 		scene->Save();
-	}
 	ImGui::End();
 
 	//ASSEMBLE AND RENDER DRAW DATA

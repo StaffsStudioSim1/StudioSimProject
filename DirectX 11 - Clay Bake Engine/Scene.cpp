@@ -34,6 +34,8 @@ Scene::Scene(std::string filePath)
 	_mousePicking.Initialise(width, height);
 	_geometry = ObjectHandler::GetInstance().GetSquareGeometry();
 	_texture = ObjectHandler::GetInstance().LoadDDSTextureFile("Resources/Textures/" + _textureNames[_textureNum]);
+
+	_fileName = filePath;
 #endif
 }
 
@@ -60,7 +62,11 @@ void Scene::Save()
 
 	scene["gameObjects"] = gameObjects;
 
+#if EDIT_MODE
+	std::ofstream o(_fileName);
+#else
 	std::ofstream o("Resources/saved_scene.json");
+#endif
 	o << std::setw(4) << scene << std::endl;
 	o.close();
 }
