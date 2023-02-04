@@ -5,11 +5,42 @@
 #include "Graphics/ConstantBuffer.h"
 #include "Graphics/TextureInfo.h"
 
-#define EDIT_MODE false
+#define EDIT_MODE true
 
 #if EDIT_MODE
 #include "Graphics/Geometry.h"
 #include "Input/Mouse/MousePicking.h"
+#include "GameObjects/ObjectHandler.h"
+
+struct Prefab
+{
+	std::string ghostImageFilepath;
+	DirectX::XMFLOAT4 ghostTexCoords;
+	DirectX::XMFLOAT4X4 ghostTexMatrix;
+	std::string jsonString;
+
+	Prefab(std::string ghostImageFilepath, DirectX::XMFLOAT4 texCoords, std::string jsonString)
+	{
+		this->ghostImageFilepath = ghostImageFilepath;
+
+		TextureInfo tex = ObjectHandler::GetInstance().LoadDDSTextureFile(ghostImageFilepath);
+		float width = 1.0f / texCoords.x;
+		float height = 1.0f / texCoords.y;
+		float x = width * texCoords.z;
+		float y = height * texCoords.w;
+
+		ghostTexMatrix =
+		{
+			width, 0.0f, 0.0f, x,
+			0.0f, height, 0.0f, y,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f
+		};
+		ghostTexCoords = { width, height, x, y };
+
+		this->jsonString = jsonString;
+	}
+};
 #endif
 
 class Scene
@@ -42,8 +73,8 @@ private:
 	Vector2 _ghost;
 	std::string _fileName = "";
 	int _objNum = 0;
-	std::vector<std::string> _textureNames = { "temp_tile.dds", "Test.dds", "Test2.dds" };
-	int _textureNum = 0;
+	std::vector<Prefab> _prefabs;
+	int _prefabNum = 0;
 #endif
 };
 

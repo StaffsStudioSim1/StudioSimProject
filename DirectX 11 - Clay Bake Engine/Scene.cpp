@@ -7,7 +7,6 @@ using json = nlohmann::json;
 
 #if EDIT_MODE
 #include "Input/InputManager.h"
-#include "GameObjects/ObjectHandler.h"
 #endif
 
 Scene::Scene(std::string filePath)
@@ -33,9 +32,14 @@ Scene::Scene(std::string filePath)
 	int height = (rc.bottom - rc.top) - 39;
 	_mousePicking.Initialise(width, height);
 	_geometry = ObjectHandler::GetInstance().GetSquareGeometry();
-	_texture = ObjectHandler::GetInstance().LoadDDSTextureFile("Resources/Textures/" + _textureNames[_textureNum]);
-
 	_fileName = filePath;
+
+	_prefabs.push_back(Prefab("Resources/Sprites/Player1.dds", {6.0f, 8.0f, 0.0f, 0.0f}, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Player1.dds\", 6.0, 8.0, 0.0, 0.0, 1.0] }, { \"class\" : \"PlayerController\", \"constructors\" : [1] }] }"));
+	_prefabs.push_back(Prefab("Resources/Sprites/Player2.dds", {6.0f, 8.0f, 0.0f, 0.0f}, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Player2.dds\", 6.0, 8.0, 0.0, 0.0, 1.0] }, { \"class\" : \"PlayerController\", \"constructors\" : [2] }] }"));
+	_prefabs.push_back(Prefab("Resources/Sprites/Box.dds", {1.0f, 1.0f, 0.0f, 0.0f}, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Box.dds\", 1.0, 1.0, 0.0, 0.0, 1.0] }] }"));
+	_prefabs.push_back(Prefab("Resources/Sprites/Lamp.dds", {2.0f, 1.0f, 0.0f, 0.0f}, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Lamp.dds\", 2.0, 1.0, 0.0, 0.0, 1.0] }] }"));
+	
+	_texture = ObjectHandler::GetInstance().LoadDDSTextureFile(_prefabs[_prefabNum].ghostImageFilepath);
 #endif
 }
 
@@ -50,6 +54,7 @@ Scene::~Scene()
 
 void Scene::Save()
 {
+#if EDIT_MODE
 	json scene;
 	json gameObjects;
 
@@ -62,13 +67,10 @@ void Scene::Save()
 
 	scene["gameObjects"] = gameObjects;
 
-#if EDIT_MODE
 	std::ofstream o(_fileName);
-#else
-	std::ofstream o("Resources/saved_scene.json");
-#endif
 	o << std::setw(4) << scene << std::endl;
 	o.close();
+#endif
 }
 
 void Scene::Start()
@@ -145,28 +147,27 @@ void Scene::Update(float deltaTime)
 					return;
 			}
 
-			GameObject* tempObj = new GameObject("Object" + std::to_string(_objNum), { float(relPos.x), float(relPos.y), 0.0f }, { 1.0f, 1.0f }, 0.0f);
+			json tempJson = json::parse(_prefabs[_prefabNum].jsonString);
+			tempJson[JSON_GO_NAME] = "Object" + std::to_string(_objNum);
+			tempJson[JSON_GO_POSITION].push_back(float(relPos.x));
+			tempJson[JSON_GO_POSITION].push_back(float(relPos.y));
+			tempJson[JSON_GO_POSITION].push_back(0.0f);
+			GameObject* tempObj = new GameObject(tempJson);
 			_objNum++;
 
-			Component* component = new Appearance("Resources/Textures/" + _textureNames[_textureNum]);
-			tempObj->AddComponent(component);
 			_children.push_back(tempObj);
 		}
 		// Change tile type to be made
 		else if (me.GetType() == MouseEvent::EventType::WheelUp && !selectedObj) // Changes the texture that the next game object will be created with
 		{
-			_textureNum += 1;
-			if (_textureNum == _textureNames.size())
-				_textureNum = 0;
-			_texture = ObjectHandler::GetInstance().LoadDDSTextureFile("Resources/Textures/" + _textureNames[_textureNum]);
+			_prefabNum = (_prefabNum + 1) % _prefabs.size();
+			_texture = ObjectHandler::GetInstance().LoadDDSTextureFile(_prefabs[_prefabNum].ghostImageFilepath);
 		}
 		// Change tile type to be made
 		else if (me.GetType() == MouseEvent::EventType::WheelDown && !selectedObj)
 		{
-			_textureNum -= 1;
-			if (_textureNum < 0)
-				_textureNum = _textureNames.size() - 1;
-			_texture = ObjectHandler::GetInstance().LoadDDSTextureFile("Resources/Textures/" + _textureNames[_textureNum]);
+			_prefabNum = (_prefabNum - 1) % _prefabs.size();
+			_texture = ObjectHandler::GetInstance().LoadDDSTextureFile(_prefabs[_prefabNum].ghostImageFilepath);
 		}
 	}
 #else
@@ -195,16 +196,11 @@ void Scene::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, Constant
 	_backgroundImage->Render(context, constantBuffer, globalBuffer);
 #if EDIT_MODE
 	DirectX::XMMATRIX world =
-		DirectX::XMMatrixScaling(_texture.width / 2,_texture.height / 2, 1.0f)
+		DirectX::XMMatrixScaling(_texture.width * _prefabs[_prefabNum].ghostTexCoords.x / 2,_texture.height * _prefabs[_prefabNum].ghostTexCoords.y / 2, 1.0f)
 		* DirectX::XMMatrixTranslation(_ghost.x, _ghost.y, 0.0f);
 
 	constantBuffer.mWorld = DirectX::XMMatrixTranspose(world);
-	constantBuffer.mTexCoord = {
-		1.0f, 0.0f, 0.0f, (float)_texture.width,
-		0.0f, 1.0f, 0.0f, (float)_texture.height,
-		0.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f
-	};
+	constantBuffer.mTexCoord = _prefabs[_prefabNum].ghostTexMatrix;
 	constantBuffer.mAlphaMultiplier = 0.2f;
 
 	context->UpdateSubresource(globalBuffer.Get(), 0, nullptr, &constantBuffer, 0, 0);
