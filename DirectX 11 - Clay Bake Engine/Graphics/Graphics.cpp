@@ -78,7 +78,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		scd.BufferDesc.Height = height;
 		scd.BufferDesc.RefreshRate.Numerator = 60;
 		scd.BufferDesc.RefreshRate.Denominator = 1;
-		scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		scd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 		scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 		scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
