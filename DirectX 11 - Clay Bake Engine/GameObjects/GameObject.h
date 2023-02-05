@@ -10,6 +10,7 @@ using json = nlohmann::json;
 #define JSON_SCENE_GAMEOBJECTS "gameObjects"
 
 #define JSON_GO_NAME "name"
+#define JSON_GO_TAG "tag"
 #define JSON_GO_POSITION "position"
 #define JSON_GO_ROTATION "rotation"
 #define JSON_GO_SCALE "scale"
@@ -17,6 +18,9 @@ using json = nlohmann::json;
 
 #define JSON_COMPONENT_CLASS "class"
 #define JSON_COMPONENT_CONSTRUCTORS "constructors"
+
+#define JSON_TAG_GAMEOBJECT "GameObject"
+#define JSON_TAG_STAGECOLLISION "StageCollision"
 
 class GameObject
 {
@@ -57,6 +61,8 @@ public:
 	std::string GetName() const noexcept { return _name; }
 	void SetName(std::string name) { _name = name; }
 
+	std::string GetTag() const noexcept { return _tag; }
+
 	void Start();
 	void Update(float deltaTime);
 	void FixedUpdate(float timeStep);
@@ -68,6 +74,7 @@ private:
 	int _id = 0;
 
 	std::string _name;
+	std::string _tag;
 
 	Transform _transform = {};
 

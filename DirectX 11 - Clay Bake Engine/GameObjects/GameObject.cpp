@@ -77,6 +77,12 @@ GameObject::GameObject(json objectJson)
 		if (component != nullptr)
 			AddComponent(component);
 	}
+
+	if (objectJson.contains(JSON_GO_TAG))
+		_tag = objectJson[JSON_GO_TAG];
+	else
+		_tag = JSON_TAG_GAMEOBJECT;
+
 	ObjectHandler::GetInstance().Register(this);
 }
 
