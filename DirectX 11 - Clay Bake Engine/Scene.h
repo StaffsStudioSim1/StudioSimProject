@@ -14,13 +14,15 @@
 
 struct Prefab
 {
+	std::string name;
 	std::string ghostImageFilepath;
 	DirectX::XMFLOAT4 ghostTexCoords;
 	DirectX::XMFLOAT4X4 ghostTexMatrix;
 	std::string jsonString;
 
-	Prefab(std::string ghostImageFilepath, DirectX::XMFLOAT4 texCoords, std::string jsonString)
+	Prefab(std::string name, std::string ghostImageFilepath, DirectX::XMFLOAT4 texCoords, std::string jsonString)
 	{
+		this->name = name;
 		this->ghostImageFilepath = ghostImageFilepath;
 
 		TextureInfo tex = ObjectHandler::GetInstance().LoadDDSTextureFile(ghostImageFilepath);
@@ -75,6 +77,8 @@ private:
 	int _objNum = 0;
 	std::vector<Prefab> _prefabs;
 	int _prefabNum = 0;
+
+	//bool _collision[36][20];
 #endif
 };
 
