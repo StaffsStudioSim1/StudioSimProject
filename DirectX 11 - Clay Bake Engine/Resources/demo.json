@@ -13,7 +13,7 @@
 				},
 				{
 					"class" : "Physics",
-					"constructors" : [true, 0.1, 1.0]
+					"constructors" : [2, 0.1, 1.0]
 				}
 			]
 		},
@@ -31,7 +31,8 @@
 					"class" : "PlayerController"
 				},
 				{
-					"class" : "Physics"
+					"class" : "Physics",
+					"constructors" : [0, 0.1, 1.0]
 				}
 			]
 		}

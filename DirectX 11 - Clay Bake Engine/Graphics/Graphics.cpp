@@ -372,6 +372,7 @@ void Graphics::RenderFrame(Scene* scene)
 	static bool linkScaling = true;
 	char fileName[30]; // For saving the file
 	strcpy_s(fileName, scene->GetFileName().c_str());
+	const char* boxBodyChoices[] = { "Static", "Kinematic", "Dynamic" };
 
 	ImGui::Begin("Inspector");
 	if (ImGui::TreeNode("Game Objects"))
@@ -409,10 +410,12 @@ void Graphics::RenderFrame(Scene* scene)
 					texCoords[3] = coords.w;
 				}
 
+				int bodyType;
 				float density, friction;
 				if (object->GetComponent<Physics>())
 				{
 					hasPhysics = true;
+					bodyType = object->GetComponent<Physics>()->GetBodyType();
 					density = object->GetComponent<Physics>()->GetDensity();
 					friction = object->GetComponent<Physics>()->GetFriction();
 				}
@@ -436,6 +439,7 @@ void Graphics::RenderFrame(Scene* scene)
 				}
 				if (hasPhysics)
 				{
+					ImGui::ListBox("Body Type", &bodyType, boxBodyChoices, IM_ARRAYSIZE(boxBodyChoices), 3);
 					ImGui::DragFloat("Density", &density, 0.025f, 0.0f, 100.0f);
 					ImGui::DragFloat("Friction", &friction, 0.0025f, 0.0f, 1.0f);
 				}
@@ -460,6 +464,7 @@ void Graphics::RenderFrame(Scene* scene)
 				}
 				if (hasPhysics)
 				{
+					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.bodyDef.type = (b2BodyType)bodyType;
 					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.density = density;
 					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.friction = friction;
 				}

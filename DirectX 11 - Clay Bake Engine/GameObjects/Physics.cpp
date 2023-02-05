@@ -30,9 +30,8 @@ Physics::~Physics()
 json Physics::Write()
 {
 	json me;
-	bool isDynamic = _objectPhysicsBody->hitboxdef.bodyType == Dynmaic ? true : false;
 	me[JSON_COMPONENT_CLASS] = "Physics";
-	me[JSON_COMPONENT_CONSTRUCTORS].push_back(isDynamic);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(GetBodyType());
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(GetDensity());
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(GetFriction());
 	return me;
