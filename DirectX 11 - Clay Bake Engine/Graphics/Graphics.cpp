@@ -399,10 +399,14 @@ void Graphics::RenderFrame(Scene* scene)
 				bool hasPhysics = false;
 				bool hasAppearance = false;
 
+				std::string textureName;
+				char textureNameChar[40];
 				float texCoords[4] = { 0 };
 				if (object->GetComponent<Appearance>())
 				{
 					hasAppearance = true;
+					textureName = object->GetComponent<Appearance>()->GetTexture().filePath;
+					strcpy_s(textureNameChar, textureName.c_str());
 					DirectX::XMFLOAT4 coords = object->GetComponent<Appearance>()->GetTexCoordFrameValues();
 					texCoords[0] = coords.x;
 					texCoords[1] = coords.y;
@@ -435,6 +439,12 @@ void Graphics::RenderFrame(Scene* scene)
 				ImGui::Checkbox("Link scaling", &linkScaling);
 				if (hasAppearance)
 				{
+					if (ImGui::InputText("Texture Name", textureNameChar, 40, ImGuiInputTextFlags_EnterReturnsTrue))
+					{
+						TextureInfo newTexture = ObjectHandler::GetInstance().LoadDDSTextureFile(textureNameChar, true);
+						if (newTexture.filePath != "") // Prevents a potential crash
+							object->GetComponent<Appearance>()->SetTexture(newTexture);
+					}
 					ImGui::DragFloat4("Texture Coords", texCoords, 1.0f, 0.0f, 10.0f);
 				}
 				if (hasPhysics)

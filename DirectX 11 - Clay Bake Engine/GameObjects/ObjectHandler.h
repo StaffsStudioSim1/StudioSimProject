@@ -32,7 +32,7 @@ public:
 	void Register(GameObject* object);
 	void Unregister(GameObject* object);
 
-	TextureInfo LoadDDSTextureFile(std::string filePath);
+	TextureInfo LoadDDSTextureFile(std::string filePath, bool changeTexture = false);
 	void ClearLoadedTextures();
 
 	Geometry GetSquareGeometry() { return _squareGeometry; }
