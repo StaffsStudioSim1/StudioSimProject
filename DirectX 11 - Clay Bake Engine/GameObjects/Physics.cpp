@@ -37,6 +37,15 @@ json Physics::Write()
 	return me;
 }
 
+void Physics::Stop()
+{
+	if (_objectPhysicsBody)
+	{
+		delete _objectPhysicsBody;
+		_objectPhysicsBody = nullptr;
+	}
+}
+
 void Physics::Update(float deltaTime)
 {
 	_gameObject->GetTransform()->SetPosition(GetPosition());

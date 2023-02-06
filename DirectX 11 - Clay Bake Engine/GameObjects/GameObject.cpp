@@ -116,6 +116,21 @@ void GameObject::AddComponent(Component* component)
 	_components.push_back(component);
 }
 
+void GameObject::RemoveComponent(Component* component)
+{
+	int loopNum = 0;
+	for (Component* com : _components)
+	{
+		if (com == component)
+		{
+			component->Stop(); // Used to free memory if needed
+			_components.erase(_components.begin() + loopNum);
+			return;
+		}
+		loopNum++;
+	}
+}
+
 void GameObject::Start()
 {
 	for (Component* component : _components)

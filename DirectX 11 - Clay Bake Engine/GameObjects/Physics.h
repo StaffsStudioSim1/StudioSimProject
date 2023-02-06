@@ -11,6 +11,7 @@ public:
 	~Physics();
 
 	json Write();
+	void Stop();
 
 	void Update(float deltaTime);
 	//GetPhysicInterface();
