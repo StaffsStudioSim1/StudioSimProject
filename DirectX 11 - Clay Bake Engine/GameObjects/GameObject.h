@@ -54,6 +54,7 @@ public:
 		return nullptr;
 	}
 	void AddComponent(Component* component);
+	void RemoveComponent(Component* component);
 
 	Transform* GetTransform() { return &_transform; }
 

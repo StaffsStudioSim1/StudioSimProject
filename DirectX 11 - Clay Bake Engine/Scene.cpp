@@ -59,7 +59,8 @@ void Scene::Save()
 	json scene;
 	json gameObjects;
 
-	scene[JSON_SCENE_BACKGROUND] = "Resources/Textures/ZoeLevel.dds";
+	//scene[JSON_SCENE_BACKGROUND] = "Resources/Textures/ZoeLevel.dds";
+	scene[JSON_SCENE_BACKGROUND] = ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Appearance>()->GetTexture().filePath; // Presumes that the first object is the background
 
 	for (GameObject* obj : _children)
 	{

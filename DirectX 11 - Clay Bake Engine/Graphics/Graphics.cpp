@@ -372,6 +372,7 @@ void Graphics::RenderFrame(Scene* scene)
 	static bool linkScaling = true;
 	char fileName[30]; // For saving the file
 	strcpy_s(fileName, scene->GetFileName().c_str());
+	const char* boxBodyChoices[] = { "Static", "Kinematic", "Dynamic" };
 
 	ImGui::Begin("Inspector");
 	if (ImGui::TreeNode("Game Objects"))
@@ -398,10 +399,14 @@ void Graphics::RenderFrame(Scene* scene)
 				bool hasPhysics = false;
 				bool hasAppearance = false;
 
+				std::string textureName;
+				char textureNameChar[40];
 				float texCoords[4] = { 0 };
 				if (object->GetComponent<Appearance>())
 				{
 					hasAppearance = true;
+					textureName = object->GetComponent<Appearance>()->GetTexture().filePath;
+					strcpy_s(textureNameChar, textureName.c_str());
 					DirectX::XMFLOAT4 coords = object->GetComponent<Appearance>()->GetTexCoordFrameValues();
 					texCoords[0] = coords.x;
 					texCoords[1] = coords.y;
@@ -409,10 +414,12 @@ void Graphics::RenderFrame(Scene* scene)
 					texCoords[3] = coords.w;
 				}
 
+				int bodyType;
 				float density, friction;
 				if (object->GetComponent<Physics>())
 				{
 					hasPhysics = true;
+					bodyType = object->GetComponent<Physics>()->GetBodyType();
 					density = object->GetComponent<Physics>()->GetDensity();
 					friction = object->GetComponent<Physics>()->GetFriction();
 				}
@@ -432,12 +439,45 @@ void Graphics::RenderFrame(Scene* scene)
 				ImGui::Checkbox("Link scaling", &linkScaling);
 				if (hasAppearance)
 				{
+					if (ImGui::InputText("Texture Name", textureNameChar, 40, ImGuiInputTextFlags_EnterReturnsTrue))
+					{
+						TextureInfo newTexture = ObjectHandler::GetInstance().LoadDDSTextureFile(textureNameChar, true);
+						if (newTexture.filePath != "") // Prevents a potential crash
+							object->GetComponent<Appearance>()->SetTexture(newTexture);
+					}
 					ImGui::DragFloat4("Texture Coords", texCoords, 1.0f, 0.0f, 10.0f);
 				}
 				if (hasPhysics)
 				{
+					ImGui::ListBox("Body Type", &bodyType, boxBodyChoices, IM_ARRAYSIZE(boxBodyChoices), 3);
 					ImGui::DragFloat("Density", &density, 0.025f, 0.0f, 100.0f);
 					ImGui::DragFloat("Friction", &friction, 0.0025f, 0.0f, 1.0f);
+
+					if (ImGui::Button("Remove Physics")) // Remove physics from object
+					{
+						object->RemoveComponent(object->GetComponent<Physics>());
+						hasPhysics = false;
+					}
+				}
+				else
+				{
+					if (ImGui::Button("Add Physics")) // Add physics to object
+					{
+						Component* component = nullptr;
+						PhysicsBody* body = new PhysicsBody();
+						body->bodyDef.startPos = object->GetTransform()->GetPosition();
+						body->bodyDef.startingRoatation = object->GetTransform()->GetRotation();
+						body->hitboxdef.bodyType = Dynmaic;
+						body->bodyDef.density = 0.1f;
+						body->bodyDef.friction = 1.0f;
+						body->hitboxdef.scaleX = object->GetTransform()->GetScale().x;
+						body->hitboxdef.scaleY = object->GetTransform()->GetScale().y;
+						body->hitboxdef.shape = Box;
+
+						PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
+						component = new Physics(body, physicsWorld);
+						object->AddComponent(component);
+					}
 				}
 				if (ImGui::Button("Reset"))
 				{
@@ -460,6 +500,7 @@ void Graphics::RenderFrame(Scene* scene)
 				}
 				if (hasPhysics)
 				{
+					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.bodyDef.type = (b2BodyType)bodyType;
 					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.density = density;
 					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.friction = friction;
 				}
