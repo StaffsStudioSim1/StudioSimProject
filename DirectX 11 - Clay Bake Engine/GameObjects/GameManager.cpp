@@ -1,25 +1,18 @@
 #include "GameManager.h"
 #include "../SceneManager.h"
 #include "ObjectHandler.h"
+#include "../Input/PlayerInput.h"
+
 
 void GameManager::Start()
 {
-	isPaused = false;
 	//stuff for when game starts
+	isPaused = false;
 }
 
 void GameManager::Update()
 {
 	//update stuff
-	if (isPaused = false)
-	{
-		//pause button - pause the game
-		return;
-	}
-	if (isPaused = true)
-	{
-		//pause button - play the game
-	}
 }
 
 void GameManager::FixedUpdate(float timestamp)
@@ -50,6 +43,9 @@ void GameManager::LevelReset()
 void GameManager::Pause()
 {
 	//pause the game
+	if (isPaused)
+		return;
+
 	isPaused = true;
 	//set time to 0 - pause time
 	//freeze all input
@@ -59,6 +55,8 @@ void GameManager::Pause()
 
 void GameManager::UnPause()
 {
+	if (!isPaused)
+		return;
 	isPaused = false;
 	//close pause menu
 	//continue time
@@ -67,6 +65,10 @@ void GameManager::UnPause()
 void GameManager::GravityFlip()
 {
 	//flip the gravity
+	if(isGravityFlipped)
+		GravityFlipOff();
+	else
+		GravityFlipOn();
 }
 
 void GameManager::GravityFlipOn()
