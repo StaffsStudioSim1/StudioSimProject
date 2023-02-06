@@ -152,8 +152,12 @@
     <ClCompile Include="GameObjects\Appearance.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="Audio\AudioManager.cpp" />
+    <ClCompile Include="GameObjects\MagnetBox.cpp" />
+    <ClCompile Include="GameObjects\MagnetismObject.cpp" />
+    <ClCompile Include="GameObjects\MovingPlatform.cpp" />
     <ClCompile Include="GameObjects\ObjectHandler.cpp" />
     <ClCompile Include="GameObjects\Physics.cpp" />
+    <ClCompile Include="GameObjects\PlayerMagnetism.cpp" />
     <ClCompile Include="Graphics\AdapterReader.cpp" />
     <ClCompile Include="ClayEngine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
@@ -190,8 +194,12 @@
     <ClInclude Include="GameObjects\Appearance.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="Audio\AudioManager.h" />
+    <ClInclude Include="GameObjects\MagnetBox.h" />
+    <ClInclude Include="GameObjects\MagnetismObject.h" />
+    <ClInclude Include="GameObjects\MovingPlatform.h" />
     <ClInclude Include="GameObjects\ObjectHandler.h" />
     <ClInclude Include="GameObjects\Physics.h" />
+    <ClInclude Include="GameObjects\PlayerMagnetism.h" />
     <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="Graphics\Geometry.h" />
     <ClInclude Include="Graphics\TextureInfo.h" />
