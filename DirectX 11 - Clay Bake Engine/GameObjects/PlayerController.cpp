@@ -1,33 +1,54 @@
 #include "PlayerController.h"
 
-//Treat this just like the old Unity Input System
+PlayerController::PlayerController(int id)
+{
+	_playerID = id;
+}
 
-//Start does not get called
+PlayerController::~PlayerController()
+{
+
+}
+
+json PlayerController::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "PlayerController";
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_playerID);
+	return me;
+}
 
 void PlayerController::Start()
 {
 	int ActivePlayerCount = 0;
 
 	//Create new PlayerInput
-	_playerInput = new PlayerInput();
+	_playerInput = new PlayerInput(_playerID);
 
-	//Set player device type
-	//TODO: Change depending on what was pressed
-	_playerInput->SetDeviceType(KeyboardLeft);
+	//Get the player's PhysicsBody
+	_physicsBody = _gameObject->GetComponent<Physics>();
+
+	//TEMP
+	switch (_playerID)
+	{
+	default:
+		//leave unassigned
+	case 1:
+		_playerInput->SetDeviceType(KeyboardLeft);
+		break;
+	case 2:
+		_playerInput->SetDeviceType(KeyboardRight);
+		break;
+	}
 }
 
 void PlayerController::Update(float deltaTime)
 {
-	//Check for input
-	if (_playerInput->IsActionDown(Movement))
-	{
-		MovePressed();
-	}
-	else if (_playerInput->IsActionUp(Movement))
-	{
-		MoveReleased();
-	}
-	else if (_playerInput->IsActionHeld(Jump))
+	//Movement
+	_currentMovement = _playerInput->ReadAxis(Movement);
+
+	//Jump
+	if (_playerInput->IsActionDown(Jump))
 	{
 		JumpPressed();
 	}
@@ -35,15 +56,25 @@ void PlayerController::Update(float deltaTime)
 	{
 		JumpReleased();
 	}
-	else if (_playerInput->IsActionDown(Interact))
+
+	//Interact
+	if (_playerInput->IsActionDown(Interact))
 	{
 		InteractPressed();
 	}
-	else if (_playerInput->IsActionDown(Magnet))
+
+	//Magnet
+	if (_playerInput->IsActionHeld(Magnet))
 	{
 		MagnetPressed();
 	}
-	else if (_playerInput->IsActionDown(Pause))
+	else if (_playerInput->IsActionUp(Magnet))
+	{
+		MagnetReleased();
+	}
+
+	//Pause
+	if (_playerInput->IsActionDown(Pause))
 	{
 		PausePressed();
 	}
@@ -58,43 +89,39 @@ void PlayerController::Update(float deltaTime)
 
 void PlayerController::FixedUpdate(float timeStep)
 {
-	if (_movementEnabled)
+	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
-		//accelerate in direction of pressed input
-		//if (rb.velocity.magnitude < m_topSpeed)
-		//{
-		//	rb.AddForce(m_currentMove * moveSpeed);
-		//}
+		_physicsBody->ApplyForceToObj(_currentMovement * _moveSpeed, true);
 	}
 
 	if (_isJumping)
 	{
-		//if flipped
-		//float currentVelocity = rb.velocity.y;
+		Vector2 currentVelocity = _physicsBody->GetLinearVelocity();
 
-		//if (rb.velocity.y < jumpForce.y)
-		//{
-		//	rb.AddForce(jumpForce, ForceMode2D.Impulse);
-		//	isJumping = false;
-		//}
+		if (currentVelocity.y < _jumpForce.y)
+		{
+			if (!isFlipped)
+			{
+				_physicsBody->ApplyForceToObj(_jumpForce, true);
+			}
+			else
+			{
+				_physicsBody->ApplyForceToObj(Vector2(0.0f, -_jumpForce.y), true);
+			}
+		}
+		else if (currentVelocity.y >= _jumpForce.y)
+		{
+			_isJumping = false;
+		}
+		_isJumping = false;
 	}
 }
 
-void PlayerController::MovePressed()
-{
-	_movementEnabled = true;
-}
-
-void PlayerController::MoveReleased()
-{
-	_movementEnabled = false;
-}
 
 void PlayerController::JumpPressed()
 {
 	if (_jumpReset)
 		_isJumping = true;
-	//Add velocity 
 }
 
 void PlayerController::JumpReleased()
@@ -108,6 +135,11 @@ void PlayerController::InteractPressed()
 }
 
 void PlayerController::MagnetPressed()
+{
+	//TODO: Link to Will's magnet class
+}
+
+void PlayerController::MagnetReleased()
 {
 	//TODO: Link to Will's magnet class
 }

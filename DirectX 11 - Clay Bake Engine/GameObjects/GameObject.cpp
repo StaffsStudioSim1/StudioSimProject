@@ -52,7 +52,8 @@ GameObject::GameObject(json objectJson)
 		}
 		else if (type == "PlayerController")
 		{
-			component = new PlayerController();
+			int playerID = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+			component = new PlayerController(playerID);
 		}
 		else if (type == "PlayerMagnetism")
 		{
