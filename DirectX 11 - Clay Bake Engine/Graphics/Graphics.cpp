@@ -3,6 +3,7 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_win32.h"
 #include "ImGui/imgui_impl_dx11.h"
+#include "../SceneManager.h"
 
 bool Graphics::Initialize(HWND hwnd, int width, int height)
 {
@@ -365,7 +366,6 @@ void Graphics::RenderFrame(Scene* scene)
 	//window_flags |= ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
-	//window_flags |= ImGuiWindowFlags_MenuBar;
 	window_flags |= ImGuiWindowFlags_NoBackground;
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -373,34 +373,40 @@ void Graphics::RenderFrame(Scene* scene)
 
 	ImGui::NewFrame();
 	//UI WINDOWS
-	const char* playButton = "Resources/Sprites/PlayButton.dds";
-	const char* optionsButton = "Resources/Sprites/OptionsButton.dds";
-	const char* levelSelect = "Resources/Sprites/LevelSelect.dds";
-	const char* exitButton = "Resources/Sprites/ExitButton.dds";
-	TextureInfo playButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(playButton);
-	TextureInfo optionsButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(optionsButton);
-	TextureInfo levelSelectText = ObjectHandler::GetInstance().LoadDDSTextureFile(levelSelect);
-	TextureInfo exitButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitButton);
+	if (ObjectHandler::GetInstance().IsMainMenu())
+	{
+		const char* playButton = "Resources/Sprites/PlayButton.dds";
+		const char* optionsButton = "Resources/Sprites/OptionsButton.dds";
+		const char* levelSelect = "Resources/Sprites/LevelSelect.dds";
+		const char* exitButton = "Resources/Sprites/ExitButton.dds";
+		TextureInfo playButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(playButton);
+		TextureInfo optionsButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(optionsButton);
+		TextureInfo levelSelectText = ObjectHandler::GetInstance().LoadDDSTextureFile(levelSelect);
+		TextureInfo exitButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitButton);
 
-	ImVec2 size = ImVec2(playButtonText.width * 2, playButtonText.height * 2);
-	ImGui::Begin("Menu", NULL, window_flags);
-	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.55f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
-	if (ImGui::ImageButton(playButton, playButtonText.texture, size))
-	{
+		ImVec2 size = ImVec2(playButtonText.width * 2, playButtonText.height * 2);
+
+		ImGui::Begin("Menu", NULL, window_flags);
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.55f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
+		if (ImGui::ImageButton(playButton, playButtonText.texture, size))
+		{
+			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+			ObjectHandler::GetInstance().SetMainMenu(false);
+		}
+		if (ImGui::ImageButton(levelSelect, levelSelectText.texture, size))
+		{
+		}
+		if (ImGui::ImageButton(optionsButton, optionsButtonText.texture, size))
+		{
+		}
+		if (ImGui::ImageButton(exitButton, exitButtonText.texture, size))
+		{
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::End();
 	}
-	if (ImGui::ImageButton(levelSelect, levelSelectText.texture, size))
-	{
-	}
-	if (ImGui::ImageButton(optionsButton, optionsButtonText.texture, size))
-	{
-	}
-	if (ImGui::ImageButton(exitButton, exitButtonText.texture, size))
-	{
-	}
-	ImGui::PopStyleColor(3);
-	ImGui::End();
 #if EDIT_MODE
 	//UI
 

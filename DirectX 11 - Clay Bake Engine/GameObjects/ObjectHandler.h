@@ -40,13 +40,30 @@ public:
 	
 	PhysicsWorld* GetPhysicsWorld() { return _pPhysicsWorld; }
 	void SetPhysicsWorld(PhysicsWorld* physics) { _pPhysicsWorld = physics; }
+
+	// Toggle UI menu functions
+	bool IsMainMenu() { return _mainMenu;}
+	void SetMainMenu(bool menu) { _mainMenu = menu; }
+
+	bool IsLevelSelect() { return _levelSelect; }
+	void SetLevelSelect(bool levelSelect) { _levelSelect = levelSelect; }
+
+	bool IsOptionsMenu() { return _optionsMenu; }
+	void SetOptionsMenu(bool optionsMenu) { _optionsMenu = optionsMenu; }
+
+	bool isPauseMenu() { return _pauseMenu; }
+	void SetPauseMenu(bool pauseMenu) { _pauseMenu = pauseMenu; }
 private:
 	ObjectHandler();
 	~ObjectHandler();
 
 	bool _initialised = false;
-
 	int _objectID = 0;
+
+	bool _mainMenu = true;
+	bool _levelSelect = false;
+	bool _optionsMenu = false;
+	bool _pauseMenu = false;
 
 	Microsoft::WRL::ComPtr <ID3D11Device>	_device;
 

@@ -5,7 +5,7 @@
 #include "Graphics/ConstantBuffer.h"
 #include "Graphics/TextureInfo.h"
 
-#define EDIT_MODE false
+#define EDIT_MODE true
 
 #if EDIT_MODE
 #include "Graphics/Geometry.h"
