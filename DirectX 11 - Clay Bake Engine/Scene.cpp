@@ -7,7 +7,6 @@ using json = nlohmann::json;
 
 #if EDIT_MODE
 #include "Input/InputManager.h"
-#include "GameObjects/ObjectHandler.h"
 #endif
 
 Scene::Scene(std::string filePath)
@@ -19,7 +18,7 @@ Scene::Scene(std::string filePath)
 	json data = json::parse(f);
 
 	std::string imagePath = data[JSON_SCENE_BACKGROUND];
-	_backgroundImage = new GameObject((std::string) JSON_SCENE_BACKGROUND);
+	_backgroundImage = new GameObject((std::string)JSON_SCENE_BACKGROUND);
 	_backgroundImage->GetTransform()->SetDepthPos(1.0f);
 	_backgroundImage->AddComponent(new Appearance(imagePath));
 
@@ -32,6 +31,16 @@ Scene::Scene(std::string filePath)
 	int width = (rc.right - rc.left) - 16;
 	int height = (rc.bottom - rc.top) - 39;
 	_mousePicking.Initialise(width, height);
+	_geometry = ObjectHandler::GetInstance().GetSquareGeometry();
+	_fileName = filePath;
+
+	_prefabs.push_back(Prefab("Collision", "Resources/Sprites/StageCollision.dds", { 1.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"tag\" : \"StageCollision\", \"scale\" : [1.0, 1.0], \"components\" : [ { \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/StageCollision.dds\", 1.0, 1.0, 0.0, 0.0, 1.0] } ] }"));
+	_prefabs.push_back(Prefab("Player Blue", "Resources/Sprites/Player1.dds", { 6.0f, 8.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Player1.dds\", 6.0, 8.0, 0.0, 0.0, 1.0] }, { \"class\" : \"PlayerController\", \"constructors\" : [1] }] }"));
+	_prefabs.push_back(Prefab("Player Red", "Resources/Sprites/Player2.dds", { 6.0f, 8.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Player2.dds\", 6.0, 8.0, 0.0, 0.0, 1.0] }, { \"class\" : \"PlayerController\", \"constructors\" : [2] }] }"));
+	_prefabs.push_back(Prefab("Box", "Resources/Sprites/Box.dds", { 1.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Box.dds\", 1.0, 1.0, 0.0, 0.0, 1.0] }] }"));
+	_prefabs.push_back(Prefab("Lamp", "Resources/Sprites/Lamp.dds", { 2.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Lamp.dds\", 2.0, 1.0, 0.0, 0.0, 1.0] }] }"));
+
+	_texture = ObjectHandler::GetInstance().LoadDDSTextureFile(_prefabs[_prefabNum].ghostImageFilepath);
 #endif
 }
 
@@ -46,21 +55,28 @@ Scene::~Scene()
 
 void Scene::Save()
 {
+#if EDIT_MODE
 	json scene;
 	json gameObjects;
 
-	scene[JSON_SCENE_BACKGROUND] = "";
+	scene[JSON_SCENE_BACKGROUND] = "Resources/Textures/ZoeLevel.dds";
 
 	for (GameObject* obj : _children)
 	{
-		gameObjects.push_back(obj->Write());
+		if (obj->GetTag() == JSON_TAG_GAMEOBJECT)
+			gameObjects.push_back(obj->Write());
+		else if (obj->GetTag() == JSON_TAG_STAGECOLLISION)
+		{
+
+		}
 	}
 
 	scene["gameObjects"] = gameObjects;
 
-	std::ofstream o("Resources/saved_scene.json");
+	std::ofstream o(_fileName);
 	o << std::setw(4) << scene << std::endl;
 	o.close();
+#endif
 }
 
 void Scene::Start()
@@ -78,84 +94,108 @@ void Scene::Update(float deltaTime)
 	MouseClass* mouse = InputManager::GetInstance().GetMouse();
 	DirectX::XMINT2 mousePos = { mouse->GetPosX(), mouse->GetPosY() };
 
+	DirectX::XMINT2 relPos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
+	relPos = _mousePicking.SnapCoordinatesToGrid(relPos.x, relPos.y);
+	_ghost.x = relPos.x;
+	_ghost.y = relPos.y;
+
+	if (selectedObj)
+	{
+		// If an object is following the cursor
+		DirectX::XMINT2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
+		selectedObj->GetTransform()->SetPosition(relativeMousePos.x, relativeMousePos.y);
+	}
+
 	while (!mouse->EventBufferIsEmpty()) // Handles moving, creating and deleting objects with the mouse in edit mode
 	{
 		MouseEvent me = mouse->ReadEvent();
-		// Pickup Tile
-		if (me.GetType() == MouseEvent::EventType::LPress && !selectedObj) // Probably can be changed to a switch statement
+		switch (me.GetType())
 		{
-			selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y);
-			if (selectedObj)
+		case MouseEvent::EventType::LPress:
+			if (!selectedObj)
 			{
-				Vector2 pos = selectedObj->GetTransform()->GetPosition();
-				startingPos = { (int)pos.x, (int)pos.y };
-			}
-		}
-		// Drop tile at position
-		else if (me.GetType() == MouseEvent::EventType::LRelease && selectedObj)
-		{
-			Vector2 objectPos = selectedObj->GetTransform()->GetPosition();
-			DirectX::XMINT2 snapPos = _mousePicking.SnapCoordinatesToGrid(objectPos.x, objectPos.y);
-
-			for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
-			{
-				if (object != selectedObj && object->GetTransform()->GetPosition().x == snapPos.x && object->GetTransform()->GetPosition().y == snapPos.y)
+				// Pickup Tile
+				selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y);
+				if (selectedObj)
 				{
-					selectedObj->GetTransform()->SetPosition(startingPos.x, startingPos.y);
-					selectedObj = nullptr;
-					return;
+					Vector2 pos = selectedObj->GetTransform()->GetPosition();
+					startingPos = { (int)pos.x, (int)pos.y };
 				}
 			}
-
-			selectedObj->GetTransform()->SetPosition(snapPos.x, snapPos.y);
-			selectedObj = nullptr;
-		}
-		// If an object is following the cursor
-		else if (selectedObj)
-		{
-			DirectX::XMINT2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
-			selectedObj->GetTransform()->SetPosition(relativeMousePos.x, relativeMousePos.y);
-
-			if (me.GetType() == MouseEvent::EventType::MPress) // Remove the currently selected game object
+			break;
+		case MouseEvent::EventType::LRelease:
+			if (selectedObj)
 			{
-				_children.erase(std::remove(_children.begin(), _children.end(), selectedObj), _children.end());
-				delete selectedObj;
+				// Drop tile at position
+				Vector2 objectPos = selectedObj->GetTransform()->GetPosition();
+				DirectX::XMINT2 snapPos = _mousePicking.SnapCoordinatesToGrid(objectPos.x, objectPos.y);
+
+				for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+				{
+					if (object != selectedObj && object->GetTransform()->GetPosition().x == snapPos.x && object->GetTransform()->GetPosition().y == snapPos.y)
+					{
+						selectedObj->GetTransform()->SetPosition(startingPos.x, startingPos.y);
+						selectedObj = nullptr;
+						return;
+					}
+				}
+
+				selectedObj->GetTransform()->SetPosition(snapPos.x, snapPos.y);
 				selectedObj = nullptr;
 			}
-		}
-		// Create a new tile
-		else if (me.GetType() == MouseEvent::EventType::RPress && !selectedObj) // Creates a new game object
-		{
-			static int objNum = 0;
-			DirectX::XMINT2 relPos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
-			relPos = _mousePicking.SnapCoordinatesToGrid(relPos.x, relPos.y);
-
-			for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+			break;
+		case MouseEvent::EventType::MPress:
+			if (selectedObj)
 			{
-				if (object->GetTransform()->GetPosition().x == relPos.x && object->GetTransform()->GetPosition().y == relPos.y)
-					return;
+				// Remove the currently selected game object
+				if (me.GetType() == MouseEvent::EventType::MPress)
+				{
+					_children.erase(std::remove(_children.begin(), _children.end(), selectedObj), _children.end());
+					delete selectedObj;
+					selectedObj = nullptr;
+				}
 			}
+			break;
+		case MouseEvent::EventType::RPress:
+			if (!selectedObj)
+			{
+				// Create a new tile
+				for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+				{
+					if (object->GetTransform()->GetPosition().x == relPos.x && object->GetTransform()->GetPosition().y == relPos.y)
+						return;
+				}
 
-			GameObject* tempObj = new GameObject("Object" + std::to_string(objNum), { float(relPos.x), float(relPos.y), 0.0f }, { 1.0f, 1.0f }, 0.0f);
-			objNum++;
+				json tempJson = json::parse(_prefabs[_prefabNum].jsonString);
+				tempJson[JSON_GO_NAME] = _prefabs[_prefabNum].name + " [" + std::to_string(_objNum) + "]";
+				tempJson[JSON_GO_POSITION].push_back(float(relPos.x));
+				tempJson[JSON_GO_POSITION].push_back(float(relPos.y));
+				tempJson[JSON_GO_POSITION].push_back(0.0f);
+				GameObject* tempObj = new GameObject(tempJson);
+				_objNum++;
 
-			Component* component = new Appearance("Resources/Textures/" + _textureNames[_textureNum]);
-			tempObj->AddComponent(component);
-			_children.push_back(tempObj);
-		}
-		// Change tile type to be made
-		else if (me.GetType() == MouseEvent::EventType::WheelUp && !selectedObj) // Changes the texture that the next game object will be created with
-		{
-			_textureNum += 1;
-			if (_textureNum == _textureNames.size())
-				_textureNum = 0;
-		}
-		// Change tile type to be made
-		else if (me.GetType() == MouseEvent::EventType::WheelDown && !selectedObj)
-		{
-			_textureNum -= 1;
-			if (_textureNum < 0)
-				_textureNum = _textureNames.size() - 1;
+				_children.push_back(tempObj);
+			}
+			break;
+		case MouseEvent::EventType::WheelUp:
+			if (!selectedObj)
+			{
+				// Change tile type to be made
+				_prefabNum = (_prefabNum + 1) % _prefabs.size();
+				_texture = ObjectHandler::GetInstance().LoadDDSTextureFile(_prefabs[_prefabNum].ghostImageFilepath);
+			}
+			break;
+		case MouseEvent::EventType::WheelDown:
+			if (!selectedObj)
+			{
+				// Change tile type to be made
+				_prefabNum = (_prefabNum - 1);
+				// Because -1 % size() returns 0 (due to size being unsigned) and -1 % (int)size returns -1
+				if (_prefabNum < 0)
+					_prefabNum = _prefabs.size() - 1;
+				_texture = ObjectHandler::GetInstance().LoadDDSTextureFile(_prefabs[_prefabNum].ghostImageFilepath);
+			}
+			break;
 		}
 	}
 #else
@@ -182,4 +222,21 @@ void Scene::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, Constant
 	for (GameObject* object : _children)
 		object->Render(context, constantBuffer, globalBuffer);
 	_backgroundImage->Render(context, constantBuffer, globalBuffer);
+#if EDIT_MODE
+	DirectX::XMMATRIX world =
+		DirectX::XMMatrixScaling(_texture.width * _prefabs[_prefabNum].ghostTexCoords.x / 2, _texture.height * _prefabs[_prefabNum].ghostTexCoords.y / 2, 1.0f)
+		* DirectX::XMMatrixTranslation(_ghost.x, _ghost.y, 0.0f);
+
+	constantBuffer.mWorld = DirectX::XMMatrixTranspose(world);
+	constantBuffer.mTexCoord = _prefabs[_prefabNum].ghostTexMatrix;
+	constantBuffer.mAlphaMultiplier = 0.2f;
+
+	context->UpdateSubresource(globalBuffer.Get(), 0, nullptr, &constantBuffer, 0, 0);
+
+	// Draw object
+	context->PSSetShaderResources(0, 1, &_texture.texture);
+	context->IASetVertexBuffers(0, 1, _geometry.vertexBuffer.GetAddressOf(), &_geometry.vertexBufferStride, &_geometry.vertexBufferOffset);
+	context->IASetIndexBuffer(_geometry.indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+	context->DrawIndexed(_geometry.numOfIndices, 0, 0);
+#endif
 }

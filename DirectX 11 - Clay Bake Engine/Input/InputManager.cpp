@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <debugapi.h>
+#include "../ErrorLogger.h"
 
 InputManager::InputManager()
 {
@@ -173,6 +174,19 @@ void InputManager::Debug()
 void InputManager::RegisterPlayerInput(PlayerInput* playerInput)
 {
 	_inputs.push_back(playerInput);
+
+	switch (playerInput->GetID())
+	{
+	case 1:
+		playerInput->SetDeviceType(KeyboardLeft);
+		break;
+	case 2:
+		playerInput->SetDeviceType(KeyboardRight);
+		break;
+	default:
+		ErrorLogger::Log("Invalid PlayerInput ID " + playerInput->GetID());
+		break;
+	}
 }
 
 void InputManager::UnregisterPlayerInput(PlayerInput* playerInput)

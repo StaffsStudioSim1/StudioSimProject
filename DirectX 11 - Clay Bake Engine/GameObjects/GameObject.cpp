@@ -19,6 +19,9 @@ GameObject::GameObject(std::string name, Vector3 position, Vector2 scale, float 
 	_transform.SetPosition(position);
 	_transform.SetScale(scale);
 	_transform.SetRotation(rotation);
+
+	_id = ObjectHandler::GetInstance().SetObjectID();
+
 	ObjectHandler::GetInstance().Register(this);
 }
 
@@ -29,6 +32,8 @@ GameObject::GameObject(json objectJson)
 	_transform.SetDepthPos(objectJson[JSON_GO_POSITION].at(2));
 	_transform.SetScale(objectJson[JSON_GO_SCALE].at(0), objectJson[JSON_GO_SCALE].at(1));
 	_transform.SetRotation(DirectX::XMConvertToRadians(objectJson[JSON_GO_ROTATION]));
+
+	_id = ObjectHandler::GetInstance().SetObjectID();
 
 	for (json componentJson : objectJson[JSON_GO_COMPONENTS])
 	{
@@ -68,8 +73,16 @@ GameObject::GameObject(json objectJson)
 			PhysicsBody* body = new PhysicsBody();
 			body->bodyDef.startPos = _transform.GetPosition();
 			body->bodyDef.startingRoatation = _transform.GetRotation();
-			body->bodyDef.density = 0.1f;
-			body->bodyDef.friction = 1.0f;
+			if (componentJson.contains(JSON_COMPONENT_CONSTRUCTORS)) // So object with no constructor info in the files don't crash
+			{
+				body->bodyDef.density = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
+				body->bodyDef.friction = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(2);
+			}
+			else
+			{
+				body->bodyDef.density = 0.1f;
+				body->bodyDef.friction = 1.0f;
+			}
 			body->hitboxdef.bodyType = dynamic ? Dynmaic : Static;
 			body->hitboxdef.scaleX = _transform.GetScale().x;
 			body->hitboxdef.scaleY = _transform.GetScale().y;
@@ -82,6 +95,12 @@ GameObject::GameObject(json objectJson)
 		if (component != nullptr)
 			AddComponent(component);
 	}
+
+	if (objectJson.contains(JSON_GO_TAG))
+		_tag = objectJson[JSON_GO_TAG];
+	else
+		_tag = JSON_TAG_GAMEOBJECT;
+
 	ObjectHandler::GetInstance().Register(this);
 }
 

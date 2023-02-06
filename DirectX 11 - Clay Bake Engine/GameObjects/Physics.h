@@ -10,6 +10,8 @@ public:
 	Physics(PhysicsBody* body, PhysicsWorld* world);
 	~Physics();
 
+	json Write();
+
 	void Update(float deltaTime);
 	//GetPhysicInterface();
 	PhysicsInterface GetPhysicInterface();
