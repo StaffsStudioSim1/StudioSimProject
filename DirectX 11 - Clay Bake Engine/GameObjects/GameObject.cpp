@@ -42,7 +42,13 @@ GameObject::GameObject(json objectJson)
 				componentJson[JSON_COMPONENT_CONSTRUCTORS].at(3), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(4)
 			};
 			float alphaMultiplier = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(5);
-			component = new Appearance(textureName, texCoords, alphaMultiplier);
+			Vector2 offset;
+			if (componentJson[JSON_COMPONENT_CONSTRUCTORS].size() > 6)
+			{
+				offset.x = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(6);
+				offset.y = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(7);
+			}
+			component = new Appearance(textureName, texCoords, alphaMultiplier, offset);
 		}
 		else if (type == "PlayerController")
 		{

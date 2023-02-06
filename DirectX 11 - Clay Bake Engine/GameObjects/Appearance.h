@@ -7,11 +7,12 @@
 #include "Component.h"
 #include "../Graphics/Geometry.h"
 #include "../Graphics/TextureInfo.h"
+#include "../Physics/Vectors.h"
 
 class Appearance : public Component
 {
 public:
-	Appearance(std::string textureName = "", DirectX::XMFLOAT4 texCoords = { 1.0f, 1.0f, 0.0f, 0.0f }, float alphaMultiplier = 1.0f);
+	Appearance(std::string textureName, DirectX::XMFLOAT4 texCoords = { 1.0f,1.0f,0.0f,0.0f }, float alphaMultiplier = 1.0f, Vector2 offset = Vector2());
 	~Appearance();
 
 	json Write();
@@ -55,5 +56,7 @@ private:
 	DirectX::XMFLOAT4 _texCoords = { 1.0f, 1.0f, 0.0f, 0.0f };
 
 	float _alphaMultiplier = 1.0f;
+
+	Vector2 _offset;
 };
 
