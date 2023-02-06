@@ -10,7 +10,9 @@ class GameManager :
     public Component
 {
     bool isPaused;
+    bool isGravityFlipped;
     GameObject* Players[2];
+    
     int activePlayers;
     struct playerInfo 
     {
@@ -31,5 +33,7 @@ class GameManager :
     void Pause();
     void UnPause();
     void GravityFlip();
+    void GravityFlipOn();
+    void GravityFlipOff();
 };
 

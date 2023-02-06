@@ -1,5 +1,6 @@
 #include "GameManager.h"
 #include "../SceneManager.h"
+#include "ObjectHandler.h"
 
 void GameManager::Start()
 {
@@ -67,3 +68,20 @@ void GameManager::GravityFlip()
 {
 	//flip the gravity
 }
+
+void GameManager::GravityFlipOn()
+{
+	isGravityFlipped = true;
+
+	b2Vec2 Gravity = ObjectHandler::GetInstance().GetPhysicsWorld()->world->GetGravity();
+	ObjectHandler::GetInstance().GetPhysicsWorld()->world->SetGravity(-Gravity);
+}
+
+void GameManager::GravityFlipOff()
+{
+	isGravityFlipped = false;
+
+	b2Vec2 Gravity = ObjectHandler::GetInstance().GetPhysicsWorld()->world->GetGravity();
+	ObjectHandler::GetInstance().GetPhysicsWorld()->world->SetGravity(Gravity);
+}
+
