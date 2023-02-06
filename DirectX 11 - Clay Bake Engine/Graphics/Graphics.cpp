@@ -367,174 +367,198 @@ void Graphics::RenderFrame(Scene* scene)
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	//window_flags |= ImGuiWindowFlags_MenuBar;
 	window_flags |= ImGuiWindowFlags_NoBackground;
-#if EDIT_MODE
-	//UI
-//CREATE FRAME
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
+	//CREATE FRAME
+
 	ImGui::NewFrame();
 	//UI WINDOWS
+	const char* playButton = "Resources/Sprites/PlayButton.dds";
+	const char* optionsButton = "Resources/Sprites/OptionsButton.dds";
+	const char* levelSelect = "Resources/Sprites/LevelSelect.dds";
+	const char* exitButton = "Resources/Sprites/ExitButton.dds";
+	TextureInfo playButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(playButton);
+	TextureInfo optionsButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(optionsButton);
+	TextureInfo levelSelectText = ObjectHandler::GetInstance().LoadDDSTextureFile(levelSelect);
+	TextureInfo exitButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitButton);
+
+	ImVec2 size = ImVec2(playButtonText.width * 2, playButtonText.height * 2);
+	ImGui::Begin("Menu", NULL, window_flags);
+	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.55f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
+	if (ImGui::ImageButton(playButton, playButtonText.texture, size))
+	{
+	}
+	if (ImGui::ImageButton(levelSelect, levelSelectText.texture, size))
+	{
+	}
+	if (ImGui::ImageButton(optionsButton, optionsButtonText.texture, size))
+	{
+	}
+	if (ImGui::ImageButton(exitButton, exitButtonText.texture, size))
+	{
+	}
+	ImGui::PopStyleColor(3);
+	ImGui::End();
+#if EDIT_MODE
+	//UI
+
 
 	static bool linkScaling = true;
 	char fileName[30]; // For saving the file
 	strcpy_s(fileName, scene->GetFileName().c_str());
 	const char* boxBodyChoices[] = { "Static", "Kinematic", "Dynamic" };
-	const char* playButton = "Resources/Sprites/PlayButton.dds";
-	TextureInfo textinfo = ObjectHandler::GetInstance().LoadDDSTextureFile(playButton);
-	ImVec2 size = ImVec2(textinfo.width*2,textinfo.height*2);
-	ImGui::Begin("Menu", NULL, window_flags);
-	if (ImGui::ImageButton(playButton,textinfo.texture,size))
-	{}
+	
+
+	ImGui::Begin("Inspector");
+	if (ImGui::TreeNode("Game Objects"))
+	{
+		int loopNum = 0;
+		for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+		{
+			// Use SetNextItemOpen() so set the default state of a node to be open. We could
+			// also use TreeNodeEx() with the ImGuiTreeNodeFlags_DefaultOpen flag to achieve the same thing!
+			if (loopNum == 0)
+				ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+
+			if (ImGui::TreeNode(object->GetName().c_str()))
+			{
+				std::string name = object->GetName();
+				char nameChar[20];
+				strcpy_s(nameChar, name.c_str());
+
+				float position[2] = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y };
+				float depth = { object->GetTransform()->GetDepthPos() };
+				float rotation = { object->GetTransform()->GetRotation() };
+				float scale[2] = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y };
+
+				bool hasPhysics = false;
+				bool hasAppearance = false;
+
+				std::string textureName;
+				char textureNameChar[40];
+				float texCoords[4] = { 0 };
+				if (object->GetComponent<Appearance>())
+				{
+					hasAppearance = true;
+					textureName = object->GetComponent<Appearance>()->GetTexture().filePath;
+					strcpy_s(textureNameChar, textureName.c_str());
+					DirectX::XMFLOAT4 coords = object->GetComponent<Appearance>()->GetTexCoordFrameValues();
+					texCoords[0] = coords.x;
+					texCoords[1] = coords.y;
+					texCoords[2] = coords.z;
+					texCoords[3] = coords.w;
+				}
+
+				int bodyType;
+				float density, friction;
+				if (object->GetComponent<Physics>())
+				{
+					hasPhysics = true;
+					bodyType = object->GetComponent<Physics>()->GetBodyType();
+					density = object->GetComponent<Physics>()->GetDensity();
+					friction = object->GetComponent<Physics>()->GetFriction();
+				}
+
+				ImGui::PushItemWidth(250); // Sets the pixel width of the input boxes
+
+				if (ImGui::InputText("Name", nameChar, 20, ImGuiInputTextFlags_EnterReturnsTrue))
+				{
+					object->SetName(nameChar);
+				}
+				ImGui::DragFloat("X Position", &position[0], 18.0f, -315.0f, 315.0f);
+				ImGui::DragFloat("Y Position", &position[1], 18.0f, -171.0f, 171.0f);
+				ImGui::DragFloat("Depth", &depth, 0.005f, 0.0f, 1.0f);
+				ImGui::DragFloat("Rotation", &rotation, 0.025f, 0.0f, DirectX::XM_2PI);
+				ImGui::DragFloat2("Scale", scale, 0.05f, -100, 100);
+				ImGui::SameLine();
+				ImGui::Checkbox("Link scaling", &linkScaling);
+				if (hasAppearance)
+				{
+					if (ImGui::InputText("Texture Name", textureNameChar, 40, ImGuiInputTextFlags_EnterReturnsTrue))
+					{
+						TextureInfo newTexture = ObjectHandler::GetInstance().LoadDDSTextureFile(textureNameChar, true);
+						if (newTexture.filePath != "") // Prevents a potential crash
+							object->GetComponent<Appearance>()->SetTexture(newTexture);
+					}
+					ImGui::DragFloat4("Texture Coords", texCoords, 1.0f, 0.0f, 10.0f);
+				}
+				if (hasPhysics)
+				{
+					ImGui::ListBox("Body Type", &bodyType, boxBodyChoices, IM_ARRAYSIZE(boxBodyChoices), 3);
+					ImGui::DragFloat("Density", &density, 0.025f, 0.0f, 100.0f);
+					ImGui::DragFloat("Friction", &friction, 0.0025f, 0.0f, 1.0f);
+
+					if (ImGui::Button("Remove Physics")) // Remove physics from object
+					{
+						object->RemoveComponent(object->GetComponent<Physics>());
+						hasPhysics = false;
+					}
+				}
+				else
+				{
+					if (ImGui::Button("Add Physics")) // Add physics to object
+					{
+						Component* component = nullptr;
+						PhysicsBody* body = new PhysicsBody();
+						body->bodyDef.startPos = object->GetTransform()->GetPosition();
+						body->bodyDef.startingRoatation = object->GetTransform()->GetRotation();
+						body->hitboxdef.bodyType = Dynmaic;
+						body->bodyDef.density = 0.1f;
+						body->bodyDef.friction = 1.0f;
+						body->hitboxdef.scaleX = object->GetTransform()->GetScale().x;
+						body->hitboxdef.scaleY = object->GetTransform()->GetScale().y;
+						body->hitboxdef.shape = Box;
+
+						PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
+						component = new Physics(body, physicsWorld);
+						object->AddComponent(component);
+					}
+				}
+				if (ImGui::Button("Reset"))
+				{
+					depth = 0.0f;
+					scale[0] = 1.0f;
+					scale[1] = 1.0f;
+					rotation = 0.0f;
+				}
+				ImGui::TreePop();
+
+				object->GetTransform()->SetPosition(position[0], position[1]);
+				object->GetTransform()->SetDepthPos(depth);
+				if (linkScaling)
+					scale[1] = scale[0];
+				object->GetTransform()->SetScale(scale[0], scale[1]);
+				object->GetTransform()->SetRotation(rotation);
+				if (hasAppearance)
+				{
+					object->GetComponent<Appearance>()->SetTexCoords(texCoords[0], texCoords[1], texCoords[2], texCoords[3]);
+				}
+				if (hasPhysics)
+				{
+					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.bodyDef.type = (b2BodyType)bodyType;
+					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.density = density;
+					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.friction = friction;
+				}
+			}
+			loopNum++;
+		}
+		ImGui::TreePop();
+	}
+	ImGui::PushItemWidth(200);
+	if (ImGui::InputText("File Name", fileName, 30))
+		scene->SetFileName(fileName);
+	ImGui::SameLine();
+	if (ImGui::Button("Save"))
+		scene->Save();
 	ImGui::End();
 
-	//ImGui::Begin("Inspector");
-	//if (ImGui::TreeNode("Game Objects"))
-	//{
-	//	int loopNum = 0;
-	//	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
-	//	{
-	//		// Use SetNextItemOpen() so set the default state of a node to be open. We could
-	//		// also use TreeNodeEx() with the ImGuiTreeNodeFlags_DefaultOpen flag to achieve the same thing!
-	//		if (loopNum == 0)
-	//			ImGui::SetNextItemOpen(false, ImGuiCond_Once);
-
-	//		if (ImGui::TreeNode(object->GetName().c_str()))
-	//		{
-	//			std::string name = object->GetName();
-	//			char nameChar[20];
-	//			strcpy_s(nameChar, name.c_str());
-
-	//			float position[2] = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y };
-	//			float depth = { object->GetTransform()->GetDepthPos() };
-	//			float rotation = { object->GetTransform()->GetRotation() };
-	//			float scale[2] = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y };
-
-	//			bool hasPhysics = false;
-	//			bool hasAppearance = false;
-
-	//			std::string textureName;
-	//			char textureNameChar[40];
-	//			float texCoords[4] = { 0 };
-	//			if (object->GetComponent<Appearance>())
-	//			{
-	//				hasAppearance = true;
-	//				textureName = object->GetComponent<Appearance>()->GetTexture().filePath;
-	//				strcpy_s(textureNameChar, textureName.c_str());
-	//				DirectX::XMFLOAT4 coords = object->GetComponent<Appearance>()->GetTexCoordFrameValues();
-	//				texCoords[0] = coords.x;
-	//				texCoords[1] = coords.y;
-	//				texCoords[2] = coords.z;
-	//				texCoords[3] = coords.w;
-	//			}
-
-	//			int bodyType;
-	//			float density, friction;
-	//			if (object->GetComponent<Physics>())
-	//			{
-	//				hasPhysics = true;
-	//				bodyType = object->GetComponent<Physics>()->GetBodyType();
-	//				density = object->GetComponent<Physics>()->GetDensity();
-	//				friction = object->GetComponent<Physics>()->GetFriction();
-	//			}
-
-	//			ImGui::PushItemWidth(250); // Sets the pixel width of the input boxes
-
-	//			if (ImGui::InputText("Name", nameChar, 20, ImGuiInputTextFlags_EnterReturnsTrue))
-	//			{
-	//				object->SetName(nameChar);
-	//			}
-	//			ImGui::DragFloat("X Position", &position[0], 18.0f, -315.0f, 315.0f);
-	//			ImGui::DragFloat("Y Position", &position[1], 18.0f, -171.0f, 171.0f);
-	//			ImGui::DragFloat("Depth", &depth, 0.005f, 0.0f, 1.0f);
-	//			ImGui::DragFloat("Rotation", &rotation, 0.025f, 0.0f, DirectX::XM_2PI);
-	//			ImGui::DragFloat2("Scale", scale, 0.05f, -100, 100);
-	//			ImGui::SameLine();
-	//			ImGui::Checkbox("Link scaling", &linkScaling);
-	//			if (hasAppearance)
-	//			{
-	//				if (ImGui::InputText("Texture Name", textureNameChar, 40, ImGuiInputTextFlags_EnterReturnsTrue))
-	//				{
-	//					TextureInfo newTexture = ObjectHandler::GetInstance().LoadDDSTextureFile(textureNameChar, true);
-	//					if (newTexture.filePath != "") // Prevents a potential crash
-	//						object->GetComponent<Appearance>()->SetTexture(newTexture);
-	//				}
-	//				ImGui::DragFloat4("Texture Coords", texCoords, 1.0f, 0.0f, 10.0f);
-	//			}
-	//			if (hasPhysics)
-	//			{
-	//				ImGui::ListBox("Body Type", &bodyType, boxBodyChoices, IM_ARRAYSIZE(boxBodyChoices), 3);
-	//				ImGui::DragFloat("Density", &density, 0.025f, 0.0f, 100.0f);
-	//				ImGui::DragFloat("Friction", &friction, 0.0025f, 0.0f, 1.0f);
-
-	//				if (ImGui::Button("Remove Physics")) // Remove physics from object
-	//				{
-	//					object->RemoveComponent(object->GetComponent<Physics>());
-	//					hasPhysics = false;
-	//				}
-	//			}
-	//			else
-	//			{
-	//				if (ImGui::Button("Add Physics")) // Add physics to object
-	//				{
-	//					Component* component = nullptr;
-	//					PhysicsBody* body = new PhysicsBody();
-	//					body->bodyDef.startPos = object->GetTransform()->GetPosition();
-	//					body->bodyDef.startingRoatation = object->GetTransform()->GetRotation();
-	//					body->hitboxdef.bodyType = Dynmaic;
-	//					body->bodyDef.density = 0.1f;
-	//					body->bodyDef.friction = 1.0f;
-	//					body->hitboxdef.scaleX = object->GetTransform()->GetScale().x;
-	//					body->hitboxdef.scaleY = object->GetTransform()->GetScale().y;
-	//					body->hitboxdef.shape = Box;
-
-	//					PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
-	//					component = new Physics(body, physicsWorld);
-	//					object->AddComponent(component);
-	//				}
-	//			}
-	//			if (ImGui::Button("Reset"))
-	//			{
-	//				depth = 0.0f;
-	//				scale[0] = 1.0f;
-	//				scale[1] = 1.0f;
-	//				rotation = 0.0f;
-	//			}
-	//			ImGui::TreePop();
-
-	//			object->GetTransform()->SetPosition(position[0], position[1]);
-	//			object->GetTransform()->SetDepthPos(depth);
-	//			if (linkScaling)
-	//				scale[1] = scale[0];
-	//			object->GetTransform()->SetScale(scale[0], scale[1]);
-	//			object->GetTransform()->SetRotation(rotation);
-	//			if (hasAppearance)
-	//			{
-	//				object->GetComponent<Appearance>()->SetTexCoords(texCoords[0], texCoords[1], texCoords[2], texCoords[3]);
-	//			}
-	//			if (hasPhysics)
-	//			{
-	//				object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.bodyDef.type = (b2BodyType)bodyType;
-	//				object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.density = density;
-	//				object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.friction = friction;
-	//			}
-	//		}
-	//		loopNum++;
-	//	}
-	//	ImGui::TreePop();
-	//}
-	//ImGui::PushItemWidth(200);
-	//if (ImGui::InputText("File Name", fileName, 30))
-	//	scene->SetFileName(fileName);
-	//ImGui::SameLine();
-	//if (ImGui::Button("Save"))
-	//	scene->Save();
-	//ImGui::End();
-
 	//ASSEMBLE AND RENDER DRAW DATA
+
+#endif
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-#endif
-
 	this->_swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }
 
