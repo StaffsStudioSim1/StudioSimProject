@@ -51,7 +51,7 @@ public:
 	bool IsOptionsMenu() { return _optionsMenu; }
 	void SetOptionsMenu(bool optionsMenu) { _optionsMenu = optionsMenu; }
 
-	bool isPauseMenu() { return _pauseMenu; }
+	bool IsPauseMenu() { return _pauseMenu; }
 	void SetPauseMenu(bool pauseMenu) { _pauseMenu = pauseMenu; }
 private:
 	ObjectHandler();

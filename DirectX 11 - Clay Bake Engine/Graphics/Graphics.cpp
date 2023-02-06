@@ -400,12 +400,40 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::ImageButton(optionsButton, optionsButtonText.texture, size))
 		{
+			ObjectHandler::GetInstance().SetMainMenu(false);
+			ObjectHandler::GetInstance().SetOptionsMenu(true);
+
 		}
 		if (ImGui::ImageButton(exitButton, exitButtonText.texture, size))
 		{
 		}
 		ImGui::PopStyleColor(3);
 		ImGui::End();
+	}
+
+
+	if (ObjectHandler::GetInstance().IsOptionsMenu())
+	{
+		std::vector<std::string> resolution = { "1280x720","1600x900","1920x1080" };
+		static int i = 0;
+		ImGui::Begin("Options Menu");
+		if (ImGui::ArrowButton("leftArrow", ImGuiDir_Left))
+		{
+			if (i > 0)
+				i -= 1;
+
+		}
+		ImGui::SameLine();
+		ImGui::Text(resolution[i].c_str());
+		ImGui::SameLine();
+		if (ImGui::ArrowButton("rightArrow", ImGuiDir_Right))
+		{
+			int test = resolution.size();
+			if (i < resolution.size()-1)
+				i += 1;
+		}
+		ImGui::End();
+
 	}
 #if EDIT_MODE
 	//UI
