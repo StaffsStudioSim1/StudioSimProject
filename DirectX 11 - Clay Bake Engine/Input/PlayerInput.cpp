@@ -4,11 +4,11 @@
 PlayerInput::PlayerInput(int id)
 {
 	_id = id;
-	InputManager::GetInstance().RegisterPlayerInput(this);
 	FillButtonMap(_actionDown);
 	FillButtonMap(_actionHeld);
 	FillAxisMap(_axisMap);
 	SetDeviceType(Unassigned);
+	InputManager::GetInstance().RegisterPlayerInput(this);
 }
 
 PlayerInput::~PlayerInput()

@@ -13,7 +13,7 @@
 				},
 				{
 					"class" : "Physics",
-					"constructors" : [true]
+					"constructors" : [2, 0.1, 1.0]
 				}
 			]
 		},
@@ -32,7 +32,8 @@
 					"constructors" : [1]
 				},
 				{
-					"class" : "Physics"
+					"class" : "Physics",
+					"constructors" : [0, 0.1, 1.0]
 				}
 			]
 		}

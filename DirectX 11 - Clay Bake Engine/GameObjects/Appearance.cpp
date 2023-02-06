@@ -22,6 +22,7 @@ json Appearance::Write()
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_numOfYFrames);
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_xFramePos);
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_yFramePos);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_alphaMultiplier);
 	return me;
 }
 

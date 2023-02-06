@@ -27,6 +27,25 @@ Physics::~Physics()
 		delete _objectPhysicsBody;
 }
 
+json Physics::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "Physics";
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(GetBodyType());
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(GetDensity());
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(GetFriction());
+	return me;
+}
+
+void Physics::Stop()
+{
+	if (_objectPhysicsBody)
+	{
+		delete _objectPhysicsBody;
+		_objectPhysicsBody = nullptr;
+	}
+}
+
 void Physics::Update(float deltaTime)
 {
 	_gameObject->GetTransform()->SetPosition(GetPosition());
@@ -200,15 +219,14 @@ bool Physics::IsObjectCollidingwith(PhysicsBody input)
 	b2Body* test;
 	bool contact = false;
 	
-
-		for (b2ContactEdge* edge = _objectPhysicsBody->body->GetContactList(); edge != nullptr; edge = edge->next)
+	for (b2ContactEdge* edge = _objectPhysicsBody->body->GetContactList(); edge != nullptr; edge = edge->next)
+	{
+		if (edge->other == input.body && edge->contact->IsTouching())
 		{
-			if (edge->other == input.body && edge->contact->IsTouching())
-			{
-					contact = true;
-					break;
-			}
+				contact = true;
+				break;
 		}
+	}
 
 	return contact;
 }
