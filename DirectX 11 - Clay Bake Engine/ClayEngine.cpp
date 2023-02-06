@@ -30,7 +30,6 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	_physicsWorld = new PhysicsWorld();
 	_physicsWorld->world = boxworld;// = *_physicsAccess->CreatePhysicsWorld(gravity);
 	ObjectHandler::GetInstance().SetPhysicsWorld(_physicsWorld);
-
 	// initialise graphics here
 
 	_initialised = true;
@@ -104,7 +103,7 @@ void ClayEngine::Update()
 		return;
 	InputManager::GetInstance().PollInput();
 
-	_ex->Update();
+	//_ex->Update();
 	if (_scene != nullptr)
 		_scene->Update(deltaTime);
 
@@ -114,10 +113,23 @@ void ClayEngine::Update()
 		if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()->GetPhysicsBody()))
 		{
 			OutputDebugStringA("obj 1 and 2 have collided \n");
-			ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->ApplyImpulseForceToObj(Vector2(0.0f, 10.0f), true);
+			ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->ApplyImpulseForceToObj(Vector2(0.0f, 325.0f), true);
 		}
 	}
 
+
+	std::vector<int> p = _physicsAccess->GetObjectsInAreaByID(Vector2(0.0f, 0.0f), Vector2(10.0f, 10.0f));
+	if (ObjectHandler::GetInstance().GetPhysicsWorld()->world->GetBodyCount() != NULL)
+	{
+		for (int i = 0; i < _physicsAccess->GetNumberOfObjectsInArea(Vector2(0.0f, 0.0f), Vector2(10.0f, 10.0f)); i++)
+		{
+			char outputstring[10];
+			int outputint = p.at(i);
+			sprintf_s(outputstring, "%d", outputint);
+			OutputDebugStringA(outputstring);
+		}
+		OutputDebugStringA("\n");
+	}
 	dwTimeStart = dwTimeCur;
 #endif
 

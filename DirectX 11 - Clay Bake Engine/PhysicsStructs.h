@@ -63,10 +63,17 @@ typedef struct PhysicsBody
 	//PhysicsBodyType _BodyType;
 	BodyDefinition bodyDef;
 	HitBoxDefnintions hitboxdef;
-};
+}PhysicsBody;
 
 
 struct BodyEdgeCollision
 {
 	b2ContactEdge* edge;
+};
+
+
+struct PhysicsHitBoxProjection
+{
+	Vector2 vectorMin;
+	Vector2 vectorMax;
 };

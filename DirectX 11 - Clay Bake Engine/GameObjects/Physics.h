@@ -3,6 +3,8 @@
 #include "../Physics/PhysicsInterface.h"
 #include "../PhysicsStructs.h"
 #include "Component.h"
+#include <vector>
+#include <DirectXCollision.h>
 
 class Physics : public Component
 {
@@ -45,6 +47,8 @@ public:
 	HitBoxDefnintions CreateHitBox(Vector2 scale);
 	void FixHitboxToBody(HitBoxDefnintions* hitbox, float density);
 	void DeleteHitBox(b2Fixture* fixture);
+	std::vector<int> GetObjectsInAreaByID(Vector2 position, Vector2 areaScale);
+	int GetNumberOfObjectsInArea(Vector2 position, Vector2 areaScale);
 
 	BodyDefinition SetCorrectBodyDef(PhysicsBody input, PhysicsBodyType type);
 	PhysicsBody GetCollisionsWithBody();

@@ -174,6 +174,58 @@ void Physics::DeleteHitBox(b2Fixture* fixture)
 
 }
 
+
+int Physics::GetNumberOfObjectsInArea(Vector2 position, Vector2 areaScale)
+{
+	int currentnumberOfObjects = 0;
+	DirectX::BoundingBox box1;
+	box1.Extents = { areaScale.x, areaScale.y, 0.0f }; // areaPojection
+	box1.Center = { position.x,position.y, 0.0f };//projected point
+
+
+	DirectX::BoundingBox box2;
+	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+	{
+		DirectX::XMFLOAT2 boxScale = object->GetTransform()->GetScale();
+		Vector2 boxPos = object->GetTransform()->GetPosition();
+		box2.Extents = { boxScale.x, boxScale.y, 0.0f };
+		box2.Center = { boxPos.x, boxPos.y, 0.0f };
+		if (box1.Intersects(box2))
+		{
+			currentnumberOfObjects += 1;
+		}
+	}
+
+	return currentnumberOfObjects;
+}
+
+std::vector<int> Physics::GetObjectsInAreaByID(Vector2 position, Vector2 areaScale)
+{
+	std::vector<int> outputBodyArray;
+	int currentnumberOfObjects = 0;
+	DirectX::BoundingBox box1;
+	box1.Extents = { areaScale.x, areaScale.y, 0.0f }; // areaPojection
+	box1.Center = { position.x,position.y, 0.0f };//projected point
+
+
+	DirectX::BoundingBox box2;
+	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+	{
+		DirectX::XMFLOAT2 boxScale = object->GetTransform()->GetScale();
+		Vector2 boxPos = object->GetTransform()->GetPosition();
+		box2.Extents = { boxScale.x, boxScale.y, 0.0f };
+		box2.Center = { boxPos.x, boxPos.y, 0.0f };
+		if (box1.Intersects(box2))
+		{
+			outputBodyArray.push_back(object->GetID());
+			currentnumberOfObjects += 1;
+		}
+	}
+
+	return outputBodyArray;
+}
+
+
 BodyDefinition Physics::SetCorrectBodyDef(PhysicsBody input, PhysicsBodyType type)
 {
 	BodyDefinition output = input.bodyDef;
