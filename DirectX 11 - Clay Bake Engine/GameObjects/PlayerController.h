@@ -1,22 +1,16 @@
 #pragma once
 #include "Component.h"
+#include "../Physics/PhysicsInterface.h"
 #include "../Input/PlayerInput.h"
-#include "../Physics/Vectors.h"
-#include "Physics.h"
-#include "GameObject.h"
 
 class PlayerController : public Component
 {
 public:
 
     //Variables
-    bool isFlipped = false;
+    bool isFlipped;
 
     //Functions
-    PlayerController(int id);
-    ~PlayerController();
-
-    json Write() override;
     void Start() override;
     void Update(float deltaTime) override;
     void FixedUpdate(float timeStep) override;
@@ -26,31 +20,32 @@ private:
 
     //Variables
     PlayerInput* _playerInput;
-    Physics* _physicsBody;
 
-    int _playerID;
-    float _moveSpeed = 10000.0f;
-    float _topSpeed = 10000.0f;
+    float _moveSpeed;
+    float _topSpeed;
     float _midAirControlDelay;
     float _jumpTimer;
 
-    bool _jumpReset = true;
-    bool _isJumping = false;
+    bool _jumpReset;
+    bool _isJumping;
     bool _movementEnabled = true;
 
-    Vector2 _currentMovement;
-    Vector2 _jumpForce = {0.0f, 10000.0f};
-
     //Functions
+    void MovePressed();
+    void MoveReleased();
     void JumpPressed();
     void JumpReleased();
     void InteractPressed();
     void MagnetPressed();
-    void MagnetReleased();
     void PausePressed();
 
+
     //Physics Reliant Vars
+    //Vector2 _currentMovementVector;
+    //Vector2 _jumpForce;
     //BoxCollider2D _groundDetector (change to raycast);
     //FacingDirection _facing;
+    //Rigidbody2D _rb;
+
 };
 
