@@ -15,11 +15,13 @@ class MovingPlatform :
     public Component
 {
 public:
+    
+    MovingPlatform(float limit1X, float limit1Y, float limit2X, float limit2Y);
     void SetPlatfromDirection(PlatformDirection newDirection);
     Vector2* m_limit1;
     Vector2* m_limit2;
 
-    void Update(float timeStep);
+    void Update(float deltaTime);
 
     void Start();
     void Stop();
@@ -35,7 +37,7 @@ private:
     float Lerp(float a,float b,float t);
     float Clamp(float v, float lo, float hi);
     
-    Physics* m_Physics;
+    
 
 };
 

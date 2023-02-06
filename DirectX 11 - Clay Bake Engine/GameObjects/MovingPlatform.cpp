@@ -1,6 +1,13 @@
 #include "MovingPlatform.h"
 #include <cmath>
 
+MovingPlatform::MovingPlatform(float limit1X, float limit1Y, float limit2X, float limit2Y)
+{
+	m_limit1 = new Vector2(limit1X, limit1Y);
+	m_limit2 = new Vector2(limit2X, limit2Y);
+
+}
+
 void MovingPlatform::SetPlatfromDirection(PlatformDirection newDirection)
 {
 	if (m_movingDirection != None)
@@ -9,35 +16,36 @@ void MovingPlatform::SetPlatfromDirection(PlatformDirection newDirection)
 	m_movingDirection = newDirection;
 }
 
-void MovingPlatform::Update(float timeStep)
+void MovingPlatform::Update(float deltaTime)
 {
 	if (m_movingDirection == None)
 		return;
 
 	if(m_movingDirection == PlatfromLeft)
 	{
-		m_Physics->SetTransform(MoveTowards(m_Physics->GetPosition(), *m_oragin + *m_limit1, timeStep), m_Physics->GetAngleDegress());
-		if (m_Physics->GetPosition() == *m_oragin + *m_limit1)
+		_gameObject->GetTransform()->SetPosition(MoveTowards(_gameObject->GetTransform()->GetPosition(), *m_oragin + *m_limit1, deltaTime));
+		if (_gameObject->GetTransform()->GetPosition() == *m_oragin + *m_limit1)
 		{
 			SetPlatfromDirection(PlatfromRight);
 		}
 	}
 	else
 	{
-		m_Physics->SetTransform(MoveTowards(m_Physics->GetPosition(), *m_oragin + *m_limit2, timeStep), m_Physics->GetAngleDegress());
-		if (m_Physics->GetPosition() == *m_oragin + *m_limit2)
+		_gameObject->GetTransform()->SetPosition(MoveTowards(_gameObject->GetTransform()->GetPosition(), *m_oragin + *m_limit2, deltaTime));
+		if (_gameObject->GetTransform()->GetPosition() == *m_oragin + *m_limit2)
 		{
 			SetPlatfromDirection(PlatfromLeft);
 		}
 	}
+	
+	
 }
 
 void MovingPlatform::Start()
 {
-	m_Physics = _gameObject->GetComponent<Physics>();
-	m_oragin = new Vector2(m_Physics->GetPosition());
-	m_limit1 = new Vector2(-10.0f, 0.0f);
-	m_limit2 = new Vector2(10.0f, 0.0f);
+	
+	m_oragin = new Vector2(_gameObject->GetTransform()->GetPosition());
+	
 }
 
 void MovingPlatform::Stop()
