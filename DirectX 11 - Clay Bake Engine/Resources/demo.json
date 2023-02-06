@@ -13,7 +13,7 @@
 				},
 				{
 					"class" : "Physics",
-					"constructors" : [true, 0.1, 1.0]
+					"constructors" : [2, 0.1, 1.0]
 				}
 			]
 		},
@@ -28,10 +28,12 @@
 					"constructors" : ["Resources/Textures/Test2.dds", 3.0, 2.0, 0.0, 0.0, 1.0]
 				},
 				{
-					"class" : "PlayerController"
+					"class" : "PlayerController",
+					"constructors" : [1]
 				},
 				{
-					"class" : "Physics"
+					"class" : "Physics",
+					"constructors" : [0, 0.1, 1.0]
 				}
 			]
 		}

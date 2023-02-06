@@ -64,6 +64,12 @@ GameObject* ObjectHandler::FindGameObject(int id)
 	return nullptr;
 }
 
+int ObjectHandler::SetObjectID()
+{
+	_objectID++;
+	return _objectID - 1;
+}
+
 void ObjectHandler::Register(GameObject* object)
 {
 	_gameObjects.push_back(object);
@@ -74,7 +80,7 @@ void ObjectHandler::Unregister(GameObject* object)
 	_gameObjects.erase(std::remove(_gameObjects.begin(), _gameObjects.end(), object), _gameObjects.end());
 }
 
-TextureInfo ObjectHandler::LoadDDSTextureFile(std::string filePath)
+TextureInfo ObjectHandler::LoadDDSTextureFile(std::string filePath, bool changeTexture)
 {
 	if (!_initialised)
 		return TextureInfo();
@@ -96,6 +102,8 @@ TextureInfo ObjectHandler::LoadDDSTextureFile(std::string filePath)
 	if (FAILED(hr))
 	{
 		ErrorLogger::Log("Failed to load DDS Texture!\nFile path: " + filePath + "\nTexture name: " + filePath);
+		if (changeTexture) // When in edit mode and texture changing fails return an empty TextureInfo instead of crashing
+			return TextureInfo();
 		exit(EXIT_FAILURE);
 	}
 	
