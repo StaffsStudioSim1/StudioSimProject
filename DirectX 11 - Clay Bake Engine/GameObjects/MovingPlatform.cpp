@@ -9,7 +9,7 @@ void MovingPlatform::SetPlatfromDirection(PlatformDirection newDirection)
 	m_movingDirection = newDirection;
 }
 
-void MovingPlatform::FixedUpdate(float timeStep)
+void MovingPlatform::Update(float timeStep)
 {
 	if (m_movingDirection == None)
 		return;
@@ -49,7 +49,27 @@ void MovingPlatform::Stop()
 
 Vector2 MovingPlatform::MoveTowards(Vector2 currentPos, Vector2 Target, float deltaTime)
 {
-	Vector2 lerpResult;
-	lerpResult.x =  std::lerp(currentPos.x, Target.x, deltaTime);
-	return Vector2();
+	Vector2 result;
+	result.x =  Lerp(currentPos.x, Target.x, deltaTime);
+	result.x = Clamp(result.x, 0, 10);
+	result.y = Lerp(currentPos.y, Target.y, deltaTime);
+	result.y = Clamp(result.y, 0, 10);
+
+
+	return result;
+}
+
+float MovingPlatform::Lerp(float a, float b, float t)
+{
+	return a + t * (b - a);
+}
+
+float MovingPlatform::Clamp(float v, float lo, float hi)
+{
+	if(v < lo)
+		return lo;
+	if (hi < v)
+		return hi;
+	return v;
+
 }
