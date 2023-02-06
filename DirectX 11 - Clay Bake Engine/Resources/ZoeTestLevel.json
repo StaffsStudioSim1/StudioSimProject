@@ -16,8 +16,7 @@
 					"constructors" : [1]
 				},
 				{
-					"class" : "Physics",
-					"constructors" : [true]
+					"class" : "Physics"
 				}
 			]
 		},
