@@ -198,7 +198,7 @@ int Physics::GetNumberOfObjectsInArea(Vector2 position, Vector2 areaScale)
 		Vector2 boxPos = object->GetTransform()->GetPosition();
 		box2.Extents = { boxScale.x, boxScale.y, 0.0f };
 		box2.Center = { boxPos.x, boxPos.y, 0.0f };
-		if (box1.Intersects(box2))
+		if (box1.Intersects(box2) && object->GetID() != 0)
 		{
 			currentnumberOfObjects += 1;
 		}
@@ -223,7 +223,7 @@ std::vector<int> Physics::GetObjectsInAreaByID(Vector2 position, Vector2 areaSca
 		Vector2 boxPos = object->GetTransform()->GetPosition();
 		box2.Extents = { boxScale.x, boxScale.y, 0.0f };
 		box2.Center = { boxPos.x, boxPos.y, 0.0f };
-		if (box1.Intersects(box2))
+		if (box1.Intersects(box2) && object->GetID() != 0) // change to get object tag and param to null
 		{
 			outputBodyArray.push_back(object->GetID());
 			currentnumberOfObjects += 1;
