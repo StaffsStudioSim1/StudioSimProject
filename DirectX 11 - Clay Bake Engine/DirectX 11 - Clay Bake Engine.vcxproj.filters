@@ -156,9 +156,6 @@
     <ClCompile Include="Input\Mouse\MousePicking.cpp">
       <Filter>Source Files\Input\Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Physics.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui.cpp">
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
@@ -184,6 +181,9 @@
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="Physics\PhysicsSystem.cpp">
+       <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Physics.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -269,9 +269,6 @@
     <ClInclude Include="Physics\PhysicsInterface.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Physics.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -333,6 +330,8 @@
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Compare.h">
+    </ClInclude>
+    <ClInclude Include="GameObjects\Physics.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>

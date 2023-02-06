@@ -63,7 +63,7 @@ typedef struct PhysicsBody
 	//PhysicsBodyType _BodyType;
 	BodyDefinition bodyDef;
 	HitBoxDefnintions hitboxdef;
-};
+}PhysicsBody;
 
 
 struct BodyEdgeCollision
@@ -95,4 +95,9 @@ struct AxisAlignedBoundingBox
 {
 	Vector2 min;
 	Vector2 max;
+};
+struct PhysicsHitBoxProjection
+{
+	Vector2 vectorMin;
+	Vector2 vectorMax;
 };

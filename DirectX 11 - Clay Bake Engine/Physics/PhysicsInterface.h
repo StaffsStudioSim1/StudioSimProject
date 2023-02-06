@@ -29,6 +29,8 @@ public:
 	void SetAngularVelocity(b2Body* objectBody, float omega);
 	void ApplyForceToPointOnObj(b2Body* objbody, b2Vec2& force, b2Vec2& point, bool wake);
 	void ApplyForceToObj(b2Body* objBody, b2Vec2 force, bool wake);
+	void ApplyImpulseForceToPointOnObj(b2Body* objbody, b2Vec2& force, b2Vec2& point, bool wake);
+	void ApplyImpulseForceToObj(b2Body* objBody, b2Vec2 force, bool wake);
 	void Update(float deltaTime);
 
 

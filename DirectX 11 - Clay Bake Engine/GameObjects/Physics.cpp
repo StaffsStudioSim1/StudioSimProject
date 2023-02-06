@@ -149,6 +149,20 @@ void Physics::ApplyForceToObj(Vector2 force, bool wake)
 	_pPhysicsInterface->ApplyForceToObj(_objectPhysicsBody->body, b2ForceIn, wake);
 }
 
+void Physics::ApplyImpulseForceToPointOnObj(Vector2& force, Vector2& point, bool wake)
+{
+	b2Vec2 b2forceIn; b2forceIn.x = force.x; b2forceIn.y = force.y;
+	b2Vec2 b2PointIn; b2PointIn.x = point.x; b2PointIn.y = force.y;
+	_pPhysicsInterface->ApplyImpulseForceToPointOnObj(_objectPhysicsBody->body, b2forceIn, b2PointIn, wake);
+
+}
+
+void Physics::ApplyImpulseForceToObj(Vector2 force, bool wake)
+{
+	b2Vec2 b2forceIn; b2forceIn.x = force.x; b2forceIn.y = force.y;
+	_pPhysicsInterface->ApplyImpulseForceToObj(_objectPhysicsBody->body, b2forceIn, wake);
+}
+
 HitBoxDefnintions Physics::CreateHitBox(Vector2 scale)
 {
 	b2Vec2 halfScale; halfScale.x = scale.x * 6.5f; halfScale.y = scale.y * 6.5f;
@@ -167,6 +181,58 @@ void Physics::DeleteHitBox(b2Fixture* fixture)
 	_pPhysicsInterface->DeleteHitBox(_objectPhysicsBody->body, fixture);
 
 }
+
+
+int Physics::GetNumberOfObjectsInArea(Vector2 position, Vector2 areaScale)
+{
+	int currentnumberOfObjects = 0;
+	DirectX::BoundingBox box1;
+	box1.Extents = { areaScale.x, areaScale.y, 0.0f }; // areaPojection
+	box1.Center = { position.x,position.y, 0.0f };//projected point
+
+
+	DirectX::BoundingBox box2;
+	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+	{
+		DirectX::XMFLOAT2 boxScale = object->GetTransform()->GetScale();
+		Vector2 boxPos = object->GetTransform()->GetPosition();
+		box2.Extents = { boxScale.x, boxScale.y, 0.0f };
+		box2.Center = { boxPos.x, boxPos.y, 0.0f };
+		if (box1.Intersects(box2) && object->GetID() != 0)
+		{
+			currentnumberOfObjects += 1;
+		}
+	}
+
+	return currentnumberOfObjects;
+}
+
+std::vector<int> Physics::GetObjectsInAreaByID(Vector2 position, Vector2 areaScale)
+{
+	std::vector<int> outputBodyArray;
+	int currentnumberOfObjects = 0;
+	DirectX::BoundingBox box1;
+	box1.Extents = { areaScale.x, areaScale.y, 0.0f }; // areaPojection
+	box1.Center = { position.x,position.y, 0.0f };//projected point
+
+
+	DirectX::BoundingBox box2;
+	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+	{
+		DirectX::XMFLOAT2 boxScale = object->GetTransform()->GetScale();
+		Vector2 boxPos = object->GetTransform()->GetPosition();
+		box2.Extents = { boxScale.x, boxScale.y, 0.0f };
+		box2.Center = { boxPos.x, boxPos.y, 0.0f };
+		if (box1.Intersects(box2) && object->GetID() != 0) // change to get object tag and param to null
+		{
+			outputBodyArray.push_back(object->GetID());
+			currentnumberOfObjects += 1;
+		}
+	}
+
+	return outputBodyArray;
+}
+
 
 BodyDefinition Physics::SetCorrectBodyDef(PhysicsBody input, PhysicsBodyType type)
 {
