@@ -2,7 +2,7 @@
 #include <d3d11.h>
 //#include <math.h>
 #include<DirectXMath.h>
-#include"PhysicsStructs.h"
+#include"../PhysicsStructs.h"
 #include"Vectors.h"
 #define FORCE_0F_GRAVITY_PER_KG = 9.80665
 
@@ -15,7 +15,7 @@ public:
 	void InitGravity();
 	void CustomGravityValue(float NewGravity);
 	void InvertGravity();
-	GravityDirectinalProperties GetGravityDirection() { return CurrentGravityDirection; }
+//	GravityDirectinalProperties GetGravityDirection() { return CurrentGravityDirection; }
 
 	void SetGravityActive();
 	bool GravityisActive() { return GravityActive; }
@@ -29,7 +29,7 @@ public:
 	void CreateMass();
 	float GetMass();
 
-	//bool AABBvsAABB(AxisAlignedBoundingBox a, AxisAlignedBoundingBox b);// axis bound based box collision 
+	bool AABBvsAABB(AxisAlignedBoundingBox a, AxisAlignedBoundingBox b);// axis bound based box collision 
 
 
 
@@ -40,7 +40,7 @@ private:
 	float CurrentGravityValueX;
 	float CurrentGravityValueY;
 	DirectinalGravity GravityValue;
-	GravityDirectinalProperties CurrentGravityDirection;
+//	GravityDirectinalProperties CurrentGravityDirection;
 
 
 };
