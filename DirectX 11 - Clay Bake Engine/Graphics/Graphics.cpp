@@ -361,16 +361,18 @@ void Graphics::RenderFrame(Scene* scene)
 	this->_deviceContext->PSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
 	scene->Render(this->_deviceContext, cb, _constantBuffer);
+
+	//UI
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	//window_flags |= ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoBackground;
+
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	//CREATE FRAME
-
 	ImGui::NewFrame();
 	//UI WINDOWS
 	if (ObjectHandler::GetInstance().IsMainMenu())
@@ -402,10 +404,10 @@ void Graphics::RenderFrame(Scene* scene)
 		{
 			ObjectHandler::GetInstance().SetMainMenu(false);
 			ObjectHandler::GetInstance().SetOptionsMenu(true);
-
 		}
 		if (ImGui::ImageButton(exitButton, exitButtonText.texture, size))
 		{
+			exit(0);
 		}
 		ImGui::PopStyleColor(3);
 		ImGui::End();
@@ -421,30 +423,29 @@ void Graphics::RenderFrame(Scene* scene)
 		{
 			if (i > 0)
 				i -= 1;
-
 		}
 		ImGui::SameLine();
 		ImGui::Text(resolution[i].c_str());
 		ImGui::SameLine();
 		if (ImGui::ArrowButton("rightArrow", ImGuiDir_Right))
 		{
-			int test = resolution.size();
 			if (i < resolution.size()-1)
 				i += 1;
+		}
+		if (ImGui::Button("Back"))
+		{
+			ObjectHandler::GetInstance().SetOptionsMenu(false);
+			ObjectHandler::GetInstance().SetMainMenu(true);
 		}
 		ImGui::End();
 
 	}
 #if EDIT_MODE
-	//UI
-
-
 	static bool linkScaling = true;
 	char fileName[30]; // For saving the file
 	strcpy_s(fileName, scene->GetFileName().c_str());
 	const char* boxBodyChoices[] = { "Static", "Kinematic", "Dynamic" };
 	
-
 	ImGui::Begin("Inspector");
 	if (ImGui::TreeNode("Game Objects"))
 	{
@@ -587,10 +588,8 @@ void Graphics::RenderFrame(Scene* scene)
 	if (ImGui::Button("Save"))
 		scene->Save();
 	ImGui::End();
-
-	//ASSEMBLE AND RENDER DRAW DATA
-
 #endif
+	// ASSEMBLE AND RENDER DRAW DATA
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	this->_swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
