@@ -2,6 +2,7 @@
 #include "ObjectHandler.h"
 #include "Appearance.h"
 #include "Physics.h"
+#include "PlayerController.h"
 #include "../Input/PlayerInput.h"
 
 GameObject::GameObject(std::string name) : GameObject(name, Vector3(0.0f, 0.0f, 0.0f), Vector2(1.0f, 1.0f), 0.0f)
@@ -46,7 +47,8 @@ GameObject::GameObject(json objectJson)
 		}
 		else if (type == "PlayerController")
 		{
-			// TODO add yo stuff here
+			int playerID = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+			component = new PlayerController(playerID);
 		}
 		else if (type == "Physics")
 		{

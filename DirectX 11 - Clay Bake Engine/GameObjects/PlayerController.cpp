@@ -27,19 +27,6 @@ void PlayerController::Start()
 
 	//Get the player's PhysicsBody
 	_physicsBody = _gameObject->GetComponent<Physics>();
-
-	//TEMP
-	switch (_playerID)
-	{
-	default:
-		//leave unassigned
-	case 1:
-		_playerInput->SetDeviceType(KeyboardLeft);
-		break;
-	case 2:
-		_playerInput->SetDeviceType(KeyboardRight);
-		break;
-	}
 }
 
 void PlayerController::Update(float deltaTime)
