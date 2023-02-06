@@ -27,19 +27,6 @@ void PlayerController::Start()
 
 	//Get the player's PhysicsBody
 	_physicsBody = _gameObject->GetComponent<Physics>();
-
-	//TEMP
-	switch (_playerID)
-	{
-	default:
-		//leave unassigned
-	case 1:
-		_playerInput->SetDeviceType(KeyboardLeft);
-		break;
-	case 2:
-		_playerInput->SetDeviceType(KeyboardRight);
-		break;
-	}
 }
 
 void PlayerController::Update(float deltaTime)
@@ -89,6 +76,8 @@ void PlayerController::Update(float deltaTime)
 
 void PlayerController::FixedUpdate(float timeStep)
 {
+	Vector2 currentVelocity = _physicsBody->GetLinearVelocity();
+
 	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
 		_physicsBody->ApplyForceToObj(_currentMovement * _moveSpeed, true);
@@ -96,8 +85,6 @@ void PlayerController::FixedUpdate(float timeStep)
 
 	if (_isJumping)
 	{
-		Vector2 currentVelocity = _physicsBody->GetLinearVelocity();
-
 		if (currentVelocity.y < _jumpForce.y)
 		{
 			if (!isFlipped)
