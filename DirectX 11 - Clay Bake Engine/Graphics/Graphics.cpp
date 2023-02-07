@@ -38,6 +38,9 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	ImGui_ImplDX11_Init(this->_device.Get(), this->_deviceContext.Get());
 	ImGui::StyleColorsDark();
 
+	_gameManager = new GameManager();
+	_gameManager->Start();
+
 	return true;
 }
 

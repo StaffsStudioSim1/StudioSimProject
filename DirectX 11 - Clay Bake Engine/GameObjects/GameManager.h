@@ -1,17 +1,17 @@
 #pragma once
-#include "Component.h"
+//#include "Component.h"
 #include "Physics.h"
-
-#include <string>
 #include <iostream>
+#include <string>
+#include <fstream>
 using namespace std;
 
-class GameManager :
-    public Component
+class GameManager
 {
     bool isPaused;
     bool isGravityFlipped;
     GameObject* Players[2];
+    vector <int> levelList;
     
     int activePlayers;
     struct playerInfo 
@@ -24,6 +24,7 @@ class GameManager :
             Pull
         };
     };
+public:
     void Start();
     void Update();
     void FixedUpdate(float timestamp);
@@ -35,5 +36,7 @@ class GameManager :
     void GravityFlip();
     void GravityFlipOn();
     void GravityFlipOff();
+    void SaveFileCheck();
+    void CreateSaveFile();
 };
 

@@ -2,10 +2,13 @@
 #include "../SceneManager.h"
 #include "ObjectHandler.h"
 #include "../Input/PlayerInput.h"
+#include "../nlohmann/json.hpp"
+using nlohmann::json;
 
 
 void GameManager::Start()
 {
+	SaveFileCheck();
 	//stuff for when game starts
 	isPaused = false;
 }
@@ -85,5 +88,39 @@ void GameManager::GravityFlipOff()
 
 	b2Vec2 Gravity = ObjectHandler::GetInstance().GetPhysicsWorld()->world->GetGravity();
 	ObjectHandler::GetInstance().GetPhysicsWorld()->world->SetGravity(Gravity);
+}
+
+void GameManager::SaveFileCheck()
+{
+	ifstream file;
+	file.open("Resources/SaveFiles/LevelSaves.txt");
+
+	if (file)
+	{
+		file.close();
+		return;
+	}
+	else 
+	{
+		CreateSaveFile();
+	}
+}
+
+void GameManager::CreateSaveFile()
+{
+	ofstream fw("Resources/SaveFiles/LevelSaves.txt");
+
+	if (fw.is_open())
+	{
+		for (int i = 0; i < levelList.size(); i++)
+		{
+			fw << levelList[i] << "\n";
+		}
+		fw.close();
+	}
+	else
+	{
+		//cout << "Problem opening file";
+	}
 }
 

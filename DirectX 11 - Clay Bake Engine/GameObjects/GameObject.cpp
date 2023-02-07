@@ -57,10 +57,10 @@ GameObject::GameObject(json objectJson)
 			int playerID = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
 			component = new PlayerController(playerID);
 		}
-		else if (type == "GameManager")
-		{
-			component = new GameManager();
-		}
+		//else if (type == "GameManager")
+		//{
+		//	component = new GameManager();
+		//}
 		else if(type == "Physics")
 		{
 			PhysicsBody* body = new PhysicsBody();

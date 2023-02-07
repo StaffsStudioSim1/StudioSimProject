@@ -3,6 +3,7 @@
 #include "Shaders.h"
 #include "ConstantBuffer.h"
 #include "../Scene.h"
+#include "../GameObjects/GameManager.h"
 
 #include <d3d11.h>
 #include <DirectXMath.h>
@@ -52,4 +53,6 @@ private:
 	DirectX::XMFLOAT4X4									_world;
 	DirectX::XMFLOAT4X4									_view;
 	DirectX::XMFLOAT4X4									_projection;
+
+	GameManager* _gameManager;
 };
