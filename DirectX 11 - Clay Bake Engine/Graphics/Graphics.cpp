@@ -399,6 +399,8 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::ImageButton(levelSelect, levelSelectText.texture, size))
 		{
+			ObjectHandler::GetInstance().SetMainMenu(false);
+			ObjectHandler::GetInstance().SetLevelSelect(true);
 		}
 		if (ImGui::ImageButton(optionsButton, optionsButtonText.texture, size))
 		{
@@ -413,6 +415,23 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::End();
 	}
 
+
+	if (ObjectHandler::GetInstance().IsLevelSelect())
+	{
+		ImGui::Begin("Level Select");
+		if (ImGui::Button("Demo"))
+		{
+			ObjectHandler::GetInstance().SetLevelSelect(false);
+			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+		}
+		if (ImGui::Button("Back"))
+		{
+			ObjectHandler::GetInstance().SetLevelSelect(false);
+			ObjectHandler::GetInstance().SetMainMenu(true);
+		}
+		ImGui::End();
+
+	}
 
 	if (ObjectHandler::GetInstance().IsOptionsMenu())
 	{
@@ -582,11 +601,29 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::TreePop();
 	}
 	ImGui::PushItemWidth(200);
-	if (ImGui::InputText("File Name", fileName, 30))
+
+	if(ImGui::InputText("File Name", fileName, 30))
 		scene->SetFileName(fileName);
+
+
 	ImGui::SameLine();
 	if (ImGui::Button("Save"))
 		scene->Save();
+
+	if (ImGui::Button("Load"))
+	{
+		std::string sFileName = fileName;
+
+		if (sFileName == "Resources/mainmenu.json")
+			ObjectHandler::GetInstance().SetMainMenu(true);
+		
+		else
+			ObjectHandler::GetInstance().SetMainMenu(false);
+		
+
+		SceneManager::GetInstance().LoadScene(fileName);
+	}
+
 	ImGui::End();
 #endif
 	// ASSEMBLE AND RENDER DRAW DATA
