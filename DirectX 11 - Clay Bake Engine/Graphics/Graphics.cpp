@@ -477,7 +477,7 @@ void Graphics::RenderFrame(Scene* scene)
 #if EDIT_MODE
 	static bool linkScaling = true;
 	char fileName[30]; // For saving the file
-	strcpy_s(fileName, scene->GetFileName().c_str());
+	strcpy_s(fileName, scene->GetFilePath().c_str());
 	const char* boxBodyChoices[] = { "Static", "Kinematic", "Dynamic" };
 	
 	ImGui::Begin("Inspector");

@@ -62,6 +62,9 @@ public:
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 
 	std::string GetFilePath() const { return _filePath; }
+#if EDIT_MODE
+	void SetFileName(std::string fileName) { _filePath = fileName; }
+#endif
 private:
 	int _id;
 	std::vector<GameObject*> _children;

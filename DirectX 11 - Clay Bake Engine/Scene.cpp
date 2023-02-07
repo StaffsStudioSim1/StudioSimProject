@@ -35,7 +35,6 @@ Scene::Scene(std::string filePath)
 	int height = (rc.bottom - rc.top) - 39;
 	_mousePicking.Initialise(width, height);
 	_geometry = ObjectHandler::GetInstance().GetSquareGeometry();
-	_fileName = filePath;
 
 	_prefabs.push_back(Prefab("Collision", "Resources/Sprites/StageCollision.dds", { 1.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"tag\" : \"StageCollision\", \"scale\" : [1.0, 1.0], \"components\" : [ { \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/StageCollision.dds\", 1.0, 1.0, 0.0, 0.0, 1.0] } ] }"));
 	_prefabs.push_back(Prefab("Player Blue", "Resources/Sprites/Player1.dds", { 6.0f, 8.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Player1.dds\", 6.0, 8.0, 0.0, 0.0, 1.0] }, { \"class\" : \"PlayerController\", \"constructors\" : [1] }] }"));
@@ -103,7 +102,7 @@ void Scene::Save()
 	scene[JSON_SCENE_GAMEOBJECTS] = gameObjects;
 	scene[JSON_SCENE_STAGECOLLISION] = map;
 
-	std::ofstream o(_fileName);
+	std::ofstream o(_filePath);
 	o << std::setw(4) << scene << std::endl;
 	o.close();
 #endif
