@@ -62,9 +62,13 @@ Vector2 MovingPlatform::MoveTowards(Vector2 currentPos, Vector2 Target, float de
 	Vector2 result;
 	result.x =  Lerp(currentPos.x, Target.x, deltaTime);
 	result.x = Clamp(result.x, -10, 10);
-	result.y = Lerp(currentPos.y, Target.y, deltaTime);
-	result.y = Clamp(result.y, -10, 10);
-
+	if (currentPos.y == Target.y)
+		result.y = 0;
+	else
+	{
+		result.y = Lerp(currentPos.y, Target.y, deltaTime);
+		result.y = Clamp(result.y, -10, 10);
+	}
 
 	return result;
 }
