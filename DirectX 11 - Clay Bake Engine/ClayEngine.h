@@ -30,5 +30,5 @@ private:
 	Scene* _scene = nullptr;
 	PhysicsWorld* _physicsWorld;
 	Physics* _physicsAccess;
-	bool _physicsRunning;
+	bool _physicsRunning;;
 };

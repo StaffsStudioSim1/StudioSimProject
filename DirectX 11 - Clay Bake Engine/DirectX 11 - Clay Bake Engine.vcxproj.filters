@@ -150,6 +150,9 @@
     <ClCompile Include="Physics\Vectors.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\GameManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GameObjects\PlayerController.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
@@ -281,6 +284,9 @@
     <ClInclude Include="Physics\Vectors.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjects\GameManager.h">
+      <Filter>Header Files\GameObject</Filter>
+      </ClInclude>
     <ClInclude Include="Input\Mouse\MousePicking.h">
       <Filter>Header Files\Input\Mouse</Filter>
     </ClInclude>

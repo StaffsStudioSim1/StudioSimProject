@@ -4,6 +4,7 @@
 #include "Physics.h"
 #include "PlayerController.h"
 #include "../Input/PlayerInput.h"
+#include "GameManager.h"
 
 GameObject::GameObject(std::string name) : GameObject(name, Vector3(0.0f, 0.0f, 0.0f), Vector2(1.0f, 1.0f), 0.0f)
 {
@@ -56,7 +57,11 @@ GameObject::GameObject(json objectJson)
 			int playerID = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
 			component = new PlayerController(playerID);
 		}
-		else if (type == "Physics")
+		//else if (type == "GameManager")
+		//{
+		//	component = new GameManager();
+		//}
+		else if(type == "Physics")
 		{
 			PhysicsBody* body = new PhysicsBody();
 			body->bodyDef.startPos = _transform.GetPosition();
