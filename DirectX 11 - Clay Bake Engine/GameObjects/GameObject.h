@@ -8,6 +8,7 @@ using json = nlohmann::json;
 
 #define JSON_SCENE_BACKGROUND "backgroundImage"
 #define JSON_SCENE_GAMEOBJECTS "gameObjects"
+#define JSON_SCENE_STAGECOLLISION "stageCollision"
 
 #define JSON_GO_NAME "name"
 #define JSON_GO_TAG "tag"

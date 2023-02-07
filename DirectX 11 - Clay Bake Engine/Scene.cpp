@@ -41,6 +41,23 @@ Scene::Scene(std::string filePath)
 	_prefabs.push_back(Prefab("Lamp", "Resources/Sprites/Lamp.dds", { 2.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Lamp.dds\", 2.0, 1.0, 0.0, 0.0, 1.0, 0.0, 18.0] }] }"));
 
 	_texture = ObjectHandler::GetInstance().LoadDDSTextureFile(_prefabs[_prefabNum].ghostImageFilepath);
+
+	std::string map = data[JSON_SCENE_STAGECOLLISION];
+	for (int x = 0; x < 36; x++)
+		for (int y = 0; y < 20; y++)
+			if (map[x + y * 36] == '1')
+			{
+				json tempJson = json::parse(_prefabs[0].jsonString);
+				tempJson[JSON_GO_NAME] = _prefabs[0].name + " [" + std::to_string(_children.size()) + "]";
+				Vector2 worldPos = _mousePicking.GridToWorld(Vector2(x, y));
+				tempJson[JSON_GO_POSITION].push_back(worldPos.x);
+				tempJson[JSON_GO_POSITION].push_back(worldPos.y);
+				tempJson[JSON_GO_POSITION].push_back(0.0f);
+				GameObject* tempObj = new GameObject(tempJson);
+				_children.push_back(tempObj);
+			}
+
+	_objNum = _children.size();
 #endif
 }
 
@@ -59,8 +76,11 @@ void Scene::Save()
 	json scene;
 	json gameObjects;
 
-	//scene[JSON_SCENE_BACKGROUND] = "Resources/Textures/ZoeLevel.dds";
 	scene[JSON_SCENE_BACKGROUND] = ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Appearance>()->GetTexture().filePath; // Presumes that the first object is the background
+
+	std::string map;
+	for (int i = 0; i < 36 * 20; i++)
+		map += '0';
 
 	for (GameObject* obj : _children)
 	{
@@ -68,11 +88,14 @@ void Scene::Save()
 			gameObjects.push_back(obj->Write());
 		else if (obj->GetTag() == JSON_TAG_STAGECOLLISION)
 		{
-
+			Vector2 gridPos = _mousePicking.WorldToGrid(obj->GetTransform()->GetPosition());
+			// For each 1 y, 36 x's have to be added
+			map = map.replace(gridPos.x + gridPos.y * 36, 1, "1");
 		}
 	}
 
-	scene["gameObjects"] = gameObjects;
+	scene[JSON_SCENE_GAMEOBJECTS] = gameObjects;
+	scene[JSON_SCENE_STAGECOLLISION] = map;
 
 	std::ofstream o(_fileName);
 	o << std::setw(4) << scene << std::endl;
@@ -90,21 +113,20 @@ void Scene::Update(float deltaTime)
 {
 #if EDIT_MODE
 	static GameObject* selectedObj = nullptr;
-	static DirectX::XMINT2 startingPos = { 0, 0 };
+	static Vector2 startingPos = { 0, 0 };
 
 	MouseClass* mouse = InputManager::GetInstance().GetMouse();
-	DirectX::XMINT2 mousePos = { mouse->GetPosX(), mouse->GetPosY() };
+	Vector2 mousePos = Vector2(mouse->GetPosX(), mouse->GetPosY());
 
-	DirectX::XMINT2 relPos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
-	relPos = _mousePicking.SnapCoordinatesToGrid(relPos.x, relPos.y);
-	_ghost.x = relPos.x;
-	_ghost.y = relPos.y;
+	Vector2 relPos = _mousePicking.GetRelativeMousePos(mousePos);
+	relPos = _mousePicking.SnapCoordinatesToGrid(relPos);
+	_ghost = relPos;
 
 	if (selectedObj)
 	{
 		// If an object is following the cursor
-		DirectX::XMINT2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos.x, mousePos.y);
-		selectedObj->GetTransform()->SetPosition(relativeMousePos.x, relativeMousePos.y);
+		Vector2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos);
+		selectedObj->GetTransform()->SetPosition(relativeMousePos);
 	}
 
 	while (!mouse->EventBufferIsEmpty()) // Handles moving, creating and deleting objects with the mouse in edit mode
@@ -116,12 +138,9 @@ void Scene::Update(float deltaTime)
 			if (!selectedObj)
 			{
 				// Pickup Tile
-				selectedObj = _mousePicking.TestForObjectIntersection(mousePos.x, mousePos.y);
+				selectedObj = _mousePicking.TestForObjectIntersection(mousePos);
 				if (selectedObj)
-				{
-					Vector2 pos = selectedObj->GetTransform()->GetPosition();
-					startingPos = { (int)pos.x, (int)pos.y };
-				}
+					startingPos = selectedObj->GetTransform()->GetPosition();
 			}
 			break;
 		case MouseEvent::EventType::LRelease:
@@ -129,19 +148,19 @@ void Scene::Update(float deltaTime)
 			{
 				// Drop tile at position
 				Vector2 objectPos = selectedObj->GetTransform()->GetPosition();
-				DirectX::XMINT2 snapPos = _mousePicking.SnapCoordinatesToGrid(objectPos.x, objectPos.y);
+				Vector2 snapPos = _mousePicking.SnapCoordinatesToGrid(objectPos);
 
 				for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 				{
-					if (object != selectedObj && object->GetTransform()->GetPosition().x == snapPos.x && object->GetTransform()->GetPosition().y == snapPos.y)
+					if (object != selectedObj && object->GetTransform()->GetPosition() == snapPos)
 					{
-						selectedObj->GetTransform()->SetPosition(startingPos.x, startingPos.y);
+						selectedObj->GetTransform()->SetPosition(startingPos);
 						selectedObj = nullptr;
 						return;
 					}
 				}
 
-				selectedObj->GetTransform()->SetPosition(snapPos.x, snapPos.y);
+				selectedObj->GetTransform()->SetPosition(snapPos);
 				selectedObj = nullptr;
 			}
 			break;
@@ -162,10 +181,8 @@ void Scene::Update(float deltaTime)
 			{
 				// Create a new tile
 				for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
-				{
-					if (object->GetTransform()->GetPosition().x == relPos.x && object->GetTransform()->GetPosition().y == relPos.y)
+					if (object->GetTransform()->GetPosition() == relPos)
 						return;
-				}
 
 				json tempJson = json::parse(_prefabs[_prefabNum].jsonString);
 				tempJson[JSON_GO_NAME] = _prefabs[_prefabNum].name + " [" + std::to_string(_objNum) + "]";
