@@ -32,3 +32,13 @@ void Component::Stop()
 void Component::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
 {
 }
+
+bool Component::IsActive()
+{
+	return _active;
+}
+
+void Component::SetActive(bool active)
+{
+	_active = active;
+}

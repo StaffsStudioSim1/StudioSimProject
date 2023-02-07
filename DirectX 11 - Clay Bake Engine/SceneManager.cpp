@@ -4,6 +4,7 @@ SceneManager::SceneManager()
 {
 	_shouldSceneChange = false;
 	_newScene = nullptr;
+	_currentSceneID = -1;
 }
 
 SceneManager::~SceneManager()
@@ -27,5 +28,11 @@ bool SceneManager::ShouldSceneChange()
 Scene* SceneManager::ReadScene()
 {
 	_shouldSceneChange = false;
+	_currentSceneID = _newScene->GetID();
 	return _newScene;
+}
+
+int SceneManager::GetCurrentSceneID()
+{
+	return _currentSceneID;
 }

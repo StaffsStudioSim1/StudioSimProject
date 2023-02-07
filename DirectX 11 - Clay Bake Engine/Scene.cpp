@@ -11,6 +11,8 @@ using json = nlohmann::json;
 
 Scene::Scene(std::string filePath)
 {
+	_filePath = filePath;
+
 	std::ifstream f(filePath);
 	if (!f.good())
 		ErrorLogger::Log("Unable to find scene file " + filePath);
@@ -33,7 +35,6 @@ Scene::Scene(std::string filePath)
 	int height = (rc.bottom - rc.top) - 39;
 	_mousePicking.Initialise(width, height);
 	_geometry = ObjectHandler::GetInstance().GetSquareGeometry();
-	_fileName = filePath;
 
 	_prefabs.push_back(Prefab("Collision", "Resources/Sprites/StageCollision.dds", { 1.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"tag\" : \"StageCollision\", \"scale\" : [1.0, 1.0], \"components\" : [ { \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/StageCollision.dds\", 1.0, 1.0, 0.0, 0.0, 1.0] } ] }"));
 	_prefabs.push_back(Prefab("Player Blue", "Resources/Sprites/Player1.dds", { 6.0f, 8.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Player1.dds\", 6.0, 8.0, 0.0, 0.0, 1.0] }, { \"class\" : \"PlayerController\", \"constructors\" : [1] }] }"));
@@ -44,21 +45,24 @@ Scene::Scene(std::string filePath)
 	_texture = ObjectHandler::GetInstance().LoadDDSTextureFile(_prefabs[_prefabNum].ghostImageFilepath);
 
 	std::string map = data[JSON_SCENE_STAGECOLLISION];
-	for (int x = 0; x < 36; x++)
-		for (int y = 0; y < 20; y++)
-			if (map[x + y * 36] == '1')
-			{
-				json tempJson = json::parse(_prefabs[0].jsonString);
-				tempJson[JSON_GO_NAME] = _prefabs[0].name + " [" + std::to_string(_children.size()) + "]";
-				Vector2 worldPos = _mousePicking.GridToWorld(Vector2(x, y));
-				tempJson[JSON_GO_POSITION].push_back(worldPos.x);
-				tempJson[JSON_GO_POSITION].push_back(worldPos.y);
-				tempJson[JSON_GO_POSITION].push_back(0.0f);
-				GameObject* tempObj = new GameObject(tempJson);
-				_children.push_back(tempObj);
-			}
+	if (map != "")
+	{
+		for (int x = 0; x < 36; x++)
+			for (int y = 0; y < 20; y++)
+				if (map[x + y * 36] == '1')
+				{
+					json tempJson = json::parse(_prefabs[0].jsonString);
+					tempJson[JSON_GO_NAME] = _prefabs[0].name + " [" + std::to_string(_children.size()) + "]";
+					Vector2 worldPos = _mousePicking.GridToWorld(Vector2(x, y));
+					tempJson[JSON_GO_POSITION].push_back(worldPos.x);
+					tempJson[JSON_GO_POSITION].push_back(worldPos.y);
+					tempJson[JSON_GO_POSITION].push_back(0.0f);
+					GameObject* tempObj = new GameObject(tempJson);
+					_children.push_back(tempObj);
+				}
 
-	_objNum = _children.size();
+		_objNum = _children.size();
+	}
 #endif
 }
 
@@ -98,7 +102,7 @@ void Scene::Save()
 	scene[JSON_SCENE_GAMEOBJECTS] = gameObjects;
 	scene[JSON_SCENE_STAGECOLLISION] = map;
 
-	std::ofstream o(_fileName);
+	std::ofstream o(_filePath);
 	o << std::setw(4) << scene << std::endl;
 	o.close();
 #endif
