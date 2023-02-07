@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObjects\GameManager.cpp" />
     <ClCompile Include="GameObjects\Component.cpp" />
     <ClCompile Include="GameObjects\Appearance.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
@@ -190,6 +191,9 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObjects\GameManager.h" />
+    <ClInclude Include="Graphics\Geometry.h" />
+    <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="GameObjects\Component.h" />
     <ClInclude Include="GameObjects\Appearance.h" />
     <ClInclude Include="GameObjects\GameObject.h" />

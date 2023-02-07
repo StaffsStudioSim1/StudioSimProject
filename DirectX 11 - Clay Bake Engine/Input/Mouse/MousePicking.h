@@ -1,15 +1,16 @@
 #pragma once
 
-#include <DirectXMath.h>
 #include "../../GameObjects/GameObject.h"
 
 class MousePicking
 {
 public:
 	void Initialise(int width, int height);
-	GameObject* TestForObjectIntersection(int mouseX, int mouseY);
-	DirectX::XMINT2 GetRelativeMousePos(int mouseX, int mouseY);
-	DirectX::XMINT2 SnapCoordinatesToGrid(int posX, int posY);
+	GameObject* TestForObjectIntersection(Vector2 mousePos);
+	Vector2 GetRelativeMousePos(Vector2 mousePos);
+	Vector2 SnapCoordinatesToGrid(Vector2 worldPos);
+	Vector2 WorldToGrid(Vector2 worldPos);
+	Vector2 GridToWorld(Vector2 gridPos);
 	int GetSnapScale() const { return snapScale; }
 private:
 	int _height, _width;

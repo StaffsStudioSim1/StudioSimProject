@@ -22,6 +22,9 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// Initialise Audio Engine
 	AudioManager::GetInstance();
 
+	// Guarantee GameManager is initialised
+	GameManager::GetInstance();
+
 	// Physics world for data processing
 	float gravity = -9.806f;
 	b2World* boxworld = new b2World(b2Vec2(0, gravity));
@@ -121,6 +124,7 @@ void ClayEngine::Update()
 		if (_scene != nullptr)
 			_scene->Stop();
 		_scene = SceneManager::GetInstance().ReadScene();
+		GameManager::GetInstance().SceneChanged(_scene);
 		_scene->Start();
 	}
 

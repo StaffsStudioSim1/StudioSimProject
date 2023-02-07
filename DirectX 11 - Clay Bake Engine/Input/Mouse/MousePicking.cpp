@@ -2,84 +2,52 @@
 #include "../../GameObjects/ObjectHandler.h"
 #include "../../Graphics/Graphics.h"
 
-#include <DirectXCollision.h>
-
 void MousePicking::Initialise(int width, int height) // Currently only being used to fix the maximised window issue
 {
 	_width = width;
 	_height = height;
 }
 
-GameObject* MousePicking::TestForObjectIntersection(int mouseX, int mouseY)
+GameObject* MousePicking::TestForObjectIntersection(Vector2 mousePos)
 {
-	DirectX::BoundingBox objBox;
-	DirectX::BoundingSphere mouseSphere;
-	DirectX::XMINT2 mousePos = GetRelativeMousePos(mouseX, mouseY);
-	mousePos = SnapCoordinatesToGrid(mousePos.x, mousePos.y);
+	Vector2 gridPos = SnapCoordinatesToGrid(GetRelativeMousePos(mousePos));
 
 	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 	{
 		if (object->GetName() == JSON_SCENE_BACKGROUND)
 			continue;
 
-		/*objBox.Center = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y, object->GetTransform()->GetDepthPos() };
-		objBox.Extents = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y, 0.0f };
-
-		mouseSphere.Center = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y), 0.0f };
-		mouseSphere.Radius = 20.0f; // Cursor picking size
-
-		if (mouseSphere.Intersects(objBox))
-			return object;*/
-		if (object->GetTransform()->GetPosition().x == mousePos.x && object->GetTransform()->GetPosition().y == mousePos.y)
+		if (object->GetTransform()->GetPosition() == gridPos)
 			return object;
 	}
 
 	return nullptr;
 }
 
-DirectX::XMINT2 MousePicking::GetRelativeMousePos(int mouseX, int mouseY)
+Vector2 MousePicking::GetRelativeMousePos(Vector2 mousePos)
 {
-	/*int width = 0;
-	int height = 0;
-
-	RECT rc;
-	GetWindowRect(GetActiveWindow(), &rc);
-	width = (rc.right - rc.left) - 16; // Take away values due to the window adjustment function
-	height = (rc.bottom - rc.top) - 39;
-
-	WINDOWPLACEMENT wp;
-	GetWindowPlacement(GetActiveWindow(), &wp);
-	if (wp.flags == 2) // Hopefully temp but mostly fixes the mouse picking issue when the window is maximised
-	{
-		MONITORINFO mi = { sizeof(mi) };
-		GetMonitorInfo(MonitorFromWindow(GetActiveWindow(), MONITOR_DEFAULTTONEAREST), &mi);
-		float monitorWidth = mi.rcMonitor.right - mi.rcMonitor.left;
-		float monitorHeight = mi.rcMonitor.bottom - mi.rcMonitor.top;
-		width = _width;
-		height = _height;
-
-		float diff = height / monitorHeight;
-		mouseX *= (width / monitorWidth);
-		mouseY *= (height / (monitorHeight - 39));
-	}*/
-
 	float scaleX = _width / INTERNAL_RESOLUTION_X;
 	float scaleY = _height / INTERNAL_RESOLUTION_Y;
-	return DirectX::XMINT2((mouseX - (_width / 2)) / scaleX, -(mouseY - (_height / 2)) / scaleY);
+	return Vector2((mousePos.x - (_width / 2)) / scaleX, -(mousePos.y - (_height / 2)) / scaleY);
 }
 
-DirectX::XMINT2 MousePicking::SnapCoordinatesToGrid(int posX, int posY)
+Vector2 MousePicking::SnapCoordinatesToGrid(Vector2 worldPos)
 {
-	DirectX::XMINT2 returnPos = { posX + _width / 2, posY + _height / 2 };
+	return GridToWorld(WorldToGrid(worldPos));
+}
 
-	returnPos.x /= snapScale;
-	returnPos.y /= snapScale;
-	returnPos.x *= snapScale;
-	returnPos.y *= snapScale;
-	returnPos.x -= _width / 2;
-	returnPos.y -= _height / 2;
-	returnPos.x += snapScale / 2;
-	returnPos.y += snapScale / 2;
+Vector2 MousePicking::WorldToGrid(Vector2 worldPos)
+{
+	int x = (worldPos.x + INTERNAL_RESOLUTION_X / 2) / snapScale;
+	int y = (worldPos.y + INTERNAL_RESOLUTION_Y / 2) / snapScale;
+	return Vector2(x, y);
+}
 
-	return returnPos;
+Vector2 MousePicking::GridToWorld(Vector2 gridPos)
+{
+	gridPos *= snapScale;
+	gridPos -= Vector2(_width / 2, _height / 2);
+	gridPos += Vector2(snapScale / 2, snapScale / 2);
+	gridPos += Vector2(INTERNAL_RESOLUTION_X / 2, INTERNAL_RESOLUTION_Y / 2);
+	return gridPos;
 }
