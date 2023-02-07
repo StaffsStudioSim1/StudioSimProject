@@ -2,6 +2,7 @@
 #include "ObjectHandler.h"
 #include "Appearance.h"
 #include "Physics.h"
+#include "PlayerController.h"
 #include "../Input/PlayerInput.h"
 
 GameObject::GameObject(std::string name) : GameObject(name, Vector3(0.0f, 0.0f, 0.0f), Vector2(1.0f, 1.0f), 0.0f)
@@ -42,11 +43,18 @@ GameObject::GameObject(json objectJson)
 				componentJson[JSON_COMPONENT_CONSTRUCTORS].at(3), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(4)
 			};
 			float alphaMultiplier = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(5);
-			component = new Appearance(textureName, texCoords, alphaMultiplier);
+			Vector2 offset;
+			if (componentJson[JSON_COMPONENT_CONSTRUCTORS].size() > 6)
+			{
+				offset.x = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(6);
+				offset.y = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(7);
+			}
+			component = new Appearance(textureName, texCoords, alphaMultiplier, offset);
 		}
 		else if (type == "PlayerController")
 		{
-			// TODO add yo stuff here
+			int playerID = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+			component = new PlayerController(playerID);
 		}
 		else if (type == "Physics")
 		{

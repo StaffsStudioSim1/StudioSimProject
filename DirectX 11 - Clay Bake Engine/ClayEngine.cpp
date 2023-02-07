@@ -22,8 +22,6 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// Initialise Audio Engine
 	AudioManager::GetInstance();
 
-	_ex = new Examples();
-
 	// Physics world for data processing
 	float gravity = -9.806f;
 	b2World* boxworld = new b2World(b2Vec2(0, gravity));
@@ -42,7 +40,6 @@ void ClayEngine::Destroy()
 {
 	if (_scene)
 		delete _scene;
-	delete _ex;
 }
 
 LRESULT ClayEngine::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -104,7 +101,6 @@ void ClayEngine::Update()
 		return;
 	InputManager::GetInstance().PollInput();
 
-	_ex->Update();
 	if (_scene != nullptr)
 		_scene->Update(deltaTime);
 
