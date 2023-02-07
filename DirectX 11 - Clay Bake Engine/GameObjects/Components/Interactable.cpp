@@ -19,9 +19,9 @@ void Interactable::SendSignal()
 	case (SwitchState):
 		//call switch state on linked object ie door
 	
-		if (gameObject->GetComponent<DoorComponent>())
+		if (linkedObject->GetComponent<DoorComponent>())
 		{
-			gameObject->GetComponent<DoorComponent>()->SwitchState();
+			linkedObject->GetComponent<DoorComponent>()->SwitchState();
 		}
 
 		break;
@@ -45,13 +45,13 @@ void Interactable::SendSignal()
 }
 
 //define InteractableLink switchType to define what signal is sent and linkedObject of the name of the target object
-Interactable::Interactable(InteractableLink switchType, std::string linkedObject)
+Interactable::Interactable(InteractableLink switchType, std::string linkedObjectName)
 {
 	interactableLink = switchType;
-	linkedObjectName = linkedObject;
-	if (linkedObject != "")
+	
+	if (linkedObjectName != "")
 	{
-		gameObject = ObjectHandler::GetInstance().FindGameObject(linkedObjectName);
+		linkedObject = ObjectHandler::GetInstance().FindGameObject(linkedObjectName);
 	}
 }
 

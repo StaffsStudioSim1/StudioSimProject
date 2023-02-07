@@ -8,5 +8,7 @@ public:
 	std::string destinationObject;
 	void start();
 	void Interact();
+
+	LeverComponent(InteractableLink switchType = Default, std::string linkedObjectName = "");
 };
   

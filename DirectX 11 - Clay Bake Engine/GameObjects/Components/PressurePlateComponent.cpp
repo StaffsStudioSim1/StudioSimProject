@@ -1,4 +1,15 @@
 #include "PressurePlateComponent.h"
+#include "../ObjectHandler.h"
+
+PressurePlateComponent::PressurePlateComponent(InteractableLink switchType, std::string linkedObjectName)
+{
+	interactableLink = switchType;
+
+	if (linkedObjectName != "")
+	{
+		linkedObject = ObjectHandler::GetInstance().FindGameObject(linkedObjectName);
+	}
+}
 
 void PressurePlateComponent::start()
 {

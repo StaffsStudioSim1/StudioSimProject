@@ -195,8 +195,6 @@
     <ClInclude Include="GameObjects\GameManager.h" />
     <ClInclude Include="Graphics\Geometry.h" />
     <ClInclude Include="Graphics\ConstantBuffer.h" />
-    <ClInclude Include="GameObjects\Component.h" />
-    <ClInclude Include="GameObjects\Appearance.h" />
     <ClInclude Include="GameObjects\Components\Appearance.h" />
     <ClInclude Include="GameObjects\Components\ButtonComponent.h" />
     <ClInclude Include="GameObjects\Components\Component.h" />
@@ -207,7 +205,6 @@
     <ClInclude Include="Audio\AudioManager.h" />
     <ClInclude Include="GameObjects\ObjectHandler.h" />
     <ClInclude Include="GameObjects\Components\Physics.h" />
-    <ClInclude Include="GameObjects\TextureInfo.h" />
     <ClInclude Include="GameObjects\Physics.h" />
     <ClInclude Include="Graphics\TextureInfo.h" />
     <ClInclude Include="Graphics\ImGui\imconfig.h" />

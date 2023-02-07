@@ -186,9 +186,6 @@
     <ClCompile Include="Input\Mouse\MousePicking.cpp">
       <Filter>Source Files\Input\Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Physics.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui.cpp">
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
@@ -290,25 +287,13 @@
     <ClInclude Include="Input\PlayerInput.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Appearance.h">
-      <Filter>Header Files\GameObject\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\Component.h">
-      <Filter>Header Files\GameObject\Components</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjects\Components\LeverComponent.h">
       <Filter>Header Files\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Components\Physics.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\PhysicsStructs.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="Graphics\Geometry.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\TextureInfo.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Components\Component.h">
@@ -385,6 +370,9 @@
     </ClInclude>
     <ClInclude Include="Graphics\ImGui\imstb_truetype.h">
       <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Physics.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@ public:
 	void WeightReleased();
 	void Update();
 	
-
+	PressurePlateComponent(InteractableLink switchType = Default, std::string linkedObjectName = "");
 	// add physics hitbox
 
 };

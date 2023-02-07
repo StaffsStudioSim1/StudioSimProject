@@ -1,10 +1,12 @@
 #pragma once
 #include "../GameObject.h"
 #include "Component.h"
+#include "Appearance.h"
 
 class Interactable: public Component
 {
 
+public:
 	enum InteractableLink
 	{
 		Default = 0,
@@ -14,7 +16,7 @@ class Interactable: public Component
 		signal4 = 4
 	};
 
-	GameObject* gameObject;
+	GameObject* linkedObject;
 
 public: 
 	//member variables
@@ -28,7 +30,7 @@ public:
 	void SendSignal(); //send signal function for linked objects to open close etc.
 
 	//constructors
-	Interactable(InteractableLink switchType = Default, std::string linkedObject = "");
+	Interactable(InteractableLink switchType = Default, std::string linkedObjectName = "");
 	Interactable(InteractableLink switchType);	
 };
 

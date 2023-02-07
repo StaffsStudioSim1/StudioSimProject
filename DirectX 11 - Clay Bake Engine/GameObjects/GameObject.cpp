@@ -65,7 +65,9 @@ GameObject::GameObject(json objectJson)
 		}
 		else if (type == "LeverComponent")
 		{
-			component = new LeverComponent();
+			int switchType = 0;
+			std::string linkedObject = "";
+			component = new LeverComponent((Interactable::InteractableLink)switchType, linkedObject);
 		}
 		else if (type == "DoorComponent")
 		{
@@ -73,15 +75,21 @@ GameObject::GameObject(json objectJson)
 		}
 		else if (type == "Interactable")
 		{
+			int switchType = 0;
+			std::string linkedObject = "";
 			component = new Interactable();
 		}
 		else if (type == "ButtonComponent")
 		{
-			component = new ButtonComponent();
+			int switchType = 0;
+			std::string linkedObject = "";
+			component = new ButtonComponent((Interactable::InteractableLink)switchType, linkedObject);
 		}
 		else if (type == "PressurePlateComponent")
 		{
-			component = new PressurePlateComponent();
+			int switchType = 0;
+			std::string linkedObject = "";
+			component = new PressurePlateComponent((Interactable::InteractableLink)switchType, linkedObject);
 		}
 		//else if (type == "GameManager")
 		//{

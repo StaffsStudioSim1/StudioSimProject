@@ -1,4 +1,5 @@
 #include "ButtonComponent.h"
+#include "../ObjectHandler.h"
 
 void ButtonComponent::Start()
 {
@@ -6,10 +7,15 @@ void ButtonComponent::Start()
 	m_Timer = 0;
 }
 
-ButtonComponent::ButtonComponent()
+ButtonComponent::ButtonComponent(InteractableLink switchType, std::string linkedObjectName)
 {
-}
+	interactableLink = switchType;
 
+	if (linkedObjectName != "")
+	{
+		linkedObject = ObjectHandler::GetInstance().FindGameObject(linkedObjectName);
+	}
+}
 //ButtonComponent(InteractableLink switchType, std::string linkedObject, float timeLimit)
 //{
 //	interactableLink = switchType;

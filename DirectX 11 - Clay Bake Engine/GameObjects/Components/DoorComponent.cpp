@@ -10,6 +10,9 @@ void DoorComponent::Open()
 {
 	//TODO: disable renderer if enabled
 
+	_gameObject->GetComponent<Appearance>()->SetAlphaMultiplier(0.0f);
+
+
 	//TODO: disable collider if enabled
 
 	m_Opened = true;
@@ -18,6 +21,7 @@ void DoorComponent::Open()
 void DoorComponent::Close()
 {
 	//TODO: enable renderer if disabled
+	_gameObject->GetComponent<Appearance>()->SetAlphaMultiplier(1.0f);
 
 	//TODO: enable collider if disabled
 
@@ -26,7 +30,9 @@ void DoorComponent::Close()
 
 DoorComponent::DoorComponent()
 {
+	start();
 }
+
 
 void DoorComponent::SwitchState()
 {

@@ -10,7 +10,7 @@ public:
 	void Interact();
 	void Start();
 
-	ButtonComponent();
+	ButtonComponent(InteractableLink switchType = Default, std::string linkedObjectName = "");
 
 	//TODO: finish button component constructor
 	// ButtonComponent(InteractableLink, std::string, float);
