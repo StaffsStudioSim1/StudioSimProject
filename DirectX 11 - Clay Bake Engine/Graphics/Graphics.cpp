@@ -5,6 +5,8 @@
 #include "ImGui/imgui_impl_dx11.h"
 #include "../SceneManager.h"
 
+#include <fstream>
+
 bool Graphics::Initialize(HWND hwnd, int width, int height)
 {
 	if (!InitializeDirectX(hwnd, width, height))
@@ -92,11 +94,21 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		scd.BufferCount = 2;
 
+		bool isWindowed = true;
+#if !EDIT_MODE
+		std::ifstream file("Resources/Settings.json");
+		if (!file.good())
+			ErrorLogger::Log("Unable to find settings file!");
+
+		json data = json::parse(file);
+		isWindowed = !data["Fullscreen"];
+		file.close();
+#endif
+
 		scd.OutputWindow = hwnd;
-		scd.Windowed = TRUE;
+		scd.Windowed = isWindowed;
 		scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-
 
 		hr = D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
 			D3D_DRIVER_TYPE_UNKNOWN,							// Graphics device
@@ -454,6 +466,10 @@ void Graphics::RenderFrame(Scene* scene)
 		{
 			if (_currentResolution < resolution.size()-1)
 				_currentResolution += 1;
+		}
+		if (ImGui::Button("Apply"))
+		{
+			// Apply setting changes
 		}
 		if (ImGui::Button("Back"))
 		{
