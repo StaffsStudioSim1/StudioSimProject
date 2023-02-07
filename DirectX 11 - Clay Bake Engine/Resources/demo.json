@@ -45,16 +45,16 @@
 			"components": [
 				{
 					"class": "Appearance",
-					"constructors": [ "Resources/Sprites/Box.dds", 3.0, 2.0, 0.0, 0.0, 1.0 ]
+					"constructors": [ "Resources/Sprites/Box.dds", 1.0, 1.0, 0.0, 0.0, 1.0 ]
 				},
 				{
 					"class": "MovingPlatform",
-					"constructors": [200.0,0,200.0,0]
+					"constructors": [-400.0,0,400.0,0]
 
 				},
 				{
 					"class": "Physics",
-					"constructors": [ 0, 0.1, 1.0 ]
+					"constructors": [ 1, 0.1, 1.0 ]
 				}
 			]
 		}
