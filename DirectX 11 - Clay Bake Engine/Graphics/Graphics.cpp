@@ -3,6 +3,9 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_win32.h"
 #include "ImGui/imgui_impl_dx11.h"
+#include "../SceneManager.h"
+
+#include <fstream>
 
 bool Graphics::Initialize(HWND hwnd, int width, int height)
 {
@@ -43,6 +46,9 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 
 bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 {
+	_windowWidth = width;
+	_windowHeight = height;
+
 	std::vector<AdapterData> adapters = AdapterReader::GetAdapters();
 
 	if (adapters.size() < 1)
@@ -88,11 +94,21 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		scd.BufferCount = 2;
 
+		bool isWindowed = true;
+#if !EDIT_MODE
+		std::ifstream file("Resources/Settings.json");
+		if (!file.good())
+			ErrorLogger::Log("Unable to find settings file!");
+
+		json data = json::parse(file);
+		isWindowed = !data["Fullscreen"];
+		file.close();
+#endif
+
 		scd.OutputWindow = hwnd;
-		scd.Windowed = TRUE;
+		scd.Windowed = isWindowed;
 		scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-
 
 		hr = D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
 			D3D_DRIVER_TYPE_UNKNOWN,							// Graphics device
@@ -361,19 +377,109 @@ void Graphics::RenderFrame(Scene* scene)
 
 	scene->Render(this->_deviceContext, cb, _constantBuffer);
 
-#if EDIT_MODE
 	//UI
-//CREATE FRAME
+	ImGuiWindowFlags window_flags = 0;
+	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBackground;
+
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
+	//CREATE FRAME
 	ImGui::NewFrame();
 	//UI WINDOWS
+	if (SceneManager::GetInstance().GetCurrentSceneID() == 0)
+	{
+		const char* playButton = "Resources/Sprites/PlayButton.dds";
+		const char* optionsButton = "Resources/Sprites/OptionsButton.dds";
+		const char* levelSelect = "Resources/Sprites/LevelSelect.dds";
+		const char* exitButton = "Resources/Sprites/ExitButton.dds";
+		TextureInfo playButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(playButton);
+		TextureInfo optionsButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(optionsButton);
+		TextureInfo levelSelectText = ObjectHandler::GetInstance().LoadDDSTextureFile(levelSelect);
+		TextureInfo exitButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitButton);
 
+		ImVec2 size = ImVec2(playButtonText.width * 2 * (float)(_windowWidth / 1280.0f), playButtonText.height * 2 * (float)(_windowHeight / 720.0f));
+
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight});
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (size.x / 2), (float)(_windowHeight / 2) - (size.y * 3) });
+		ImGui::Begin("Menu", NULL, window_flags);
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.55f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
+		if (ImGui::ImageButton(playButton, playButtonText.texture, size))
+		{
+			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+		}
+		if (ImGui::ImageButton(levelSelect, levelSelectText.texture, size))
+		{
+			ObjectHandler::GetInstance().SetLevelSelect(true);
+		}
+		if (ImGui::ImageButton(optionsButton, optionsButtonText.texture, size))
+		{
+			ObjectHandler::GetInstance().SetOptionsMenu(true);
+		}
+		if (ImGui::ImageButton(exitButton, exitButtonText.texture, size))
+		{
+			exit(0);
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::End();
+	}
+
+
+	if (ObjectHandler::GetInstance().IsLevelSelect())
+	{
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
+		ImGui::Begin("Level Select", NULL, window_flags);
+		if (ImGui::Button("Demo"))
+		{
+			ObjectHandler::GetInstance().SetLevelSelect(false);
+			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+		}
+		if (ImGui::Button("Back"))
+		{
+			ObjectHandler::GetInstance().SetLevelSelect(false);
+		}
+		ImGui::End();
+
+	}
+
+	if (ObjectHandler::GetInstance().IsOptionsMenu())
+	{
+		std::vector<std::string> resolution = { "1280x720","1600x900","1920x1080" };
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
+		ImGui::Begin("Options Menu", NULL, window_flags);
+		if (ImGui::ArrowButton("leftArrow", ImGuiDir_Left))
+		{
+			if (_currentResolution > 0)
+				_currentResolution -= 1;
+		}
+		ImGui::SameLine();
+		ImGui::Text(resolution[_currentResolution].c_str());
+		ImGui::SameLine();
+		if (ImGui::ArrowButton("rightArrow", ImGuiDir_Right))
+		{
+			if (_currentResolution < resolution.size()-1)
+				_currentResolution += 1;
+		}
+		if (ImGui::Button("Apply"))
+		{
+			// Apply setting changes
+		}
+		if (ImGui::Button("Back"))
+		{
+			ObjectHandler::GetInstance().SetOptionsMenu(false);
+		}
+		ImGui::End();
+
+	}
+#if EDIT_MODE
 	static bool linkScaling = true;
 	char fileName[30]; // For saving the file
-	strcpy_s(fileName, scene->GetFileName().c_str());
+	strcpy_s(fileName, scene->GetFilePath().c_str());
 	const char* boxBodyChoices[] = { "Static", "Kinematic", "Dynamic" };
-
+	
 	ImGui::Begin("Inspector");
 	if (ImGui::TreeNode("Game Objects"))
 	{
@@ -510,18 +616,28 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::TreePop();
 	}
 	ImGui::PushItemWidth(200);
-	if (ImGui::InputText("File Name", fileName, 30))
+
+	if(ImGui::InputText("File Name", fileName, 30))
 		scene->SetFileName(fileName);
+
+
 	ImGui::SameLine();
 	if (ImGui::Button("Save"))
 		scene->Save();
-	ImGui::End();
 
-	//ASSEMBLE AND RENDER DRAW DATA
+	if (ImGui::Button("Load"))
+	{
+		std::string sFileName = fileName;
+		
+
+		SceneManager::GetInstance().LoadScene(fileName);
+	}
+
+	ImGui::End();
+#endif
+	// ASSEMBLE AND RENDER DRAW DATA
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-#endif
-
 	this->_swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
 }
 

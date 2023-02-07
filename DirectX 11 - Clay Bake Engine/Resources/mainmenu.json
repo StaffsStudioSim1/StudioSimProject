@@ -1,0 +1,6 @@
+{
+	"sceneID" : 0,
+    "backgroundImage": "Resources/Sprites/MainMenuBG.dds",
+    "gameObjects": null,
+	"stageCollision" : ""
+}

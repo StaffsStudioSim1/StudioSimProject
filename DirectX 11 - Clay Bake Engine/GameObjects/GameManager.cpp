@@ -37,7 +37,7 @@ void GameManager::LevelReset()
 {
 	//reset the current level
 	//restart time
-	SceneManager::GetInstance().LoadScene(_currentScene->GetFileName());
+	SceneManager::GetInstance().LoadScene(_currentScene->GetFilePath());
 }
 
 void GameManager::Pause()

@@ -20,7 +20,10 @@ public:
 
 	virtual void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 
+	bool IsActive();
+	void SetActive(bool active);
 protected:
-	GameObject* _gameObject;
+	GameObject* _gameObject = nullptr;
+	bool _active = true;
 };
 

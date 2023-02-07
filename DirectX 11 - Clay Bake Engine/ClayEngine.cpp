@@ -35,7 +35,11 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
-	SceneManager::GetInstance().LoadScene("Resources/demo.json");
+#if EDIT_MODE
+	SceneManager::GetInstance().LoadScene("Resources/Demo.json");
+#else
+	SceneManager::GetInstance().LoadScene("Resources/MainMenu.json");
+#endif
 	return true;
 }
 
@@ -108,11 +112,14 @@ void ClayEngine::Update()
 		_scene->Update(deltaTime);
 
 	// Example message for object collision
-	if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>() && ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()) // Checks both objects have physics
+	if (ObjectHandler::GetInstance().GetAllObjects().size() > 2)
 	{
-		if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()->GetPhysicsBody()))
+		if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>() && ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()) // Checks both objects have physics
 		{
-			OutputDebugStringA("obj 1 and 2 have collided \n");
+			if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()->GetPhysicsBody()))
+			{
+				OutputDebugStringA("obj 1 and 2 have collided \n");
+			}
 		}
 	}
 
@@ -122,7 +129,10 @@ void ClayEngine::Update()
 	if (SceneManager::GetInstance().ShouldSceneChange())
 	{
 		if (_scene != nullptr)
+		{
 			_scene->Stop();
+			delete _scene;
+		}
 		_scene = SceneManager::GetInstance().ReadScene();
 		GameManager::GetInstance().SceneChanged(_scene);
 		_scene->Start();
