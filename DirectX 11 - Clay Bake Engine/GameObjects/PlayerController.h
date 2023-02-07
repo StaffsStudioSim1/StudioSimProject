@@ -1,16 +1,21 @@
 #pragma once
 #include "Components/Component.h"
+#include "Components/Rigidbody.h"
 #include "../Input/PlayerInput.h"
 #include "../Physics/Vectors.h"
-#include "Components/Rigidbody.h"
+#include "../Audio/SoundEffect.h"
 #include "GameObject.h"
+#include "GameManager.h"
+
+enum FacingDirection
+{
+    Left,
+    Right
+};
 
 class PlayerController : public Component
 {
 public:
-
-    //Variables
-    bool isFlipped = false;
 
     //Functions
     PlayerController(int id);
@@ -26,8 +31,9 @@ private:
 
     //Variables
     PlayerInput* _playerInput;
-    //Physics* _physicsBody;
     Rigidbody* _rigidbody;
+    SoundEffect* _jumpSoundEffect;
+    SoundEffect* _moveSoundEffect;
 
     int _playerID;
     float _moveSpeed = 100.0f;
@@ -38,9 +44,11 @@ private:
     bool _jumpReset = true;
     bool _isJumping = false;
     bool _movementEnabled = true;
+    bool _isWalking = false;
 
     Vector2 _currentMovement;
     Vector2 _jumpForce = {0.0f, 10000.0f};
+    FacingDirection _facingDirection;
 
     //Functions
     void JumpPressed();
@@ -52,6 +60,4 @@ private:
 
     //Physics Reliant Vars
     //BoxCollider2D _groundDetector (change to raycast);
-    //FacingDirection _facing;
 };
-

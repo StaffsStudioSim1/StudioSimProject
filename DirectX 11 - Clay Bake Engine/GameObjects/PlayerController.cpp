@@ -20,14 +20,15 @@ json PlayerController::Write()
 
 void PlayerController::Start()
 {
-	int ActivePlayerCount = 0;
-
 	//Create new PlayerInput
 	_playerInput = new PlayerInput(_playerID);
 
-	//Get the player's PhysicsBody
-	//_physicsBody = _gameObject->GetComponent<Physics>();
+	//Get the player's RigidBody
 	_rigidbody = _gameObject->GetComponent<Rigidbody>();
+
+	//Init SoundEffects
+	_jumpSoundEffect = new SoundEffect("Resources/Laser_Shoot3.wav");
+	_moveSoundEffect = new SoundEffect("Resources/SoundEffects/MetalWalkNoise.wav", true);
 }
 
 void PlayerController::Update(float deltaTime)
@@ -73,36 +74,30 @@ void PlayerController::Update(float deltaTime)
 	//potential functionality for the midaircontroldelay
 }
 
-//Need OnCollisionEnter
-
 void PlayerController::FixedUpdate(float timeStep)
 {
-	//Vector2 currentVelocity = _rigidbody->GetVelocity();
-
 	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
 		_rigidbody->AddForce(_currentMovement * _moveSpeed);
+
+		if (!_isWalking)
+		{
+			_moveSoundEffect->Play();
+		}
+		_isWalking = true;
+
+	}
+	else
+	{
+		_isWalking = false;
+		_moveSoundEffect->Stop();
 	}
 
-	/*if (_isJumping)
-	{
-		if (currentVelocity.y < _jumpForce.y)
-		{
-			if (!isFlipped)
-			{
-				_physicsBody->ApplyForceToObj(_jumpForce, true);
-			}
-			else
-			{
-				_physicsBody->ApplyForceToObj(Vector2(0.0f, -_jumpForce.y), true);
-			}
-		}
-		else if (currentVelocity.y >= _jumpForce.y)
-		{
-			_isJumping = false;
-		}
-		_isJumping = false;
-	}*/
+
+	//if(PlayerFloorCollider collides with Floor)
+	//{
+	//	_jumpReset = true;
+	//}
 }
 
 
@@ -112,7 +107,17 @@ void PlayerController::JumpPressed()
 		return;
 
 	_isJumping = true;
-	_rigidbody->AddForce(Vector2(0.0f, 100.0f));
+
+	if (!GameManager::GetInstance().IsGravityFlipped())
+	{
+		_rigidbody->AddForce(_jumpForce);
+	}
+	else
+	{
+		_rigidbody->AddForce(-_jumpForce);
+	}
+
+	_jumpSoundEffect->Play();
 }
 
 void PlayerController::JumpReleased()
@@ -143,4 +148,6 @@ void PlayerController::PausePressed()
 void PlayerController::Stop()
 {
 	delete _playerInput;
+	delete _jumpSoundEffect;
+	delete _moveSoundEffect;
 }
