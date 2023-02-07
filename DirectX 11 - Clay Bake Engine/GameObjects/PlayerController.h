@@ -1,8 +1,8 @@
 #pragma once
-#include "Component.h"
+#include "Components/Component.h"
 #include "../Input/PlayerInput.h"
 #include "../Physics/Vectors.h"
-#include "Physics.h"
+#include "Components/Physics.h"
 #include "GameObject.h"
 
 class PlayerController : public Component

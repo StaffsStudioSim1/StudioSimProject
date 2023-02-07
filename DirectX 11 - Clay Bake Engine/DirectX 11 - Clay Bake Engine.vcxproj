@@ -208,11 +208,7 @@
     <ClInclude Include="GameObjects\ObjectHandler.h" />
     <ClInclude Include="GameObjects\Components\Physics.h" />
     <ClInclude Include="GameObjects\TextureInfo.h" />
-    <ClInclude Include="Graphics\ConstantBuffer.h" />
-    <ClInclude Include="Graphics\Geometry.h" />
     <ClInclude Include="GameObjects\Physics.h" />
-    <ClInclude Include="Graphics\ConstantBuffer.h" />
-    <ClInclude Include="Graphics\Geometry.h" />
     <ClInclude Include="Graphics\TextureInfo.h" />
     <ClInclude Include="Graphics\ImGui\imconfig.h" />
     <ClInclude Include="Graphics\ImGui\imgui.h" />

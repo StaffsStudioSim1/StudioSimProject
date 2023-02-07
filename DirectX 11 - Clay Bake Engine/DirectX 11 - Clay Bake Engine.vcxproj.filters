@@ -176,6 +176,7 @@
     </ClCompile>
     <ClCompile Include="GameObjects\Components\Interactable.cpp">
       <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
     <ClCompile Include="GameObjects\GameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -345,7 +346,7 @@
     </ClInclude>
     <ClInclude Include="GameObjects\GameManager.h">
       <Filter>Header Files\GameObject</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="Input\Mouse\MousePicking.h">
       <Filter>Header Files\Input\Mouse</Filter>
     </ClInclude>
