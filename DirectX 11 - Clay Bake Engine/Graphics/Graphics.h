@@ -54,5 +54,4 @@ private:
 	DirectX::XMFLOAT4X4									_view;
 	DirectX::XMFLOAT4X4									_projection;
 
-	GameManager* _gameManager;
 };

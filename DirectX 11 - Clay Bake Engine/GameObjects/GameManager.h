@@ -1,6 +1,6 @@
 #pragma once
 //#include "Component.h"
-#include "Physics.h"
+#include "../Scene.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -10,32 +10,28 @@ class GameManager
 {
     bool isPaused;
     bool isGravityFlipped;
-    GameObject* Players[2];
     vector <int> levelList;
-    
-    int activePlayers;
-    struct playerInfo 
-    {
-        Vector2 startLocation;
-        //string playerColour;
-        enum DirectionOfMagnet
-        {
-            Push,
-            Pull
-        };
-    };
+    Scene* _currentScene;
+
+    GameManager();
 public:
-    void Start();
-    void Update();
-    void FixedUpdate(float timestamp);
+    // Singleton Code
+    static GameManager& GetInstance()
+    {
+        static GameManager instance;
+        return instance;
+    }
+
+    GameManager(GameManager const&) = delete;
+    void operator=(GameManager const&) = delete;
+
+    void SceneChanged(Scene* scene);
     void LevelWin();
     void LevelLose();
     void LevelReset();
     void Pause();
     void UnPause();
     void GravityFlip();
-    void GravityFlipOn();
-    void GravityFlipOff();
     void SaveFileCheck();
     void CreateSaveFile();
 };

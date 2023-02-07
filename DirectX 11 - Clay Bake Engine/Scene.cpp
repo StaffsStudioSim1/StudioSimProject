@@ -17,6 +17,7 @@ Scene::Scene(std::string filePath)
 
 	json data = json::parse(f);
 
+	_id = data[JSON_SCENE_ID];
 	std::string imagePath = data[JSON_SCENE_BACKGROUND];
 	_backgroundImage = new GameObject((std::string)JSON_SCENE_BACKGROUND);
 	_backgroundImage->GetTransform()->SetDepthPos(1.0f);
@@ -78,6 +79,11 @@ void Scene::Save()
 	o << std::setw(4) << scene << std::endl;
 	o.close();
 #endif
+}
+
+int Scene::GetID()
+{
+	return _id;
 }
 
 void Scene::Start()

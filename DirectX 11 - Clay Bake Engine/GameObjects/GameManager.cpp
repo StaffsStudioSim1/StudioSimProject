@@ -6,21 +6,17 @@
 using nlohmann::json;
 
 
-void GameManager::Start()
+GameManager::GameManager()
 {
-	SaveFileCheck();
 	//stuff for when game starts
 	isPaused = false;
+	isGravityFlipped = false;
+	_currentScene = nullptr;
 }
 
-void GameManager::Update()
+void GameManager::SceneChanged(Scene* scene)
 {
-	//update stuff
-}
-
-void GameManager::FixedUpdate(float timestamp)
-{
-	//fixed stuff that needs to happen every frame/60fps stuff
+	_currentScene = scene;
 }
 
 void GameManager::LevelWin()
@@ -41,6 +37,7 @@ void GameManager::LevelReset()
 {
 	//reset the current level
 	//restart time
+	SceneManager::GetInstance().LoadScene(_currentScene->GetFileName());
 }
 
 void GameManager::Pause()
@@ -48,7 +45,6 @@ void GameManager::Pause()
 	//pause the game
 	if (isPaused)
 		return;
-
 	isPaused = true;
 	//set time to 0 - pause time
 	//freeze all input
@@ -67,27 +63,7 @@ void GameManager::UnPause()
 
 void GameManager::GravityFlip()
 {
-	//flip the gravity
-	if(isGravityFlipped)
-		GravityFlipOff();
-	else
-		GravityFlipOn();
-}
-
-void GameManager::GravityFlipOn()
-{
-	isGravityFlipped = true;
-
-	b2Vec2 Gravity = ObjectHandler::GetInstance().GetPhysicsWorld()->world->GetGravity();
-	ObjectHandler::GetInstance().GetPhysicsWorld()->world->SetGravity(-Gravity);
-}
-
-void GameManager::GravityFlipOff()
-{
-	isGravityFlipped = false;
-
-	b2Vec2 Gravity = ObjectHandler::GetInstance().GetPhysicsWorld()->world->GetGravity();
-	ObjectHandler::GetInstance().GetPhysicsWorld()->world->SetGravity(Gravity);
+	isGravityFlipped = !isGravityFlipped;
 }
 
 void GameManager::SaveFileCheck()

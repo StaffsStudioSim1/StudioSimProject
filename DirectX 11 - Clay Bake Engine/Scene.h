@@ -52,6 +52,7 @@ public:
 	~Scene();
 
 	void Save();
+	int GetID();
 
 	void Start();
 	void Update(float deltaTime);
@@ -65,6 +66,7 @@ public:
 	std::string GetFileName() const { return _fileName; }
 #endif
 private:
+	int _id;
 	std::vector<GameObject*> _children;
 	GameObject* _backgroundImage;
 
