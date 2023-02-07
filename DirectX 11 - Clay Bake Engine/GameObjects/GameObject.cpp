@@ -1,8 +1,12 @@
 #include "GameObject.h"
 #include "ObjectHandler.h"
 #include "Components/Appearance.h"
+#include "Components/Interactable.h"
 #include "Components/LeverComponent.h"
+#include "Components/DoorComponent.h"
+#include "Components/ButtonComponent.h"
 #include "Components/Appearance.h"
+#include "Components/PressurePlateComponent.h"
 #include "Components/Physics.h"
 #include "PlayerController.h"
 #include "../Input/PlayerInput.h"
@@ -62,6 +66,22 @@ GameObject::GameObject(json objectJson)
 		else if (type == "LeverComponent")
 		{
 			component = new LeverComponent();
+		}
+		else if (type == "DoorComponent")
+		{
+			component = new DoorComponent();
+		}
+		else if (type == "Interactable")
+		{
+			component = new Interactable();
+		}
+		else if (type == "ButtonComponent")
+		{
+			component = new ButtonComponent();
+		}
+		else if (type == "PressurePlateComponent")
+		{
+			component = new PressurePlateComponent();
 		}
 		//else if (type == "GameManager")
 		//{

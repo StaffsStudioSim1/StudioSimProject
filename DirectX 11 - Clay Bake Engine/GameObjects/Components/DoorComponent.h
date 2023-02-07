@@ -1,7 +1,7 @@
 #pragma once
 #include "Interactable.h"
 
-class DoorComponent : public GameObject
+class DoorComponent : public Component
 {
 public:
 	bool m_Opened;
@@ -9,6 +9,8 @@ public:
 	
 	void Open();
 	void Close();
+
+	DoorComponent();
 
 	void SwitchState();
 

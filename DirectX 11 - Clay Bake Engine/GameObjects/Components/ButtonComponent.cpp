@@ -6,6 +6,10 @@ void ButtonComponent::Start()
 	m_Timer = 0;
 }
 
+ButtonComponent::ButtonComponent()
+{
+}
+
 //ButtonComponent(InteractableLink switchType, std::string linkedObject, float timeLimit)
 //{
 //	interactableLink = switchType;

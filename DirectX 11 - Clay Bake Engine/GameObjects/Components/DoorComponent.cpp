@@ -24,6 +24,10 @@ void DoorComponent::Close()
 	m_Opened = false;
 }
 
+DoorComponent::DoorComponent()
+{
+}
+
 void DoorComponent::SwitchState()
 {
 	if (m_Opened)

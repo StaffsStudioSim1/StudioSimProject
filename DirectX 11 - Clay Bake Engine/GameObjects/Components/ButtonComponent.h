@@ -9,6 +9,9 @@ public:
 	bool m_Active;
 	void Interact();
 	void Start();
+
+	ButtonComponent();
+
 	//TODO: finish button component constructor
 	// ButtonComponent(InteractableLink, std::string, float);
 };

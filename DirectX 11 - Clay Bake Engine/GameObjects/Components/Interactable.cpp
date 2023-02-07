@@ -1,5 +1,7 @@
 #pragma once
 #include "Interactable.h"
+#include "DoorComponent.h"
+#include "../ObjectHandler.h"
 
 void Interactable::Interact()
 {
@@ -8,7 +10,6 @@ void Interactable::Interact()
 
 void Interactable::SendSignal()
 {
-	//TODO: find linkedObject by name 
 	
 	switch (interactableLink)
 	{
@@ -17,11 +18,16 @@ void Interactable::SendSignal()
 		break;
 	case (SwitchState):
 		//call switch state on linked object ie door
-		
+	
+		if (gameObject->GetComponent<DoorComponent>())
+		{
+			gameObject->GetComponent<DoorComponent>()->SwitchState();
+		}
 
 		break;
 	case (SwitchGravity):
 		//switch gravity
+
 
 
 		break;
@@ -43,6 +49,10 @@ Interactable::Interactable(InteractableLink switchType, std::string linkedObject
 {
 	interactableLink = switchType;
 	linkedObjectName = linkedObject;
+	if (linkedObject != "")
+	{
+		gameObject = ObjectHandler::GetInstance().FindGameObject(linkedObjectName);
+	}
 }
 
 //define InteractableLink switchType to define what signal, without a target object 

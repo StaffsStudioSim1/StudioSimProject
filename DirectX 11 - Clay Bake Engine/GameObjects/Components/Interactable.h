@@ -14,6 +14,8 @@ class Interactable: public Component
 		signal4 = 4
 	};
 
+	GameObject* gameObject;
+
 public: 
 	//member variables
 	InteractableLink interactableLink; //InteractableLink chooses what the function of each interactable is
