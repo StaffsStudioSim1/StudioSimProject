@@ -25,11 +25,8 @@ public:
 
 	void SendSignal(); //send signal function for linked objects to open close etc.
 
-
 	//constructors
 	Interactable(InteractableLink switchType = Default, std::string linkedObject = "");
-
-	Interactable(InteractableLink switchType);
-	
+	Interactable(InteractableLink switchType);	
 };
 

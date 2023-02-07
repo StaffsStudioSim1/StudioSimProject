@@ -8,9 +8,7 @@ void Interactable::Interact()
 
 void Interactable::SendSignal()
 {
-	//find linkedObject by name 
-
-	//send signal to linked object according to switchType
+	//TODO: find linkedObject by name 
 	
 	switch (interactableLink)
 	{
@@ -19,9 +17,13 @@ void Interactable::SendSignal()
 		break;
 	case (SwitchState):
 		//call switch state on linked object ie door
+		
+
 		break;
 	case (SwitchGravity):
 		//switch gravity
+
+
 		break;
 	case (Signal3):
 		//spare signal

@@ -7,6 +7,5 @@ public:
 	bool m_State;
 	void start();
 	void Interact();
-
 };
   
