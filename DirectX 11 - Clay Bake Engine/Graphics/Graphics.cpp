@@ -44,6 +44,9 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 
 bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 {
+	_windowWidth = width;
+	_windowHeight = height;
+
 	std::vector<AdapterData> adapters = AdapterReader::GetAdapters();
 
 	if (adapters.size() < 1)
@@ -386,8 +389,10 @@ void Graphics::RenderFrame(Scene* scene)
 		TextureInfo levelSelectText = ObjectHandler::GetInstance().LoadDDSTextureFile(levelSelect);
 		TextureInfo exitButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitButton);
 
-		ImVec2 size = ImVec2(playButtonText.width * 2, playButtonText.height * 2);
+		ImVec2 size = ImVec2(playButtonText.width * 2 * (float)(_windowWidth / 1280.0f), playButtonText.height * 2 * (float)(_windowHeight / 720.0f));
 
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight});
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (size.x / 2), (float)(_windowHeight / 2) - (size.y * 3) });
 		ImGui::Begin("Menu", NULL, window_flags);
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.55f));

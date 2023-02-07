@@ -27,6 +27,8 @@ private:
 	bool InitializeShaders();
 	bool InitializeScene();
 
+	int _windowWidth, _windowHeight;
+
 	Microsoft::WRL::ComPtr <ID3D11Device>				_device;
 	Microsoft::WRL::ComPtr <ID3D11DeviceContext>		_deviceContext;
 	Microsoft::WRL::ComPtr <IDXGISwapChain>				_swapChain;
