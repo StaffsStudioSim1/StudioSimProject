@@ -22,7 +22,8 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// Initialise Audio Engine
 	AudioManager::GetInstance();
 
-	_ex = new Examples();
+	// Guarantee GameManager is initialised
+	GameManager::GetInstance();
 
 	// Physics world for data processing
 	float gravity = -9.806f;
@@ -42,7 +43,6 @@ void ClayEngine::Destroy()
 {
 	if (_scene)
 		delete _scene;
-	delete _ex;
 }
 
 LRESULT ClayEngine::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -104,14 +104,17 @@ void ClayEngine::Update()
 		return;
 	InputManager::GetInstance().PollInput();
 
-	if (_physicsRunning)
-		_physicsWorld->world->Step(deltaTimeFixed, 8, 3);
-
-
-
-	_ex->Update();
 	if (_scene != nullptr)
 		_scene->Update(deltaTime);
+
+	// Example message for object collision
+	if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>() && ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()) // Checks both objects have physics
+	{
+		if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()->GetPhysicsBody()))
+		{
+			OutputDebugStringA("obj 1 and 2 have collided \n");
+		}
+	}
 
 	dwTimeStart = dwTimeCur;
 #endif
@@ -121,8 +124,11 @@ void ClayEngine::Update()
 		if (_scene != nullptr)
 			_scene->Stop();
 		_scene = SceneManager::GetInstance().ReadScene();
+		GameManager::GetInstance().SceneChanged(_scene);
 		_scene->Start();
 	}
+
+
 }
 
 void ClayEngine::RenderFrame()

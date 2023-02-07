@@ -176,6 +176,11 @@
     </ClCompile>
     <ClCompile Include="GameObjects\Components\Interactable.cpp">
       <Filter>Source Files\GameObjects\Components</Filter>
+    <ClCompile Include="GameObjects\GameManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\PlayerController.cpp">
+      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Input\Mouse\MousePicking.cpp">
       <Filter>Source Files\Input\Mouse</Filter>
@@ -323,9 +328,24 @@
     <ClInclude Include="GameObjects\Components\DoorComponent.h">
       <Filter>Header Files\GameObject\Components</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsStructs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\TextureInfo.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="Physics\Vectors.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjects\PlayerController.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Vectors.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\GameManager.h">
+      <Filter>Header Files\GameObject</Filter>
+      </ClInclude>
     <ClInclude Include="Input\Mouse\MousePicking.h">
       <Filter>Header Files\Input\Mouse</Filter>
     </ClInclude>

@@ -1,12 +1,13 @@
 #include "Appearance.h"
 #include "../ObjectHandler.h"
 
-Appearance::Appearance(std::string textureName, DirectX::XMFLOAT4 texCoords, float alphaMultiplier)
+Appearance::Appearance(std::string textureName, DirectX::XMFLOAT4 texCoords, float alphaMultiplier, Vector2 offset)
 {
 	SetTexture(ObjectHandler::GetInstance().LoadDDSTextureFile(textureName));
 	SetTexCoords(texCoords);
 	SetAlphaMultiplier(alphaMultiplier);
 	SetGeometryData(ObjectHandler::GetInstance().GetSquareGeometry());
+	_offset = offset;
 }
 
 Appearance::~Appearance()
@@ -22,6 +23,12 @@ json Appearance::Write()
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_numOfYFrames);
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_xFramePos);
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_yFramePos);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_alphaMultiplier);
+	if (_offset.x != 0 || _offset.y != 0)
+	{
+		me[JSON_COMPONENT_CONSTRUCTORS].push_back(_offset.x);
+		me[JSON_COMPONENT_CONSTRUCTORS].push_back(_offset.y);
+	}
 	return me;
 }
 
@@ -57,7 +64,7 @@ void Appearance::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, Con
 	DirectX::XMMATRIX world =
 		DirectX::XMMatrixScaling(_gameObject->GetTransform()->GetScale().x * _texture.width * _texCoords.x / 2, _gameObject->GetTransform()->GetScale().y * _texture.height * _texCoords.y / 2, 1.0f)
 		* DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, _gameObject->GetTransform()->GetRotation())
-		* DirectX::XMMatrixTranslation(_gameObject->GetTransform()->GetPosition().x, _gameObject->GetTransform()->GetPosition().y, _gameObject->GetTransform()->GetDepthPos());
+		* DirectX::XMMatrixTranslation(_gameObject->GetTransform()->GetPosition().x + _offset.x, _gameObject->GetTransform()->GetPosition().y + _offset.y, _gameObject->GetTransform()->GetDepthPos());
 
 	if (_gameObject->GetTransform()->HasTransformParent())
 		world = world * _gameObject->GetTransform()->GetTransformParent()->GetWorldMatrix();

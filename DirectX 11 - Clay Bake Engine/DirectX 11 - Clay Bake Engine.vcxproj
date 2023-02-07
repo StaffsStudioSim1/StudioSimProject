@@ -154,6 +154,7 @@
     <ClCompile Include="GameObjects\Components\Appearance.cpp" />
     <ClCompile Include="GameObjects\Components\Interactable.cpp" />
     <ClCompile Include="GameObjects\Components\LeverComponent.cpp" />
+    <ClCompile Include="GameObjects\GameManager.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="GameObjects\Components\PressurePlateComponent.cpp" />
     <ClCompile Include="Audio\AudioManager.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Input\Mouse\MouseClass.cpp" />
     <ClCompile Include="Input\Mouse\MouseEvent.cpp" />
     <ClCompile Include="Examples.cpp" />
+    <ClCompile Include="GameObjects\PlayerController.cpp" />
     <ClCompile Include="Input\Mouse\MousePicking.cpp" />
     <ClCompile Include="Physics\PhysicsInterface.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
@@ -190,6 +192,9 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObjects\GameManager.h" />
+    <ClInclude Include="Graphics\Geometry.h" />
+    <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="GameObjects\Component.h" />
     <ClInclude Include="GameObjects\Appearance.h" />
     <ClInclude Include="GameObjects\Components\Appearance.h" />
@@ -232,7 +237,8 @@
     <ClInclude Include="GameObjects\Components\LeverComponent.h" />
     <ClInclude Include="Input\Mouse\MousePicking.h" />
     <ClInclude Include="nlohmann\json.hpp" />
-    <ClInclude Include="Physics\PhysicsStructs.h" />
+    <ClInclude Include="GameObjects\PlayerController.h" />
+    <ClInclude Include="PhysicsStructs.h" />
     <ClInclude Include="Physics\PhysicsInterface.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />

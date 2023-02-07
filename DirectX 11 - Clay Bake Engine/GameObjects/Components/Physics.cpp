@@ -27,6 +27,25 @@ Physics::~Physics()
 		delete _objectPhysicsBody;
 }
 
+json Physics::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "Physics";
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(GetBodyType());
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(GetDensity());
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(GetFriction());
+	return me;
+}
+
+void Physics::Stop()
+{
+	if (_objectPhysicsBody)
+	{
+		delete _objectPhysicsBody;
+		_objectPhysicsBody = nullptr;
+	}
+}
+
 void Physics::Update(float deltaTime)
 {
 	_gameObject->GetTransform()->SetPosition(GetPosition());
@@ -40,6 +59,17 @@ PhysicsInterface Physics::GetPhysicInterface()
 PhysicsWorld* Physics::GetWorld()
 {
 	return _pWorld;
+}
+
+PhysicsBody* Physics::CreateBody(PhysicsBody* _body)
+{
+	_body->body = _pPhysicsInterface->CreateBody(&_body->bodyDef.bodyDef);
+	return _body;
+}
+
+PhysicsBody* Physics::GetPhysicsBody()
+{
+	return _objectPhysicsBody;
 }
 
 Vector2 Physics::GetPosition()
@@ -121,7 +151,7 @@ void Physics::ApplyForceToObj(Vector2 force, bool wake)
 
 HitBoxDefnintions Physics::CreateHitBox(Vector2 scale)
 {
-	b2Vec2 halfScale; halfScale.x = scale.x * 13; halfScale.y = scale.y * 13;
+	b2Vec2 halfScale; halfScale.x = scale.x * 6.5f; halfScale.y = scale.y * 6.5f;
 
 	HitBoxDefnintions output; output.hitBox = _pPhysicsInterface->CreateHitBox(halfScale);
 	return output;
@@ -166,4 +196,37 @@ b2World* Physics::CreatePhysicsWorld(float gravity)
 	b2World boxWorld(b2Vec2(0.0f, gravity));
 
 	return &boxWorld;
+}
+
+PhysicsBody Physics::GetCollisionsWithBody()
+{
+	BodyEdgeCollision collisioncheck;
+	b2Fixture* collidingWith = nullptr;
+	for (collisioncheck.edge = _objectPhysicsBody->body->GetContactList(); &collisioncheck.edge; collisioncheck.edge = collisioncheck.edge->next)
+	{
+		collidingWith = collisioncheck.edge->contact->GetFixtureB();
+	}
+
+	PhysicsBody output;
+	output.body = collidingWith->GetBody();
+
+	return output;
+
+}
+
+bool Physics::IsObjectCollidingwith(PhysicsBody input)
+{
+	b2Body* test;
+	bool contact = false;
+	
+	for (b2ContactEdge* edge = _objectPhysicsBody->body->GetContactList(); edge != nullptr; edge = edge->next)
+	{
+		if (edge->other == input.body && edge->contact->IsTouching())
+		{
+				contact = true;
+				break;
+		}
+	}
+
+	return contact;
 }
