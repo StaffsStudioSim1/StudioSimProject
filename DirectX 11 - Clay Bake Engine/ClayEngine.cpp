@@ -32,7 +32,7 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
-	SceneManager::GetInstance().LoadScene("Resources/mainmenu.json");
+	SceneManager::GetInstance().LoadScene("Resources/MainMenu.json");
 	return true;
 }
 

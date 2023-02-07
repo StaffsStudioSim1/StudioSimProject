@@ -43,21 +43,24 @@ Scene::Scene(std::string filePath)
 	_texture = ObjectHandler::GetInstance().LoadDDSTextureFile(_prefabs[_prefabNum].ghostImageFilepath);
 
 	std::string map = data[JSON_SCENE_STAGECOLLISION];
-	for (int x = 0; x < 36; x++)
-		for (int y = 0; y < 20; y++)
-			if (map[x + y * 36] == '1')
-			{
-				json tempJson = json::parse(_prefabs[0].jsonString);
-				tempJson[JSON_GO_NAME] = _prefabs[0].name + " [" + std::to_string(_children.size()) + "]";
-				Vector2 worldPos = _mousePicking.GridToWorld(Vector2(x, y));
-				tempJson[JSON_GO_POSITION].push_back(worldPos.x);
-				tempJson[JSON_GO_POSITION].push_back(worldPos.y);
-				tempJson[JSON_GO_POSITION].push_back(0.0f);
-				GameObject* tempObj = new GameObject(tempJson);
-				_children.push_back(tempObj);
-			}
+	if (map != "")
+	{
+		for (int x = 0; x < 36; x++)
+			for (int y = 0; y < 20; y++)
+				if (map[x + y * 36] == '1')
+				{
+					json tempJson = json::parse(_prefabs[0].jsonString);
+					tempJson[JSON_GO_NAME] = _prefabs[0].name + " [" + std::to_string(_children.size()) + "]";
+					Vector2 worldPos = _mousePicking.GridToWorld(Vector2(x, y));
+					tempJson[JSON_GO_POSITION].push_back(worldPos.x);
+					tempJson[JSON_GO_POSITION].push_back(worldPos.y);
+					tempJson[JSON_GO_POSITION].push_back(0.0f);
+					GameObject* tempObj = new GameObject(tempJson);
+					_children.push_back(tempObj);
+				}
 
-	_objNum = _children.size();
+		_objNum = _children.size();
+	}
 #endif
 }
 

@@ -13,7 +13,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		ErrorLogger::Log("Unable to find settings file!");
 
 	json data = json::parse(file);
-	Vector2 resolution = Vector2(data["Resolution"].at(0), data["Resolution"].at(1)); // Get window resolution from the settings file
+	resolution = Vector2(data["Resolution"].at(0), data["Resolution"].at(1)); // Get window resolution from the settings file
 	file.close();
 #endif
 
