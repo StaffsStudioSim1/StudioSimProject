@@ -367,11 +367,7 @@ void Graphics::RenderFrame(Scene* scene)
 
 	//UI
 	ImGuiWindowFlags window_flags = 0;
-	window_flags |= ImGuiWindowFlags_NoTitleBar;
-	//window_flags |= ImGuiWindowFlags_NoMove;
-	window_flags |= ImGuiWindowFlags_NoResize;
-	window_flags |= ImGuiWindowFlags_NoCollapse;
-	window_flags |= ImGuiWindowFlags_NoBackground;
+	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBackground;
 
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -423,7 +419,9 @@ void Graphics::RenderFrame(Scene* scene)
 
 	if (ObjectHandler::GetInstance().IsLevelSelect())
 	{
-		ImGui::Begin("Level Select");
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
+		ImGui::Begin("Level Select", NULL, window_flags);
 		if (ImGui::Button("Demo"))
 		{
 			ObjectHandler::GetInstance().SetLevelSelect(false);
@@ -441,20 +439,21 @@ void Graphics::RenderFrame(Scene* scene)
 	if (ObjectHandler::GetInstance().IsOptionsMenu())
 	{
 		std::vector<std::string> resolution = { "1280x720","1600x900","1920x1080" };
-		static int i = 0;
-		ImGui::Begin("Options Menu");
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
+		ImGui::Begin("Options Menu", NULL, window_flags);
 		if (ImGui::ArrowButton("leftArrow", ImGuiDir_Left))
 		{
-			if (i > 0)
-				i -= 1;
+			if (_currentResolution > 0)
+				_currentResolution -= 1;
 		}
 		ImGui::SameLine();
-		ImGui::Text(resolution[i].c_str());
+		ImGui::Text(resolution[_currentResolution].c_str());
 		ImGui::SameLine();
 		if (ImGui::ArrowButton("rightArrow", ImGuiDir_Right))
 		{
-			if (i < resolution.size()-1)
-				i += 1;
+			if (_currentResolution < resolution.size()-1)
+				_currentResolution += 1;
 		}
 		if (ImGui::Button("Back"))
 		{
