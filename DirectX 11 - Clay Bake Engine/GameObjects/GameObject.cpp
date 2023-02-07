@@ -7,7 +7,6 @@
 #include "Components/ButtonComponent.h"
 #include "Components/Appearance.h"
 #include "Components/PressurePlateComponent.h"
-#include "Components/Physics.h"
 #include "PlayerController.h"
 #include "../Input/PlayerInput.h"
 #include "GameManager.h"
@@ -91,33 +90,15 @@ GameObject::GameObject(json objectJson)
 			std::string linkedObject = "";
 			component = new PressurePlateComponent((Interactable::InteractableLink)switchType, linkedObject);
 		}
-		//else if (type == "GameManager")
-		//{
-		//	component = new GameManager();
-		//}
-		else if(type == "Physics")
+		else if (type == "Rigidbody")
 		{
-			PhysicsBody* body = new PhysicsBody();
-			body->bodyDef.startPos = _transform.GetPosition();
-			body->bodyDef.startingRoatation = _transform.GetRotation();
-			if (componentJson.contains(JSON_COMPONENT_CONSTRUCTORS)) // So object with no constructor info in the files don't crash
-			{
-				body->hitboxdef.bodyType = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
-				body->bodyDef.density = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
-				body->bodyDef.friction = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(2);
-			}
-			else
-			{
-				body->hitboxdef.bodyType = Dynmaic;
-				body->bodyDef.density = 0.1f;
-				body->bodyDef.friction = 1.0f;
-			}
-			body->hitboxdef.scaleX = _transform.GetScale().x;
-			body->hitboxdef.scaleY = _transform.GetScale().y;
-			body->hitboxdef.shape = Box;
-
-			PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
-			component = new Physics(body, physicsWorld);
+			component = new Rigidbody();
+			_hasRigidbody = true;
+		}
+		else if (type == "AABB")
+		{
+			component = new AABB(10.0f, 10.0f);
+			_hasCollider = true;
 		}
 
 		if (component != nullptr)
@@ -159,7 +140,7 @@ json GameObject::Write()
 
 void GameObject::AddComponent(Component* component)
 {
-	component->SetObject(this);
+	component->SetGameObject(this);
 	_components.push_back(component);
 }
 

@@ -11,7 +11,9 @@ class Component
 {
 public:
 	virtual json Write();
-	void SetObject(GameObject* gameObject);
+
+	void SetGameObject(GameObject* gameObject);
+	GameObject* GetGameObject();
 
 	virtual void Start();
 	virtual void Update(float deltaTime);

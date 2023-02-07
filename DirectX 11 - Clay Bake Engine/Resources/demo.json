@@ -13,8 +13,14 @@
 					"constructors" : ["Resources/Textures/Test.dds", 1.0, 1.0, 0.0, 0.0, 1.0]
 				},
 				{
-					"class" : "Physics",
-					"constructors" : [2, 0.1, 1.0]
+					"class" : "Rigidbody"
+				},
+				{
+					"class" : "PlayerController",
+					"constructors" : [1]
+				},
+				{
+					"class" : "AABB"
 				}
 			]
 		},
@@ -29,12 +35,7 @@
 					"constructors" : ["Resources/Textures/Test2.dds", 3.0, 2.0, 0.0, 0.0, 1.0]
 				},
 				{
-					"class" : "PlayerController",
-					"constructors" : [1]
-				},
-				{
-					"class" : "Physics",
-					"constructors" : [0, 0.1, 1.0]
+					"class" : "AABB"
 				}
 			]
 		}

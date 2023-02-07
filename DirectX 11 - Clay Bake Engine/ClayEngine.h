@@ -2,8 +2,6 @@
 #include "WindowContainer.h"
 #include "Examples.h"
 #include "Scene.h"
-#include "GameObjects/Components/Physics.h"
-#include "Physics/PhysicsStructs.h"
 
 #define FPS_5 1.0f/5.0f
 #define FPS_30 1.0f/30.0f
@@ -28,7 +26,4 @@ private:
 
 	// DO NOT SET DIRECTLY - Use SceneManager::GetInstance().LoadScene("file/path.json");
 	Scene* _scene = nullptr;
-	PhysicsWorld* _physicsWorld;
-	Physics* _physicsAccess;
-	bool _physicsRunning;;
 };

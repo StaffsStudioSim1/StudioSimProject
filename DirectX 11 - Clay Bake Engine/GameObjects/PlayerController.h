@@ -2,7 +2,7 @@
 #include "Components/Component.h"
 #include "../Input/PlayerInput.h"
 #include "../Physics/Vectors.h"
-#include "Components/Physics.h"
+#include "Components/Rigidbody.h"
 #include "GameObject.h"
 
 class PlayerController : public Component
@@ -26,10 +26,11 @@ private:
 
     //Variables
     PlayerInput* _playerInput;
-    Physics* _physicsBody;
+    //Physics* _physicsBody;
+    Rigidbody* _rigidbody;
 
     int _playerID;
-    float _moveSpeed = 10000.0f;
+    float _moveSpeed = 100.0f;
     float _topSpeed = 10000.0f;
     float _midAirControlDelay;
     float _jumpTimer;

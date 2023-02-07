@@ -154,6 +154,7 @@
     <ClCompile Include="GameObjects\Components\Appearance.cpp" />
     <ClCompile Include="GameObjects\Components\Interactable.cpp" />
     <ClCompile Include="GameObjects\Components\LeverComponent.cpp" />
+    <ClCompile Include="GameObjects\Components\AABB.cpp" />
     <ClCompile Include="GameObjects\GameManager.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="GameObjects\Components\PressurePlateComponent.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
     <ClCompile Include="Audio\SoundEffect.cpp" />
+    <ClCompile Include="GameObjects\Components\Rigidbody.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -192,6 +194,7 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObjects\Components\AABB.h" />
     <ClInclude Include="GameObjects\GameManager.h" />
     <ClInclude Include="Graphics\Geometry.h" />
     <ClInclude Include="Graphics\ConstantBuffer.h" />
@@ -237,6 +240,7 @@
     <ClInclude Include="Graphics\Shaders.h" />
     <ClInclude Include="Audio\SoundEffect.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="GameObjects\Components\Rigidbody.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StringConverter.h" />

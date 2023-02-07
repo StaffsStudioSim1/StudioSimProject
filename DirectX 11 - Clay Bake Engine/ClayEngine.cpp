@@ -25,13 +25,6 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// Guarantee GameManager is initialised
 	GameManager::GetInstance();
 
-	// Physics world for data processing
-	float gravity = -9.806f;
-	b2World* boxworld = new b2World(b2Vec2(0, gravity));
-	_physicsWorld = new PhysicsWorld();
-	_physicsWorld->world = boxworld;// = *_physicsAccess->CreatePhysicsWorld(gravity);
-	ObjectHandler::GetInstance().SetPhysicsWorld(_physicsWorld);
-
 	// initialise graphics here
 
 	_initialised = true;

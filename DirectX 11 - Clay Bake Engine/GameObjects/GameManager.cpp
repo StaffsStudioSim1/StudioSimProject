@@ -66,6 +66,11 @@ void GameManager::GravityFlip()
 	isGravityFlipped = !isGravityFlipped;
 }
 
+bool GameManager::IsGravityFlipped()
+{
+	return isGravityFlipped;
+}
+
 void GameManager::SaveFileCheck()
 {
 	ifstream file;

@@ -8,6 +8,7 @@ using json = nlohmann::json;
 #if EDIT_MODE
 #include "Input/InputManager.h"
 #endif
+#include "GameObjects/Components/Rigidbody.h"
 
 Scene::Scene(std::string filePath)
 {
@@ -234,9 +235,26 @@ void Scene::Update(float deltaTime)
 
 void Scene::FixedUpdate(float timeStep)
 {
-	ObjectHandler::GetInstance().GetPhysicsWorld()->world->Step(timeStep, 8, 3);
+	//ObjectHandler::GetInstance().GetPhysicsWorld()->world->Step(timeStep, 8, 3);
 	for (GameObject* obj : _children)
 		obj->FixedUpdate(timeStep);
+
+	for (int i = 0; i < _children.size(); i++)
+	{
+		if (!_children[i]->HasRigidbody())
+			continue;
+		Rigidbody* rbI = _children[i]->GetComponent<Rigidbody>();
+		for (int j = i + 1; j < _children.size(); j++)
+		{
+			if (!_children[j]->HasCollider())
+				continue;
+
+			if (_children[i]->GetComponent<AABB>()->Overlaps(_children[j]->GetComponent<AABB>(), timeStep))
+			{
+				rbI->Collide(_children[j]);
+			}
+		}
+	}
 }
 
 void Scene::Stop()
