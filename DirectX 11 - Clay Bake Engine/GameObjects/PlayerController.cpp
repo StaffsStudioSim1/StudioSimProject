@@ -91,7 +91,7 @@ void PlayerController::FixedUpdate(float timeStep)
 {
 	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
-		_physicsBody->ApplyForceToObj(_currentMovement * _moveSpeed, true);
+		_physicsBody->ApplyForceToObj(_currentMovement * _moveSpeed);
 	}
 
 	if (_isJumping)
@@ -102,11 +102,11 @@ void PlayerController::FixedUpdate(float timeStep)
 		{
 			if (!isFlipped)
 			{
-				_physicsBody->ApplyForceToObj(_jumpForce, true);
+				_physicsBody->ApplyForceToObj(_jumpForce);
 			}
 			else
 			{
-				_physicsBody->ApplyForceToObj(Vector2(0.0f, -_jumpForce.y), true);
+				_physicsBody->ApplyForceToObj(Vector2(0.0f, -_jumpForce.y));
 			}
 		}
 		else if (currentVelocity.y >= _jumpForce.y)

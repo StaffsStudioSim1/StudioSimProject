@@ -24,12 +24,7 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 
 	_ex = new Examples();
 
-	// Physics world for data processing
-	float gravity = -9.806f;
-	b2World* boxworld = new b2World(b2Vec2(0, gravity));
-	_physicsWorld = new PhysicsWorld();
-	_physicsWorld->world = boxworld;// = *_physicsAccess->CreatePhysicsWorld(gravity);
-	ObjectHandler::GetInstance().SetPhysicsWorld(_physicsWorld);
+
 	// initialise graphics here
 
 	_initialised = true;
@@ -113,13 +108,13 @@ void ClayEngine::Update()
 		if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()->GetPhysicsBody()))
 		{
 			OutputDebugStringA("obj 1 and 2 have collided \n");
-			ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->ApplyImpulseForceToObj(Vector2(0.0f, 325.0f), true);
+		//	ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->ApplyImpulseForceToObj(Vector2(0.0f, 325.0f), true);
 		}
 	}
 
 
 	std::vector<int> p = _physicsAccess->GetObjectsInAreaByID(Vector2(0.0f, 0.0f), Vector2(10.0f, 10.0f));
-	if (ObjectHandler::GetInstance().GetPhysicsWorld()->world->GetBodyCount() != NULL)
+	if (ObjectHandler::GetInstance().GetAllObjects().size() != NULL)
 	{
 		for (int i = 0; i < _physicsAccess->GetNumberOfObjectsInArea(Vector2(0.0f, 0.0f), Vector2(10.0f, 10.0f)); i++)
 		{

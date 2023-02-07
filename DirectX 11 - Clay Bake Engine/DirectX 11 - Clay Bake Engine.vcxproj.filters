@@ -144,9 +144,6 @@
     <ClCompile Include="GameObjects\ObjectHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Physics\PhysicsInterface.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="Physics\Vectors.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
@@ -176,12 +173,6 @@
     </ClCompile>
     <ClCompile Include="Physics\Rigidbody.cpp">
       <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PhysicsMaths.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PhysicsSystem.cpp">
-       <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Physics.cpp">
       <Filter>Source Files\Physics</Filter>
@@ -266,9 +257,6 @@
     <ClInclude Include="GameObjects\ObjectHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\PhysicsInterface.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -318,12 +306,6 @@
       <Filter>Header Files\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Rigidbody.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\PhysicsSystem.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\PhysicsMaths.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsStructs.h">

@@ -73,6 +73,11 @@ Vector2 operator*(const Vector2& j, float k)
 	return { j.x * k, j.y * k };
 }
 
+Vector2 operator*(float k, const Vector2& j)
+{
+	return { j.x * k, j.y * k };
+}
+
 bool operator==(const Vector2& j, const Vector2& k)
 {
 	return CMP(j.x, k.x) && CMP(j.y, k.y);

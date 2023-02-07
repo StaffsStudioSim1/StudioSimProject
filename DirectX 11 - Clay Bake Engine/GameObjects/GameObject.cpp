@@ -57,28 +57,30 @@ GameObject::GameObject(json objectJson)
 		else if (type == "Physics")
 		{
 			PhysicsBody* body = new PhysicsBody();
-			body->bodyDef.startPos = _transform.GetPosition();
-			body->bodyDef.startingRoatation = _transform.GetRotation();
-			body->bodyDef.bodyDef.userData.gameObjectID = GetID();
-			body->bodyDef.bodyDef.userData.integerType = GetType();
+			body->bodyDef.Pos = _transform.GetPosition();
+			body->bodyDef.Rotation = _transform.GetRotation();
+			body->ObjectID = GetID();
+			body->typeId = GetType();
+			body->objMomentum.WeightAsKg = 10;
+			body->objMomentum.SpeedMPS = { 0.0f,0.0f };
 		//	body->body->SetUserData(this);
 			if (componentJson.contains(JSON_COMPONENT_CONSTRUCTORS)) // So object with no constructor info in the files don't crash
 			{
-				body->hitboxdef.bodyType = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+				body->hitbox.bodyType = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
 				body->bodyDef.density = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
 				body->bodyDef.friction = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(2);
 			}
 			else
 			{
-				body->hitboxdef.bodyType = Dynmaic;
+				body->hitbox.bodyType = Static;
 				body->bodyDef.density = 0.1f;
 				body->bodyDef.friction = 1.0f;
 			}
-			body->hitboxdef.scaleX = _transform.GetScale().x;
-			body->hitboxdef.scaleY = _transform.GetScale().y;
-			body->hitboxdef.shape = Box;
-			PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
-			component = new Physics(body, physicsWorld);
+			body->hitbox.scale.x = _transform.GetScale().x;
+			body->hitbox.scale.y = _transform.GetScale().y;
+			body->hitbox.shape = Box;
+		//	PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
+			component = new Physics(body, Vector2(0.0f, -9.806f));
 		}
 
 		if (component != nullptr)

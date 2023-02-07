@@ -1,6 +1,5 @@
 #pragma once
 #include "Transform.h"
-#include "../Physics/PhysicsInterface.h"
 #include "../PhysicsStructs.h"
 #include "Component.h"
 #include <vector>
@@ -9,56 +8,57 @@
 class Physics : public Component
 {
 public:
-	Physics(PhysicsBody* body, PhysicsWorld* world);
+	Physics(PhysicsBody* body, Vector2 inputGravity);
 	~Physics();
 
 	json Write();
 	void Stop();
 
-	void Update(float deltaTime);
-	//GetPhysicInterface();
-	PhysicsInterface GetPhysicInterface();
+	void Update();
 
-
-	b2World* CreatePhysicsWorld(float gravity);
-	PhysicsWorld* GetWorld();
-
-	PhysicsBody* CreateBody(PhysicsBody* _body);
 	PhysicsBody* GetPhysicsBody();
-//	void DestroyBody();
 	Vector2 GetPosition();
 	float GetAngleDegress();
 	float GetAngleRadians();
 	void SetAngleDegress(float angle);
 	void SetAngleRadians(float angle);
 	void SetTransform(Vector2 position, float angleOfRotation);
-	PhysicsTransform GetTransform();
-	b2Joint* CreateJoint(BindObjectsDef* jointDefinition);
+	Vector2 GetTransform();
 	void SetLinearVelocity(Vector2 Velocity);
 	Vector2 GetLinearVelocity();
-	void SetAngularVelocity(float omega);
-	void ApplyForceToPointOnObj(Vector2& force, Vector2& point, bool wake);
-	void ApplyForceToObj(Vector2 force, bool wake);
-	void ApplyImpulseForceToPointOnObj(Vector2& force, Vector2& point, bool wake);
-	void ApplyImpulseForceToObj(Vector2 force, bool wake);
+	void ApplyForceToObj(Vector2 force);
+	void ApplyImpulseForceToObj(Vector2 force);
 
-	b2BodyType GetBodyType() { return _objectPhysicsBody->bodyDef.bodyDef.type; }
+	PhysicsBodyType GetBodyType() { return _objectPhysicsBody->hitbox.bodyType; }
 	float GetDensity() { return _objectPhysicsBody->bodyDef.density; }
 	float GetFriction() { return _objectPhysicsBody->bodyDef.friction; }
 
 	HitBoxDefnintions CreateHitBox(Vector2 scale);
-	void FixHitboxToBody(HitBoxDefnintions* hitbox, float density);
-	void DeleteHitBox(b2Fixture* fixture);
 	std::vector<int> GetObjectsInAreaByID(Vector2 position, Vector2 areaScale);
 	int GetNumberOfObjectsInArea(Vector2 position, Vector2 areaScale);
 
-	BodyDefinition SetCorrectBodyDef(PhysicsBody input, PhysicsBodyType type);
-	PhysicsBody GetCollisionsWithBody();
 	bool IsObjectCollidingwith(PhysicsBody input);
+	std::vector<int> GetObjectsCollisionsByID(Vector2 position, HitBoxDefnintions hitBoxDef);
+	
+	void ApplyGravityForceForUpdate();
+	void updateBodyForces();
+
+	int GetNumberOfCollisonsWithBody(Vector2 position, HitBoxDefnintions hitboxdef);
+	void PhysicsStaticCollision(int objectID);
+	void PhysicsDynamicCollision(int objectID);
+
+	void UpdateGravity(Vector2 inputGravity) { _pGravityAsForce = inputGravity; }
+	Vector2 GetGravityValue() { return _pGravityAsForce; }
+
+
+	void FixedUpdate(float timeStep);
+	Vector2 GetSteppedGravityForce();
 private:
 	Transform* _pTransform;
-	PhysicsInterface* _pPhysicsInterface;
+
 	PhysicsWorld* _pWorld;
 	PhysicsBody* _objectPhysicsBody;
+	Vector2 _pGravityAsForce;
+
 };
 

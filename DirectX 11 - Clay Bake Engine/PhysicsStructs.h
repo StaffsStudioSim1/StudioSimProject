@@ -35,60 +35,48 @@ struct PhysicsTransform
 struct BodyDefinition
 {
 	BodyDefinition() {};
-	b2BodyDef bodyDef;
-	Vector2 startPos;
-	float startingRoatation;
+//	b2BodyDef bodyDef;
+	Vector2 Pos;
+	float Rotation;
 	float density, friction;
 	//b2Fixture _fixture;
 };
 
 struct HitBoxDefnintions
 {
-	b2PolygonShape hitBox;
+//	b2PolygonShape hitBox;
 	PhysicsBodyType bodyType;
 	HitboxShape shape;
-	float scaleX, scaleY;
+	Vector2 scale;
 };
 
-struct BindObjectsDef
+//struct BindObjectsDef
+//{
+//	b2JointDef _jointdefinition;
+//};
+struct Momentum
 {
-	b2JointDef _jointdefinition;
+	Vector2 SpeedMPS;
+	float WeightAsKg;
 };
 
 typedef struct PhysicsBody
 {
 	PhysicsBody()  { }
 
-	b2Body* body;
+//	b2Body* body;
 	//PhysicsBodyType _BodyType;
 	BodyDefinition bodyDef;
-	HitBoxDefnintions hitboxdef;
+	HitBoxDefnintions hitbox;
+	Momentum objMomentum;
+	int ObjectID, typeId;
+
 }PhysicsBody;
 
-
-struct BodyEdgeCollision
-{
-	b2ContactEdge* edge;
-};
-
-
-
-struct Momentum
-{
-	float SpeedX;
-	float SpeedY;
-
-	float WeightAsKg;
-
-	float TotalSpeed = SpeedX + SpeedY;
-	float KilogramMeterPerSecond = TotalSpeed * WeightAsKg;
-};
-
-struct DirectinalGravity
-{
-	float SpeedX;
-	float SpeedY;
-};
+//struct BodyEdgeCollision
+//{
+//	b2ContactEdge* edge;
+//};
 
 
 struct AxisAlignedBoundingBox

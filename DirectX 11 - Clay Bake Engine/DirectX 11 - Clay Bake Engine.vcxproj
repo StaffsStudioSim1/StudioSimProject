@@ -173,9 +173,6 @@
     <ClCompile Include="Examples.cpp" />
     <ClCompile Include="GameObjects\PlayerController.cpp" />
     <ClCompile Include="Input\Mouse\MousePicking.cpp" />
-    <ClCompile Include="Physics\PhysicsInterface.cpp" />
-    <ClCompile Include="Physics\PhysicsMaths.cpp" />
-    <ClCompile Include="Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Physics\Rigidbody.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
@@ -223,9 +220,6 @@
     <ClInclude Include="GameObjects\PlayerController.h" />
     <ClInclude Include="PhysicsStructs.h" />
     <ClInclude Include="Physics\Compare.h" />
-    <ClInclude Include="Physics\PhysicsInterface.h" />
-    <ClInclude Include="Physics\PhysicsMaths.h" />
-    <ClInclude Include="Physics\PhysicsSystem.h" />
     <ClInclude Include="Physics\Rigidbody.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />

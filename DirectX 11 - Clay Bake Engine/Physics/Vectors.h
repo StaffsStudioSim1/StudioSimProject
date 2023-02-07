@@ -77,6 +77,7 @@ Vector2 operator-(const Vector2& j, const float& k);
 Vector2 operator-(const Vector2& j);
 Vector2 operator*(const Vector2& j, const Vector2& k);
 Vector2 operator*(const Vector2& j, float k);
+Vector2 operator*(float k, const Vector2& j);
 bool operator==(const Vector2& j, const Vector2& k);
 bool operator!=(const Vector2& j, const Vector2& k);
 
