@@ -17,11 +17,13 @@ public:
 	void LoadScene(std::string filePath);
 	bool ShouldSceneChange();
 	Scene* ReadScene();
+	int GetCurrentSceneID();
 private:
 	SceneManager();
 	~SceneManager();
 
 	bool _shouldSceneChange;
 	Scene* _newScene;
+	int _currentSceneID;
 };
 

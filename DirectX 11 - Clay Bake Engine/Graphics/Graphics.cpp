@@ -386,7 +386,7 @@ void Graphics::RenderFrame(Scene* scene)
 	//CREATE FRAME
 	ImGui::NewFrame();
 	//UI WINDOWS
-	if (ObjectHandler::GetInstance().IsMainMenu())
+	if (SceneManager::GetInstance().GetCurrentSceneID() == 0)
 	{
 		const char* playButton = "Resources/Sprites/PlayButton.dds";
 		const char* optionsButton = "Resources/Sprites/OptionsButton.dds";
@@ -408,16 +408,13 @@ void Graphics::RenderFrame(Scene* scene)
 		if (ImGui::ImageButton(playButton, playButtonText.texture, size))
 		{
 			SceneManager::GetInstance().LoadScene("Resources/demo.json");
-			ObjectHandler::GetInstance().SetMainMenu(false);
 		}
 		if (ImGui::ImageButton(levelSelect, levelSelectText.texture, size))
 		{
-			ObjectHandler::GetInstance().SetMainMenu(false);
 			ObjectHandler::GetInstance().SetLevelSelect(true);
 		}
 		if (ImGui::ImageButton(optionsButton, optionsButtonText.texture, size))
 		{
-			ObjectHandler::GetInstance().SetMainMenu(false);
 			ObjectHandler::GetInstance().SetOptionsMenu(true);
 		}
 		if (ImGui::ImageButton(exitButton, exitButtonText.texture, size))
@@ -442,7 +439,6 @@ void Graphics::RenderFrame(Scene* scene)
 		if (ImGui::Button("Back"))
 		{
 			ObjectHandler::GetInstance().SetLevelSelect(false);
-			ObjectHandler::GetInstance().SetMainMenu(true);
 		}
 		ImGui::End();
 
@@ -474,7 +470,6 @@ void Graphics::RenderFrame(Scene* scene)
 		if (ImGui::Button("Back"))
 		{
 			ObjectHandler::GetInstance().SetOptionsMenu(false);
-			ObjectHandler::GetInstance().SetMainMenu(true);
 		}
 		ImGui::End();
 
@@ -633,12 +628,6 @@ void Graphics::RenderFrame(Scene* scene)
 	if (ImGui::Button("Load"))
 	{
 		std::string sFileName = fileName;
-
-		if (sFileName == "Resources/mainmenu.json")
-			ObjectHandler::GetInstance().SetMainMenu(true);
-		
-		else
-			ObjectHandler::GetInstance().SetMainMenu(false);
 		
 
 		SceneManager::GetInstance().LoadScene(fileName);

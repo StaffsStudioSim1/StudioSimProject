@@ -11,6 +11,8 @@ using json = nlohmann::json;
 
 Scene::Scene(std::string filePath)
 {
+	_filePath = filePath;
+
 	std::ifstream f(filePath);
 	if (!f.good())
 		ErrorLogger::Log("Unable to find scene file " + filePath);

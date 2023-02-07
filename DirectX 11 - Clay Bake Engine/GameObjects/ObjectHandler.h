@@ -41,10 +41,6 @@ public:
 	PhysicsWorld* GetPhysicsWorld() { return _pPhysicsWorld; }
 	void SetPhysicsWorld(PhysicsWorld* physics) { _pPhysicsWorld = physics; }
 
-	// Toggle UI menu functions
-	bool IsMainMenu() { return _mainMenu;}
-	void SetMainMenu(bool menu) { _mainMenu = menu; }
-
 	bool IsLevelSelect() { return _levelSelect; }
 	void SetLevelSelect(bool levelSelect) { _levelSelect = levelSelect; }
 

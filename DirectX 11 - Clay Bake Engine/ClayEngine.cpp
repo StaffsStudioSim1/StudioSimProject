@@ -35,7 +35,11 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// initialise graphics here
 
 	_initialised = true;
+#if EDIT_MODE
+	SceneManager::GetInstance().LoadScene("Resources/Demo.json");
+#else
 	SceneManager::GetInstance().LoadScene("Resources/MainMenu.json");
+#endif
 	return true;
 }
 
@@ -125,7 +129,10 @@ void ClayEngine::Update()
 	if (SceneManager::GetInstance().ShouldSceneChange())
 	{
 		if (_scene != nullptr)
+		{
 			_scene->Stop();
+			delete _scene;
+		}
 		_scene = SceneManager::GetInstance().ReadScene();
 		GameManager::GetInstance().SceneChanged(_scene);
 		_scene->Start();

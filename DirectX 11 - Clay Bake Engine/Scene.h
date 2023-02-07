@@ -61,21 +61,18 @@ public:
 
 	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 
-#if EDIT_MODE
-	void SetFileName(std::string fileName) { _fileName = fileName; }
-	std::string GetFileName() const { return _fileName; }
-#endif
+	std::string GetFilePath() const { return _filePath; }
 private:
 	int _id;
 	std::vector<GameObject*> _children;
 	GameObject* _backgroundImage;
+	std::string _filePath;
 
 #if EDIT_MODE
 	MousePicking _mousePicking = {};
 	TextureInfo _texture;
 	Geometry _geometry;
 	Vector2 _ghost;
-	std::string _fileName = "";
 	int _objNum = 0;
 	std::vector<Prefab> _prefabs;
 	int _prefabNum = 0;
