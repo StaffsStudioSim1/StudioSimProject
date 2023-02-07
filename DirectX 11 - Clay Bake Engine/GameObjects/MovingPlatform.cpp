@@ -60,8 +60,16 @@ void MovingPlatform::Stop()
 Vector2 MovingPlatform::MoveTowards(Vector2 currentPos, Vector2 Target, float deltaTime)
 {
 	Vector2 result;
-	result.x =  Lerp(currentPos.x, Target.x, deltaTime);
+	//x
+	if (currentPos.x == Target.x)
+		result.x = 0;
+	else
+	{
+	
+	result.x = Lerp(currentPos.x, Target.x, deltaTime);
 	result.x = Clamp(result.x, -10, 10);
+	}
+	//y
 	if (currentPos.y == Target.y)
 		result.y = 0;
 	else
