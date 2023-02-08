@@ -50,7 +50,7 @@
 				},
 				{
 					"class": "MovingPlatform",
-					"constructors": [-200.0,0,200.0,0]
+					"constructors": [-20.0,0,20.0,0]
 
 				},
 				{
