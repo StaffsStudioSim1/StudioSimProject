@@ -490,7 +490,6 @@ void Graphics::RenderFrame(Scene* scene)
 		const char* pOptionsButton = "Resources/Sprites/PauseOptionsButton.dds";
 		const char* mainMenuButton = "Resources/Sprites/MainMenuButton.dds";
 		const char* exitGameButton = "Resources/Sprites/ExitGameButton.dds";
-
 		TextureInfo resumeButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(resumeButton);
 		TextureInfo resetButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(resetButton);
 		TextureInfo pOptionsButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(pOptionsButton);
@@ -498,7 +497,6 @@ void Graphics::RenderFrame(Scene* scene)
 		TextureInfo exitGameButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitGameButton);
 
 		ImVec2 size = ImVec2(resumeButtonText.width * 2 * (float)(_windowWidth / 1280.0f), resumeButtonText.height * 2 * (float)(_windowHeight / 720.0f));
-
 
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
 		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
@@ -554,7 +552,7 @@ void Graphics::RenderFrame(Scene* scene)
 				_currentResolution += 1;
 		}
 #if EDIT_MODE
-		ImGui::SetTooltip("Resolution and fullscreen settings don't work in edit mode");
+		ImGui::SetTooltip("Resolution and fullscreen settings are disabled in edit mode");
 #endif
 		ImGui::Checkbox("Fullscreen", &_useFullscreen);
 		ImGui::PushItemWidth(250);
