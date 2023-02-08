@@ -235,7 +235,6 @@ void Scene::Update(float deltaTime)
 
 void Scene::FixedUpdate(float timeStep)
 {
-	//ObjectHandler::GetInstance().GetPhysicsWorld()->world->Step(timeStep, 8, 3);
 	for (GameObject* obj : _children)
 		obj->FixedUpdate(timeStep);
 
@@ -244,7 +243,7 @@ void Scene::FixedUpdate(float timeStep)
 		if (!_children[i]->HasRigidbody())
 			continue;
 		Rigidbody* rbI = _children[i]->GetComponent<Rigidbody>();
-		for (int j = i + 1; j < _children.size(); j++)
+		for (int j = 0; j < _children.size(); j++)
 		{
 			if (!_children[j]->HasCollider())
 				continue;

@@ -97,7 +97,9 @@ GameObject::GameObject(json objectJson)
 		}
 		else if (type == "AABB")
 		{
-			component = new AABB(10.0f, 10.0f);
+			float width = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+			float height = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
+			component = new AABB(width, height);
 			_hasCollider = true;
 		}
 

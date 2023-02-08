@@ -9,6 +9,7 @@ public:
     AABB(float width, float height);
 
     bool Overlaps(AABB* collider, float deltaTime);
+    Vector2 GetSize();
 private:
     float _width;
     float _height;

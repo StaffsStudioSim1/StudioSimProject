@@ -28,3 +28,8 @@ bool AABB::Overlaps(AABB* collider, float deltaTime)
 
 	return me.Intersects(other);
 }
+
+Vector2 AABB::GetSize()
+{
+	return Vector2(_width, _height);
+}
