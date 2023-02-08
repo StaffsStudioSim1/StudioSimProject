@@ -15,6 +15,8 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	{
 		return false;
 	}
+	_width = width;
+	_height = height;
 
 	// Guarantee InputManager is initialised at this point
 	InputManager::GetInstance();
@@ -24,6 +26,8 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 
 	// Guarantee GameManager is initialised
 	GameManager::GetInstance();
+
+	SceneManager::GetInstance().Initialise(width, height);
 
 	// initialise graphics here
 

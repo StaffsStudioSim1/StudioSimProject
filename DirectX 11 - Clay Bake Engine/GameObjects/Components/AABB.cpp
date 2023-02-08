@@ -8,6 +8,15 @@ AABB::AABB(float width, float height)
 	_height = height;
 }
 
+json AABB::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "AABB";
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_width);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_height);
+	return me;
+}
+
 bool AABB::Overlaps(AABB* collider, float deltaTime)
 {
 	DirectX::BoundingBox me;

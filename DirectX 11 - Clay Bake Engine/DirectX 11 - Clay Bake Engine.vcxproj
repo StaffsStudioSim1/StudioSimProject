@@ -179,7 +179,6 @@
     <ClCompile Include="Input\Mouse\MouseEvent.cpp" />
     <ClCompile Include="Examples.cpp" />
     <ClCompile Include="GameObjects\PlayerController.cpp" />
-    <ClCompile Include="Input\Mouse\MousePicking.cpp" />
     <ClCompile Include="Physics\PhysicsInterface.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
@@ -231,7 +230,6 @@
     <ClInclude Include="Input\Mouse\MouseEvent.h" />
     <ClInclude Include="Examples.h" />
     <ClInclude Include="GameObjects\Components\LeverComponent.h" />
-    <ClInclude Include="Input\Mouse\MousePicking.h" />
     <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="GameObjects\PlayerController.h" />
     <ClInclude Include="PhysicsStructs.h" />

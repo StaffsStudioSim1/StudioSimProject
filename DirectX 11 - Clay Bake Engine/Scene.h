@@ -9,7 +9,6 @@
 
 #if EDIT_MODE
 #include "Graphics/Geometry.h"
-#include "Input/Mouse/MousePicking.h"
 #include "GameObjects/ObjectHandler.h"
 
 struct Prefab
@@ -48,7 +47,7 @@ struct Prefab
 class Scene
 {
 public:
-	Scene(std::string filePath);
+	Scene(std::string filePath, int width, int height);
 	~Scene();
 
 	void Save();
@@ -65,14 +64,19 @@ public:
 #if EDIT_MODE
 	void SetFileName(std::string fileName) { _filePath = fileName; }
 #endif
+
 private:
 	int _id;
 	std::vector<GameObject*> _children;
 	GameObject* _backgroundImage;
 	std::string _filePath;
+	int _width;
+	int _height;
+	float _snapScale = 18;
+	float _windowScaleX;
+	float _windowScaleY;
 
 #if EDIT_MODE
-	MousePicking _mousePicking = {};
 	TextureInfo _texture;
 	Geometry _geometry;
 	Vector2 _ghost;
@@ -82,5 +86,11 @@ private:
 
 	//bool _collision[36][20];
 #endif
+
+	GameObject* TestForObjectIntersection(Vector2 mousePos);
+	Vector2 GetRelativeMousePos(Vector2 mousePos);
+	Vector2 SnapCoordinatesToGrid(Vector2 worldPos);
+	Vector2 WorldToGrid(Vector2 worldPos);
+	Vector2 GridToWorld(Vector2 gridPos);
 };
 

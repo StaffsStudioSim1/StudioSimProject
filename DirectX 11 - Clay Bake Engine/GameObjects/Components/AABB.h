@@ -8,6 +8,8 @@ class AABB :
 public:
     AABB(float width, float height);
 
+    json Write();
+
     bool Overlaps(AABB* collider, float deltaTime);
     Vector2 GetSize();
 private:

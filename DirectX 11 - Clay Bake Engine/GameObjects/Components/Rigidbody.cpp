@@ -7,6 +7,13 @@ Rigidbody::Rigidbody()
 	_mass = 1.0f;
 }
 
+json Rigidbody::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "Rigidbody";
+	return me;
+}
+
 void Rigidbody::FixedUpdate(float timeStep)
 {
 	// Update Net Force

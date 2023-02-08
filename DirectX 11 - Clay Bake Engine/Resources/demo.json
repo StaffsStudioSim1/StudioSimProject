@@ -16,50 +16,18 @@
 					"class" : "Rigidbody"
 				},
 				{
-					"class" : "PlayerController",
-					"constructors" : [1]
-				},
-				{
 					"class" : "AABB",
 					"constructors" : [10.0, 10.0]
-				}
-			]
-		},
-		{
-			"name" : "test2",
-			"position" : [0.0, -100.0, 1.0],
-			"rotation" : 0.0,
-			"scale" : [1.0, 1.0],
-			"components" : [
-				{
-					"class" : "Appearance",
-					"constructors" : ["Resources/Textures/Test2.dds", 3.0, 2.0, 0.0, 0.0, 1.0]
 				},
 				{
-					"class" : "AABB",
-					"constructors" : [1000.0, 10.0]
+					"class" : "PlayerController",
+					"constructors" : [1]
 				}
 			]
 		},
 		{
 			"name" : "test3",
 			"position" : [50.0, -100.0, 0.0],
-			"rotation" : 0.0,
-			"scale" : [1.0, 1.0],
-			"components" : [
-				{
-					"class" : "Appearance",
-					"constructors" : ["Resources/Textures/Test2.dds", 3.0, 2.0, 0.0, 0.0, 1.0]
-				},
-				{
-					"class" : "AABB",
-					"constructors" : [10.0, 1000.0]
-				}
-			]
-		},
-		{
-			"name" : "test4",
-			"position" : [-50.0, -100.0, 0.0],
 			"rotation" : 0.0,
 			"scale" : [1.0, 1.0],
 			"components" : [

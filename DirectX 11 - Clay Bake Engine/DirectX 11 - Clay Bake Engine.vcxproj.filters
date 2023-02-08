@@ -180,9 +180,6 @@
     <ClCompile Include="GameObjects\GameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Input\Mouse\MousePicking.cpp">
-      <Filter>Source Files\Input\Mouse</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui.cpp">
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
@@ -328,9 +325,6 @@
     </ClInclude>
     <ClInclude Include="GameObjects\GameManager.h">
       <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Input\Mouse\MousePicking.h">
-      <Filter>Header Files\Input\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>

@@ -93,14 +93,12 @@ GameObject::GameObject(json objectJson)
 		else if (type == "Rigidbody")
 		{
 			component = new Rigidbody();
-			_hasRigidbody = true;
 		}
 		else if (type == "AABB")
 		{
 			float width = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
 			float height = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
 			component = new AABB(width, height);
-			_hasCollider = true;
 		}
 
 		if (component != nullptr)
@@ -128,6 +126,7 @@ json GameObject::Write()
 {
 	json me;
 	me[JSON_GO_NAME] = _name;
+	me[JSON_GO_TAG] = _tag;
 	me[JSON_GO_POSITION] = { _transform.GetPosition().x, _transform.GetPosition().y, _transform.GetDepthPos() };
 	me[JSON_GO_ROTATION] = DirectX::XMConvertToDegrees(_transform.GetRotation());
 	me[JSON_GO_SCALE] = { _transform.GetScale().x, _transform.GetScale().y };
@@ -142,6 +141,11 @@ json GameObject::Write()
 
 void GameObject::AddComponent(Component* component)
 {
+	if (dynamic_cast<AABB*>(component))
+		_hasCollider = true;
+	else if (dynamic_cast<Rigidbody*>(component))
+		_hasRigidbody = true;
+
 	component->SetGameObject(this);
 	_components.push_back(component);
 }
