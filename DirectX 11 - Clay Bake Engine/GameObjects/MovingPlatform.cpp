@@ -4,8 +4,8 @@
 
 MovingPlatform::MovingPlatform(float limit1X, float limit1Y, float limit2X, float limit2Y)
 {
-	m_limit1 =  Vector2(limit1X, limit1Y);
-	m_limit2 =  Vector2(limit2X, limit2Y);
+	m_limit1 =  Vector2(limit1X, 0);
+	m_limit2 =  Vector2(limit2X, 0);
 
 }
 
