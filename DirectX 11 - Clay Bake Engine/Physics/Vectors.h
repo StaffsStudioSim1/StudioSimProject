@@ -18,8 +18,6 @@ float DEG2RAD(float degrees);
 #endif // !DEG2RAD
 float CorrectDegrees(float degrees);
 
-
-
 typedef struct Vector2
 {
 	union
@@ -64,11 +62,6 @@ typedef struct Vector3
 	inline Vector3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) { }
 
 } Vector3;
-
-
-
-
-
 
 Vector2 operator+(const Vector2& j, const Vector2& k);
 Vector2 operator+(const Vector2& j, const float& k);

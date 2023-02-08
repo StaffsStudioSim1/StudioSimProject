@@ -122,8 +122,9 @@ void ClayEngine::Update()
 			int outputint = p.at(i);
 			sprintf_s(outputstring, "%d", outputint);
 			OutputDebugStringA(outputstring);
+			OutputDebugStringA("\n");
 		}
-		OutputDebugStringA("\n");
+		
 	}
 	dwTimeStart = dwTimeCur;
 #endif

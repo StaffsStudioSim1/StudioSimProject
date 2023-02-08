@@ -100,7 +100,6 @@ void Physics::ApplyForceToObj(Vector2 force)
 	_objectPhysicsBody->objMomentum.SpeedMPS += force;
 }
 
-
 void Physics::ApplyImpulseForceToObj(Vector2 force)
 {
 	_objectPhysicsBody->objMomentum.SpeedMPS += force * 10.0f;
@@ -154,6 +153,7 @@ std::vector<int> Physics::GetObjectsInAreaByID(Vector2 position, Vector2 areaSca
 		box2.Center = { boxPos.x, boxPos.y, 0.0f };
 			if (box1.Intersects(box2) && object->GetID() != 0) // change to get object tag and param to null
 			{
+
 				outputBodyArray.push_back(object->GetID());
 				currentnumberOfObjects += 1;
 
@@ -163,7 +163,6 @@ std::vector<int> Physics::GetObjectsInAreaByID(Vector2 position, Vector2 areaSca
 
 	return outputBodyArray;
 }
-
 
 bool Physics::IsObjectCollidingwith(PhysicsBody input)
 {
@@ -184,90 +183,68 @@ int Physics::GetNumberOfCollisonsWithBody(Vector2 position, HitBoxDefnintions hi
 	return GetNumberOfObjectsInArea(position, hitboxdef.scale);
 }
 
-
-void Physics::PhysicsStaticCollision(int ObjectID)
+Vector2 Physics::PhysicsStaticCollision(int ObjectID)
 {
 	GameObject* secondobject = ObjectHandler::GetInstance().GetGameObject(ObjectID);
 
 	Vector2 _momentum = secondobject->GetComponent<Physics>()->GetPhysicsBody()->objMomentum.SpeedMPS;
 	secondobject->GetComponent<Physics>()->ApplyForceToObj(-_momentum);
-
+	return -_objectPhysicsBody->objMomentum.SpeedMPS;
 }
 
-void Physics::PhysicsDynamicCollision(int objectID)
+Vector2 Physics::PhysicsDynamicCollision(int objectID)
 {
 	GameObject* secondobject = ObjectHandler::GetInstance().GetGameObject(objectID);
 	
 	Vector2 _momentum = secondobject->GetComponent<Physics>()->GetPhysicsBody()->objMomentum.SpeedMPS;
 	secondobject->GetComponent<Physics>()->ApplyForceToObj(-_momentum);
+	_objectPhysicsBody->objMomentum.SpeedMPS = -_objectPhysicsBody->objMomentum.SpeedMPS;
+	return -_objectPhysicsBody->objMomentum.SpeedMPS;
 }
 
 void Physics::ApplyGravityForceForUpdate()
 {
 	Momentum workingMomentum_Kg_Ms = _objectPhysicsBody->objMomentum;
 	Vector2 _momentum = workingMomentum_Kg_Ms.SpeedMPS * workingMomentum_Kg_Ms.WeightAsKg;
-	Vector2 objectStartingpos = _objectPhysicsBody->bodyDef.Pos;
+//	Vector2 objectStartingpos = _objectPhysicsBody->bodyDef.Pos;
 
 	_momentum += _pGravityAsForce;
-	_objectPhysicsBody->bodyDef.Pos += _momentum / workingMomentum_Kg_Ms.WeightAsKg;
+	_objectPhysicsBody->bodyDef.Pos += (_momentum / workingMomentum_Kg_Ms.WeightAsKg);
+	_objectPhysicsBody->objMomentum.SpeedMPS = (_momentum / workingMomentum_Kg_Ms.WeightAsKg);
+
 
 }
-//
-//void Physics::updateBodyForces()
-//{
-//	if (_objectPhysicsBody->hitbox.bodyType == Dynmaic)
-//	{ApplyGravityForceForUpdate();}
-//
-//	std::vector<int> listOfIDs = GetObjectsCollisionsByID(_objectPhysicsBody->bodyDef.Pos, _objectPhysicsBody->hitbox);
-//	
-//	for (int b6 : listOfIDs)
-//	{
-//		switch (ObjectHandler::GetInstance().GetGameObject(b6)->GetComponent<Physics>()->GetPhysicsBody()->hitbox.bodyType)
-//		{
-//		case Static:
-//			PhysicsStaticCollision(b6);
-//			break;
-//		case Kinematic:
-//			PhysicsStaticCollision(b6); // "temp"
-//			break;
-//		case Dynmaic:
-//			PhysicsDynamicCollision(b6);
-//			break;
-//
-//		default:
-//			break;
-//		}
-//	}
-//	Update();
-//}
 
 void Physics::FixedUpdate(float timeStep)
 {
+	Vector2 objectForce;
 	if (_objectPhysicsBody->hitbox.bodyType == Dynmaic)
 	{
-		Vector2 objectForce = GetSteppedGravityForce();
+		 objectForce = GetSteppedGravityForce();
 		_objectPhysicsBody->bodyDef.Pos += objectForce;
 	}
 
 	std::vector<int> listOfIDs = GetObjectsCollisionsByID(_objectPhysicsBody->bodyDef.Pos, _objectPhysicsBody->hitbox);
 
-	
+	Update();
 	for(int b6 : listOfIDs)
 	{
-		if (b6 != 0 && _objectPhysicsBody->ObjectID != 0)
+
+		if (b6 != 0 && _objectPhysicsBody->ObjectID != 0 && b6 != _objectPhysicsBody->ObjectID)
 		{
+
 			switch (_objectPhysicsBody->hitbox.bodyType)
 			{
 			case Static:
-				PhysicsStaticCollision(b6);
+				 objectForce = PhysicsStaticCollision(b6);
 				OutputDebugStringA("static collision \n");
 				break;
 			case Kinematic:
-				PhysicsStaticCollision(b6); // "temp"
+				objectForce = PhysicsStaticCollision(b6); // "temp"
 				OutputDebugStringA("kinematic collision \n");
 				break;
 			case Dynmaic:
-				PhysicsDynamicCollision(b6);
+				objectForce = PhysicsDynamicCollision(b6);
 				OutputDebugStringA("dynamic collision \n");
 				break;
 
@@ -275,7 +252,9 @@ void Physics::FixedUpdate(float timeStep)
 				break;
 			}
 		}
+		_objectPhysicsBody->bodyDef.Pos += objectForce;
 	}
+
 	Update();
 }
 
@@ -287,6 +266,7 @@ Vector2 Physics::GetSteppedGravityForce()
 
 	_steppedmomentum += _pGravityAsForce;
 	_steppedmomentum /= workingMomentum_Kg_Ms.WeightAsKg;
+	_objectPhysicsBody->objMomentum.SpeedMPS = (_steppedmomentum / workingMomentum_Kg_Ms.WeightAsKg);
 	//_steppedmomentum /= 5.0f;
 	
 	return _steppedmomentum;

@@ -33,7 +33,7 @@ public:
 	float GetDensity() { return _objectPhysicsBody->bodyDef.density; }
 	float GetFriction() { return _objectPhysicsBody->bodyDef.friction; }
 
-	HitBoxDefnintions CreateHitBox(Vector2 scale);
+	//HitBoxDefnintions CreateHitBox(Vector2 scale);
 	std::vector<int> GetObjectsInAreaByID(Vector2 position, Vector2 areaScale);
 	int GetNumberOfObjectsInArea(Vector2 position, Vector2 areaScale);
 
@@ -41,11 +41,11 @@ public:
 	std::vector<int> GetObjectsCollisionsByID(Vector2 position, HitBoxDefnintions hitBoxDef);
 	
 	void ApplyGravityForceForUpdate();
-	void updateBodyForces();
+//	void updateBodyForces();
 
 	int GetNumberOfCollisonsWithBody(Vector2 position, HitBoxDefnintions hitboxdef);
-	void PhysicsStaticCollision(int objectID);
-	void PhysicsDynamicCollision(int objectID);
+	Vector2 PhysicsStaticCollision(int objectID);
+	Vector2 PhysicsDynamicCollision(int objectID);
 
 	void UpdateGravity(Vector2 inputGravity) { _pGravityAsForce = inputGravity; }
 	Vector2 GetGravityValue() { return _pGravityAsForce; }
