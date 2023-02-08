@@ -28,7 +28,9 @@ void PlayerController::Start()
 
 	//Init SoundEffects
 	_jumpSoundEffect = new SoundEffect("Resources/Laser_Shoot3.wav");
+	_jumpSoundEffect->SetVolume(0.25f);
 	_moveSoundEffect = new SoundEffect("Resources/SoundEffects/MetalWalkNoise.wav", true);
+	_moveSoundEffect->SetVolume(0.25f);
 }
 
 void PlayerController::Update(float deltaTime)
@@ -40,10 +42,6 @@ void PlayerController::Update(float deltaTime)
 	if (_playerInput->IsActionDown(Jump))
 	{
 		JumpPressed();
-	}
-	else if (_playerInput->IsActionUp(Jump))
-	{
-		JumpReleased();
 	}
 
 	//Interact
@@ -69,9 +67,15 @@ void PlayerController::Update(float deltaTime)
 	}
 
 	//Increment jump timer
-	if (!_jumpReset)
-		_jumpTimer = deltaTime;
-	//potential functionality for the midaircontroldelay
+	if (_activeJumpTimer >= _jumpTimer)
+	{
+		_jumpReset = true;
+		_activeJumpTimer = 0.0f;
+	}
+	else
+	{
+		_activeJumpTimer += deltaTime;
+	}
 }
 
 void PlayerController::FixedUpdate(float timeStep)
@@ -92,12 +96,6 @@ void PlayerController::FixedUpdate(float timeStep)
 		_isWalking = false;
 		_moveSoundEffect->Stop();
 	}
-
-
-	//if(PlayerFloorCollider collides with Floor)
-	//{
-	//	_jumpReset = true;
-	//}
 }
 
 
@@ -106,7 +104,7 @@ void PlayerController::JumpPressed()
 	if (!_jumpReset)
 		return;
 
-	_isJumping = true;
+	_jumpReset = false;
 
 	if (!GameManager::GetInstance().IsGravityFlipped())
 	{
@@ -118,11 +116,6 @@ void PlayerController::JumpPressed()
 	}
 
 	_jumpSoundEffect->Play();
-}
-
-void PlayerController::JumpReleased()
-{
-	_isJumping = false;
 }
 
 void PlayerController::InteractPressed()
