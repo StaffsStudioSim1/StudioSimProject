@@ -14,6 +14,8 @@ public:
 	SceneManager(SceneManager const&) = delete;
 	void operator=(SceneManager const&) = delete;
 
+	void Initialise(int width, int height);
+
 	void LoadScene(std::string filePath);
 	bool ShouldSceneChange();
 	Scene* ReadScene();
@@ -25,5 +27,8 @@ private:
 	bool _shouldSceneChange;
 	Scene* _newScene;
 	int _currentSceneID;
+
+	int _width;
+	int _height;
 };
 

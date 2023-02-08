@@ -19,9 +19,6 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{c7b938f2-1452-45c0-9623-26383123a89e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameObjects">
-      <UniqueIdentifier>{056e41aa-952b-4889-b444-4537261d9217}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\GameObject">
       <UniqueIdentifier>{d6a64ab4-98b4-49f2-ac37-36f5e33602cf}</UniqueIdentifier>
     </Filter>
@@ -58,8 +55,17 @@
     <Filter Include="Header Files\Physics">
       <UniqueIdentifier>{7d97d1b9-69b2-4f02-9695-2b5e9b75cdf5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObjects">
+      <UniqueIdentifier>{056e41aa-952b-4889-b444-4537261d9217}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\Components">
+      <UniqueIdentifier>{df750bad-7aad-4282-89a6-9564dfcb96d3}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Physics">
       <UniqueIdentifier>{92b9bd95-7637-4208-8383-017852e76d2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObject\Components">
+      <UniqueIdentifier>{9f298eac-c5e1-4f1d-b9ee-fb111430ba9e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\ImGui">
       <UniqueIdentifier>{6828c70a-875e-453a-881c-f4711adcf441}</UniqueIdentifier>
@@ -114,9 +120,6 @@
     <ClCompile Include="GameObjects\Transform.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Appearance.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
@@ -138,8 +141,26 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Component.cpp">
+    <ClCompile Include="GameObjects\Components\Component.cpp">
       <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\ObjectHandler.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\Appearance.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\Physics.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\DoorComponent.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\PressurePlateComponent.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\ButtonComponent.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\ObjectHandler.cpp">
       <Filter>Source Files</Filter>
@@ -150,17 +171,14 @@
     <ClCompile Include="Physics\Vectors.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\Components\LeverComponent.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\Interactable.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
     <ClCompile Include="GameObjects\GameManager.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\PlayerController.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Input\Mouse\MousePicking.cpp">
-      <Filter>Source Files\Input\Mouse</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Physics.cpp">
-      <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\ImGui\imgui.cpp">
       <Filter>Source Files\ImGui</Filter>
@@ -191,6 +209,15 @@
     </ClCompile>
     <ClCompile Include="GameObjects\PlayerMagnetism.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\AABB.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Components\Rigidbody.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\PlayerController.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,9 +263,6 @@
     <ClInclude Include="GameObjects\Transform.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Appearance.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Input\InputManager.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
@@ -266,38 +290,56 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Component.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjects\ObjectHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Physics\PhysicsInterface.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Physics.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsStructs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsStructs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Physics\Vectors.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\PlayerController.h">
-      <Filter>Header Files\GameObject</Filter>
+    <ClInclude Include="Input\PlayerInput.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\LeverComponent.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\Physics.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Geometry.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\Component.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\Appearance.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\ButtonComponent.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\Interactable.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\PressurePlateComponent.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\DoorComponent.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Vectors.h">
+      <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Vectors.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\GameManager.h">
       <Filter>Header Files\GameObject</Filter>
-      </ClInclude>
-    <ClInclude Include="Input\Mouse\MousePicking.h">
-      <Filter>Header Files\Input\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\TextureInfo.h">
       <Filter>Header Files\Graphics</Filter>
@@ -344,6 +386,33 @@
     <ClInclude Include="GameObjects\PlayerMagnetism.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\ConstantBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Geometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ConstantBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Geometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\Rigidbody.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\AABB.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsStructs.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Physics.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\PlayerController.h">
+      <Filter>Header Files\GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="vertexshader.hlsl">
@@ -355,5 +424,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DirectX 11 - Clay Bake Engine.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

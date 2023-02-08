@@ -1,7 +1,7 @@
 #pragma once
-#include "Transform.h"
-#include "../Physics/PhysicsInterface.h"
-#include "../PhysicsStructs.h"
+#include "../Transform.h"
+#include "../../Physics/PhysicsInterface.h"
+#include "../../Physics/PhysicsStructs.h"
 #include "Component.h"
 
 class Physics : public Component

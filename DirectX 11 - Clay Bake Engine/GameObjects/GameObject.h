@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Component.h"
+#include "Components/Component.h"
 #include "Transform.h"
+#include "Components/Physics.h"
 #include "../Graphics/ConstantBuffer.h"
 #include "../nlohmann/json.hpp"
 using json = nlohmann::json;
@@ -59,12 +60,15 @@ public:
 	void RemoveComponent(Component* component);
 
 	Transform* GetTransform() { return &_transform; }
+	bool HasRigidbody() { return _hasRigidbody; };
+	bool HasCollider() { return _hasCollider; };
 
 	// Stores a name for the object
 	std::string GetName() const noexcept { return _name; }
 	void SetName(std::string name) { _name = name; }
 
 	std::string GetTag() const noexcept { return _tag; }
+	void SetTag(std::string tag) { _tag = tag; }
 
 	void Start();
 	void Update(float deltaTime);
@@ -80,6 +84,8 @@ private:
 	std::string _tag;
 
 	Transform _transform = {};
+	bool _hasRigidbody;
+	bool _hasCollider;
 
 	std::vector<Component*> _components;
 };

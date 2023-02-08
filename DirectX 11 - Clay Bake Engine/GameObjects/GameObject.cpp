@@ -1,7 +1,12 @@
 #include "GameObject.h"
 #include "ObjectHandler.h"
-#include "Appearance.h"
-#include "Physics.h"
+#include "Components/Appearance.h"
+#include "Components/Interactable.h"
+#include "Components/LeverComponent.h"
+#include "Components/DoorComponent.h"
+#include "Components/ButtonComponent.h"
+#include "Components/Appearance.h"
+#include "Components/PressurePlateComponent.h"
 #include "PlayerController.h"
 #include "../Input/PlayerInput.h"
 #include "MagnetBox.h"
@@ -81,29 +86,44 @@ GameObject::GameObject(json objectJson)
 		{
 			component = new PlayerMagnetism();
 		}
-		else if (type == "Physics")
+		
+		else if (type == "LeverComponent")
 		{
-			PhysicsBody* body = new PhysicsBody();
-			body->bodyDef.startPos = _transform.GetPosition();
-			body->bodyDef.startingRoatation = _transform.GetRotation();
-			if (componentJson.contains(JSON_COMPONENT_CONSTRUCTORS)) // So object with no constructor info in the files don't crash
-			{
-				body->hitboxdef.bodyType = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
-				body->bodyDef.density = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
-				body->bodyDef.friction = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(2);
-			}
-			else
-			{
-				body->hitboxdef.bodyType = Dynmaic;
-				body->bodyDef.density = 0.1f;
-				body->bodyDef.friction = 1.0f;
-			}
-			body->hitboxdef.scaleX = _transform.GetScale().x;
-			body->hitboxdef.scaleY = _transform.GetScale().y;
-			body->hitboxdef.shape = Box;
-
-			PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
-			component = new Physics(body, physicsWorld);
+			int switchType = 0;
+			std::string linkedObject = "";
+			component = new LeverComponent((Interactable::InteractableLink)switchType, linkedObject);
+		}
+		else if (type == "DoorComponent")
+		{
+			component = new DoorComponent();
+		}
+		else if (type == "Interactable")
+		{
+			int switchType = 0;
+			std::string linkedObject = "";
+			component = new Interactable();
+		}
+		else if (type == "ButtonComponent")
+		{
+			int switchType = 0;
+			std::string linkedObject = "";
+			component = new ButtonComponent((Interactable::InteractableLink)switchType, linkedObject);
+		}
+		else if (type == "PressurePlateComponent")
+		{
+			int switchType = 0;
+			std::string linkedObject = "";
+			component = new PressurePlateComponent((Interactable::InteractableLink)switchType, linkedObject);
+		}
+		else if (type == "Rigidbody")
+		{
+			component = new Rigidbody();
+		}
+		else if (type == "AABB")
+		{
+			float width = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+			float height = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
+			component = new AABB(width, height);
 		}
 
 		if (component != nullptr)
@@ -131,6 +151,7 @@ json GameObject::Write()
 {
 	json me;
 	me[JSON_GO_NAME] = _name;
+	me[JSON_GO_TAG] = _tag;
 	me[JSON_GO_POSITION] = { _transform.GetPosition().x, _transform.GetPosition().y, _transform.GetDepthPos() };
 	me[JSON_GO_ROTATION] = DirectX::XMConvertToDegrees(_transform.GetRotation());
 	me[JSON_GO_SCALE] = { _transform.GetScale().x, _transform.GetScale().y };
@@ -145,7 +166,12 @@ json GameObject::Write()
 
 void GameObject::AddComponent(Component* component)
 {
-	component->SetObject(this);
+	if (dynamic_cast<AABB*>(component))
+		_hasCollider = true;
+	else if (dynamic_cast<Rigidbody*>(component))
+		_hasRigidbody = true;
+
+	component->SetGameObject(this);
 	_components.push_back(component);
 }
 

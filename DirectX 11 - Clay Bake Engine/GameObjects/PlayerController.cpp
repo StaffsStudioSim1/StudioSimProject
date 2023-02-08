@@ -26,7 +26,8 @@ void PlayerController::Start()
 	_playerInput = new PlayerInput(_playerID);
 
 	//Get the player's PhysicsBody
-	_physicsBody = _gameObject->GetComponent<Physics>();
+	//_physicsBody = _gameObject->GetComponent<Physics>();
+	_rigidbody = _gameObject->GetComponent<Rigidbody>();
 }
 
 void PlayerController::Update(float deltaTime)
@@ -76,14 +77,14 @@ void PlayerController::Update(float deltaTime)
 
 void PlayerController::FixedUpdate(float timeStep)
 {
-	Vector2 currentVelocity = _physicsBody->GetLinearVelocity();
+	//Vector2 currentVelocity = _rigidbody->GetVelocity();
 
 	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
-		_physicsBody->ApplyForceToObj(_currentMovement * _moveSpeed, true);
+		_rigidbody->AddForce(_currentMovement * _moveSpeed);
 	}
 
-	if (_isJumping)
+	/*if (_isJumping)
 	{
 		if (currentVelocity.y < _jumpForce.y)
 		{
@@ -101,14 +102,17 @@ void PlayerController::FixedUpdate(float timeStep)
 			_isJumping = false;
 		}
 		_isJumping = false;
-	}
+	}*/
 }
 
 
 void PlayerController::JumpPressed()
 {
-	if (_jumpReset)
-		_isJumping = true;
+	if (!_jumpReset)
+		return;
+
+	_isJumping = true;
+	_rigidbody->AddForce(Vector2(0.0f, 100.0f));
 }
 
 void PlayerController::JumpReleased()

@@ -1,5 +1,5 @@
 #include "Component.h"
-#include "GameObject.h"
+#include "../GameObject.h"
 
 json Component::Write()
 {
@@ -8,9 +8,14 @@ json Component::Write()
 	return me;
 }
 
-void Component::SetObject(GameObject* gameObject)
+void Component::SetGameObject(GameObject* gameObject)
 {
 	_gameObject = gameObject;
+}
+
+GameObject* Component::GetGameObject()
+{
+	return _gameObject;
 }
 
 void Component::Start()

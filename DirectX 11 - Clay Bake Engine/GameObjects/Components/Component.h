@@ -1,8 +1,8 @@
 #pragma once
 #include <wrl/client.h>
 #include <d3d11.h>
-#include "../Graphics/ConstantBuffer.h"
-#include "../nlohmann/json.hpp"
+#include "../../Graphics/ConstantBuffer.h"
+#include "../../nlohmann/json.hpp"
 using nlohmann::json;
 
 class GameObject;
@@ -11,7 +11,9 @@ class Component
 {
 public:
 	virtual json Write();
-	void SetObject(GameObject* gameObject);
+
+	void SetGameObject(GameObject* gameObject);
+	GameObject* GetGameObject();
 
 	virtual void Start();
 	virtual void Update(float deltaTime);

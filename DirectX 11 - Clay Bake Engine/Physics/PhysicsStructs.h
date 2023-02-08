@@ -1,7 +1,7 @@
 #pragma once
 #include <box2d/box2d.h>
 #include <box2d/b2_math.h>
-#include "Physics/Vectors.h"
+#include "Vectors.h"
 
 enum PhysicsBodyType
 {

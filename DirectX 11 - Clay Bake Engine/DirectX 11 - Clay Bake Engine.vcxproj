@@ -148,17 +148,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObjects\Components\DoorComponent.cpp" />
+    <ClCompile Include="GameObjects\Components\ButtonComponent.cpp" />
+    <ClCompile Include="GameObjects\Components\Component.cpp" />
+    <ClCompile Include="GameObjects\Components\Appearance.cpp" />
+    <ClCompile Include="GameObjects\Components\Interactable.cpp" />
+    <ClCompile Include="GameObjects\Components\LeverComponent.cpp" />
+    <ClCompile Include="GameObjects\Components\AABB.cpp" />
     <ClCompile Include="GameObjects\GameManager.cpp" />
-    <ClCompile Include="GameObjects\Component.cpp" />
-    <ClCompile Include="GameObjects\Appearance.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
+    <ClCompile Include="GameObjects\Components\PressurePlateComponent.cpp" />
     <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="GameObjects\MagnetBox.cpp" />
     <ClCompile Include="GameObjects\MagnetismObject.cpp" />
     <ClCompile Include="GameObjects\MovingPlatform.cpp" />
-    <ClCompile Include="GameObjects\ObjectHandler.cpp" />
-    <ClCompile Include="GameObjects\Physics.cpp" />
+    <ClCompile Include="GameObjects\ObjectHandler.cpp" />    
     <ClCompile Include="GameObjects\PlayerMagnetism.cpp" />
+    <ClCompile Include="GameObjects\Components\Physics.cpp" />
     <ClCompile Include="Graphics\AdapterReader.cpp" />
     <ClCompile Include="ClayEngine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
@@ -177,11 +183,11 @@
     <ClCompile Include="Input\Mouse\MouseEvent.cpp" />
     <ClCompile Include="Examples.cpp" />
     <ClCompile Include="GameObjects\PlayerController.cpp" />
-    <ClCompile Include="Input\Mouse\MousePicking.cpp" />
     <ClCompile Include="Physics\PhysicsInterface.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
     <ClCompile Include="Audio\SoundEffect.cpp" />
+    <ClCompile Include="GameObjects\Components\Rigidbody.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -191,17 +197,23 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObjects\Components\AABB.h" />
     <ClInclude Include="GameObjects\GameManager.h" />
     <ClInclude Include="Graphics\Geometry.h" />
     <ClInclude Include="Graphics\ConstantBuffer.h" />
-    <ClInclude Include="GameObjects\Component.h" />
-    <ClInclude Include="GameObjects\Appearance.h" />
+    <ClInclude Include="GameObjects\Components\Appearance.h" />
+    <ClInclude Include="GameObjects\Components\ButtonComponent.h" />
+    <ClInclude Include="GameObjects\Components\Component.h" />
+    <ClInclude Include="GameObjects\Components\DoorComponent.h" />
+    <ClInclude Include="GameObjects\Components\Interactable.h" />
+    <ClInclude Include="GameObjects\Components\PressurePlateComponent.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="Audio\AudioManager.h" />
     <ClInclude Include="GameObjects\MagnetBox.h" />
     <ClInclude Include="GameObjects\MagnetismObject.h" />
     <ClInclude Include="GameObjects\MovingPlatform.h" />
     <ClInclude Include="GameObjects\ObjectHandler.h" />
+    <ClInclude Include="GameObjects\Components\Physics.h" />
     <ClInclude Include="GameObjects\Physics.h" />
     <ClInclude Include="GameObjects\PlayerMagnetism.h" />
     <ClInclude Include="Graphics\ConstantBuffer.h" />
@@ -227,7 +239,7 @@
     <ClInclude Include="Input\Mouse\MouseClass.h" />
     <ClInclude Include="Input\Mouse\MouseEvent.h" />
     <ClInclude Include="Examples.h" />
-    <ClInclude Include="Input\Mouse\MousePicking.h" />
+    <ClInclude Include="GameObjects\Components\LeverComponent.h" />
     <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="GameObjects\PlayerController.h" />
     <ClInclude Include="PhysicsStructs.h" />
@@ -235,6 +247,8 @@
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />
     <ClInclude Include="Audio\SoundEffect.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="GameObjects\Components\Rigidbody.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StringConverter.h" />
@@ -270,6 +284,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DirectX 11 - Clay Bake Engine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

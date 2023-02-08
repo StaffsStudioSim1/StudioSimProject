@@ -8,10 +8,16 @@ using json = nlohmann::json;
 #if EDIT_MODE
 #include "Input/InputManager.h"
 #endif
+#include "GameObjects/Components/Rigidbody.h"
+#include "Graphics/Graphics.h"
 
-Scene::Scene(std::string filePath)
+Scene::Scene(std::string filePath, int width, int height)
 {
 	_filePath = filePath;
+	_width = width;
+	_height = height;
+	_windowScaleX = _width / INTERNAL_RESOLUTION_X;
+	_windowScaleY = _height / INTERNAL_RESOLUTION_Y;
 
 	std::ifstream f(filePath);
 	if (!f.good())
@@ -28,12 +34,27 @@ Scene::Scene(std::string filePath)
 	for (json objectData : data[JSON_SCENE_GAMEOBJECTS])
 		_children.push_back(new GameObject(objectData));
 
-#if EDIT_MODE
-	RECT rc;
+	std::string map = data[JSON_SCENE_STAGECOLLISION];
+#if !EDIT_MODE
+	if (map != "")
+	{
+		for (int x = 0; x < 36; x++)
+			for (int y = 0; y < 20; y++)
+				if (map[x + y * 36] == '1')
+				{
+					GameObject* go = new GameObject("Stage Collision (" + std::to_string(x) + "," + std::to_string(y) + ")");
+					go->SetTag(JSON_TAG_STAGECOLLISION);
+					go->GetTransform()->SetPosition(GridToWorld(Vector2(x, y)));
+					go->AddComponent(new AABB(_snapScale, _snapScale));
+
+					_children.push_back(go);
+				}
+	}
+#else
+	/*RECT rc;
 	GetWindowRect(GetActiveWindow(), &rc);
 	int width = (rc.right - rc.left) - 16;
-	int height = (rc.bottom - rc.top) - 39;
-	_mousePicking.Initialise(width, height);
+	int height = (rc.bottom - rc.top) - 39;*/
 	_geometry = ObjectHandler::GetInstance().GetSquareGeometry();
 
 	_prefabs.push_back(Prefab("Collision", "Resources/Sprites/StageCollision.dds", { 1.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"tag\" : \"StageCollision\", \"scale\" : [1.0, 1.0], \"components\" : [ { \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/StageCollision.dds\", 1.0, 1.0, 0.0, 0.0, 1.0] } ] }"));
@@ -44,7 +65,6 @@ Scene::Scene(std::string filePath)
 
 	_texture = ObjectHandler::GetInstance().LoadDDSTextureFile(_prefabs[_prefabNum].ghostImageFilepath);
 
-	std::string map = data[JSON_SCENE_STAGECOLLISION];
 	if (map != "")
 	{
 		for (int x = 0; x < 36; x++)
@@ -53,7 +73,7 @@ Scene::Scene(std::string filePath)
 				{
 					json tempJson = json::parse(_prefabs[0].jsonString);
 					tempJson[JSON_GO_NAME] = _prefabs[0].name + " [" + std::to_string(_children.size()) + "]";
-					Vector2 worldPos = _mousePicking.GridToWorld(Vector2(x, y));
+					Vector2 worldPos = GridToWorld(Vector2(x, y));
 					tempJson[JSON_GO_POSITION].push_back(worldPos.x);
 					tempJson[JSON_GO_POSITION].push_back(worldPos.y);
 					tempJson[JSON_GO_POSITION].push_back(0.0f);
@@ -81,6 +101,7 @@ void Scene::Save()
 	json scene;
 	json gameObjects;
 
+	scene[JSON_SCENE_ID] = _id;
 	scene[JSON_SCENE_BACKGROUND] = ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Appearance>()->GetTexture().filePath; // Presumes that the first object is the background
 
 	std::string map;
@@ -93,7 +114,7 @@ void Scene::Save()
 			gameObjects.push_back(obj->Write());
 		else if (obj->GetTag() == JSON_TAG_STAGECOLLISION)
 		{
-			Vector2 gridPos = _mousePicking.WorldToGrid(obj->GetTransform()->GetPosition());
+			Vector2 gridPos = WorldToGrid(obj->GetTransform()->GetPosition());
 			// For each 1 y, 36 x's have to be added
 			map = map.replace(gridPos.x + gridPos.y * 36, 1, "1");
 		}
@@ -128,14 +149,14 @@ void Scene::Update(float deltaTime)
 	MouseClass* mouse = InputManager::GetInstance().GetMouse();
 	Vector2 mousePos = Vector2(mouse->GetPosX(), mouse->GetPosY());
 
-	Vector2 relPos = _mousePicking.GetRelativeMousePos(mousePos);
-	relPos = _mousePicking.SnapCoordinatesToGrid(relPos);
+	Vector2 relPos = GetRelativeMousePos(mousePos);
+	relPos = SnapCoordinatesToGrid(relPos);
 	_ghost = relPos;
 
 	if (selectedObj)
 	{
 		// If an object is following the cursor
-		Vector2 relativeMousePos = _mousePicking.GetRelativeMousePos(mousePos);
+		Vector2 relativeMousePos = GetRelativeMousePos(mousePos);
 		selectedObj->GetTransform()->SetPosition(relativeMousePos);
 	}
 
@@ -148,7 +169,7 @@ void Scene::Update(float deltaTime)
 			if (!selectedObj)
 			{
 				// Pickup Tile
-				selectedObj = _mousePicking.TestForObjectIntersection(mousePos);
+				selectedObj = TestForObjectIntersection(mousePos);
 				if (selectedObj)
 					startingPos = selectedObj->GetTransform()->GetPosition();
 			}
@@ -158,7 +179,7 @@ void Scene::Update(float deltaTime)
 			{
 				// Drop tile at position
 				Vector2 objectPos = selectedObj->GetTransform()->GetPosition();
-				Vector2 snapPos = _mousePicking.SnapCoordinatesToGrid(objectPos);
+				Vector2 snapPos = SnapCoordinatesToGrid(objectPos);
 
 				for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 				{
@@ -193,6 +214,9 @@ void Scene::Update(float deltaTime)
 				for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 					if (object->GetTransform()->GetPosition() == relPos)
 						return;
+
+				Vector2 relPos = GetRelativeMousePos(mousePos);
+				relPos = SnapCoordinatesToGrid(relPos);
 
 				json tempJson = json::parse(_prefabs[_prefabNum].jsonString);
 				tempJson[JSON_GO_NAME] = _prefabs[_prefabNum].name + " [" + std::to_string(_objNum) + "]";
@@ -234,9 +258,26 @@ void Scene::Update(float deltaTime)
 
 void Scene::FixedUpdate(float timeStep)
 {
-	ObjectHandler::GetInstance().GetPhysicsWorld()->world->Step(timeStep, 8, 3);
+#if !EDIT_MODE
 	for (GameObject* obj : _children)
 		obj->FixedUpdate(timeStep);
+
+	for (int i = 0; i < _children.size(); i++)
+	{
+		if (!_children[i]->HasRigidbody())
+			continue;
+
+		Rigidbody* rbI = _children[i]->GetComponent<Rigidbody>();
+		for (int j = 0; j < _children.size(); j++)
+		{
+			if (!_children[j]->HasCollider() || _children[j]->HasRigidbody())
+				continue;
+
+			if (_children[i]->GetComponent<AABB>()->Overlaps(_children[j]->GetComponent<AABB>(), timeStep))
+				rbI->Collide(_children[j]);
+		}
+	}
+#endif
 }
 
 void Scene::Stop()
@@ -267,4 +308,45 @@ void Scene::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, Constant
 	context->IASetIndexBuffer(_geometry.indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 	context->DrawIndexed(_geometry.numOfIndices, 0, 0);
 #endif
+}
+
+GameObject* Scene::TestForObjectIntersection(Vector2 mousePos)
+{
+	Vector2 gridPos = SnapCoordinatesToGrid(GetRelativeMousePos(mousePos));
+
+	for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
+	{
+		if (object->GetName() == JSON_SCENE_BACKGROUND)
+			continue;
+
+		if (object->GetTransform()->GetPosition() == gridPos)
+			return object;
+	}
+
+	return nullptr;
+}
+
+Vector2 Scene::GetRelativeMousePos(Vector2 mousePos)
+{
+	return Vector2((mousePos.x - (_width / 2)) / _windowScaleX, -(mousePos.y - (_height / 2)) / _windowScaleY);
+}
+
+Vector2 Scene::SnapCoordinatesToGrid(Vector2 worldPos)
+{
+	return GridToWorld(WorldToGrid(worldPos));
+}
+
+Vector2 Scene::WorldToGrid(Vector2 worldPos)
+{
+	int x = (worldPos.x + INTERNAL_RESOLUTION_X / 2) / _snapScale;
+	int y = (worldPos.y + INTERNAL_RESOLUTION_Y / 2) / _snapScale;
+	return Vector2(x, y);
+}
+
+Vector2 Scene::GridToWorld(Vector2 gridPos)
+{
+	gridPos *= _snapScale;
+	gridPos += Vector2(_snapScale / 2, _snapScale / 2);
+	gridPos -= Vector2(INTERNAL_RESOLUTION_X / 2, INTERNAL_RESOLUTION_Y / 2);
+	return gridPos;
 }
