@@ -5,7 +5,6 @@
 #include "Components/Appearance.h"
 #include "GameObject.h"
 #include "../Graphics/TextureInfo.h"
-#include "Components/Physics.h"
 
 class ObjectHandler
 {
@@ -38,17 +37,19 @@ public:
 	Geometry GetSquareGeometry() { return _squareGeometry; }
 	void SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer, UINT numOfIndices, UINT vertexBufferOffset, UINT vertexBufferStride);
 	
-	PhysicsWorld* GetPhysicsWorld() { return _pPhysicsWorld; }
-	void SetPhysicsWorld(PhysicsWorld* physics) { _pPhysicsWorld = physics; }
+	bool IsMainMainUIEnabled() { return _mainMenuUI; }
+	void EnableMainMenuUI(bool showUI) { _mainMenuUI = showUI; }
 
-	bool IsLevelSelect() { return _levelSelect; }
-	void SetLevelSelect(bool levelSelect) { _levelSelect = levelSelect; }
+	bool IsLevelSelectUIEnabled() { return _levelSelectUI; }
+	void EnableLevelSelectUI(bool showUI) { _levelSelectUI = showUI; }
 
-	bool IsOptionsMenu() { return _optionsMenu; }
-	void SetOptionsMenu(bool optionsMenu) { _optionsMenu = optionsMenu; }
+	bool IsOptionsMenuUIEnabled() { return _optionsMenuUI; }
+	void EnableOptionsMenuUI(bool showUI) { _optionsMenuUI = showUI; }
 
-	bool IsPauseMenu() { return _pauseMenu; }
-	void SetPauseMenu(bool pauseMenu) { _pauseMenu = pauseMenu; }
+	bool IsPauseMenuUIEnabled() { return _pauseMenuUI; }
+	void EnablePauseMenuUI(bool showUI) { _pauseMenuUI = showUI; }
+
+	std::vector<GameObject*> GetObjectsInArea(Vector2 position, Vector2 boxSize);
 private:
 	ObjectHandler();
 	~ObjectHandler();
@@ -56,10 +57,10 @@ private:
 	bool _initialised = false;
 	int _objectID = 0;
 
-	bool _mainMenu = true;
-	bool _levelSelect = false;
-	bool _optionsMenu = false;
-	bool _pauseMenu = false;
+	bool _mainMenuUI = true;
+	bool _levelSelectUI = false;
+	bool _optionsMenuUI = false;
+	bool _pauseMenuUI = false;
 
 	Microsoft::WRL::ComPtr <ID3D11Device>	_device;
 
@@ -68,7 +69,5 @@ private:
 	std::unordered_map<std::string, TextureInfo> _loadedTextures = {};
 
 	Geometry _squareGeometry;
-
-	PhysicsWorld* _pPhysicsWorld;
 };
 

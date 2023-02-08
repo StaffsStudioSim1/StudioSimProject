@@ -8,6 +8,15 @@ AABB::AABB(float width, float height)
 	_height = height;
 }
 
+json AABB::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "AABB";
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_width);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_height);
+	return me;
+}
+
 bool AABB::Overlaps(AABB* collider, float deltaTime)
 {
 	DirectX::BoundingBox me;
@@ -16,7 +25,7 @@ bool AABB::Overlaps(AABB* collider, float deltaTime)
 	me.Center.z = 0.0f;
 	me.Extents.x = _width / 2;
 	me.Extents.y = _height / 2;
-	me.Extents.z = 0.5f;
+	me.Extents.z = 0.0f;
 
 	DirectX::BoundingBox other;
 	other.Center.x = collider->GetGameObject()->GetTransform()->GetPosition().x;
@@ -24,7 +33,12 @@ bool AABB::Overlaps(AABB* collider, float deltaTime)
 	other.Center.z = 0.0f;
 	other.Extents.x = collider->_width / 2;
 	other.Extents.y = collider->_height / 2;
-	other.Extents.z = 0.5f;
+	other.Extents.z = 0.0f;
 
 	return me.Intersects(other);
+}
+
+Vector2 AABB::GetSize()
+{
+	return Vector2(_width, _height);
 }

@@ -19,10 +19,13 @@ public:
 	bool ProcessMessages();
 	void Update();
 	void RenderFrame();
+
 protected:
 
 private:
 	bool _initialised = false;
+	int _width;
+	int _height;
 
 	// DO NOT SET DIRECTLY - Use SceneManager::GetInstance().LoadScene("file/path.json");
 	Scene* _scene = nullptr;

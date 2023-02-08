@@ -8,6 +8,8 @@ class Rigidbody :
 public:
     Rigidbody();
 
+    json Write();
+
     void FixedUpdate(float timeStep);
 
     void AddForce(Vector2 force);

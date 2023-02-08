@@ -68,6 +68,7 @@ public:
 	void SetName(std::string name) { _name = name; }
 
 	std::string GetTag() const noexcept { return _tag; }
+	void SetTag(std::string tag) { _tag = tag; }
 
 	void Start();
 	void Update(float deltaTime);
