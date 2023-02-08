@@ -77,23 +77,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		HRESULT hr;
 
-		DXGI_SWAP_CHAIN_DESC scd;
-		ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
-
-		scd.BufferDesc.Width = width;
-		scd.BufferDesc.Height = height;
-		scd.BufferDesc.RefreshRate.Numerator = 60;
-		scd.BufferDesc.RefreshRate.Denominator = 1;
-		scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-		scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-		scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-
-		scd.SampleDesc.Count = 1;
-		scd.SampleDesc.Quality = 0;
-
-		scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		scd.BufferCount = 2;
-
 		bool isWindowed = true;
 #if !EDIT_MODE
 		std::ifstream file("Resources/Settings.json");
@@ -104,28 +87,48 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		isWindowed = !data["Fullscreen"];
 		file.close();
 #endif
+		
+		if (_initialStart)
+		{
+			DXGI_SWAP_CHAIN_DESC scd;
+			ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 
-		scd.OutputWindow = hwnd;
-		scd.Windowed = isWindowed;
-		scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-		scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+			scd.BufferDesc.Width = width;
+			scd.BufferDesc.Height = height;
+			scd.BufferDesc.RefreshRate.Numerator = 60;
+			scd.BufferDesc.RefreshRate.Denominator = 1;
+			scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+			scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
-		hr = D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
-			D3D_DRIVER_TYPE_UNKNOWN,							// Graphics device
-			NULL,												// software driver type 
-			D3D11_CREATE_DEVICE_DEBUG,							// feature lvls array
-			NULL,												// flags for^runtime layers 
-			0,													// num feature levels in array
-			D3D11_SDK_VERSION,									// direct 3d sdk ver
-			&scd,												// swap chain desc
-			this->_swapChain.GetAddressOf(),						// swap-chain ref 
-			this->_device.GetAddressOf(),						// device ref
-			NULL,												// supported feature lvl
-			this->_deviceContext.GetAddressOf()					// device context	
-		);
+			scd.SampleDesc.Count = 1;
+			scd.SampleDesc.Quality = 0;
 
-		if (FAILED(hr))
-			ErrorLogger::Log(hr, "Failed to Create device and swap-chain.\n");
+			scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+			scd.BufferCount = 2;
+
+			scd.OutputWindow = hwnd;
+			scd.Windowed = isWindowed;
+			scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+			scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+
+			hr = D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
+				D3D_DRIVER_TYPE_UNKNOWN,							// Graphics device
+				NULL,												// software driver type 
+				D3D11_CREATE_DEVICE_DEBUG,							// feature lvls array
+				NULL,												// flags for^runtime layers 
+				0,													// num feature levels in array
+				D3D11_SDK_VERSION,									// direct 3d sdk ver
+				&scd,												// swap chain desc
+				this->_swapChain.GetAddressOf(),						// swap-chain ref 
+				this->_device.GetAddressOf(),						// device ref
+				NULL,												// supported feature lvl
+				this->_deviceContext.GetAddressOf()					// device context	
+			);
+
+			if (FAILED(hr))
+				ErrorLogger::Log(hr, "Failed to Create device and swap-chain.\n");
+		}
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
 
 		hr = this->_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**> (backBuffer.GetAddressOf()));
@@ -146,19 +149,32 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		this->_deviceContext->OMSetRenderTargets(1, this->_renderTargertView.GetAddressOf(), _depthStencilView.Get());
 
-		//create viewport
-		D3D11_VIEWPORT viewport;
-		ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+		if (_initialStart)
+		{
+			//create viewport
+			D3D11_VIEWPORT viewport;
+			ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
 
-		viewport.TopLeftX = 0;
-		viewport.TopLeftY = 0;
-		viewport.Width = width;
-		viewport.Height = height;
-		viewport.MinDepth = 0;
-		viewport.MaxDepth = 1;
+			viewport.TopLeftX = 0;
+			viewport.TopLeftY = 0;
+			viewport.Width = width;
+			viewport.Height = height;
+			viewport.MinDepth = 0;
+			viewport.MaxDepth = 1;
 
-		//set viewport
-		this->_deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
+			//set viewport
+			this->_deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this
+			_initialStart = false;
+		}
+		else
+		{
+			D3D11_VIEWPORT viewport;
+			UINT vpNum = 1;
+			this->_deviceContext->RSGetViewports(&vpNum, &viewport);
+			viewport.Width = width;
+			viewport.Height = height;
+			this->_deviceContext->RSSetViewports(1, &viewport);
+		}
 
 		// Create stencil state
 		D3D11_DEPTH_STENCIL_DESC stencilDesc;
@@ -353,6 +369,39 @@ bool Graphics::InitializeScene()
 	ObjectHandler::GetInstance().SetSquareGeometry(this->_vertexBuffer, this->_indexBuffer, ARRAYSIZE(indices), 0, sizeof(SimpleVertex));
 
 	return true;
+}
+
+void Graphics::ResizeWindow()
+{
+	// Update window size
+	int centreOfScreenX = GetSystemMetrics(SM_CXSCREEN) / 2 - _resolutionWidth;
+	int centreOfScreenY = GetSystemMetrics(SM_CYSCREEN) / 2 - _resolutionHeight;
+	RECT rc = { (LONG)centreOfScreenX, (LONG)centreOfScreenY, (LONG)centreOfScreenX + (LONG)_resolutionWidth, (LONG)centreOfScreenY + (LONG)_resolutionHeight };
+	AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+	SetWindowPos(GetActiveWindow(), NULL, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+	
+	POINT pt;
+	pt.x = centreOfScreenX;
+	pt.y = centreOfScreenY;
+	ClientToScreen(GetActiveWindow(), &pt);
+
+	// Destroy and recreate graphics buffers
+	_deviceContext->OMSetRenderTargets(0, 0, 0);
+
+	_blendState.Reset();
+	_depthStencilBuffer.Reset();
+	_depthStencilView.Reset();
+	_renderTargertView.Reset();
+	_solidRasterState.Reset();
+	_wireframeRasterState.Reset();
+	_samplerState.Reset();
+	_stencilState.Reset();
+
+	_deviceContext->Flush();
+
+	_swapChain->ResizeBuffers(0, _resolutionWidth, _resolutionHeight, DXGI_FORMAT_UNKNOWN, 0);
+
+	InitializeDirectX(GetActiveWindow(), _resolutionWidth, _resolutionHeight);
 }
 
 void Graphics::LoadSettingsFromFile()
@@ -598,6 +647,7 @@ void Graphics::RenderFrame(Scene* scene)
 			outFile.close();
 
 #if !EDIT_MODE
+			ResizeWindow();
 			_swapChain->SetFullscreenState(_useFullscreen, NULL); // Toggle fullscreen
 #endif
 		}

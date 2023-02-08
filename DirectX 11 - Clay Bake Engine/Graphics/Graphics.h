@@ -28,8 +28,11 @@ private:
 	bool InitializeShaders();
 	bool InitializeScene();
 
+	void ResizeWindow();
+
 	void LoadSettingsFromFile();
 
+	bool _initialStart = true; // used to prevent memory leaks when resizing the window
 	int _windowWidth, _windowHeight;
 
 	// For options - here for the time being
@@ -63,5 +66,4 @@ private:
 	DirectX::XMFLOAT4X4									_world;
 	DirectX::XMFLOAT4X4									_view;
 	DirectX::XMFLOAT4X4									_projection;
-
 };
