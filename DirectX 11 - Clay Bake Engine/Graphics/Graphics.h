@@ -28,10 +28,15 @@ private:
 	bool InitializeShaders();
 	bool InitializeScene();
 
+	void LoadSettingsFromFile();
+
 	int _windowWidth, _windowHeight;
 
-	// For options resolution
+	// For options - here for the time being
 	int _currentResolution = 0;
+	int _resolutionWidth, _resolutionHeight;
+	bool _useFullscreen = false;
+	int _musicVol, _soundVol;
 
 	Microsoft::WRL::ComPtr <ID3D11Device>				_device;
 	Microsoft::WRL::ComPtr <ID3D11DeviceContext>		_deviceContext;

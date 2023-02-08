@@ -355,6 +355,43 @@ bool Graphics::InitializeScene()
 	return true;
 }
 
+void Graphics::LoadSettingsFromFile()
+{
+	std::ifstream inFile("Resources/Settings.json");
+	if (!inFile.good())
+		ErrorLogger::Log("Unable to retrieve settings from file!");
+
+	json data = json::parse(inFile);
+	_resolutionWidth = data["Resolution"].at(0);
+	_resolutionHeight = data["Resolution"].at(1);
+	_useFullscreen = data["Fullscreen"];
+	_musicVol = data["MusicVol"];
+	_soundVol = data["SoundVol"];
+	inFile.close();
+
+	switch (_resolutionWidth)
+	{
+	case 1280:
+	{
+		_currentResolution = 0;
+		break;
+	}
+	case 1600:
+	{
+		_currentResolution = 1;
+		break;
+	}
+	case 1920:
+	{
+		_currentResolution = 2;
+		break;
+	}
+	default:
+		_currentResolution = 0;
+		break;
+	}
+}
+
 void Graphics::RenderFrame(Scene* scene)
 {
 	float bgcolor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
@@ -416,6 +453,7 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::ImageButton(optionsButton, optionsButtonText.texture, size))
 		{
+			LoadSettingsFromFile();
 			ObjectHandler::GetInstance().EnableOptionsMenuUI(true);
 			ObjectHandler::GetInstance().EnableMainMenuUI(false);
 		}
@@ -461,6 +499,7 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::Button("Options"))
 		{
+			LoadSettingsFromFile();
 			ObjectHandler::GetInstance().EnableOptionsMenuUI(true);
 			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
 		}
@@ -495,9 +534,55 @@ void Graphics::RenderFrame(Scene* scene)
 			if (_currentResolution < resolution.size()-1)
 				_currentResolution += 1;
 		}
+#if EDIT_MODE
+		ImGui::SetTooltip("Resolution and fullscreen settings don't work in edit mode");
+#endif
+		ImGui::Checkbox("Fullscreen", &_useFullscreen);
+		ImGui::PushItemWidth(250);
+		ImGui::SliderInt("Music Volume", &_musicVol, 0, 100);
+		ImGui::SliderInt("Sound Volume", &_soundVol, 0, 100);
 		if (ImGui::Button("Apply"))
 		{
 			// Apply setting changes
+			switch (_currentResolution)
+			{
+			case 0:
+			{
+				_resolutionWidth = 1280;
+				_resolutionHeight = 720;
+				break;
+			}
+			case 1:
+			{
+				_resolutionWidth = 1600;
+				_resolutionHeight = 900;
+				break;
+			}
+			case 2:
+			{
+				_resolutionWidth = 1920;
+				_resolutionHeight = 1080;
+				break;
+			}
+			default:
+				_resolutionWidth = 1280;
+				_resolutionHeight = 720;
+				break;
+			}
+
+			json settings;
+			settings["Resolution"] = { _resolutionWidth, _resolutionHeight };
+			settings["Fullscreen"] = _useFullscreen;
+			settings["MusicVol"] = _musicVol;
+			settings["SoundVol"] = _soundVol;
+
+			std::ofstream outFile("Resources/Settings.json");
+			outFile << std::setw(4) << settings << std::endl;
+			outFile.close();
+
+#if !EDIT_MODE
+			_swapChain->SetFullscreenState(_useFullscreen, NULL); // Toggle fullscreen
+#endif
 		}
 		if (ImGui::Button("Back"))
 		{
