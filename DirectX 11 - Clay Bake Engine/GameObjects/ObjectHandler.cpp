@@ -1,5 +1,7 @@
 #include "ObjectHandler.h"
 #include "../ErrorLogger.h"
+#include <DirectXCollision.h>
+#include "Components/AABB.h"
 
 ObjectHandler::ObjectHandler()
 {
@@ -10,33 +12,6 @@ ObjectHandler::~ObjectHandler()
 {
 	ClearLoadedTextures();
 }
-
-/*void ObjectHandler::CreateGameObject(std::string name, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 scale, float rotation, bool hasPhysics)
-{
-	GameObject* tempObject = new GameObject(0);
-	tempObject->AddComponent(new Appearance);
-	tempObject->AddTransform(new Transform);
-
-	// Set transformation values
-	tempObject->GetTransform()->SetPosition(position);
-	tempObject->GetTransform()->SetScale(scale);
-	tempObject->GetTransform()->SetRotation(rotation);
-
-	// Set appearance values
-	tempObject->GetAppearance()->SetTexture(GetLoadedTexture(textureName));
-	tempObject->GetAppearance()->SetTexCoords(texCoords);
-	tempObject->GetAppearance()->SetAlphaMultiplier(alphaMul);
-	tempObject->GetAppearance()->SetGeometryData(GetSquareGeometry());
-
-	// Add physics if needed
-	if (hasPhysics)
-	{
-		tempObject->AddPhysics(new Physics(tempObject->GetTransform()));
-	}
-
-	// Add to map
-	RegisterObject(name, tempObject);
-}*/
 
 void ObjectHandler::Initialise(Microsoft::WRL::ComPtr<ID3D11Device> device)
 {
@@ -144,4 +119,33 @@ void ObjectHandler::SetSquareGeometry(Microsoft::WRL::ComPtr<ID3D11Buffer> verte
 	_squareGeometry.numOfIndices = numOfIndices;
 	_squareGeometry.vertexBufferOffset = vertexBufferOffset;
 	_squareGeometry.vertexBufferStride = vertexBufferStride;
+}
+
+std::vector<GameObject*> ObjectHandler::GetObjectsInArea(Vector2 position, Vector2 size)
+{
+	std::vector<GameObject*> objects;
+	DirectX::BoundingBox box1;
+	box1.Center = { position.x,position.y, 0.0f };
+	box1.Extents = { size.x, size.y, 0.0f };
+
+
+	DirectX::BoundingBox box2;
+	for (GameObject* object : GetAllObjects())
+	{
+		if (object->GetTag() != JSON_TAG_GAMEOBJECT || !object->HasCollider())
+			continue;
+
+		AABB* aabb = object->GetComponent<AABB>();
+		Vector2 checkPos = object->GetTransform()->GetPosition();
+		Vector2 checkSize = aabb->GetSize();
+		box2.Center = { checkPos.x, checkPos.y, 0.0f };
+		box2.Extents = { checkSize.x, checkSize.y, 0.0f };
+
+		if (box1.Intersects(box2))
+		{
+			objects.push_back(object);
+		}
+	}
+
+	return objects;
 }

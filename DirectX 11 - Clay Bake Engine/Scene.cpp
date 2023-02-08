@@ -266,16 +266,15 @@ void Scene::FixedUpdate(float timeStep)
 	{
 		if (!_children[i]->HasRigidbody())
 			continue;
+
 		Rigidbody* rbI = _children[i]->GetComponent<Rigidbody>();
 		for (int j = 0; j < _children.size(); j++)
 		{
-			if (!_children[j]->HasCollider())
+			if (!_children[j]->HasCollider() || _children[j]->HasRigidbody())
 				continue;
 
 			if (_children[i]->GetComponent<AABB>()->Overlaps(_children[j]->GetComponent<AABB>(), timeStep))
-			{
 				rbI->Collide(_children[j]);
-			}
 		}
 	}
 #endif

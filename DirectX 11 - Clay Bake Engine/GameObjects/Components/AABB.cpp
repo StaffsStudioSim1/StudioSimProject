@@ -25,7 +25,7 @@ bool AABB::Overlaps(AABB* collider, float deltaTime)
 	me.Center.z = 0.0f;
 	me.Extents.x = _width / 2;
 	me.Extents.y = _height / 2;
-	me.Extents.z = 0.5f;
+	me.Extents.z = 0.0f;
 
 	DirectX::BoundingBox other;
 	other.Center.x = collider->GetGameObject()->GetTransform()->GetPosition().x;
@@ -33,7 +33,7 @@ bool AABB::Overlaps(AABB* collider, float deltaTime)
 	other.Center.z = 0.0f;
 	other.Extents.x = collider->_width / 2;
 	other.Extents.y = collider->_height / 2;
-	other.Extents.z = 0.5f;
+	other.Extents.z = 0.0f;
 
 	return me.Intersects(other);
 }

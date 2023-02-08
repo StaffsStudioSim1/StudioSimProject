@@ -23,7 +23,6 @@ void SceneManager::LoadScene(std::string filePath)
 		delete _newScene;
 	_shouldSceneChange = true;
 	_newScene = new Scene(filePath, _width, _height);
-
 }
 
 bool SceneManager::ShouldSceneChange()
