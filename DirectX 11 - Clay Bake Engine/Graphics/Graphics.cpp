@@ -386,7 +386,7 @@ void Graphics::RenderFrame(Scene* scene)
 	//CREATE FRAME
 	ImGui::NewFrame();
 	//UI WINDOWS
-	if (SceneManager::GetInstance().GetCurrentSceneID() == 0)
+	if (SceneManager::GetInstance().GetCurrentSceneID() == 0 && ObjectHandler::GetInstance().IsMainMainUIEnabled())
 	{
 		const char* playButton = "Resources/Sprites/PlayButton.dds";
 		const char* optionsButton = "Resources/Sprites/OptionsButton.dds";
@@ -411,11 +411,13 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::ImageButton(levelSelect, levelSelectText.texture, size))
 		{
-			ObjectHandler::GetInstance().SetLevelSelect(true);
+			ObjectHandler::GetInstance().EnableLevelSelectUI(true);
+			ObjectHandler::GetInstance().EnableMainMenuUI(false);
 		}
 		if (ImGui::ImageButton(optionsButton, optionsButtonText.texture, size))
 		{
-			ObjectHandler::GetInstance().SetOptionsMenu(true);
+			ObjectHandler::GetInstance().EnableOptionsMenuUI(true);
+			ObjectHandler::GetInstance().EnableMainMenuUI(false);
 		}
 		if (ImGui::ImageButton(exitButton, exitButtonText.texture, size))
 		{
@@ -426,25 +428,25 @@ void Graphics::RenderFrame(Scene* scene)
 	}
 
 
-	if (ObjectHandler::GetInstance().IsLevelSelect())
+	if (ObjectHandler::GetInstance().IsLevelSelectUIEnabled())
 	{
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
 		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
 		ImGui::Begin("Level Select", NULL, window_flags);
 		if (ImGui::Button("Demo"))
 		{
-			ObjectHandler::GetInstance().SetLevelSelect(false);
+			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/demo.json");
 		}
 		if (ImGui::Button("Back"))
 		{
-			ObjectHandler::GetInstance().SetLevelSelect(false);
+			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
+			ObjectHandler::GetInstance().EnableMainMenuUI(true);
 		}
 		ImGui::End();
-
 	}
 
-	if (ObjectHandler::GetInstance().IsOptionsMenu())
+	if (ObjectHandler::GetInstance().IsOptionsMenuUIEnabled())
 	{
 		std::vector<std::string> resolution = { "1280x720","1600x900","1920x1080" };
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
@@ -469,7 +471,8 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::Button("Back"))
 		{
-			ObjectHandler::GetInstance().SetOptionsMenu(false);
+			ObjectHandler::GetInstance().EnableOptionsMenuUI(false);
+			ObjectHandler::GetInstance().EnableMainMenuUI(true);
 		}
 		ImGui::End();
 

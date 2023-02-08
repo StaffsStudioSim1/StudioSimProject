@@ -41,14 +41,17 @@ public:
 	PhysicsWorld* GetPhysicsWorld() { return _pPhysicsWorld; }
 	void SetPhysicsWorld(PhysicsWorld* physics) { _pPhysicsWorld = physics; }
 
-	bool IsLevelSelect() { return _levelSelect; }
-	void SetLevelSelect(bool levelSelect) { _levelSelect = levelSelect; }
+	bool IsMainMainUIEnabled() { return _mainMenuUI; }
+	void EnableMainMenuUI(bool showUI) { _mainMenuUI = showUI; }
 
-	bool IsOptionsMenu() { return _optionsMenu; }
-	void SetOptionsMenu(bool optionsMenu) { _optionsMenu = optionsMenu; }
+	bool IsLevelSelectUIEnabled() { return _levelSelectUI; }
+	void EnableLevelSelectUI(bool showUI) { _levelSelectUI = showUI; }
 
-	bool IsPauseMenu() { return _pauseMenu; }
-	void SetPauseMenu(bool pauseMenu) { _pauseMenu = pauseMenu; }
+	bool IsOptionsMenuUIEnabled() { return _optionsMenuUI; }
+	void EnableOptionsMenuUI(bool showUI) { _optionsMenuUI = showUI; }
+
+	bool IsPauseMenuUIEnabled() { return _pauseMenuUI; }
+	void EnablePauseMenuUI(bool showUI) { _pauseMenuUI = showUI; }
 private:
 	ObjectHandler();
 	~ObjectHandler();
@@ -56,10 +59,10 @@ private:
 	bool _initialised = false;
 	int _objectID = 0;
 
-	bool _mainMenu = true;
-	bool _levelSelect = false;
-	bool _optionsMenu = false;
-	bool _pauseMenu = false;
+	bool _mainMenuUI = true;
+	bool _levelSelectUI = false;
+	bool _optionsMenuUI = false;
+	bool _pauseMenuUI = false;
 
 	Microsoft::WRL::ComPtr <ID3D11Device>	_device;
 
