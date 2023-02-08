@@ -386,7 +386,7 @@ void Graphics::RenderFrame(Scene* scene)
 	//CREATE FRAME
 	ImGui::NewFrame();
 	//UI WINDOWS
-	if (SceneManager::GetInstance().GetCurrentSceneID() == 0 && ObjectHandler::GetInstance().IsMainMainUIEnabled())
+	if (SceneManager::GetInstance().GetCurrentSceneID() == 0 && ObjectHandler::GetInstance().IsMainMainUIEnabled()) // Main menu UI
 	{
 		const char* playButton = "Resources/Sprites/PlayButton.dds";
 		const char* optionsButton = "Resources/Sprites/OptionsButton.dds";
@@ -427,8 +427,7 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::End();
 	}
 
-
-	if (ObjectHandler::GetInstance().IsLevelSelectUIEnabled())
+	if (ObjectHandler::GetInstance().IsLevelSelectUIEnabled()) // Level select UI
 	{
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
 		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
@@ -446,7 +445,38 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::End();
 	}
 
-	if (ObjectHandler::GetInstance().IsOptionsMenuUIEnabled())
+	if (ObjectHandler::GetInstance().IsPauseMenuUIEnabled()) // Pause menu UI
+	{
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
+		ImGui::Begin("PauseMenu", NULL, window_flags);
+		if (ImGui::Button("Resume"))
+		{
+			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
+			// Code to unpause of the game here or somewhere else
+		}
+		if (ImGui::Button("Reset"))
+		{
+			SceneManager::GetInstance().LoadScene(SceneManager::GetInstance().GetCurrentSceneFilePath());
+		}
+		if (ImGui::Button("Options"))
+		{
+			ObjectHandler::GetInstance().EnableOptionsMenuUI(true);
+			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
+		}
+		if (ImGui::Button("Main Menu"))
+		{
+			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
+			SceneManager::GetInstance().LoadScene("Resources/MainMenu.json");
+		}
+		if (ImGui::Button("Exit"))
+		{
+			exit(0);
+		}
+		ImGui::End();
+	}
+
+	if (ObjectHandler::GetInstance().IsOptionsMenuUIEnabled()) // Options UI
 	{
 		std::vector<std::string> resolution = { "1280x720","1600x900","1920x1080" };
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
@@ -472,10 +502,12 @@ void Graphics::RenderFrame(Scene* scene)
 		if (ImGui::Button("Back"))
 		{
 			ObjectHandler::GetInstance().EnableOptionsMenuUI(false);
-			ObjectHandler::GetInstance().EnableMainMenuUI(true);
+			if (SceneManager::GetInstance().GetCurrentSceneID() == 0)
+				ObjectHandler::GetInstance().EnableMainMenuUI(true);
+			else
+				ObjectHandler::GetInstance().EnablePauseMenuUI(true);
 		}
 		ImGui::End();
-
 	}
 #if EDIT_MODE
 	static bool linkScaling = true;
@@ -484,6 +516,13 @@ void Graphics::RenderFrame(Scene* scene)
 	const char* boxBodyChoices[] = { "Static", "Kinematic", "Dynamic" };
 	
 	ImGui::Begin("Inspector");
+	if (SceneManager::GetInstance().GetCurrentSceneID() != 0)
+	{
+		if (ImGui::Button("Pause Toggle"))
+		{
+			ObjectHandler::GetInstance().EnablePauseMenuUI(!ObjectHandler::GetInstance().IsPauseMenuUIEnabled());
+		}
+	}
 	if (ImGui::TreeNode("Game Objects"))
 	{
 		int loopNum = 0;

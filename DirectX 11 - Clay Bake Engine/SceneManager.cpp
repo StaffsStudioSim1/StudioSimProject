@@ -17,7 +17,7 @@ void SceneManager::LoadScene(std::string filePath)
 		delete _newScene;
 	_shouldSceneChange = true;
 	_newScene = new Scene(filePath);
-
+	_currentSceneFilePath = filePath;
 }
 
 bool SceneManager::ShouldSceneChange()
@@ -35,4 +35,9 @@ Scene* SceneManager::ReadScene()
 int SceneManager::GetCurrentSceneID()
 {
 	return _currentSceneID;
+}
+
+std::string SceneManager::GetCurrentSceneFilePath()
+{
+	return _currentSceneFilePath;
 }
