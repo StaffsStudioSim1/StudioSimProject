@@ -485,33 +485,52 @@ void Graphics::RenderFrame(Scene* scene)
 
 	if (ObjectHandler::GetInstance().IsPauseMenuUIEnabled()) // Pause menu UI
 	{
+		const char* resumeButton = "Resources/Sprites/ResumeButton.dds";
+		const char* resetButton = "Resources/Sprites/ResetButton.dds";
+		const char* pOptionsButton = "Resources/Sprites/PauseOptionsButton.dds";
+		const char* mainMenuButton = "Resources/Sprites/MainMenuButton.dds";
+		const char* exitGameButton = "Resources/Sprites/ExitGameButton.dds";
+
+		TextureInfo resumeButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(resumeButton);
+		TextureInfo resetButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(resetButton);
+		TextureInfo pOptionsButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(pOptionsButton);
+		TextureInfo menuButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(mainMenuButton);
+		TextureInfo exitGameButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitGameButton);
+
+		ImVec2 size = ImVec2(resumeButtonText.width * 2 * (float)(_windowWidth / 1280.0f), resumeButtonText.height * 2 * (float)(_windowHeight / 720.0f));
+
+
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
 		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
 		ImGui::Begin("PauseMenu", NULL, window_flags);
-		if (ImGui::Button("Resume"))
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.55f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
+		if (ImGui::ImageButton(resumeButton, resumeButtonText.texture, size))
 		{
 			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
 			// Code to unpause of the game here or somewhere else
 		}
-		if (ImGui::Button("Reset"))
+		if (ImGui::ImageButton(resetButton, resetButtonText.texture, size))
 		{
 			SceneManager::GetInstance().LoadScene(SceneManager::GetInstance().GetCurrentSceneFilePath());
 		}
-		if (ImGui::Button("Options"))
+		if (ImGui::ImageButton(pOptionsButton, pOptionsButtonText.texture, size))
 		{
 			LoadSettingsFromFile();
 			ObjectHandler::GetInstance().EnableOptionsMenuUI(true);
 			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
 		}
-		if (ImGui::Button("Main Menu"))
+		if (ImGui::ImageButton(mainMenuButton, menuButtonText.texture, size))
 		{
 			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/MainMenu.json");
 		}
-		if (ImGui::Button("Exit"))
+		if (ImGui::ImageButton(exitGameButton, exitGameButtonText.texture, size))
 		{
 			exit(0);
 		}
+		ImGui::PopStyleColor(3);
 		ImGui::End();
 	}
 
