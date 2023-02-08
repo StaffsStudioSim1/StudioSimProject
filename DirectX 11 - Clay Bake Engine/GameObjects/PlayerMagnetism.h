@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.h"
+#include "Components/Component.h"
 #include "../Physics/Vectors.h"
 #include "MagnetismObject.h"
 //#include "../Input/PlayerInput.h"
@@ -28,14 +28,14 @@ public:
 
     bool m_magnetActive;
     
-    Vector2* m_boxSize;    
-    Vector2* m_handOffest;
+    Vector2 m_boxSize;    
+    Vector2 m_handOffest;
 
     MagnetDirection m_magnetDirection;
 private:
 
-    Vector2* m_currentHandOffset;
-    Vector2* m_factingVector = new Vector2(1,1);
+    Vector2 m_currentHandOffset;
+    Vector2 m_factingVector = Vector2(1,1);
     
 };
 

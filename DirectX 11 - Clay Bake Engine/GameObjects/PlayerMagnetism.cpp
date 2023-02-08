@@ -1,26 +1,34 @@
 #include "PlayerMagnetism.h"
+#include "ObjectHandler.h"
 
 void PlayerMagnetism::Start()
 {
 	m_magnetActive = false;
-	m_handOffest = new Vector2();
+	m_handOffest =  Vector2();
 	m_currentHandOffset = m_handOffest;
-	m_boxSize = new Vector2();
+	m_boxSize =  Vector2();
 
 }
 
 void PlayerMagnetism::Stop()
 {
-	delete m_currentHandOffset;
-	delete m_factingVector;
-	delete m_boxSize;
-	delete m_handOffest;
+	
 }
 
 void PlayerMagnetism::FixedUpdate(float timeStep)
 {
 	if (m_magnetActive)
 	{
+		
+		std::vector<GameObject*> inFeild = ObjectHandler::GetInstance().GetObjectsInArea(_gameObject->GetTransform()->GetPosition() + m_currentHandOffset, Vector2(20,20));
+
+		for (GameObject* object : inFeild)
+		{
+			if (object->GetComponent<MagnetismObject>() != nullptr)
+			{
+				object->GetComponent<MagnetismObject>()->isBeingMagnetised(_gameObject->GetTransform()->GetPosition(), m_magnetDirection, object->GetComponent<PlayerController>());
+			}
+		}
 
 		//TODO
 		//Pysiics Cheack area to find colliders
@@ -37,13 +45,13 @@ void PlayerMagnetism::ChangeDirection(PlayerDirection direction)
 	{
 	case Left:
 		//change facing vector x to  -1
-		m_factingVector->x = -1;
+		m_factingVector.x = -1;
 		//Current hand ofsett to - of handOffset
-		m_currentHandOffset = new Vector2(-m_handOffest->x,-m_handOffest->y);
+		m_currentHandOffset = Vector2(-m_handOffest.x,-m_handOffest.y);
 		break;
 	case Right:
 		//Change facting vector x to 1
-		m_factingVector->x = 1;
+		m_factingVector.x = 1;
 		//Current hand offset to handOffset
 		m_currentHandOffset = m_handOffest;
 		break;
