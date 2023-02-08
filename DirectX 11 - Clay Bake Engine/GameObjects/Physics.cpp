@@ -136,7 +136,6 @@ int Physics::GetNumberOfObjectsInArea(Vector2 position, Vector2 areaScale)
 std::vector<int> Physics::GetObjectsInAreaByID(Vector2 position, Vector2 areaScale)
 {
 	std::vector<int> outputBodyArray;
-	int currentnumberOfObjects = 0;
 	DirectX::BoundingBox box1;
 	box1.Extents = { areaScale.x, areaScale.y, 0.0f }; // areaPojection
 	box1.Center = { position.x,position.y, 0.0f };//projected point
@@ -155,8 +154,6 @@ std::vector<int> Physics::GetObjectsInAreaByID(Vector2 position, Vector2 areaSca
 			{
 
 				outputBodyArray.push_back(object->GetID());
-				currentnumberOfObjects += 1;
-
 			}
 		}
 	}
