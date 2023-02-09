@@ -40,6 +40,15 @@ void PressurePlateComponent::WeightReleased()
 	m_WeighedDown = false;
 }
 
+json PressurePlateComponent::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "PressurePlate";
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(interactableLink);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_linkedObjectName);
+	return me;
+}
+
 void PressurePlateComponent::Update()
 {
 	

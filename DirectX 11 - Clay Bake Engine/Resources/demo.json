@@ -1,5 +1,5 @@
 {
-    "backgroundImage": "Resources/Sprites/EwanLevel.dds",
+    "backgroundImage": "Resources/Sprites/ZoeLevel.dds",
     "gameObjects": [
         {
             "components": [
@@ -34,7 +34,7 @@
                     "class": "Rigidbody"
                 }
             ],
-            "name": "Player Blue [114]",
+            "name": "Player Blue [130]",
             "position": [
                 27.0,
                 -81.0,
@@ -48,47 +48,228 @@
             "tag": "GameObject"
         },
         {
-          "components": [
-            {
-              "class": "Appearance",
-              "constructors": [
-                "Resources/Sprites/Box.dds",
-                1.0,
-                1.0,
-                0.0,
-                0.0,
-                1.0
-              ]
-            },
-            {
-              "class": "MagnetBox"
-            },
-            {
-              "class": "AABB",
-              "constructors": [
-                18.0,
-                18.0
-              ]
-            },
-            {
-              "class": "Rigidbody"
-            }
-          ],
-            "name": "MagnetBox",
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player2.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        2
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Red [131]",
             "position": [
-                153.0,
+                81.0,
                 -81.0,
                 0.0
             ],
             "rotation": 0.0,
-          "scale": [
-            1.0,
-            1.0
-          ],
-
+            "scale": [
+                1.75,
+                1.75
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Door.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "DoorComponent"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        16.0,
+                        32.0
+                    ]
+                }
+            ],
+            "name": "Door [132]",
+            "position": [
+                99.0,
+                106.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/PressurePlate.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        5.0
+                    ]
+                }
+            ],
+            "name": "Pressure Plate [133]",
+            "position": [
+                171.0,
+                81.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Lever.dds",
+                        3.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "LeverComponent",
+                    "constructors": [
+                        0,
+                        ""
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        5.0
+                    ]
+                }
+            ],
+            "name": "Lever [134]",
+            "position": [
+                189.0,
+                81.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Gold Goal.dds",
+                        1.0,
+                        6.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "Goal",
+                    "constructors": [
+                        ""
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        36.0,
+                        36.0
+                    ]
+                }
+            ],
+            "name": "Goal [135]",
+            "position": [
+                207.0,
+                81.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                0.25,
+                0.25
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Box.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ],
+            "name": "Box [136]",
+            "position": [
+                63.0,
+                99.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
             "tag": "GameObject"
         }
     ],
     "sceneID": 99,
-    "stageCollision": "111111111111111111111111111111111111100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000111111000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001111111111111111111111111111111111111"
+    "stageCollision": "111111111111111111111111111111111111100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000111111000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000111000001100000000000000000111111100000000001100000000000000000100000000000000001100000000000000000100000000000000001100000000000000000100001000000000001100000000000000000100001000000000001111111111111111111111111111111111111"
 }
