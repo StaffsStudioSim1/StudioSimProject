@@ -52,16 +52,16 @@ unsigned char KeyboardClass::ReadChar()
 	}
 }
 
-void KeyboardClass::OnKeyPressed(const unsigned char key)
+void KeyboardClass::OnKeyPressed(const unsigned int scanCode)
 {
-	this->keyStates[OemKeyScan(key) & 0x0ff] = true;
-	this->keyBuffer.push(KeyboardEvent(KeyboardEvent::EventType::Press, key));
+	this->keyStates[scanCode] = true;
+	//this->keyBuffer.push(KeyboardEvent(KeyboardEvent::EventType::Press, key));
 }
 
-void KeyboardClass::OnKeyReleased(const unsigned char key)
+void KeyboardClass::OnKeyReleased(const unsigned int scanCode)
 {
-	this->keyStates[OemKeyScan(key) & 0x0ff] = false;
-	this->keyBuffer.push(KeyboardEvent(KeyboardEvent::EventType::Release, key));
+	this->keyStates[scanCode] = false;
+	//this->keyBuffer.push(KeyboardEvent(KeyboardEvent::EventType::Release, key));
 }
 
 void KeyboardClass::OnChar(const unsigned char key)
