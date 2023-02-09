@@ -116,7 +116,7 @@ Scene::Scene(std::string filePath, int width, int height)
 					Vector2 worldPos = GridToWorld(Vector2(x, y));
 					tempJson[JSON_GO_POSITION].push_back(worldPos.x);
 					tempJson[JSON_GO_POSITION].push_back(worldPos.y);
-					tempJson[JSON_GO_POSITION].push_back((float)_prefabNum / 10.0f);
+					tempJson[JSON_GO_POSITION].push_back((float)_prefabNum / 100.0f);
 					GameObject* tempObj = new GameObject(tempJson);
 					_children.push_back(tempObj);
 				}
