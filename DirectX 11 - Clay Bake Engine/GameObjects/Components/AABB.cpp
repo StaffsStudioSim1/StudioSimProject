@@ -2,10 +2,11 @@
 #include "Rigidbody.h"
 #include "../GameObject.h"
 
-AABB::AABB(float width, float height)
+AABB::AABB(float width, float height, bool trigger)
 {
 	_width = width;
 	_height = height;
+	_trigger = trigger;
 
 #if DEBUG
 	_debugGeo = ObjectHandler::GetInstance().GetSquareGeometry();
@@ -25,6 +26,9 @@ json AABB::Write()
 bool AABB::Overlaps(AABB* collider, float deltaTime)
 {
 	if (!_active || !collider->_active)
+		return false;
+
+	if (IsTrigger() || collider->IsTrigger())
 		return false;
 
 	DirectX::BoundingBox me;

@@ -742,7 +742,7 @@ void Graphics::RenderFrame(Scene* scene)
 	}
 #if EDIT_MODE
 	static bool linkScaling = true;
-	char fileName[30]; // For saving the file
+	char fileName[40]; // For saving the file
 	strcpy_s(fileName, scene->GetFilePath().c_str());
 	const char* boxBodyChoices[] = { "Static", "Kinematic", "Dynamic" };
 	
@@ -769,7 +769,7 @@ void Graphics::RenderFrame(Scene* scene)
 			if (ImGui::TreeNode(object->GetName().c_str()))
 			{
 				std::string name = object->GetName();
-				char nameChar[20];
+				char nameChar[40];
 				strcpy_s(nameChar, name.c_str());
 
 				float position[2] = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y };
@@ -800,7 +800,7 @@ void Graphics::RenderFrame(Scene* scene)
 
 				ImGui::PushItemWidth(250); // Sets the pixel width of the input boxes
 
-				if (ImGui::InputText("Name", nameChar, 20, ImGuiInputTextFlags_EnterReturnsTrue))
+				if (ImGui::InputText("Name", nameChar, 40, ImGuiInputTextFlags_EnterReturnsTrue))
 				{
 					object->SetName(nameChar);
 				}
@@ -847,7 +847,7 @@ void Graphics::RenderFrame(Scene* scene)
 	}
 	ImGui::PushItemWidth(200);
 
-	if(ImGui::InputText("File Name", fileName, 30))
+	if(ImGui::InputText("File Name", fileName, 40))
 		scene->SetFileName(fileName);
 
 

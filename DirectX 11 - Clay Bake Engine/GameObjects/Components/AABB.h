@@ -11,24 +11,26 @@
 #endif
 
 class AABB :
-    public Component
+	public Component
 {
 public:
-    AABB(float width, float height);
+	AABB(float width, float height, bool trigger = false);
 
-    json Write();
+	json Write();
 
-    bool Overlaps(AABB* collider, float deltaTime);
-    Vector2 GetSize();
+	bool Overlaps(AABB* collider, float deltaTime);
+	Vector2 GetSize();
+	bool IsTrigger() { return _trigger; }
 
-    void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
+	void Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer);
 private:
-    float _width;
-    float _height;
+	float _width;
+	float _height;
+	bool _trigger;
 
 #if DEBUG
-    Geometry _debugGeo;
-    TextureInfo _debugTex;
+	Geometry _debugGeo;
+	TextureInfo _debugTex;
 #endif
 };
 
