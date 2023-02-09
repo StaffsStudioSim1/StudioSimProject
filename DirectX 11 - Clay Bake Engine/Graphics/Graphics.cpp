@@ -374,16 +374,17 @@ bool Graphics::InitializeScene()
 void Graphics::ResizeWindow()
 {
 	// Update window size
-	int centreOfScreenX = GetSystemMetrics(SM_CXSCREEN) / 2 - _resolutionWidth;
-	int centreOfScreenY = GetSystemMetrics(SM_CYSCREEN) / 2 - _resolutionHeight;
+	MONITORINFO mi = { sizeof(mi) };
+	GetMonitorInfo(MonitorFromWindow(GetActiveWindow(), MONITOR_DEFAULTTONEAREST), &mi);
+	UINT monitorX = mi.rcMonitor.right - mi.rcMonitor.left;
+	UINT monitorY = mi.rcMonitor.bottom - mi.rcMonitor.top;
+
+	int centreOfScreenX = mi.rcMonitor.left + (monitorX / 2 - _resolutionWidth / 2);
+	int centreOfScreenY = mi.rcMonitor.top + (monitorY / 2 - _resolutionHeight / 2);
+
 	RECT rc = { (LONG)centreOfScreenX, (LONG)centreOfScreenY, (LONG)centreOfScreenX + (LONG)_resolutionWidth, (LONG)centreOfScreenY + (LONG)_resolutionHeight };
 	AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
 	SetWindowPos(GetActiveWindow(), NULL, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
-	
-	POINT pt;
-	pt.x = centreOfScreenX;
-	pt.y = centreOfScreenY;
-	ClientToScreen(GetActiveWindow(), &pt);
 
 	// Destroy and recreate graphics buffers
 	_deviceContext->OMSetRenderTargets(0, 0, 0);
