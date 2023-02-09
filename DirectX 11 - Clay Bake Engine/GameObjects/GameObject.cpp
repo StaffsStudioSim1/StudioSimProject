@@ -7,6 +7,7 @@
 #include "Components/ButtonComponent.h"
 #include "Components/Appearance.h"
 #include "Components/PressurePlateComponent.h"
+#include "Components/Goal.h"
 #include "PlayerController.h"
 #include "../Input/PlayerInput.h"
 #include "GameManager.h"
@@ -72,16 +73,23 @@ GameObject::GameObject(json objectJson)
 
 			component = new LeverComponent((Interactable::InteractableLink)switchType, linkedObject);
 		}
+		else if (type == "PressurePlateComponent")
+		{
+			int switchType = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+			std::string linkedObject = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
+
+			component = new PressurePlateComponent((Interactable::InteractableLink)switchType, linkedObject);
+		}
 		else if (type == "DoorComponent")
 		{
 			component = new DoorComponent();
 		}
-		//else if (type == "Interactable")
-		//{
-		//	int switchType = 0;
-		//	std::string linkedObject = "";
-		//	component = new Interactable();
-		//}
+		else if (type == "Goal")
+		{
+			std::string levelName = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+
+			component = new Goal(levelName);
+		}
 		else if (type == "ButtonComponent")
 		{
 			int switchType = 0;

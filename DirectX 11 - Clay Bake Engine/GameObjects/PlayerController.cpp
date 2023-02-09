@@ -222,8 +222,6 @@ void PlayerController::MagnetReleased()
 void PlayerController::PausePressed()
 {
 	//TODO: Link to Ewan's game manager class
-	//GameManager::Pause;
-	//GameManager::UnPause;
 	_gameManager->Pause();
 }
 
