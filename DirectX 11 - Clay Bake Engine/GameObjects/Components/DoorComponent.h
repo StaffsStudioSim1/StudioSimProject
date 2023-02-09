@@ -1,5 +1,7 @@
 #pragma once
 #include "Interactable.h"
+#include "AABB.h"
+
 
 class DoorComponent : public Component
 {

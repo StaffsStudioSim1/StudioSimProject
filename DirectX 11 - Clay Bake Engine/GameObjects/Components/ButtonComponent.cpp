@@ -6,6 +6,7 @@ void ButtonComponent::Start()
 	Interactable::Start();
 	m_Active= false; //set state to off on start
 	m_Timer = 0;
+	m_TimeLimit = 100;
 }
 
 ButtonComponent::ButtonComponent(InteractableLink switchType, std::string linkedObjectName) : Interactable(switchType, linkedObjectName)
@@ -17,13 +18,6 @@ ButtonComponent::ButtonComponent(InteractableLink switchType, std::string linked
 		linkedObject = ObjectHandler::GetInstance().FindGameObject(linkedObjectName);
 	}
 }
-//ButtonComponent(InteractableLink switchType, std::string linkedObject, float timeLimit)
-//{
-//	interactableLink = switchType;
-//	linkedObjectName = linkedObject;
-//
-//	m_TimeLimit = timeLimit;
-//}
 
 void ButtonComponent::Interact()
 {
@@ -32,8 +26,16 @@ void ButtonComponent::Interact()
 	SendSignal();
 }
 
-void Update()
+void ButtonComponent::Update()
 {
-	//increase timer if button pressed
-	//resend signal when time elapsed and reset
+	if (m_Active)
+	{
+		m_Timer += 1;
+	}
+
+	if (m_Timer >= m_TimeLimit)
+	{
+		SendSignal();
+		m_Active = false;
+	}
 }

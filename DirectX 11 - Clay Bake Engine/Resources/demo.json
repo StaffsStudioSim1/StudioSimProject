@@ -1,5 +1,5 @@
 {
-    "backgroundImage": "Resources/Textures/ZoeLevel.dds",
+    "backgroundImage": "Resources/Sprites/EwanLevel.dds",
     "gameObjects": [
         {
             "components": [
@@ -31,59 +31,16 @@
                     "class": "Rigidbody"
                 }
             ],
-            "name": "Player Blue [116]",
+            "name": "Player Blue [114]",
             "position": [
-                63.0,
+                27.0,
                 -81.0,
                 0.0
             ],
             "rotation": 0.0,
             "scale": [
-                1.0,
-                1.0
-            ],
-            "tag": "GameObject"
-        },
-        {
-            "components": [
-                {
-                    "class": "Appearance",
-                    "constructors": [
-                        "Resources/Sprites/Player2.dds",
-                        6.0,
-                        8.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "class": "PlayerController",
-                    "constructors": [
-                        2
-                    ]
-                },
-                {
-                    "class": "AABB",
-                    "constructors": [
-                        11.0,
-                        16.0
-                    ]
-                },
-                {
-                    "class": "Rigidbody"
-                }
-            ],
-            "name": "Player Red [117]",
-            "position": [
-                153.0,
-                -81.0,
-                0.0
-            ],
-            "rotation": 0.0,
-            "scale": [
-                1.0,
-                1.0
+                1.75,
+                1.75
             ],
             "tag": "GameObject"
         }
