@@ -2,7 +2,7 @@
 #include "Components/Component.h"
 #include "../Physics/Vectors.h"
 #include "MagnetismObject.h"
-//#include "../Input/PlayerInput.h"
+#include "PlayerController.h"
 
 
 class PlayerMagnetism :

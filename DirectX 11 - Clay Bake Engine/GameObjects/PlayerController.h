@@ -6,6 +6,9 @@
 #include "../Audio/SoundEffect.h"
 #include "GameObject.h"
 #include "GameManager.h"
+//#include "PlayerMagnetism.h"
+
+class PlayerMagnetism;
 
 enum FacingDirection
 {
@@ -34,6 +37,7 @@ private:
     Rigidbody* _rigidbody;
     SoundEffect* _jumpSoundEffect;
     SoundEffect* _moveSoundEffect;
+    PlayerMagnetism* _magnet;
 
     int _playerID;
     float _moveSpeed = 100.0f;

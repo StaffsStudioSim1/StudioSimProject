@@ -20,8 +20,12 @@
 					"constructors" : [10.0, 10.0]
 				},
 				{
-					"class" : "PlayerController",
-					"constructors" : [1]
+					"class": "PlayerController",
+					"constructors": [ 1 ]
+				},
+				{
+					"class": "PlayerMagnetism"
+
 				}
 			]
 		},

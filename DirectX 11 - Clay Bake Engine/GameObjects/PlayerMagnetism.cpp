@@ -7,7 +7,8 @@ void PlayerMagnetism::Start()
 	m_handOffest =  Vector2();
 	m_currentHandOffset = m_handOffest;
 	m_boxSize =  Vector2();
-
+	m_magnetDirection = MagnetDirection::PullTowards;
+	m_factingVector = Vector2(1, 1);
 }
 
 void PlayerMagnetism::Stop()

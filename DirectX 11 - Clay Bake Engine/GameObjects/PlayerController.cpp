@@ -1,4 +1,5 @@
 #include "PlayerController.h"
+#include "PlayerMagnetism.h"
 
 PlayerController::PlayerController(int id)
 {
@@ -31,6 +32,7 @@ void PlayerController::Start()
 	_jumpSoundEffect->SetVolume(0.25f);
 	_moveSoundEffect = new SoundEffect("Resources/SoundEffects/MetalWalkNoise.wav", true);
 	_moveSoundEffect->SetVolume(0.25f);
+	_magnet = _gameObject->GetComponent<PlayerMagnetism>();
 }
 
 void PlayerController::Update(float deltaTime)
@@ -99,11 +101,13 @@ void PlayerController::FixedUpdate(float timeStep)
 	if (_currentMovement.x < 0.0f)
 	{
 		_facingDirection = Left;
+		_magnet->ChangeDirection(_facingDirection);
 		//Magnet code
 	}
 	else if (_currentMovement.x > 0.0f)
 	{
 		_facingDirection = Right;
+		_magnet->ChangeDirection(_facingDirection);
 		//Magnet code
 	}
 }
@@ -135,12 +139,12 @@ void PlayerController::InteractPressed()
 
 void PlayerController::MagnetPressed()
 {
-	//TODO: Link to Will's magnet class
+	_magnet->MagnetOn();
 }
 
 void PlayerController::MagnetReleased()
 {
-	//TODO: Link to Will's magnet class
+	_magnet->MagnetOff();
 }
 
 void PlayerController::PausePressed()
