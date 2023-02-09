@@ -23,14 +23,29 @@ void GameManager::LevelWin()
 {
 	//what the game does when win condition is met
 	//load win screen
-	//save level progress
 	SceneManager::GetInstance().LoadScene("Resources/WinScreen.json");
+	//save level progress
+	ifstream file;
+	file.open("Resources/SaveFiles/LevelSaves.txt");
+	{
+		ofstream fw("Resources/SaveFiles/LevelSaves.txt", ofstream::out);
+		if (fw.is_open())
+		{
+			for (int i = 0; i < levelList.size(); i++)
+			{
+				fw << Levels[i] << "\n";
+			}
+			fw.close();
+		}
+	}
 }
 
 void GameManager::LevelLose()
 {
+	//not really any lose conditions tho
 	//what game does when loss condition is met
 	//load lose screen
+	SceneManager::GetInstance().LoadScene("Resources/LoseScreen.json");
 }
 
 void GameManager::LevelReset()
@@ -49,6 +64,7 @@ void GameManager::Pause()
 	//set time to 0 - pause time
 	//freeze all input
 	//bring up pause menu
+	SceneManager::GetInstance().LoadScene("Resources/PauseMenu.json");
 
 }
 
@@ -58,6 +74,7 @@ void GameManager::UnPause()
 		return;
 	isPaused = false;
 	//close pause menu
+	
 	//continue time
 }
 
