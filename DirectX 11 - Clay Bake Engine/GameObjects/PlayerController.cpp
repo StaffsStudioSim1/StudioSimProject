@@ -20,13 +20,17 @@ json PlayerController::Write()
 
 void PlayerController::Start()
 {
-	int ActivePlayerCount = 0;
-
 	//Create new PlayerInput
 	_playerInput = new PlayerInput(_playerID);
 
-	//Get the player's PhysicsBody
-	_physicsBody = _gameObject->GetComponent<Physics>();
+	//Get the player's RigidBody
+	_rigidbody = _gameObject->GetComponent<Rigidbody>();
+
+	//Init SoundEffects
+	_jumpSoundEffect = new SoundEffect("Resources/Laser_Shoot3.wav");
+	_jumpSoundEffect->SetVolume(0.25f);
+	_moveSoundEffect = new SoundEffect("Resources/SoundEffects/MetalWalkNoise.wav", true);
+	_moveSoundEffect->SetVolume(0.25f);
 }
 
 void PlayerController::Update(float deltaTime)
@@ -38,10 +42,6 @@ void PlayerController::Update(float deltaTime)
 	if (_playerInput->IsActionDown(Jump))
 	{
 		JumpPressed();
-	}
-	else if (_playerInput->IsActionUp(Jump))
-	{
-		JumpReleased();
 	}
 
 	//Interact
@@ -67,53 +67,65 @@ void PlayerController::Update(float deltaTime)
 	}
 
 	//Increment jump timer
-	if (!_jumpReset)
-		_jumpTimer = deltaTime;
-	//potential functionality for the midaircontroldelay
+	if (_activeJumpTimer >= _jumpTimer)
+	{
+		_jumpReset = true;
+		_activeJumpTimer = 0.0f;
+	}
+	else
+	{
+		_activeJumpTimer += deltaTime;
+	}
 }
-
-//Need OnCollisionEnter
 
 void PlayerController::FixedUpdate(float timeStep)
 {
-	Vector2 currentVelocity = _physicsBody->GetLinearVelocity();
+	_rigidbody->SetInput(_currentMovement * _moveSpeed);
 
 	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
-		_physicsBody->ApplyForceToObj(_currentMovement * _moveSpeed, true);
+		if (!_isWalking)
+		{
+			_moveSoundEffect->Play();
+		}
+		_isWalking = true;
+	}
+	else
+	{
+		_isWalking = false;
+		_moveSoundEffect->Stop();
 	}
 
-	if (_isJumping)
+	if (_currentMovement.x < 0.0f)
 	{
-		if (currentVelocity.y < _jumpForce.y)
-		{
-			if (!isFlipped)
-			{
-				_physicsBody->ApplyForceToObj(_jumpForce, true);
-			}
-			else
-			{
-				_physicsBody->ApplyForceToObj(Vector2(0.0f, -_jumpForce.y), true);
-			}
-		}
-		else if (currentVelocity.y >= _jumpForce.y)
-		{
-			_isJumping = false;
-		}
-		_isJumping = false;
+		_facingDirection = Left;
+		//Magnet code
+	}
+	else if (_currentMovement.x > 0.0f)
+	{
+		_facingDirection = Right;
+		//Magnet code
 	}
 }
 
 
 void PlayerController::JumpPressed()
 {
-	if (_jumpReset)
-		_isJumping = true;
-}
+	if (!_jumpReset)
+		return;
 
-void PlayerController::JumpReleased()
-{
-	_isJumping = false;
+	_jumpReset = false;
+
+	if (!GameManager::GetInstance().IsGravityFlipped())
+	{
+		_rigidbody->AddForce(_jumpForce);
+	}
+	else
+	{
+		_rigidbody->AddForce(-_jumpForce);
+	}
+
+	_jumpSoundEffect->Play();
 }
 
 void PlayerController::InteractPressed()
@@ -139,4 +151,6 @@ void PlayerController::PausePressed()
 void PlayerController::Stop()
 {
 	delete _playerInput;
+	delete _jumpSoundEffect;
+	delete _moveSoundEffect;
 }

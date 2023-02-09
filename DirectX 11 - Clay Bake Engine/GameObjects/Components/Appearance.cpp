@@ -55,8 +55,53 @@ void Appearance::SetTexCoords(float numOfXFrames, float numOfYFrames, float xFra
 		0.0f, 0.0f, 0.0f, 0.0f
 	};
 	_texCoords = { width, height, x, y };
+}
 
+void Appearance::UpdateMatrix()
+{
+	_texMatrix =
+	{
+		_texCoords.x, 0.0f, 0.0f, _texCoords.z,
+		0.0f ,_texCoords.y, 0.0f, _texCoords.w,
+		0.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f
+	};
+}
 
+void Appearance::NextXFrame(bool moveLeft)
+{
+	DirectX::XMFLOAT4 texInfo = GetTexCoordFrameValues();
+
+	if (moveLeft)
+		texInfo.z += 1;
+	else
+		texInfo.z -= 1;
+
+	SetTexCoords(texInfo);
+}
+
+void Appearance::NextYFrame(bool moveDown)
+{
+	DirectX::XMFLOAT4 texInfo = GetTexCoordFrameValues();
+
+	if (moveDown)
+		texInfo.w += 1;
+	else
+		texInfo.w -= 1;
+
+	SetTexCoords(texInfo);
+}
+
+void Appearance::FlipTextureOnYAxis()
+{
+	_texCoords.z += 1;
+	UpdateMatrix();
+}
+
+void Appearance::FlipTextureOnXAxis()
+{
+	_texCoords.w += 1;
+	UpdateMatrix();
 }
 
 void Appearance::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)

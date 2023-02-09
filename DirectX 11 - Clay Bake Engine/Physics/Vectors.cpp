@@ -296,14 +296,14 @@ float Angle(const Vector3& j, const Vector3& k)
 	return acosf(Dot(j, k) / sqrtf(MagnitudeSq(j) * MagnitudeSq(k)));
 }
 
-void Normalize(Vector2& v)
+Vector2 Normalize(const Vector2& v)
 {
-	v = v * (1.0f / Magnitude(v));
+	return v * (1.0f / Magnitude(v));
 }
 
-void Normalize(Vector3& v)
+Vector3 Normalize(const Vector3& v)
 {
-	v = v * (1.0f / Magnitude(v));
+	return v * (1.0f / Magnitude(v));
 }
 
 Vector2 Normalized(const Vector2& v)

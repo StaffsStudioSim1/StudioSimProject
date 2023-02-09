@@ -125,8 +125,8 @@ float MagnitudeSq(const Vector3& v);
 float Angle(const Vector2& j, const Vector2& k);
 float Angle(const Vector3& j, const Vector3& k);
 
-void Normalize(Vector2& v);
-void Normalize(Vector3& v);
+Vector2 Normalize(const Vector2& v);
+Vector3 Normalize(const Vector3& v);
 
 Vector2 Normalized(const Vector2& v);
 Vector3 Normalized(const Vector3& v);

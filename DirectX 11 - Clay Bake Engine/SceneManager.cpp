@@ -11,12 +11,19 @@ SceneManager::~SceneManager()
 {
 }
 
+void SceneManager::Initialise(int width, int height)
+{
+	_width = width;
+	_height = height;
+}
+
 void SceneManager::LoadScene(std::string filePath)
 {
 	if (_shouldSceneChange)
 		delete _newScene;
 	_shouldSceneChange = true;
-	_newScene = new Scene(filePath);
+
+	_newScene = new Scene(filePath, _width, _height);
 	_currentSceneFilePath = filePath;
 }
 

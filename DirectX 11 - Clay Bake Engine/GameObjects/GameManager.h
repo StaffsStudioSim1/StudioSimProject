@@ -32,6 +32,7 @@ public:
     void Pause();
     void UnPause();
     void GravityFlip();
+    bool IsGravityFlipped();
     void SaveFileCheck();
     void CreateSaveFile();
 };

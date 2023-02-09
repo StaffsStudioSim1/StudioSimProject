@@ -15,6 +15,8 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	{
 		return false;
 	}
+	_width = width;
+	_height = height;
 
 	// Guarantee InputManager is initialised at this point
 	InputManager::GetInstance();
@@ -25,18 +27,13 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 	// Guarantee GameManager is initialised
 	GameManager::GetInstance();
 
-	// Physics world for data processing
-	float gravity = -9.806f;
-	b2World* boxworld = new b2World(b2Vec2(0, gravity));
-	_physicsWorld = new PhysicsWorld();
-	_physicsWorld->world = boxworld;// = *_physicsAccess->CreatePhysicsWorld(gravity);
-	ObjectHandler::GetInstance().SetPhysicsWorld(_physicsWorld);
+	SceneManager::GetInstance().Initialise(width, height);
 
 	// initialise graphics here
 
 	_initialised = true;
 #if EDIT_MODE
-	SceneManager::GetInstance().LoadScene("Resources/Demo.json");
+	SceneManager::GetInstance().LoadScene("Resources/demo.json");
 #else
 	SceneManager::GetInstance().LoadScene("Resources/MainMenu.json");
 #endif
@@ -111,17 +108,7 @@ void ClayEngine::Update()
 	if (_scene != nullptr)
 		_scene->Update(deltaTime);
 
-	// Example message for object collision
-	if (ObjectHandler::GetInstance().GetAllObjects().size() > 2)
-	{
-		if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>() && ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()) // Checks both objects have physics
-		{
-			if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()->GetPhysicsBody()))
-			{
-				OutputDebugStringA("obj 1 and 2 have collided \n");
-			}
-		}
-	}
+
 
 	dwTimeStart = dwTimeCur;
 #endif

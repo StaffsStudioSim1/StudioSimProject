@@ -7,10 +7,12 @@
 #include "Components/ButtonComponent.h"
 #include "Components/Appearance.h"
 #include "Components/PressurePlateComponent.h"
-#include "Components/Physics.h"
 #include "PlayerController.h"
 #include "../Input/PlayerInput.h"
 #include "GameManager.h"
+#include "PlayerMagnetism.h"
+#include "MovingPlatform.h"
+#include "MagnetBox.h"
 
 GameObject::GameObject(std::string name) : GameObject(name, Vector3(0.0f, 0.0f, 0.0f), Vector2(1.0f, 1.0f), 0.0f)
 {
@@ -91,33 +93,38 @@ GameObject::GameObject(json objectJson)
 			std::string linkedObject = "";
 			component = new PressurePlateComponent((Interactable::InteractableLink)switchType, linkedObject);
 		}
-		//else if (type == "GameManager")
-		//{
-		//	component = new GameManager();
-		//}
-		else if(type == "Physics")
+		else if (type == "Rigidbody")
 		{
-			PhysicsBody* body = new PhysicsBody();
-			body->bodyDef.startPos = _transform.GetPosition();
-			body->bodyDef.startingRoatation = _transform.GetRotation();
-			if (componentJson.contains(JSON_COMPONENT_CONSTRUCTORS)) // So object with no constructor info in the files don't crash
+			component = new Rigidbody();
+		}
+		else if (type == "AABB")
+		{
+			float width = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+			float height = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
+			component = new AABB(width, height);
+		}
+
+		else if (type == "MagnetBox")
+		{
+			component = new MagnetBox();
+		}
+		else if (type == "MovingPlatform")
+		{
+
+			if (componentJson.contains(JSON_COMPONENT_CONSTRUCTORS))
 			{
-				body->hitboxdef.bodyType = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
-				body->bodyDef.density = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
-				body->bodyDef.friction = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(2);
+				component = new MovingPlatform(componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(2), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(3));
 			}
 			else
 			{
-				body->hitboxdef.bodyType = Dynmaic;
-				body->bodyDef.density = 0.1f;
-				body->bodyDef.friction = 1.0f;
-			}
-			body->hitboxdef.scaleX = _transform.GetScale().x;
-			body->hitboxdef.scaleY = _transform.GetScale().y;
-			body->hitboxdef.shape = Box;
+				component = new MovingPlatform(100.0f, 0, 100.0f, 0);
 
-			PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
-			component = new Physics(body, physicsWorld);
+			}
+
+		}
+		else if (type == "PlayerMagnetism")
+		{
+			component = new PlayerMagnetism();
 		}
 
 		if (component != nullptr)
@@ -145,6 +152,7 @@ json GameObject::Write()
 {
 	json me;
 	me[JSON_GO_NAME] = _name;
+	me[JSON_GO_TAG] = _tag;
 	me[JSON_GO_POSITION] = { _transform.GetPosition().x, _transform.GetPosition().y, _transform.GetDepthPos() };
 	me[JSON_GO_ROTATION] = DirectX::XMConvertToDegrees(_transform.GetRotation());
 	me[JSON_GO_SCALE] = { _transform.GetScale().x, _transform.GetScale().y };
@@ -159,7 +167,12 @@ json GameObject::Write()
 
 void GameObject::AddComponent(Component* component)
 {
-	component->SetObject(this);
+	if (dynamic_cast<AABB*>(component))
+		_hasCollider = true;
+	else if (dynamic_cast<Rigidbody*>(component))
+		_hasRigidbody = true;
+
+	component->SetGameObject(this);
 	_components.push_back(component);
 }
 
