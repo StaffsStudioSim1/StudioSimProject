@@ -1,5 +1,6 @@
 {
     "backgroundImage": "Resources/Sprites/EwanLevel.dds",
+    "backgroundAudio": "Resources/SoundEffects/FactoryAmbience.wav"
     "gameObjects": [
         {
             "components": [

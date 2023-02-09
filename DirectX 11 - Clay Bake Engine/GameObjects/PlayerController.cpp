@@ -28,21 +28,21 @@ void PlayerController::Start()
 	//Get the player's RigidBody
 	_rigidbody = _gameObject->GetComponent<Rigidbody>();
 
-	// Get the player's transformation info
+	// Get the player's Transformation Info
 	_playerTransform = _gameObject->GetTransform();
 
 	//Get the player's Appearance
 	_playerAppearance = _gameObject->GetComponent<Appearance>();
+
+	//Get the player's Magnet Component
+	_magnet = _gameObject->GetComponent<PlayerMagnetism>();
+	_magnet->SetMagnetPushPull(_playerID);
 
 	//Init SoundEffects
 	_jumpSoundEffect = new SoundEffect("Resources/Laser_Shoot3.wav");
 	_jumpSoundEffect->SetVolume(0.25f);
 	_moveSoundEffect = new SoundEffect("Resources/SoundEffects/MetalWalkNoise.wav", true);
 	_moveSoundEffect->SetVolume(0.25f);
-	_magnet = _gameObject->GetComponent<PlayerMagnetism>();
-	
-	_magnet->SetMagnetPushPull(_playerID);
-
 }
 
 void PlayerController::Update(float deltaTime)
@@ -65,11 +65,12 @@ void PlayerController::Update(float deltaTime)
 	//Magnet
 	if (_playerInput->IsActionHeld(Magnet))
 	{
-		MagnetPressed();
+		_magnet->MagnetOn();
+		_playerState = MagnetState;
 	}
 	else if (_playerInput->IsActionUp(Magnet))
 	{
-		MagnetReleased();
+		_magnet->MagnetOff();
 	}
 
 	//Pause
@@ -102,32 +103,37 @@ void PlayerController::Update(float deltaTime)
 
 	switch (_playerState)
 	{
-	case Idle:
+	case IdleState:
 	{
 		_currentFrame = _currentFrame % 4;
 		_playerAppearance->SetTexPos(_currentFrame, 1.0f);
 	}
 	break;
-	case Walking:
+	case WalkState:
 	{
 		_currentFrame = _currentFrame % 6;
 		_playerAppearance->SetTexPos(_currentFrame, 0.0f);
 	}
 	break;
-	case Jumping:
+	case JumpState:
 	{
-		_currentFrame = _currentFrame & 1;
+		_currentFrame = _currentFrame % 1;
 		_playerAppearance->SetTexPos(0.0f, 2.0f);
 	}
 	break;
-	case Falling:
+	case FallState:
 	{
-		_currentFrame = _currentFrame & 1;
+		_currentFrame = _currentFrame % 1;
 		_playerAppearance->SetTexPos(0.0f, 3.0f);
 	}
 	break;
+	case MagnetState:
+	{
+		_currentFrame = _currentFrame % 4;
+		_playerAppearance->SetTexPos(_currentFrame, 5.0f);
 	}
-
+	break;
+	}
 }
 
 void PlayerController::FixedUpdate(float timeStep)
@@ -136,49 +142,48 @@ void PlayerController::FixedUpdate(float timeStep)
 
 	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
-		if (!_isWalking)
-		{
-			_moveSoundEffect->Play();
-		}
 		_isWalking = true;
-		_playerState = Walking;
+		_playerState = WalkState;
 	}
 	else
 	{
 		_isWalking = false;
 		_moveSoundEffect->Stop();
-		_playerState = Idle;
+		_playerState = IdleState;
 	}
+
 	if (_rigidbody->GetVelocity().y < 0.0f)
 	{
-		_playerState = Falling;
+		_playerState = FallState;
+		_moveSoundEffect->Stop();
 	}
 	else if (_rigidbody->GetVelocity().y > 0.0f)
 	{
-		_playerState = Jumping;
+		_playerState = JumpState;
+		_moveSoundEffect->Stop();
+	}
+	else if (_isWalking)
+	{
+		_moveSoundEffect->Play();
 	}
 
 	if (_currentMovement.x < 0.0f)
 	{
 		if (_facingDirection == Right)
 		{
-			//_playerAppearance->FlipTextureOnYAxis();
 			_playerTransform->FlipHorizontal(true);
-			OutputDebugStringA("Turn Left\n");
 		}
 		_facingDirection = Left;
-		_magnet->ChangeDirection(_facingDirection);		
+		_magnet->ChangeDirection(_facingDirection);
 	}
 	else if (_currentMovement.x > 0.0f)
 	{
 		if (_facingDirection == Left)
 		{
-			//_playerAppearance->FlipTextureOnYAxis();
 			_playerTransform->FlipHorizontal(false);
-			OutputDebugStringA("Turn Right\n");
 		}
 		_facingDirection = Right;
-		_magnet->ChangeDirection(_facingDirection);		
+		_magnet->ChangeDirection(_facingDirection);
 	}
 }
 
@@ -219,19 +224,35 @@ void PlayerController::InteractPressed()
 	}
 }
 
-void PlayerController::MagnetPressed()
-{
-	_magnet->MagnetOn();
-}
-
-void PlayerController::MagnetReleased()
-{
-	_magnet->MagnetOff();
-}
-
 void PlayerController::Stop()
 {
 	delete _playerInput;
 	delete _jumpSoundEffect;
 	delete _moveSoundEffect;
+}
+
+bool PlayerController::CheckForCollisionsBelowDirect()
+{
+	float yOffSet = 9.0f;
+	Vector2 payerpositionoffset = _gameObject->GetTransform()->GetPosition();
+//	std::vector<GameObject> otherlist;
+
+	if (!GameManager::GetInstance().IsGravityFlipped())
+	{
+		payerpositionoffset.y -= yOffSet;
+	}
+	else if (GameManager::GetInstance().IsGravityFlipped())
+	{
+		payerpositionoffset.y += yOffSet;
+	}
+	auto list = ObjectHandler::GetInstance().GetObjectsInArea(payerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x, 5));
+
+	for (int i = 0; i <= list.size(); i++)
+	{
+		if(list.at(i)->GetTag() == JSON_TAG_STAGECOLLISION);
+		return true;
+	}
+
+	return false;
+
 }

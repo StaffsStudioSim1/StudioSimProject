@@ -1,6 +1,6 @@
 {
+    "backgroundAudio": "Resources/SoundEffects/FactoryAmbience.wav",
     "backgroundImage": "Resources/Sprites/ZoeLevel.dds",
-	"backgroundAudio": "Resources/SoundEffects/FactoryAmbience.wav",
     "gameObjects": [
         {
             "components": [
@@ -21,14 +21,15 @@
                         1
                     ]
                 },
-              {
-                "class": "PlayerMagnetism"
-              },
+                {
+                    "class": "PlayerMagnetism"
+                },
                 {
                     "class": "AABB",
                     "constructors": [
                         11.0,
-                        16.0
+                        16.0,
+                        false
                     ]
                 },
                 {
@@ -68,17 +69,18 @@
                     ]
                 },
                 {
+                    "class": "PlayerMagnetism"
+                },
+                {
                     "class": "AABB",
                     "constructors": [
                         11.0,
-                        16.0
+                        16.0,
+                        false
                     ]
                 },
                 {
                     "class": "Rigidbody"
-                },
-                {
-                    "class": "PlayerMagnetism"
                 }
             ],
             "name": "Player Red [131]",
@@ -114,48 +116,15 @@
                     "class": "AABB",
                     "constructors": [
                         16.0,
-                        32.0
+                        32.0,
+                        false
                     ]
                 }
             ],
             "name": "Door [132]",
             "position": [
                 99.0,
-                106.0,
-                0.0
-            ],
-            "rotation": 0.0,
-            "scale": [
-                1.0,
-                1.0
-            ],
-            "tag": "GameObject"
-        },
-        {
-            "components": [
-                {
-                    "class": "Appearance",
-                    "constructors": [
-                        "Resources/Sprites/PressurePlate.dds",
-                        1.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "class": "AABB",
-                    "constructors": [
-                        18.0,
-                        5.0
-                    ]
-                }
-            ],
-            "name": "Pressure Plate [133]",
-            "position": [
-                171.0,
-                81.0,
+                -146.0,
                 0.0
             ],
             "rotation": 0.0,
@@ -181,22 +150,23 @@
                 {
                     "class": "LeverComponent",
                     "constructors": [
-                        0,
-                        ""
+                        1,
+                        "Door [132]"
                     ]
                 },
                 {
                     "class": "AABB",
                     "constructors": [
                         18.0,
-                        5.0
+                        5.0,
+                        true
                     ]
                 }
             ],
             "name": "Lever [134]",
             "position": [
                 189.0,
-                81.0,
+                -153.0,
                 0.0
             ],
             "rotation": 0.0,
@@ -229,7 +199,8 @@
                     "class": "AABB",
                     "constructors": [
                         36.0,
-                        36.0
+                        36.0,
+                        false
                     ]
                 }
             ],
@@ -251,19 +222,34 @@
                 {
                     "class": "Appearance",
                     "constructors": [
-                        "Resources/Sprites/Box.dds",
+                        "Resources/Sprites/PressurePlate.dds",
                         1.0,
                         1.0,
                         0.0,
                         0.0,
                         1.0
                     ]
+                },
+                {
+                    "class": "PressurePlateComponent",
+                    "constructors": [
+                        1,
+                        "Door [132]"
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        5.0,
+                        true
+                    ]
                 }
             ],
-            "name": "Box [136]",
+            "name": "Pressure Plate [135]",
             "position": [
-                63.0,
-                99.0,
+                -27.0,
+                -153.0,
                 0.0
             ],
             "rotation": 0.0,

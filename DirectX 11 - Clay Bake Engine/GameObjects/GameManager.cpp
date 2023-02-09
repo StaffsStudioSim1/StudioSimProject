@@ -6,6 +6,12 @@ GameManager::GameManager()
 	isPaused = false;
 	isGravityFlipped = false;
 	_currentScene = nullptr;
+	_pauseSound = new SoundEffect("Resources/SoundEffects/PauseSound.wav");
+}
+
+GameManager::~GameManager()
+{
+	delete _pauseSound;
 }
 
 void GameManager::SceneChanged(Scene* scene)
@@ -16,8 +22,6 @@ void GameManager::SceneChanged(Scene* scene)
 void GameManager::LevelWin()
 {
 	//what the game does when win condition is met
-	//load win screen
-	SceneManager::GetInstance().LoadScene("Resources/WinScreen.json");
 	//save level progress
 	ifstream file;
 	file.open("Resources/SaveFiles/LevelSaves.txt");
@@ -32,6 +36,8 @@ void GameManager::LevelWin()
 			fw.close();
 		}
 	}
+	//load next level
+	SceneManager::GetInstance().LoadScene("Resources/Levels/Level" + std::to_string(SceneManager::GetInstance().GetCurrentSceneID() + 1) + ".json");
 }
 
 void GameManager::LevelLose()
@@ -48,6 +54,8 @@ void GameManager::Pause()
 	isPaused = !isPaused;
 	//set time to 0 - pause time
 	//freeze all input
+	//play pause sound
+	_pauseSound->Play();
 	//bring up pause menu
 	ObjectHandler::GetInstance().EnablePauseMenuUI(isPaused);
 }
