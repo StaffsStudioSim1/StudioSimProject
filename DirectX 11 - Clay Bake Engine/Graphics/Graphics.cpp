@@ -995,6 +995,10 @@ void Graphics::RenderFrame(Scene* scene)
 		SceneManager::GetInstance().LoadScene(fileName);
 	}
 
+	ImGui::SameLine();
+	if (ImGui::Button("Create New Scene"))
+		scene->Save();
+
 	ImGui::End();
 #endif
 	// ASSEMBLE AND RENDER DRAW DATA
