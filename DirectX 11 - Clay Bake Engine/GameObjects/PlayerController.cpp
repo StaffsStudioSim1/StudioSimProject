@@ -25,9 +25,12 @@ void PlayerController::Start()
 	_gameManager = new GameManager();
 	//Create new PlayerInput
 	_playerInput = new PlayerInput(_playerID);
-	
+
 	//Get the player's RigidBody
 	_rigidbody = _gameObject->GetComponent<Rigidbody>();
+
+	//Get the player's Appearance
+	_playerAppearance = _gameObject->GetComponent<Appearance>();
 
 	//Init SoundEffects
 	_jumpSoundEffect = new SoundEffect("Resources/Laser_Shoot3.wav");
@@ -96,27 +99,27 @@ void PlayerController::Update(float deltaTime)
 	case Idle:
 	{
 		_currentFrame = _currentFrame % 4;
-		_gameObject->GetComponent<Appearance>()->SetTexPos(_currentFrame, 1.0f);
+		_playerAppearance->SetTexPos(_currentFrame, 1.0f);
 	}
 	break;
 	case Walking:
 	{
-		_currentFrame =	_currentFrame % 6;
-		_gameObject->GetComponent<Appearance>()->SetTexPos(_currentFrame, 0.0f);
+		_currentFrame = _currentFrame % 6;
+		_playerAppearance->SetTexPos(_currentFrame, 0.0f);
 	}
 	break;
 	case Jumping:
 	{
 		_currentFrame = _currentFrame & 1;
-		_gameObject->GetComponent<Appearance>()->SetTexPos(0.0f, 2.0f);
+		_playerAppearance->SetTexPos(0.0f, 2.0f);
 	}
 	break;
 	case Falling:
 	{
 		_currentFrame = _currentFrame & 1;
-		_gameObject->GetComponent<Appearance>()->SetTexPos(0.0f, 3.0f);
+		_playerAppearance->SetTexPos(0.0f, 3.0f);
 	}
-		break;
+	break;
 	}
 
 }
@@ -130,9 +133,9 @@ void PlayerController::FixedUpdate(float timeStep)
 		if (!_isWalking)
 		{
 			_moveSoundEffect->Play();
-			_playerState = Walking;
 		}
 		_isWalking = true;
+		_playerState = Walking;
 	}
 	else
 	{
@@ -140,19 +143,34 @@ void PlayerController::FixedUpdate(float timeStep)
 		_moveSoundEffect->Stop();
 		_playerState = Idle;
 	}
+	if (_rigidbody->GetVelocity().y < 0.0f)
+	{
+		_playerState = Falling;
+	}
+	else if (_rigidbody->GetVelocity().y > 0.0f)
+	{
+		_playerState = Jumping;
+	}
 
 	if (_currentMovement.x < 0.0f)
 	{
+		if (_facingDirection == Right)
+		{
+			_playerAppearance->FlipTextureOnYAxis();
+			OutputDebugStringA("Turn Left\n");
+		}
 		_facingDirection = Left;
-		//Magnet code
 	}
 	else if (_currentMovement.x > 0.0f)
 	{
+		if (_facingDirection == Left)
+		{
+			_playerAppearance->FlipTextureOnYAxis();
+			OutputDebugStringA("Turn Right\n");
+		}
 		_facingDirection = Right;
-		//Magnet code
 	}
 }
-
 
 void PlayerController::JumpPressed()
 {
@@ -175,7 +193,6 @@ void PlayerController::JumpPressed()
 
 void PlayerController::InteractPressed()
 {
-
 	// player position
 	Vector2 playerPosition = _gameObject->GetTransform()->GetPosition();
 
