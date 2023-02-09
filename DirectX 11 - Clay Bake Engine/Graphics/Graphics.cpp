@@ -429,10 +429,12 @@ void Graphics::RenderFrame(Scene* scene)
 		const char* optionsButton = "Resources/Sprites/OptionsButton.dds";
 		const char* levelSelect = "Resources/Sprites/LevelSelect.dds";
 		const char* exitButton = "Resources/Sprites/ExitButton.dds";
+
 		TextureInfo playButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(playButton);
 		TextureInfo optionsButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(optionsButton);
 		TextureInfo levelSelectText = ObjectHandler::GetInstance().LoadDDSTextureFile(levelSelect);
 		TextureInfo exitButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitButton);
+
 
 		ImVec2 size = ImVec2(playButtonText.width * 2 * (float)(_windowWidth / 1280.0f), playButtonText.height * 2 * (float)(_windowHeight / 720.0f));
 
@@ -490,16 +492,27 @@ void Graphics::RenderFrame(Scene* scene)
 		const char* pOptionsButton = "Resources/Sprites/PauseOptionsButton.dds";
 		const char* mainMenuButton = "Resources/Sprites/MainMenuButton.dds";
 		const char* exitGameButton = "Resources/Sprites/ExitGameButton.dds";
+		const char* pauseMenu = "Resources/Sprites/PauseMenuBackground.dds";
+
 		TextureInfo resumeButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(resumeButton);
 		TextureInfo resetButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(resetButton);
 		TextureInfo pOptionsButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(pOptionsButton);
 		TextureInfo menuButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(mainMenuButton);
 		TextureInfo exitGameButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitGameButton);
+		TextureInfo pauseMenuText = ObjectHandler::GetInstance().LoadDDSTextureFile(pauseMenu);
 
-		ImVec2 size = ImVec2(resumeButtonText.width * 2 * (float)(_windowWidth / 1280.0f), resumeButtonText.height * 2 * (float)(_windowHeight / 720.0f));
+		ImVec2 size = ImVec2(resumeButtonText.width * 1.5 * (float)(_windowWidth / 1280.0f), resumeButtonText.height * 1.5 * (float)(_windowHeight / 720.0f));
+		ImVec2 sizeP = ImVec2(pauseMenuText.width * 1.5 * (float)(_windowWidth / 1280.0f), pauseMenuText.height * 1.5 * (float)(_windowHeight / 720.0f));
+
 
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
-		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (sizeP.x / 2), (float)(_windowHeight / 2) - (sizeP.y / 2)});
+		ImGui::Begin("PauseMenuBG", NULL, window_flags | ImGuiWindowFlags_NoBringToFrontOnFocus);
+		ImGui::Image(pauseMenuText.texture, sizeP);
+		ImGui::End();
+
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (size.x / 2), (float)(_windowHeight / 2) - (size.y * 3) });
 		ImGui::Begin("PauseMenu", NULL, window_flags);
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.55f));
