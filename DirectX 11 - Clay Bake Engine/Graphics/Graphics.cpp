@@ -904,7 +904,7 @@ void Graphics::RenderFrame(Scene* scene)
 				else if (object->GetComponent<Goal>())
 				{
 					hasGoal = true;
-					linkedObject = object->GetComponent<Interactable>()->_linkedObjectName;
+					linkedObject = object->GetComponent<Goal>()->_NextLevelName;
 					strcpy_s(linkedObjectChar, linkedObject.c_str()); // Uses linked object string for next level name
 				}
 
