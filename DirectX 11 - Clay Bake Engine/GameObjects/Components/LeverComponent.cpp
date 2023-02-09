@@ -2,8 +2,9 @@
 #include "LeverComponent.h"
 #include "../ObjectHandler.h"
 
-void LeverComponent::start()
+void LeverComponent::Start()
 {
+	Interactable::Start();
 	m_State = false; //set state to off on start
 }
 
@@ -13,14 +14,16 @@ void LeverComponent::Interact()
 	SendSignal();
 }
 
-LeverComponent::LeverComponent(InteractableLink switchType, std::string linkedObjectName)
+LeverComponent::LeverComponent(InteractableLink switchType, std::string linkedObjectName) : Interactable(switchType, linkedObjectName)
 {
-	interactableLink = switchType;
-
-	if (linkedObjectName != "")
-	{
-		linkedObject = ObjectHandler::GetInstance().FindGameObject(linkedObjectName);
-	}
 }
 
+json LeverComponent::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "LeverComponent";
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(interactableLink);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_linkedObjectName);
+	return me;
+}
 
