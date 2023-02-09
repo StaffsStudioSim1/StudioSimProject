@@ -2,6 +2,13 @@
 #include "ObjectHandler.h"
 
 
+json PlayerMagnetism::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "PlayerMagnetism";
+	return me;
+}
+
 void PlayerMagnetism::Start()
 {
 	m_magnetActive = false;

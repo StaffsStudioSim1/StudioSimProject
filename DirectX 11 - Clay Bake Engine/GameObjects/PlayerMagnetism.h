@@ -9,6 +9,7 @@ class PlayerMagnetism :
     public Component
 {
 public:
+    json Write();
 
     void Start();
     void Stop();
