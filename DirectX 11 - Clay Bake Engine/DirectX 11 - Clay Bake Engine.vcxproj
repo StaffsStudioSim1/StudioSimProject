@@ -237,7 +237,6 @@
     <ClInclude Include="GameObjects\Components\LeverComponent.h" />
     <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="GameObjects\PlayerController.h" />
-    <ClInclude Include="PhysicsStructs.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />
     <ClInclude Include="Audio\SoundEffect.h" />
