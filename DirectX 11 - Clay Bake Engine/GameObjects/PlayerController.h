@@ -9,6 +9,9 @@
 #include "GameManager.h"
 #include "ObjectHandler.h"
 
+class PlayerMagnetism;
+
+
 enum FacingDirection
 {
     Left,
@@ -46,6 +49,7 @@ private:
     Appearance* _playerAppearance;
     SoundEffect* _jumpSoundEffect;
     SoundEffect* _moveSoundEffect;
+    PlayerMagnetism* _magnet;
 
     int _playerID;
     float _moveSpeed = 100.0f;

@@ -1,0 +1,144 @@
+{
+    "backgroundImage": "Resources/Textures/ZoeLevel.dds",
+    "gameObjects": [
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player2.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        3.5,
+                        2.5
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        2
+                    ]
+                },
+              {
+                "class": "PlayerMagnetism"
+              },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Red [108]",
+            "position": [
+                117.0,
+                -81.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player1.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        3.5,
+                        2.5
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        1
+                    ]
+                },
+              {
+                "class": "PlayerMagnetism"
+              },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Blue [109]",
+            "position": [
+                99.0,
+                -81.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+          "components": [
+            {
+              "class": "Appearance",
+              "constructors": [
+                "Resources/Sprites/Box.dds",
+                1.0,
+                1.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "class": "MagnetBox"
+            },
+            {
+              "class": "AABB",
+              "constructors": [
+                18.0,
+                18.0
+              ]
+            },
+            {
+              "class": "Rigidbody"
+            }
+          ],
+            "name": "MagnetBox",
+            "position": [
+                153.0,
+                -81.0,
+                0.0
+            ],
+            "rotation": 0.0,
+          "scale": [
+            1.0,
+            1.0
+          ],
+
+            "tag": "GameObject"
+        }
+    ],
+    "sceneID": 99,
+    "stageCollision": "111111111111111111111111111111111111100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000111111000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001111111111111111111111111111111111111"
+}
