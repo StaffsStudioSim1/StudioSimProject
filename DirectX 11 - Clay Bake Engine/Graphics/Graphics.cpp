@@ -406,6 +406,7 @@ void Graphics::ResizeWindow()
 	_deviceContext->Flush();
 
 	_swapChain->ResizeBuffers(0, _resolutionWidth, _resolutionHeight, DXGI_FORMAT_UNKNOWN, 0);
+	_swapChain->SetFullscreenState(_useFullscreen, NULL);
 
 	InitializeDirectX(GetActiveWindow(), _resolutionWidth, _resolutionHeight);
 }
@@ -713,7 +714,6 @@ void Graphics::RenderFrame(Scene* scene)
 
 #if !EDIT_MODE
 			ResizeWindow();
-			_swapChain->SetFullscreenState(_useFullscreen, NULL); // Toggle fullscreen
 #endif
 		}
 		if (ImGui::ImageButton(backButton, backButtonText.texture, size))
