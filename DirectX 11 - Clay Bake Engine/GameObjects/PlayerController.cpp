@@ -94,15 +94,27 @@ void PlayerController::Update(float deltaTime)
 	case Idle:
 	{
 		_currentFrame = _currentFrame % 4;
-		//_gameObject->GetComponent<Appearance>()->SetTexPos(_currentFrame, 1.0f);
+		_gameObject->GetComponent<Appearance>()->SetTexPos(_currentFrame, 1.0f);
 	}
 	break;
 	case Walking:
 	{
 		_currentFrame =	_currentFrame % 6;
-		//_gameObject->GetComponent<Appearance>()->SetTexPos(_currentFrame, 0.0f);
+		_gameObject->GetComponent<Appearance>()->SetTexPos(_currentFrame, 0.0f);
 	}
 	break;
+	case Jumping:
+	{
+		_currentFrame = _currentFrame & 1;
+		_gameObject->GetComponent<Appearance>()->SetTexPos(0.0f, 2.0f);
+	}
+	break;
+	case Falling:
+	{
+		_currentFrame = _currentFrame & 1;
+		_gameObject->GetComponent<Appearance>()->SetTexPos(0.0f, 3.0f);
+	}
+		break;
 	}
 
 }

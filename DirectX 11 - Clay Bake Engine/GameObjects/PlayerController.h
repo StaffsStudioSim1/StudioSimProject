@@ -4,9 +4,10 @@
 #include "../Input/PlayerInput.h"
 #include "../Physics/Vectors.h"
 #include "../Audio/SoundEffect.h"
-#include "../GameObjects/Components/Interactable.h"
+#include "Components/Interactable.h"
 #include "GameObject.h"
 #include "GameManager.h"
+#include "ObjectHandler.h"
 
 enum FacingDirection
 {
@@ -41,6 +42,7 @@ private:
     //Variables
     PlayerInput* _playerInput;
     Rigidbody* _rigidbody;
+
     SoundEffect* _jumpSoundEffect;
     SoundEffect* _moveSoundEffect;
 
@@ -50,7 +52,7 @@ private:
     float _jumpTimer = 2.0f;
     float _activeJumpTimer = 0.0f;
 
-    float _animationFrameDelay = 0.5f;
+    float _animationFrameDelay = 0.1f;
     float _activeFrameDelay = 0.0f;
     int _currentFrame = 0;
 
