@@ -1,8 +1,8 @@
 {
-    "Fullscreen": true,
+    "Fullscreen": false,
     "Resolution": [
         1920,
         1080
     ],
-    "SoundVol": 3
+    "SoundVol": 0
 }

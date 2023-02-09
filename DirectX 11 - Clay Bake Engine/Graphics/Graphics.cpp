@@ -638,12 +638,12 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
 		if (ImGui::ImageButton(resumeButton, resumeButtonText.texture, size))
 		{
-			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
+			GameManager::GetInstance().Pause();
 			// Code to unpause of the game here or somewhere else
 		}
 		if (ImGui::ImageButton(resetButton, resetButtonText.texture, size))
 		{
-			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
+			GameManager::GetInstance().Pause();
 			SceneManager::GetInstance().LoadScene(SceneManager::GetInstance().GetCurrentSceneFilePath());
 		}
 		if (ImGui::ImageButton(pOptionsButton, pOptionsButtonText.texture, size))
