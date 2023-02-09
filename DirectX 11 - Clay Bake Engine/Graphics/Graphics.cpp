@@ -422,7 +422,7 @@ void Graphics::LoadSettingsFromFile()
 	_resolutionWidth = data["Resolution"].at(0);
 	_resolutionHeight = data["Resolution"].at(1);
 	_useFullscreen = data["Fullscreen"];
-	_musicVol = data["MusicVol"];
+	//_musicVol = data["MusicVol"];
 	_soundVol = data["SoundVol"];
 	inFile.close();
 
@@ -526,10 +526,62 @@ void Graphics::RenderFrame(Scene* scene)
 
 	if (ObjectHandler::GetInstance().IsLevelSelectUIEnabled()) // Level select UI
 	{
+		const char* level1Button = "Resources/Sprites/Level1Button.dds";
+		const char* level2Button = "Resources/Sprites/Level2Button.dds";
+		const char* level3Button = "Resources/Sprites/Level3Button.dds";
+		const char* level4Button = "Resources/Sprites/Level4Button.dds";
+		const char* level5Button = "Resources/Sprites/Level5Button.dds";
+		const char* level6Button = "Resources/Sprites/Level6Button.dds";
+		const char* level7Button = "Resources/Sprites/Level7Button.dds";
+
+
+		TextureInfo level1ButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(level1Button);
+		TextureInfo level2ButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(level2Button);
+		TextureInfo level3ButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(level3Button);
+		TextureInfo level4ButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(level4Button);
+		TextureInfo level5ButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(level5Button);
+		TextureInfo level6ButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(level6Button);
+		TextureInfo level7ButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(level7Button);
+
+		ImVec2 size = ImVec2(level1ButtonText.width * 2 * (float)(_windowWidth / 1280.0f), level1ButtonText.height * 2 * (float)(_windowHeight / 720.0f));
+
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
-		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (size.x / 2), (float)(_windowHeight / 2) - (size.y * 3) });
 		ImGui::Begin("Level Select", NULL, window_flags);
-		if (ImGui::Button("Demo"))
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.55f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
+		if (ImGui::ImageButton(level1Button, level1ButtonText.texture, size))
+		{
+			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
+			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+		}
+		if (ImGui::ImageButton(level2Button, level2ButtonText.texture, size))
+		{
+			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
+			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+		}
+		if (ImGui::ImageButton(level3Button, level3ButtonText.texture, size))
+		{
+			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
+			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+		}
+		if (ImGui::ImageButton(level4Button, level4ButtonText.texture, size))
+		{
+			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
+			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+		}
+		if (ImGui::ImageButton(level5Button, level5ButtonText.texture, size))
+		{
+			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
+			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+		}
+		if (ImGui::ImageButton(level6Button, level6ButtonText.texture, size))
+		{
+			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
+			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+		}
+		if (ImGui::ImageButton(level7Button, level7ButtonText.texture, size))
 		{
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/demo.json");
@@ -539,6 +591,7 @@ void Graphics::RenderFrame(Scene* scene)
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
 			ObjectHandler::GetInstance().EnableMainMenuUI(true);
 		}
+		ImGui::PopStyleColor(3);
 		ImGui::End();
 	}
 
@@ -615,6 +668,7 @@ void Graphics::RenderFrame(Scene* scene)
 		const char* res1080Icon = "Resources/Sprites/1080pIcon.dds";
 		const char* soundIcon = "Resources/Sprites/SoundIcon.dds";
 		const char* musicIcon = "Resources/Sprites/MusicIcon.dds";
+		const char* opionsMenu = "Resources/Sprites/OptionsBackground.dds";
 
 
 
@@ -628,17 +682,25 @@ void Graphics::RenderFrame(Scene* scene)
 		TextureInfo res1080IconText = ObjectHandler::GetInstance().LoadDDSTextureFile(res1080Icon);
 		TextureInfo soundIconText = ObjectHandler::GetInstance().LoadDDSTextureFile(soundIcon);
 		TextureInfo musicIconText = ObjectHandler::GetInstance().LoadDDSTextureFile(musicIcon);
+		TextureInfo optionsMenuText = ObjectHandler::GetInstance().LoadDDSTextureFile(opionsMenu);
 
 
 		ImVec2 size = ImVec2(applyButtonText.width * (float)(_windowWidth / 1280.0f), applyButtonText.height * (float)(_windowHeight / 720.0f));
 		ImVec2 sizeFS = ImVec2(fullscreenIconText.width * (float)(_windowWidth / 1280.0f), fullscreenIconText.height * (float)(_windowHeight / 720.0f));
 		ImVec2 sizeLR = ImVec2(leftButtonText.width * (float)(_windowWidth / 1280.0f), leftButtonText.height * (float)(_windowHeight / 720.0f));
+		ImVec2 sizeO = ImVec2(optionsMenuText.width * 1.5 * (float)(_windowWidth / 1280.0f), optionsMenuText.height * 1.5 * (float)(_windowHeight / 720.0f));
 
 
 		std::vector<TextureInfo> resolutionText = { res720IconText,res900IconText,res1080IconText };
 
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
-		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (sizeFS.x / 2), (float)(_windowHeight / 2) - (sizeFS.y / 2) });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (sizeO.x / 2), (float)(_windowHeight / 2) - (sizeO.y / 2) });
+		ImGui::Begin("OptionsBG", NULL, window_flags | ImGuiWindowFlags_NoBringToFrontOnFocus);
+		ImGui::Image(optionsMenuText.texture, sizeO);
+		ImGui::End();
+
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (sizeFS.x * 1.5f), (float)(_windowHeight / 2) - (sizeFS.y * 4) });
 		ImGui::Begin("Options Menu", NULL, window_flags);
 
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
@@ -658,21 +720,26 @@ void Graphics::RenderFrame(Scene* scene)
 			if (_currentResolution < resolutionText.size()-1)
 				_currentResolution += 1;
 		}
+		ImGui::Dummy(ImVec2(0.0f, 5.0f));
 #if EDIT_MODE
 		ImGui::SetTooltip("Resolution and fullscreen settings are disabled in edit mode");
 #endif
-		ImGui::Checkbox(" ", &_useFullscreen);
-		ImGui::SameLine();
 		ImGui::Image(fullscreenIconText.texture, sizeFS);
+		ImGui::SameLine();
+		ImGui::Checkbox("  ", &_useFullscreen);
+
+		ImGui::Dummy(ImVec2(0.0f, 5.0f));
 
 		//ImGui::SliderInt("  ", &_musicVol, 0, 100);
 		//ImGui::SameLine();
 		//ImGui::Image(musicIconText.texture, size);
 
 		ImGui::PushItemWidth(250);
-		ImGui::SliderInt("   ", &_soundVol, 0, 100);
-		ImGui::SameLine();
 		ImGui::Image(soundIconText.texture, size);
+		ImGui::SameLine();
+		ImGui::SliderInt(" ", &_soundVol, 0, 100);
+
+		ImGui::Dummy(ImVec2(0.0f, 5.0f));
 
 
 		if (ImGui::ImageButton(applyButton, applyButtonText.texture, size))
@@ -732,6 +799,7 @@ void Graphics::RenderFrame(Scene* scene)
 			ResizeWindow();
 #endif
 		}
+		ImGui::Dummy(ImVec2(0.0f, 5.0f));
 		if (ImGui::ImageButton(backButton, backButtonText.texture, size))
 		{
 			ObjectHandler::GetInstance().EnableOptionsMenuUI(false);

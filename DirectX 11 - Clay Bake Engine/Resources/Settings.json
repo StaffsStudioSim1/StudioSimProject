@@ -1,9 +1,8 @@
 {
-    "Fullscreen": false,
-    "MusicVol": 50,
+    "Fullscreen": true,
     "Resolution": [
-        1280,
-        720
+        1920,
+        1080
     ],
-    "SoundVol": 3
+    "SoundVol": 51
 }
