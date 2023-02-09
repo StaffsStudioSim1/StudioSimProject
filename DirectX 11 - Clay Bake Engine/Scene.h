@@ -66,6 +66,7 @@ public:
 	std::string GetFilePath() const { return _filePath; }
 #if EDIT_MODE
 	void SetFileName(std::string fileName) { _filePath = fileName; }
+	void SetBackgound(std::string filePath) { _backgroundImage->GetComponent<Appearance>()->SetTexture(ObjectHandler::GetInstance().LoadDDSTextureFile(filePath, true)); }
 #endif
 
 private:
