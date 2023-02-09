@@ -63,6 +63,7 @@ private:
     bool _jumpReset = true;
     bool _movementEnabled = true;
     bool _isWalking = false;
+    bool _isJumping = false;
 
     Vector2 _interactArea = Vector2{ 5.0f ,5.0f };
     Vector2 _currentMovement;
