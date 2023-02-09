@@ -90,10 +90,6 @@ Scene::Scene(std::string filePath, int width, int height)
 				}
 	}
 #else
-	/*RECT rc;
-	GetWindowRect(GetActiveWindow(), &rc);
-	int width = (rc.right - rc.left) - 16;
-	int height = (rc.bottom - rc.top) - 39;*/
 	_geometry = ObjectHandler::GetInstance().GetSquareGeometry();
 
 	_prefabs.push_back(Prefab("Collision",		"Resources/Sprites/StageCollision.dds", { 1.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"tag\" : \"StageCollision\", \"scale\" : [1.0, 1.0], \"components\" : [ { \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/StageCollision.dds\", 1.0, 1.0, 0.0, 0.0, 1.0] } ] }"));
@@ -146,7 +142,8 @@ void Scene::Save()
 	json gameObjects;
 
 	scene[JSON_SCENE_ID] = _id;
-	scene[JSON_SCENE_BACKGROUND] = ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Appearance>()->GetTexture().filePath; // Presumes that the first object is the background
+	// Assumes that the first object is the background
+	scene[JSON_SCENE_BACKGROUND] = ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Appearance>()->GetTexture().filePath;
 	scene[JSON_SCENE_BACKGROUNDAUDIO] = _audioFilePath;
 
 	std::string map;
