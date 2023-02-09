@@ -114,7 +114,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 			scd.BufferCount = 2;
 
 			scd.OutputWindow = hwnd;
-			scd.Windowed = isWindowed;
+			scd.Windowed = true;
 			scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 			scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
@@ -385,11 +385,20 @@ void Graphics::ResizeWindow()
 	UINT monitorX = mi.rcMonitor.right - mi.rcMonitor.left;
 	UINT monitorY = mi.rcMonitor.bottom - mi.rcMonitor.top;
 
+	if (_useFullscreen && (monitorX != _resolutionWidth || monitorY != _resolutionHeight))
+		_useFullscreen = false;
+
 	int centreOfScreenX = mi.rcMonitor.left + (monitorX / 2 - _resolutionWidth / 2);
-	int centreOfScreenY = mi.rcMonitor.top + (monitorY / 2 - _resolutionHeight / 2);
+	int centreOfScreenY = mi.rcMonitor.top + (monitorY / 2 - _resolutionHeight / 2) + 30;
+
+	if (_useFullscreen)
+		centreOfScreenY = mi.rcMonitor.top;
 
 	RECT rc = { (LONG)centreOfScreenX, (LONG)centreOfScreenY, (LONG)centreOfScreenX + (LONG)_resolutionWidth, (LONG)centreOfScreenY + (LONG)_resolutionHeight };
-	AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+	if (_useFullscreen)
+		AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_POPUP, FALSE);
+	else
+		AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
 	SetWindowPos(GetActiveWindow(), NULL, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
 	
 	POINT pt;
@@ -410,9 +419,8 @@ void Graphics::ResizeWindow()
 	_stencilState.Reset();
 
 	_deviceContext->Flush();
-
+	 
 	_swapChain->ResizeBuffers(0, _resolutionWidth, _resolutionHeight, DXGI_FORMAT_UNKNOWN, 0);
-	_swapChain->SetFullscreenState(_useFullscreen, NULL);
 
 	InitializeDirectX(GetActiveWindow(), _resolutionWidth, _resolutionHeight);
 }
@@ -739,10 +747,6 @@ void Graphics::RenderFrame(Scene* scene)
 
 		ImGui::Dummy(ImVec2(0.0f, 5.0f));
 
-		//ImGui::SliderInt("  ", &_musicVol, 0, 100);
-		//ImGui::SameLine();
-		//ImGui::Image(musicIconText.texture, size);
-
 		ImGui::PushItemWidth(250);
 		ImGui::Image(soundIconText.texture, size);
 		ImGui::SameLine();
@@ -780,23 +784,22 @@ void Graphics::RenderFrame(Scene* scene)
 				break;
 			}
 
-			MONITORINFO mi = { sizeof(mi) };
-			GetMonitorInfo(MonitorFromWindow(GetActiveWindow(), MONITOR_DEFAULTTONEAREST), &mi);
-			UINT monitorX = mi.rcMonitor.right - mi.rcMonitor.left;
-			UINT monitorY = mi.rcMonitor.bottom - mi.rcMonitor.top;
+			//MONITORINFO mi = { sizeof(mi) };
+			//GetMonitorInfo(MonitorFromWindow(GetActiveWindow(), MONITOR_DEFAULTTONEAREST), &mi);
+			//UINT monitorX = mi.rcMonitor.right - mi.rcMonitor.left;
+			//UINT monitorY = mi.rcMonitor.bottom - mi.rcMonitor.top;
 
-			if (_useFullscreen && (_resolutionWidth != monitorX || _resolutionHeight != monitorY))
-			{
-				_resolutionWidth = monitorX;
-				_resolutionHeight = monitorY;
-			}
+			//if (_useFullscreen && (_resolutionWidth != monitorX || _resolutionHeight != monitorY))
+			//{
+			//	_resolutionWidth = monitorX;
+			//	_resolutionHeight = monitorY;
+			//}
 
 			AudioManager::GetInstance().SetMasterVolume(_soundVol);
 
 			json settings;
 			settings["Resolution"] = { _resolutionWidth, _resolutionHeight };
 			settings["Fullscreen"] = _useFullscreen;
-			//settings["MusicVol"] = _musicVol;
 			settings["SoundVol"] = _soundVol;
 
 			std::ofstream outFile("Resources/Settings.json");
@@ -805,7 +808,7 @@ void Graphics::RenderFrame(Scene* scene)
 
 #if !EDIT_MODE
 			ResizeWindow();
-			ResizeWindow();
+			//ResizeWindow();
 #endif
 		}
 		ImGui::Dummy(ImVec2(0.0f, 5.0f));

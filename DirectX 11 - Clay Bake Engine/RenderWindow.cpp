@@ -11,13 +11,34 @@ bool RenderWindow::Initialize(WindowContainer* pWindowContainer, HINSTANCE hInst
 	this->window_class_wide = StringConverter::StringToWide(this->window_class);
 
 	this->RegisterWindowClass();
+	
+	std::ifstream file("Resources/Settings.json");
+	if (!file.good())
+		ErrorLogger::Log("Unable to find settings file!");
 
-	int centreOfScreenX = GetSystemMetrics(SM_CXSCREEN) / 2 - width / 2;
-	int centreOfScreenY = GetSystemMetrics(SM_CYSCREEN) / 2 - height / 2;
+	json data = json::parse(file);
+	bool useFullscreen = data["Fullscreen"];
+	file.close();
+
+	MONITORINFO mi = { sizeof(mi) };
+	GetMonitorInfo(MonitorFromWindow(GetActiveWindow(), MONITOR_DEFAULTTONEAREST), &mi);
+	UINT monitorX = mi.rcMonitor.right - mi.rcMonitor.left;
+	UINT monitorY = mi.rcMonitor.bottom - mi.rcMonitor.top;
+
+	if (useFullscreen && (monitorX != width || monitorY != height))
+		useFullscreen = false;
+
+	int centreOfScreenX = mi.rcMonitor.left + (monitorX / 2 - width / 2);
+	int centreOfScreenY = mi.rcMonitor.top + (monitorY / 2 - height / 2) + 30;
+
+	if (useFullscreen)
+		centreOfScreenY = mi.rcMonitor.top;
+
 	RECT rc = { centreOfScreenX, centreOfScreenY, centreOfScreenX + width, centreOfScreenY + height };
-	AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
 
-	this->handle = CreateWindowEx(0, this->window_class_wide.c_str(), this->window_title_wide.c_str(), WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, this->hInstance, pWindowContainer);
+	AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_POPUP, FALSE);
+
+	this->handle = CreateWindowEx(0, this->window_class_wide.c_str(), this->window_title_wide.c_str(), WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_POPUP, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, this->hInstance, pWindowContainer);
 							// extended window style, class name, class title, windows style, window X pos, window Y pos, window width, window height, handle parent of window, handle child of window, handle instance, param to create window to be set later
 	if (this->handle == NULL)
 	{
