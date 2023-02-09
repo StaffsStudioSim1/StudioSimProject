@@ -49,7 +49,7 @@ void Rigidbody::AddForce(Vector2 force)
 	_netForce += force;
 }
 
-void Rigidbody::AddInput(Vector2 input)
+void Rigidbody::SetInput(Vector2 input)
 {
 	_input = input;
 }

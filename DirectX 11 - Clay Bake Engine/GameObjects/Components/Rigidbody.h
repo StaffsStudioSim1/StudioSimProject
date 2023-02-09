@@ -13,7 +13,7 @@ public:
     void FixedUpdate(float timeStep);
 
     void AddForce(Vector2 force);
-    void AddInput(Vector2 input);
+    void SetInput(Vector2 input);
     void Collide(GameObject* victim);
     Vector2 GetVelocity();
 private:
