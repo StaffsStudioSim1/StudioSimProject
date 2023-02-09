@@ -43,4 +43,7 @@ void Goal::Update()
 	
 }
 
-
+void Goal::LevelWin()
+{
+	SceneManager::GetInstance().LoadScene(_NextLevelName);
+}
