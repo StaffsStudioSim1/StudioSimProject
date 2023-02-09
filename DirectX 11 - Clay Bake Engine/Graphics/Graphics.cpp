@@ -5,6 +5,11 @@
 #include "ImGui/imgui_impl_dx11.h"
 #include "../SceneManager.h"
 
+#include "../GameObjects/Components/ButtonComponent.h"
+#include "../GameObjects/Components/LeverComponent.h"
+#include "../GameObjects/Components/PressurePlateComponent.h"
+#include "../GameObjects/Components/Goal.h"
+
 #include <fstream>
 #include "../Audio/AudioManager.h"
 
@@ -815,7 +820,8 @@ void Graphics::RenderFrame(Scene* scene)
 	static bool linkScaling = true;
 	char fileName[40]; // For saving the file
 	strcpy_s(fileName, scene->GetFilePath().c_str());
-	const char* boxBodyChoices[] = { "Static", "Kinematic", "Dynamic" };
+
+	const char* interactableStates[] = { "Default", "SwitchState", "SwitchGravity", "Signal3", "Signal4" };
 	
 	ImGui::Begin("Inspector");
 	if (SceneManager::GetInstance().GetCurrentSceneID() != 0)
@@ -848,8 +854,12 @@ void Graphics::RenderFrame(Scene* scene)
 				float rotation = { object->GetTransform()->GetRotation() };
 				float scale[2] = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y };
 
-				bool hasPhysics = false;
 				bool hasAppearance = false;
+
+				bool hasButton = false;
+				bool hasLever = false;
+				bool hasPressurePlate = false;
+				bool hasGoal = false;
 
 				std::string textureName;
 				char textureNameChar[40];
@@ -864,6 +874,34 @@ void Graphics::RenderFrame(Scene* scene)
 					texCoords[1] = coords.y;
 					texCoords[2] = coords.z;
 					texCoords[3] = coords.w;
+				}
+
+				int switchState = 0;
+				std::string linkedObject;
+				char linkedObjectChar[40];
+				if (object->GetComponent<ButtonComponent>())
+				{
+					hasButton = true;
+					linkedObject = object->GetComponent<Interactable>()->_linkedObjectName;
+					strcpy_s(linkedObjectChar, linkedObject.c_str());
+				}
+				else if (object->GetComponent<LeverComponent>())
+				{
+					hasLever = true;
+					linkedObject = object->GetComponent<Interactable>()->_linkedObjectName;
+					strcpy_s(linkedObjectChar, linkedObject.c_str());
+				}
+				else if (object->GetComponent<PressurePlateComponent>())
+				{
+					hasPressurePlate = true;
+					linkedObject = object->GetComponent<Interactable>()->_linkedObjectName;
+					strcpy_s(linkedObjectChar, linkedObject.c_str());
+				}
+				else if (object->GetComponent<Goal>())
+				{
+					hasGoal = true;
+					linkedObject = object->GetComponent<Interactable>()->_linkedObjectName;
+					strcpy_s(linkedObjectChar, linkedObject.c_str()); // Uses linked object string for next level name
 				}
 
 				int bodyType;
@@ -892,6 +930,16 @@ void Graphics::RenderFrame(Scene* scene)
 					}
 					ImGui::DragFloat4("Texture Coords", texCoords, 1.0f, 0.0f, 10.0f);
 				}
+				if (hasButton || hasLever || hasPressurePlate)
+				{
+					if (ImGui::InputText("Linked Object", linkedObjectChar, 40, ImGuiInputTextFlags_EnterReturnsTrue))
+					switchState = object->GetComponent<Interactable>()->interactableLink;
+					ImGui::ListBox("Switch State", &switchState, interactableStates, 5);
+				}
+				if (hasGoal)
+				{
+					ImGui::InputText("Next Level File Path", linkedObjectChar, 40);
+				}
 				if (ImGui::Button("Reset"))
 				{
 					depth = 0.0f;
@@ -910,6 +958,15 @@ void Graphics::RenderFrame(Scene* scene)
 				if (hasAppearance)
 				{
 					object->GetComponent<Appearance>()->SetTexCoords(texCoords[0], texCoords[1], texCoords[2], texCoords[3]);
+				}
+				if (hasButton || hasLever || hasPressurePlate)
+				{
+					object->GetComponent<Interactable>()->_linkedObjectName = linkedObjectChar;
+					object->GetComponent<Interactable>()->interactableLink = (Interactable::InteractableLink)switchState;
+				}
+				if (hasGoal)
+				{
+					object->GetComponent<Goal>()->_NextLevelName = linkedObjectChar;
 				}
 			}
 			loopNum++;

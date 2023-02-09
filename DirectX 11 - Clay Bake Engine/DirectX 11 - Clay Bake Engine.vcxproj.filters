@@ -383,9 +383,6 @@
     <ClInclude Include="GameObjects\Components\AABB.h">
       <Filter>Header Files\GameObject\Components</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsStructs.h">
-      <Filter>Header Files\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjects\PlayerController.h">
       <Filter>Header Files\GameObject\Components</Filter>
     </ClInclude>
