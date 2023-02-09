@@ -230,3 +230,29 @@ void PlayerController::Stop()
 	delete _jumpSoundEffect;
 	delete _moveSoundEffect;
 }
+
+bool PlayerController::CheckForCollisionsBelowDirect()
+{
+	float yOffSet = 9.0f;
+	Vector2 payerpositionoffset = _gameObject->GetTransform()->GetPosition();
+//	std::vector<GameObject> otherlist;
+
+	if (!GameManager::GetInstance().IsGravityFlipped())
+	{
+		payerpositionoffset.y -= yOffSet;
+	}
+	else if (GameManager::GetInstance().IsGravityFlipped())
+	{
+		payerpositionoffset.y -= yOffSet;
+	}
+	auto list = ObjectHandler::GetInstance().GetObjectsInArea(payerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x, 5));
+
+	for (int i = 0; i <= list.size(); i++)
+	{
+		if(list.at(i)->GetTag() == JSON_TAG_STAGECOLLISION);
+		return true;
+	}
+
+	return false;
+
+}
