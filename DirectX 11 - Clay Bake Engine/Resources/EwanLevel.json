@@ -6,92 +6,6 @@
                 {
                     "class": "Appearance",
                     "constructors": [
-                        "Resources/Sprites/Player2.dds",
-                        6.0,
-                        8.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "class": "PlayerController",
-                    "constructors": [
-                        2
-                    ]
-                },
-                {
-                    "class": "AABB",
-                    "constructors": [
-                        11.0,
-                        16.0
-                    ]
-                },
-                {
-                    "class": "Rigidbody"
-                }
-            ],
-            "name": "Player Red [180]",
-            "position": [
-                -261.0,
-                -135.0,
-                0.0
-            ],
-            "rotation": 0.0,
-            "scale": [
-                1.75,
-                1.75
-            ],
-            "tag": "GameObject"
-        },
-        {
-            "components": [
-                {
-                    "class": "Appearance",
-                    "constructors": [
-                        "Resources/Sprites/Player1.dds",
-                        6.0,
-                        8.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "class": "PlayerController",
-                    "constructors": [
-                        1
-                    ]
-                },
-                {
-                    "class": "AABB",
-                    "constructors": [
-                        11.0,
-                        16.0
-                    ]
-                },
-                {
-                    "class": "Rigidbody"
-                }
-            ],
-            "name": "Player Blue [181]",
-            "position": [
-                -225.0,
-                -135.0,
-                0.0
-            ],
-            "rotation": 0.0,
-            "scale": [
-                1.75,
-                1.75
-            ],
-            "tag": "GameObject"
-        },
-        {
-            "components": [
-                {
-                    "class": "Appearance",
-                    "constructors": [
                         "Resources/Sprites/Box.dds",
                         1.0,
                         1.0,
@@ -167,6 +81,129 @@
             "scale": [
                 1.0,
                 1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Door.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "DoorComponent"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        16.0,
+                        32.0
+                    ]
+                }
+            ],
+            "name": "Door [187]",
+            "position": [
+                99.0,
+                -9.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player1.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        1
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Blue [189]",
+            "position": [
+                -225.0,
+                -135.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.75,
+                1.75
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player2.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        2
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Red [190]",
+            "position": [
+                -261.0,
+                -135.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.75,
+                1.75
             ],
             "tag": "GameObject"
         }
