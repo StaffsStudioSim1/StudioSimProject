@@ -34,7 +34,7 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 
 	_initialised = true;
 #if EDIT_MODE
-	SceneManager::GetInstance().LoadScene("Resources/demo.json");
+	SceneManager::GetInstance().LoadScene("Resources/PressurePlateTest.json");
 #else
 	SceneManager::GetInstance().LoadScene("Resources/mainmenu.json");
 #endif
