@@ -20,6 +20,9 @@
                         1
                     ]
                 },
+              {
+                "class": "PlayerMagnetism"
+              },
                 {
                     "class": "AABB",
                     "constructors": [
@@ -72,6 +75,9 @@
                 },
                 {
                     "class": "Rigidbody"
+                },
+                {
+                    "class": "PlayerMagnetism"
                 }
             ],
             "name": "Player Red [131]",

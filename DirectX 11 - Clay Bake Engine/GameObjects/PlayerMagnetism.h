@@ -2,7 +2,7 @@
 #include "Components/Component.h"
 #include "../Physics/Vectors.h"
 #include "MagnetismObject.h"
-//#include "../Input/PlayerInput.h"
+#include "PlayerController.h"
 
 
 class PlayerMagnetism :
@@ -26,11 +26,12 @@ public:
     Vector2 m_boxSize;    
     Vector2 m_handOffest;
 
-    MagnetDirection m_magnetDirection;
+    void SetMagnetPushPull(int playerID);
+    
 private:
 
     Vector2 m_currentHandOffset;
     Vector2 m_factingVector = Vector2(1,1);
-    
+    MagnetDirection m_magnetDirection;
 };
 
