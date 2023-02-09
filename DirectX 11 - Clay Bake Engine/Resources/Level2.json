@@ -1,0 +1,227 @@
+{
+    "backgroundAudio": "Resources/SoundEffects/FactoryAmbience.wav",
+    "backgroundImage": "Resources/Sprites/WillLevel2.dds",
+    "gameObjects": [
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player2.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        2
+                    ]
+                },
+                {
+                    "class": "PlayerMagnetism"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0,
+                        false
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Red [233]",
+            "position": [
+                -279.0,
+                63.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.75,
+                1.75
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player1.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        1
+                    ]
+                },
+                {
+                    "class": "PlayerMagnetism"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0,
+                        false
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Blue [234]",
+            "position": [
+                -243.0,
+                63.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.75,
+                1.75
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Lever.dds",
+                        3.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "LeverComponent",
+                    "constructors": [
+                        2,
+                        ""
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        5.0,
+                        false
+                    ]
+                }
+            ],
+            "name": "GravLevelOne",
+            "position": [
+                -261.0,
+                45.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Lever.dds",
+                        3.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "LeverComponent",
+                    "constructors": [
+                        2,
+                        ""
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        5.0,
+                        false
+                    ]
+                }
+            ],
+            "name": "GravLevelTwo",
+            "position": [
+                243.0,
+                135.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Gold Goal.dds",
+                        1.0,
+                        6.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "Goal",
+                    "constructors": [
+                        ""
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        36.0,
+                        36.0,
+                        true
+                    ]
+                }
+            ],
+            "name": "Goal [237]",
+            "position": [
+                279.0,
+                135.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                0.25,
+                0.25
+            ],
+            "tag": "GameObject"
+        }
+    ],
+    "sceneID": 99,
+    "stageCollision": "111111111111111111111111111111111111100010000000010001000010000001000001100010000000010001000010000001000001100010000000010001000010000001000001100010000000010001111110000001000001100010000000010001000010000001000001100010111111010001000010001001000001100010000000010001000010001001000001100010000000010001000000001001000001100010000100010001000000001001000001100010000100010001000000001001000001111111000100011011001111111001000001100000000100010001001000000001000001100000000100000001001000000001000001111111000100000000001000000001000001100000000100000000001000000001000001100000000111111111111100000001111111100000000100000000001000000000000001100000000100000000001000000000000001111111111111111111111111111111111111"
+}
