@@ -22,6 +22,7 @@ void PlayerMagnetism::FixedUpdate(float timeStep)
 		
 		std::vector<GameObject*> inFeild = ObjectHandler::GetInstance().GetObjectsInArea(_gameObject->GetTransform()->GetPosition() + m_currentHandOffset, Vector2(20,20));
 
+		 if(inFeild.size() == 0)
 		for (GameObject* object : inFeild)
 		{
 			if (object->GetComponent<MagnetismObject>() != nullptr)
@@ -38,7 +39,7 @@ void PlayerMagnetism::FixedUpdate(float timeStep)
 	}
 }
 
-void PlayerMagnetism::ChangeDirection(PlayerDirection direction)
+void PlayerMagnetism::ChangeDirection(FacingDirection direction)
 {
 	switch (direction)
 	{

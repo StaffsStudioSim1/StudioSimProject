@@ -4,12 +4,7 @@
 #include "MagnetismObject.h"
 //#include "../Input/PlayerInput.h"
 
-enum PlayerDirection
-{
-    Left,
-    Right
-}
-;
+
 class PlayerMagnetism :
     public Component
 {
@@ -21,7 +16,7 @@ public:
 
     //void ChangeDirection(PlayerDirection direction);
     
-    void ChangeDirection(PlayerDirection direction);
+    void ChangeDirection(FacingDirection direction);
     
     void MagnetOn();
     void MagnetOff();

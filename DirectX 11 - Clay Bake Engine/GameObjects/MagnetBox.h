@@ -1,6 +1,6 @@
 #pragma once
 #include "MagnetismObject.h"
-#include "Physics.h"
+#include "Components/Rigidbody.h"
 #include "GameObject.h"
 
 class MagnetBox :
@@ -11,7 +11,7 @@ public:
     void Start();
     void Stop();
 
-    Physics* m_Physics;
+    Rigidbody* m_rigidbody;
 
     float m_PushForce = 100.0f;
 };
