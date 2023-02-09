@@ -3,12 +3,13 @@
 #include "../Physics/Vectors.h"
 #include "MagnetismObject.h"
 #include "PlayerController.h"
-
+#include "../Audio/SoundEffect.h"
 
 class PlayerMagnetism :
     public Component
 {
 public:
+    json Write();
 
     void Start();
     void Stop();
@@ -27,6 +28,8 @@ public:
     Vector2 m_handOffest;
 
     void SetMagnetPushPull(int playerID);
+
+    SoundEffect* m_activeSound;
     
 private:
 

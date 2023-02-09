@@ -79,16 +79,16 @@ void PlayerController::Update(float deltaTime)
 		GameManager::GetInstance().Pause();
 	}
 
-	//Increment jump timer
-	if (_activeJumpTimer >= _jumpTimer)
-	{
-		_jumpReset = true;
-		_activeJumpTimer = 0.0f;
-	}
-	else
-	{
-		_activeJumpTimer += deltaTime;
-	}
+	////Increment jump timer
+	//if (_activeJumpTimer >= _jumpTimer)
+	//{
+	//	_jumpReset = true;
+	//	_activeJumpTimer = 0.0f;
+	//}
+	//else
+	//{
+	//	_activeJumpTimer += deltaTime;
+	//}
 
 	//Increment animation timer
 	if (_activeFrameDelay >= _animationFrameDelay)
@@ -140,6 +140,14 @@ void PlayerController::FixedUpdate(float timeStep)
 {
 	_rigidbody->SetInput(_currentMovement * _moveSpeed);
 
+	if (_isJumping)
+	{
+		if (CheckForCollisionsBelowDirect())
+		{
+			_isJumping = false;
+		}
+	}
+
 	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
 		_isWalking = true;
@@ -189,8 +197,13 @@ void PlayerController::FixedUpdate(float timeStep)
 
 void PlayerController::JumpPressed()
 {
-	if (!_jumpReset)
+	if (_isJumping)
 		return;
+	else
+	_isJumping = true;
+
+	//if (!_jumpReset)
+	//	return;
 
 	_jumpReset = false;
 
@@ -229,4 +242,30 @@ void PlayerController::Stop()
 	delete _playerInput;
 	delete _jumpSoundEffect;
 	delete _moveSoundEffect;
+}
+
+bool PlayerController::CheckForCollisionsBelowDirect()
+{
+	float yOffSet = 9.0f;
+	Vector2 playerpositionoffset = _gameObject->GetTransform()->GetPosition();
+//	std::vector<GameObject> otherlist;
+
+	if (!GameManager::GetInstance().IsGravityFlipped())
+	{
+		playerpositionoffset.y -= yOffSet;
+	}
+	else if (GameManager::GetInstance().IsGravityFlipped())
+	{
+		playerpositionoffset.y += yOffSet;
+	}
+	auto list = ObjectHandler::GetInstance().GetObjectsInArea(playerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x, 2));
+
+	for (int i = 0; i <= list.size(); i++)
+	{
+		if(list.at(i)->GetTag() == JSON_TAG_STAGECOLLISION);
+		return true;
+	}
+
+	return false;
+
 }

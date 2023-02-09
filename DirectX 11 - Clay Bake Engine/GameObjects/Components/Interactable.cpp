@@ -65,8 +65,3 @@ Interactable::Interactable(InteractableLink switchType)
 {
 	interactableLink = switchType;
 }
-
-void Interactable::Update()
-{
-
-}
