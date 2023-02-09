@@ -77,23 +77,6 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		HRESULT hr;
 
-		DXGI_SWAP_CHAIN_DESC scd;
-		ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
-
-		scd.BufferDesc.Width = width;
-		scd.BufferDesc.Height = height;
-		scd.BufferDesc.RefreshRate.Numerator = 60;
-		scd.BufferDesc.RefreshRate.Denominator = 1;
-		scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-		scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-		scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-
-		scd.SampleDesc.Count = 1;
-		scd.SampleDesc.Quality = 0;
-
-		scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		scd.BufferCount = 2;
-
 		bool isWindowed = true;
 #if !EDIT_MODE
 		std::ifstream file("Resources/Settings.json");
@@ -104,28 +87,48 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		isWindowed = !data["Fullscreen"];
 		file.close();
 #endif
+		
+		if (_initialStart)
+		{
+			DXGI_SWAP_CHAIN_DESC scd;
+			ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 
-		scd.OutputWindow = hwnd;
-		scd.Windowed = isWindowed;
-		scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-		scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+			scd.BufferDesc.Width = width;
+			scd.BufferDesc.Height = height;
+			scd.BufferDesc.RefreshRate.Numerator = 60;
+			scd.BufferDesc.RefreshRate.Denominator = 1;
+			scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+			scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
-		hr = D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
-			D3D_DRIVER_TYPE_UNKNOWN,							// Graphics device
-			NULL,												// software driver type 
-			D3D11_CREATE_DEVICE_DEBUG,							// feature lvls array
-			NULL,												// flags for^runtime layers 
-			0,													// num feature levels in array
-			D3D11_SDK_VERSION,									// direct 3d sdk ver
-			&scd,												// swap chain desc
-			this->_swapChain.GetAddressOf(),						// swap-chain ref 
-			this->_device.GetAddressOf(),						// device ref
-			NULL,												// supported feature lvl
-			this->_deviceContext.GetAddressOf()					// device context	
-		);
+			scd.SampleDesc.Count = 1;
+			scd.SampleDesc.Quality = 0;
 
-		if (FAILED(hr))
-			ErrorLogger::Log(hr, "Failed to Create device and swap-chain.\n");
+			scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+			scd.BufferCount = 2;
+
+			scd.OutputWindow = hwnd;
+			scd.Windowed = isWindowed;
+			scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+			scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+
+			hr = D3D11CreateDeviceAndSwapChain(adapters[0].pAdapter, // IDXGI Adapter
+				D3D_DRIVER_TYPE_UNKNOWN,							// Graphics device
+				NULL,												// software driver type 
+				D3D11_CREATE_DEVICE_DEBUG,							// feature lvls array
+				NULL,												// flags for^runtime layers 
+				0,													// num feature levels in array
+				D3D11_SDK_VERSION,									// direct 3d sdk ver
+				&scd,												// swap chain desc
+				this->_swapChain.GetAddressOf(),						// swap-chain ref 
+				this->_device.GetAddressOf(),						// device ref
+				NULL,												// supported feature lvl
+				this->_deviceContext.GetAddressOf()					// device context	
+			);
+
+			if (FAILED(hr))
+				ErrorLogger::Log(hr, "Failed to Create device and swap-chain.\n");
+		}
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
 
 		hr = this->_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**> (backBuffer.GetAddressOf()));
@@ -146,19 +149,32 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 
 		this->_deviceContext->OMSetRenderTargets(1, this->_renderTargertView.GetAddressOf(), _depthStencilView.Get());
 
-		//create viewport
-		D3D11_VIEWPORT viewport;
-		ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+		if (_initialStart)
+		{
+			//create viewport
+			D3D11_VIEWPORT viewport;
+			ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
 
-		viewport.TopLeftX = 0;
-		viewport.TopLeftY = 0;
-		viewport.Width = width;
-		viewport.Height = height;
-		viewport.MinDepth = 0;
-		viewport.MaxDepth = 1;
+			viewport.TopLeftX = 0;
+			viewport.TopLeftY = 0;
+			viewport.Width = width;
+			viewport.Height = height;
+			viewport.MinDepth = 0;
+			viewport.MaxDepth = 1;
 
-		//set viewport
-		this->_deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this 
+			//set viewport
+			this->_deviceContext->RSSetViewports(1, &viewport); // can add additional view-ports via this
+			_initialStart = false;
+		}
+		else
+		{
+			D3D11_VIEWPORT viewport;
+			UINT vpNum = 1;
+			this->_deviceContext->RSGetViewports(&vpNum, &viewport);
+			viewport.Width = width;
+			viewport.Height = height;
+			this->_deviceContext->RSSetViewports(1, &viewport);
+		}
 
 		// Create stencil state
 		D3D11_DEPTH_STENCIL_DESC stencilDesc;
@@ -179,8 +195,8 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		D3D11_SAMPLER_DESC sampDesc;
 		ZeroMemory(&sampDesc, sizeof(sampDesc));
 		sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
+		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
 		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 		sampDesc.MinLOD = 0;
@@ -355,6 +371,82 @@ bool Graphics::InitializeScene()
 	return true;
 }
 
+void Graphics::ResizeWindow()
+{
+	// Update window size
+	MONITORINFO mi = { sizeof(mi) };
+	GetMonitorInfo(MonitorFromWindow(GetActiveWindow(), MONITOR_DEFAULTTONEAREST), &mi);
+	UINT monitorX = mi.rcMonitor.right - mi.rcMonitor.left;
+	UINT monitorY = mi.rcMonitor.bottom - mi.rcMonitor.top;
+
+	int centreOfScreenX = mi.rcMonitor.left + (monitorX / 2 - _resolutionWidth / 2);
+	int centreOfScreenY = mi.rcMonitor.top + (monitorY / 2 - _resolutionHeight / 2);
+
+	RECT rc = { (LONG)centreOfScreenX, (LONG)centreOfScreenY, (LONG)centreOfScreenX + (LONG)_resolutionWidth, (LONG)centreOfScreenY + (LONG)_resolutionHeight };
+	AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+	SetWindowPos(GetActiveWindow(), NULL, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+	
+	POINT pt;
+	pt.x = centreOfScreenX;
+	pt.y = centreOfScreenY;
+	ClientToScreen(GetActiveWindow(), &pt);
+
+	// Destroy and recreate graphics buffers
+	_deviceContext->OMSetRenderTargets(0, 0, 0);
+
+	_blendState.Reset();
+	_depthStencilBuffer.Reset();
+	_depthStencilView.Reset();
+	_renderTargertView.Reset();
+	_solidRasterState.Reset();
+	_wireframeRasterState.Reset();
+	_samplerState.Reset();
+	_stencilState.Reset();
+
+	_deviceContext->Flush();
+
+	_swapChain->ResizeBuffers(0, _resolutionWidth, _resolutionHeight, DXGI_FORMAT_UNKNOWN, 0);
+
+	InitializeDirectX(GetActiveWindow(), _resolutionWidth, _resolutionHeight);
+}
+
+void Graphics::LoadSettingsFromFile()
+{
+	std::ifstream inFile("Resources/Settings.json");
+	if (!inFile.good())
+		ErrorLogger::Log("Unable to retrieve settings from file!");
+
+	json data = json::parse(inFile);
+	_resolutionWidth = data["Resolution"].at(0);
+	_resolutionHeight = data["Resolution"].at(1);
+	_useFullscreen = data["Fullscreen"];
+	_musicVol = data["MusicVol"];
+	_soundVol = data["SoundVol"];
+	inFile.close();
+
+	switch (_resolutionWidth)
+	{
+	case 1280:
+	{
+		_currentResolution = 0;
+		break;
+	}
+	case 1600:
+	{
+		_currentResolution = 1;
+		break;
+	}
+	case 1920:
+	{
+		_currentResolution = 2;
+		break;
+	}
+	default:
+		_currentResolution = 0;
+		break;
+	}
+}
+
 void Graphics::RenderFrame(Scene* scene)
 {
 	float bgcolor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
@@ -386,16 +478,18 @@ void Graphics::RenderFrame(Scene* scene)
 	//CREATE FRAME
 	ImGui::NewFrame();
 	//UI WINDOWS
-	if (SceneManager::GetInstance().GetCurrentSceneID() == 0 && ObjectHandler::GetInstance().IsMainMainUIEnabled())
+	if (SceneManager::GetInstance().GetCurrentSceneID() == 0 && ObjectHandler::GetInstance().IsMainMainUIEnabled()) // Main menu UI
 	{
 		const char* playButton = "Resources/Sprites/PlayButton.dds";
 		const char* optionsButton = "Resources/Sprites/OptionsButton.dds";
 		const char* levelSelect = "Resources/Sprites/LevelSelect.dds";
 		const char* exitButton = "Resources/Sprites/ExitButton.dds";
+
 		TextureInfo playButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(playButton);
 		TextureInfo optionsButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(optionsButton);
 		TextureInfo levelSelectText = ObjectHandler::GetInstance().LoadDDSTextureFile(levelSelect);
 		TextureInfo exitButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitButton);
+
 
 		ImVec2 size = ImVec2(playButtonText.width * 2 * (float)(_windowWidth / 1280.0f), playButtonText.height * 2 * (float)(_windowHeight / 720.0f));
 
@@ -416,6 +510,7 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::ImageButton(optionsButton, optionsButtonText.texture, size))
 		{
+			LoadSettingsFromFile();
 			ObjectHandler::GetInstance().EnableOptionsMenuUI(true);
 			ObjectHandler::GetInstance().EnableMainMenuUI(false);
 		}
@@ -427,8 +522,7 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::End();
 	}
 
-
-	if (ObjectHandler::GetInstance().IsLevelSelectUIEnabled())
+	if (ObjectHandler::GetInstance().IsLevelSelectUIEnabled()) // Level select UI
 	{
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
 		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
@@ -446,36 +540,192 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::End();
 	}
 
-	if (ObjectHandler::GetInstance().IsOptionsMenuUIEnabled())
+	if (ObjectHandler::GetInstance().IsPauseMenuUIEnabled()) // Pause menu UI
 	{
-		std::vector<std::string> resolution = { "1280x720","1600x900","1920x1080" };
+		const char* resumeButton = "Resources/Sprites/ResumeButton.dds";
+		const char* resetButton = "Resources/Sprites/ResetButton.dds";
+		const char* pOptionsButton = "Resources/Sprites/PauseOptionsButton.dds";
+		const char* mainMenuButton = "Resources/Sprites/MainMenuButton.dds";
+		const char* exitGameButton = "Resources/Sprites/ExitGameButton.dds";
+		const char* pauseMenu = "Resources/Sprites/PauseMenuBackground.dds";
+
+		TextureInfo resumeButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(resumeButton);
+		TextureInfo resetButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(resetButton);
+		TextureInfo pOptionsButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(pOptionsButton);
+		TextureInfo menuButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(mainMenuButton);
+		TextureInfo exitGameButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitGameButton);
+		TextureInfo pauseMenuText = ObjectHandler::GetInstance().LoadDDSTextureFile(pauseMenu);
+
+		ImVec2 size = ImVec2(resumeButtonText.width * 1.5 * (float)(_windowWidth / 1280.0f), resumeButtonText.height * 1.5 * (float)(_windowHeight / 720.0f));
+		ImVec2 sizeP = ImVec2(pauseMenuText.width * 1.5 * (float)(_windowWidth / 1280.0f), pauseMenuText.height * 1.5 * (float)(_windowHeight / 720.0f));
+
+
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
-		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (sizeP.x / 2), (float)(_windowHeight / 2) - (sizeP.y / 2)});
+		ImGui::Begin("PauseMenuBG", NULL, window_flags | ImGuiWindowFlags_NoBringToFrontOnFocus);
+		ImGui::Image(pauseMenuText.texture, sizeP);
+		ImGui::End();
+
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (size.x / 2), (float)(_windowHeight / 2) - (size.y * 3) });
+		ImGui::Begin("PauseMenu", NULL, window_flags);
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.55f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
+		if (ImGui::ImageButton(resumeButton, resumeButtonText.texture, size))
+		{
+			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
+			// Code to unpause of the game here or somewhere else
+		}
+		if (ImGui::ImageButton(resetButton, resetButtonText.texture, size))
+		{
+			SceneManager::GetInstance().LoadScene(SceneManager::GetInstance().GetCurrentSceneFilePath());
+		}
+		if (ImGui::ImageButton(pOptionsButton, pOptionsButtonText.texture, size))
+		{
+			LoadSettingsFromFile();
+			ObjectHandler::GetInstance().EnableOptionsMenuUI(true);
+			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
+		}
+		if (ImGui::ImageButton(mainMenuButton, menuButtonText.texture, size))
+		{
+			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
+			SceneManager::GetInstance().LoadScene("Resources/MainMenu.json");
+		}
+		if (ImGui::ImageButton(exitGameButton, exitGameButtonText.texture, size))
+		{
+			exit(0);
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::End();
+	}
+
+	if (ObjectHandler::GetInstance().IsOptionsMenuUIEnabled()) // Options UI
+	{
+		const char* applyButton = "Resources/Sprites/ApplyIcon.dds";
+		const char* backButton = "Resources/Sprites/BackIcon.dds";
+		const char* leftButton = "Resources/Sprites/LeftIcon.dds";
+		const char* rightButton = "Resources/Sprites/RightIcon.dds";
+		const char* fullscreenIcon = "Resources/Sprites/FullScreenIcon.dds";
+		const char* res720Icon = "Resources/Sprites/720pIcon.dds";
+		const char* res900Icon = "Resources/Sprites/900pIcon.dds";
+		const char* res1080Icon = "Resources/Sprites/1080pIcon.dds";
+		const char* soundIcon = "Resources/Sprites/SoundIcon.dds";
+		const char* musicIcon = "Resources/Sprites/MusicIcon.dds";
+
+
+
+		TextureInfo applyButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(applyButton);
+		TextureInfo backButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(backButton);
+		TextureInfo leftButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(leftButton);
+		TextureInfo rightButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(rightButton);
+		TextureInfo fullscreenIconText = ObjectHandler::GetInstance().LoadDDSTextureFile(fullscreenIcon);
+		TextureInfo res720IconText = ObjectHandler::GetInstance().LoadDDSTextureFile(res720Icon);
+		TextureInfo res900IconText = ObjectHandler::GetInstance().LoadDDSTextureFile(res900Icon);
+		TextureInfo res1080IconText = ObjectHandler::GetInstance().LoadDDSTextureFile(res1080Icon);
+		TextureInfo soundIconText = ObjectHandler::GetInstance().LoadDDSTextureFile(soundIcon);
+		TextureInfo musicIconText = ObjectHandler::GetInstance().LoadDDSTextureFile(musicIcon);
+
+
+		ImVec2 size = ImVec2(applyButtonText.width * (float)(_windowWidth / 1280.0f), applyButtonText.height * (float)(_windowHeight / 720.0f));
+		ImVec2 sizeFS = ImVec2(fullscreenIconText.width * (float)(_windowWidth / 1280.0f), fullscreenIconText.height * (float)(_windowHeight / 720.0f));
+		ImVec2 sizeLR = ImVec2(leftButtonText.width * (float)(_windowWidth / 1280.0f), leftButtonText.height * (float)(_windowHeight / 720.0f));
+
+
+		std::vector<TextureInfo> resolutionText = { res720IconText,res900IconText,res1080IconText };
+
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (sizeFS.x / 2), (float)(_windowHeight / 2) - (sizeFS.y / 2) });
 		ImGui::Begin("Options Menu", NULL, window_flags);
-		if (ImGui::ArrowButton("leftArrow", ImGuiDir_Left))
+
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.55f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
+
+		if (ImGui::ImageButton(leftButton, leftButtonText.texture, sizeLR))
 		{
 			if (_currentResolution > 0)
 				_currentResolution -= 1;
 		}
 		ImGui::SameLine();
-		ImGui::Text(resolution[_currentResolution].c_str());
+		ImGui::Image(resolutionText[_currentResolution].texture, sizeFS);
 		ImGui::SameLine();
-		if (ImGui::ArrowButton("rightArrow", ImGuiDir_Right))
+		if (ImGui::ImageButton(rightButton, rightButtonText.texture, sizeLR))
 		{
-			if (_currentResolution < resolution.size()-1)
+			if (_currentResolution < resolutionText.size()-1)
 				_currentResolution += 1;
 		}
-		if (ImGui::Button("Apply"))
+#if EDIT_MODE
+		ImGui::SetTooltip("Resolution and fullscreen settings are disabled in edit mode");
+#endif
+		ImGui::Checkbox(" ", &_useFullscreen);
+		ImGui::SameLine();
+		ImGui::Image(fullscreenIconText.texture, sizeFS);
+
+		ImGui::PushItemWidth(250);
+		ImGui::SliderInt("  ", &_musicVol, 0, 100);
+		ImGui::SameLine();
+		ImGui::Image(musicIconText.texture, size);
+
+		ImGui::SliderInt("   ", &_soundVol, 0, 100);
+		ImGui::SameLine();
+		ImGui::Image(soundIconText.texture, size);
+
+
+		if (ImGui::ImageButton(applyButton, applyButtonText.texture, size))
 		{
 			// Apply setting changes
+			switch (_currentResolution)
+			{
+			case 0:
+			{
+				_resolutionWidth = 1280;
+				_resolutionHeight = 720;
+				break;
+			}
+			case 1:
+			{
+				_resolutionWidth = 1600;
+				_resolutionHeight = 900;
+				break;
+			}
+			case 2:
+			{
+				_resolutionWidth = 1920;
+				_resolutionHeight = 1080;
+				break;
+			}
+			default:
+				_resolutionWidth = 1280;
+				_resolutionHeight = 720;
+				break;
+			}
+
+			json settings;
+			settings["Resolution"] = { _resolutionWidth, _resolutionHeight };
+			settings["Fullscreen"] = _useFullscreen;
+			settings["MusicVol"] = _musicVol;
+			settings["SoundVol"] = _soundVol;
+
+			std::ofstream outFile("Resources/Settings.json");
+			outFile << std::setw(4) << settings << std::endl;
+			outFile.close();
+
+#if !EDIT_MODE
+			ResizeWindow();
+			_swapChain->SetFullscreenState(_useFullscreen, NULL); // Toggle fullscreen
+#endif
 		}
-		if (ImGui::Button("Back"))
+		if (ImGui::ImageButton(backButton, backButtonText.texture, size))
 		{
 			ObjectHandler::GetInstance().EnableOptionsMenuUI(false);
-			ObjectHandler::GetInstance().EnableMainMenuUI(true);
+			if (SceneManager::GetInstance().GetCurrentSceneID() == 0)
+				ObjectHandler::GetInstance().EnableMainMenuUI(true);
+			else
+				ObjectHandler::GetInstance().EnablePauseMenuUI(true);
 		}
+		ImGui::PopStyleColor(3);
 		ImGui::End();
-
 	}
 #if EDIT_MODE
 	static bool linkScaling = true;
@@ -484,11 +734,20 @@ void Graphics::RenderFrame(Scene* scene)
 	const char* boxBodyChoices[] = { "Static", "Kinematic", "Dynamic" };
 	
 	ImGui::Begin("Inspector");
+	if (SceneManager::GetInstance().GetCurrentSceneID() != 0)
+	{
+		if (ImGui::Button("Pause Toggle"))
+		{
+			ObjectHandler::GetInstance().EnablePauseMenuUI(!ObjectHandler::GetInstance().IsPauseMenuUIEnabled());
+		}
+	}
 	if (ImGui::TreeNode("Game Objects"))
 	{
 		int loopNum = 0;
 		for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 		{
+			if (object->GetTag() != JSON_TAG_GAMEOBJECT)
+				continue;
 			// Use SetNextItemOpen() so set the default state of a node to be open. We could
 			// also use TreeNodeEx() with the ImGuiTreeNodeFlags_DefaultOpen flag to achieve the same thing!
 			if (loopNum == 0)
@@ -525,13 +784,6 @@ void Graphics::RenderFrame(Scene* scene)
 
 				int bodyType;
 				float density, friction;
-				if (object->GetComponent<Physics>())
-				{
-					hasPhysics = true;
-					bodyType = object->GetComponent<Physics>()->GetBodyType();
-					density = object->GetComponent<Physics>()->GetDensity();
-					friction = object->GetComponent<Physics>()->GetFriction();
-				}
 
 				ImGui::PushItemWidth(250); // Sets the pixel width of the input boxes
 
@@ -556,38 +808,6 @@ void Graphics::RenderFrame(Scene* scene)
 					}
 					ImGui::DragFloat4("Texture Coords", texCoords, 1.0f, 0.0f, 10.0f);
 				}
-				if (hasPhysics)
-				{
-					ImGui::ListBox("Body Type", &bodyType, boxBodyChoices, IM_ARRAYSIZE(boxBodyChoices), 3);
-					ImGui::DragFloat("Density", &density, 0.025f, 0.0f, 100.0f);
-					ImGui::DragFloat("Friction", &friction, 0.0025f, 0.0f, 1.0f);
-
-					if (ImGui::Button("Remove Physics")) // Remove physics from object
-					{
-						object->RemoveComponent(object->GetComponent<Physics>());
-						hasPhysics = false;
-					}
-				}
-				else
-				{
-					if (ImGui::Button("Add Physics")) // Add physics to object
-					{
-						/*Component* component = nullptr;
-						PhysicsBody* body = new PhysicsBody();
-						body->bodyDef.startPos = object->GetTransform()->GetPosition();
-						body->bodyDef.startingRoatation = object->GetTransform()->GetRotation();
-						body->hitboxdef.bodyType = Dynmaic;
-						body->bodyDef.density = 0.1f;
-						body->bodyDef.friction = 1.0f;
-						body->hitboxdef.scaleX = object->GetTransform()->GetScale().x;
-						body->hitboxdef.scaleY = object->GetTransform()->GetScale().y;
-						body->hitboxdef.shape = Box;
-
-						PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
-						component = new Physics(body, physicsWorld);
-						object->AddComponent(component);*/
-					}
-				}
 				if (ImGui::Button("Reset"))
 				{
 					depth = 0.0f;
@@ -606,12 +826,6 @@ void Graphics::RenderFrame(Scene* scene)
 				if (hasAppearance)
 				{
 					object->GetComponent<Appearance>()->SetTexCoords(texCoords[0], texCoords[1], texCoords[2], texCoords[3]);
-				}
-				if (hasPhysics)
-				{
-					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.bodyDef.type = (b2BodyType)bodyType;
-					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.density = density;
-					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.friction = friction;
 				}
 			}
 			loopNum++;

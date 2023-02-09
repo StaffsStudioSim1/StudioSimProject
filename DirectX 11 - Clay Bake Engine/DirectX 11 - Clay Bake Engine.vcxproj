@@ -159,7 +159,11 @@
     <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="GameObjects\Components\PressurePlateComponent.cpp" />
     <ClCompile Include="Audio\AudioManager.cpp" />
+    <ClCompile Include="GameObjects\MagnetBox.cpp" />
+    <ClCompile Include="GameObjects\MagnetismObject.cpp" />
+    <ClCompile Include="GameObjects\MovingPlatform.cpp" />
     <ClCompile Include="GameObjects\ObjectHandler.cpp" />
+    <ClCompile Include="GameObjects\PlayerMagnetism.cpp" />
     <ClCompile Include="Graphics\AdapterReader.cpp" />
     <ClCompile Include="ClayEngine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
@@ -191,8 +195,13 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Defines.h" />
     <ClInclude Include="GameObjects\Components\AABB.h" />
     <ClInclude Include="GameObjects\GameManager.h" />
+    <ClInclude Include="GameObjects\MagnetBox.h" />
+    <ClInclude Include="GameObjects\MagnetismObject.h" />
+    <ClInclude Include="GameObjects\MovingPlatform.h" />
+    <ClInclude Include="GameObjects\PlayerMagnetism.h" />
     <ClInclude Include="Graphics\Geometry.h" />
     <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="GameObjects\Components\Appearance.h" />

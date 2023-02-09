@@ -3,6 +3,16 @@
 #include "DoorComponent.h"
 #include "../ObjectHandler.h"
 
+
+void Interactable::Start()
+{
+
+	if (_linkedObjectName != "")
+	{
+		linkedObject = ObjectHandler::GetInstance().FindGameObject(_linkedObjectName);
+	}
+}
+
 void Interactable::Interact()
 {
 	//implementation in derived classe
@@ -40,19 +50,14 @@ void Interactable::SendSignal()
 		break;
 
 	}
-
-
 }
 
 //define InteractableLink switchType to define what signal is sent and linkedObject of the name of the target object
 Interactable::Interactable(InteractableLink switchType, std::string linkedObjectName)
 {
 	interactableLink = switchType;
+	_linkedObjectName = linkedObjectName;
 	
-	if (linkedObjectName != "")
-	{
-		linkedObject = ObjectHandler::GetInstance().FindGameObject(linkedObjectName);
-	}
 }
 
 //define InteractableLink switchType to define what signal, without a target object 

@@ -2,8 +2,7 @@
 #include "Component.h"
 #include "../../Physics/Vectors.h"
 #include <DirectXCollision.h>
-
-#define DEBUG true
+#include "../../Defines.h"
 
 #if DEBUG
 #include "../ObjectHandler.h"

@@ -3,11 +3,12 @@
 
 void ButtonComponent::Start()
 {
+	Interactable::Start();
 	m_Active= false; //set state to off on start
 	m_Timer = 0;
 }
 
-ButtonComponent::ButtonComponent(InteractableLink switchType, std::string linkedObjectName)
+ButtonComponent::ButtonComponent(InteractableLink switchType, std::string linkedObjectName) : Interactable(switchType, linkedObjectName)
 {
 	interactableLink = switchType;
 
