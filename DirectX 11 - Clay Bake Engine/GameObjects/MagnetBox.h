@@ -13,7 +13,7 @@ public:
 
     Rigidbody* m_rigidbody;
 
-    float m_PushForce = 100.0f;
+    float m_PushForce = 1.0f;
 };
 
 

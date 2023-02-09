@@ -34,6 +34,9 @@ void PlayerController::Start()
 	_moveSoundEffect = new SoundEffect("Resources/SoundEffects/MetalWalkNoise.wav", true);
 	_moveSoundEffect->SetVolume(0.25f);
 	_magnet = _gameObject->GetComponent<PlayerMagnetism>();
+	
+	_magnet->SetMagnetPushPull(_playerID);
+
 }
 
 void PlayerController::Update(float deltaTime)

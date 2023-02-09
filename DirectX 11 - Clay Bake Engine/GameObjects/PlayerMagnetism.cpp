@@ -4,10 +4,10 @@
 void PlayerMagnetism::Start()
 {
 	m_magnetActive = false;
-	m_handOffest =  Vector2();
+	m_handOffest =  Vector2(10,0);
 	m_currentHandOffset = m_handOffest;
 	m_boxSize =  Vector2();
-	m_magnetDirection = MagnetDirection::PullTowards;
+	//m_magnetDirection = MagnetDirection::PullTowards;
 	m_factingVector = Vector2(1, 1);
 }
 
@@ -23,7 +23,7 @@ void PlayerMagnetism::FixedUpdate(float timeStep)
 		
 		std::vector<GameObject*> inFeild = ObjectHandler::GetInstance().GetObjectsInArea(_gameObject->GetTransform()->GetPosition() + m_currentHandOffset, Vector2(20,20));
 
-		 if(inFeild.size() == 0)
+		 
 		for (GameObject* object : inFeild)
 		{
 			if (object->GetComponent<MagnetismObject>() != nullptr)
@@ -48,7 +48,7 @@ void PlayerMagnetism::ChangeDirection(FacingDirection direction)
 		//change facing vector x to  -1
 		m_factingVector.x = -1;
 		//Current hand ofsett to - of handOffset
-		m_currentHandOffset = Vector2(-m_handOffest.x,-m_handOffest.y);
+		m_currentHandOffset = GetNegVer(m_handOffest);
 		break;
 	case Right:
 		//Change facting vector x to 1
@@ -71,6 +71,14 @@ void PlayerMagnetism::MagnetOn()
 void PlayerMagnetism::MagnetOff()
 {
 	m_magnetActive = false;
+}
+
+void PlayerMagnetism::SetMagnetPushPull(int playerID)
+{
+	if (playerID == 1)
+		m_magnetDirection = MagnetDirection::PushAway;
+	else
+		m_magnetDirection = MagnetDirection::PullTowards;
 }
 
 
