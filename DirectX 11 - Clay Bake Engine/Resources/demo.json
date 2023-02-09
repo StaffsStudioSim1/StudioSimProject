@@ -1,6 +1,6 @@
 {
-  "backgroundImage": "Resources/Sprites/ZoeLevel.dds",
-  "backgroundAudio": "Resources/SoundEffects/FactoryMusicConverted.wav",
+    "backgroundImage": "Resources/Sprites/ZoeLevel.dds",
+	"backgroundAudio": "Resources/SoundEffects/FactoryAmbience.wav",
     "gameObjects": [
         {
             "components": [

@@ -17,10 +17,10 @@ public:
 	json Write();
 
 	void Start();
-	void Update();
+	void Update(float deltaTime);
 	
 	PressurePlateComponent(InteractableLink switchType = Default, std::string linkedObjectName = "");
-	// add physics hitbox
+	
 
 };
 

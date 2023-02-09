@@ -18,7 +18,6 @@ public:
 
 	GameObject* linkedObject;
 	void Start();
-	void Update();
 
 	void SetLinkedObject(std::string objectName) { _linkedObjectName = objectName; }
 
