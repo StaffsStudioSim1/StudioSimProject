@@ -385,6 +385,11 @@ void Graphics::ResizeWindow()
 	RECT rc = { (LONG)centreOfScreenX, (LONG)centreOfScreenY, (LONG)centreOfScreenX + (LONG)_resolutionWidth, (LONG)centreOfScreenY + (LONG)_resolutionHeight };
 	AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
 	SetWindowPos(GetActiveWindow(), NULL, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+	
+	POINT pt;
+	pt.x = centreOfScreenX;
+	pt.y = centreOfScreenY;
+	ClientToScreen(GetActiveWindow(), &pt);
 
 	// Destroy and recreate graphics buffers
 	_deviceContext->OMSetRenderTargets(0, 0, 0);
@@ -401,6 +406,7 @@ void Graphics::ResizeWindow()
 	_deviceContext->Flush();
 
 	_swapChain->ResizeBuffers(0, _resolutionWidth, _resolutionHeight, DXGI_FORMAT_UNKNOWN, 0);
+	_swapChain->SetFullscreenState(_useFullscreen, NULL);
 
 	InitializeDirectX(GetActiveWindow(), _resolutionWidth, _resolutionHeight);
 }
@@ -656,11 +662,13 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::Checkbox(" ", &_useFullscreen);
 		ImGui::SameLine();
 		ImGui::Image(fullscreenIconText.texture, sizeFS);
+
 		ImGui::PushItemWidth(250);
-		ImGui::SliderInt(" ", &_musicVol, 0, 100);
+		ImGui::SliderInt("  ", &_musicVol, 0, 100);
 		ImGui::SameLine();
 		ImGui::Image(musicIconText.texture, size);
-		ImGui::SliderInt(" ", &_soundVol, 0, 100);
+
+		ImGui::SliderInt("   ", &_soundVol, 0, 100);
 		ImGui::SameLine();
 		ImGui::Image(soundIconText.texture, size);
 
@@ -706,7 +714,6 @@ void Graphics::RenderFrame(Scene* scene)
 
 #if !EDIT_MODE
 			ResizeWindow();
-			_swapChain->SetFullscreenState(_useFullscreen, NULL); // Toggle fullscreen
 #endif
 		}
 		if (ImGui::ImageButton(backButton, backButtonText.texture, size))
@@ -739,6 +746,8 @@ void Graphics::RenderFrame(Scene* scene)
 		int loopNum = 0;
 		for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 		{
+			if (object->GetTag() != JSON_TAG_GAMEOBJECT)
+				continue;
 			// Use SetNextItemOpen() so set the default state of a node to be open. We could
 			// also use TreeNodeEx() with the ImGuiTreeNodeFlags_DefaultOpen flag to achieve the same thing!
 			if (loopNum == 0)

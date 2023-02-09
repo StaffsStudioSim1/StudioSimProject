@@ -16,12 +16,14 @@ struct Prefab
 	std::string ghostImageFilepath;
 	DirectX::XMFLOAT4 ghostTexCoords;
 	DirectX::XMFLOAT4X4 ghostTexMatrix;
+	Vector2 ghostOffset;
 	std::string jsonString;
 
-	Prefab(std::string name, std::string ghostImageFilepath, DirectX::XMFLOAT4 texCoords, std::string jsonString)
+	Prefab(std::string name, std::string ghostImageFilepath, DirectX::XMFLOAT4 texCoords, std::string jsonString, Vector2 ghostOffset = Vector2())
 	{
 		this->name = name;
 		this->ghostImageFilepath = ghostImageFilepath;
+		this->ghostOffset = ghostOffset;
 
 		TextureInfo tex = ObjectHandler::GetInstance().LoadDDSTextureFile(ghostImageFilepath);
 		float width = 1.0f / texCoords.x;
