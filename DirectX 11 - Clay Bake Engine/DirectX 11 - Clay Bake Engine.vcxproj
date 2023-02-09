@@ -160,7 +160,6 @@
     <ClCompile Include="GameObjects\Components\PressurePlateComponent.cpp" />
     <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="GameObjects\ObjectHandler.cpp" />
-    <ClCompile Include="GameObjects\Components\Physics.cpp" />
     <ClCompile Include="Graphics\AdapterReader.cpp" />
     <ClCompile Include="ClayEngine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
@@ -179,7 +178,6 @@
     <ClCompile Include="Input\Mouse\MouseEvent.cpp" />
     <ClCompile Include="Examples.cpp" />
     <ClCompile Include="GameObjects\PlayerController.cpp" />
-    <ClCompile Include="Physics\PhysicsInterface.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
     <ClCompile Include="Audio\SoundEffect.cpp" />
@@ -206,8 +204,6 @@
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="Audio\AudioManager.h" />
     <ClInclude Include="GameObjects\ObjectHandler.h" />
-    <ClInclude Include="GameObjects\Components\Physics.h" />
-    <ClInclude Include="GameObjects\Physics.h" />
     <ClInclude Include="Graphics\TextureInfo.h" />
     <ClInclude Include="Graphics\ImGui\imconfig.h" />
     <ClInclude Include="Graphics\ImGui\imgui.h" />
@@ -233,7 +229,6 @@
     <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="GameObjects\PlayerController.h" />
     <ClInclude Include="PhysicsStructs.h" />
-    <ClInclude Include="Physics\PhysicsInterface.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />
     <ClInclude Include="Audio\SoundEffect.h" />
