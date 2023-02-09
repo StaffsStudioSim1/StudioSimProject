@@ -21,9 +21,11 @@ json PlayerController::Write()
 
 void PlayerController::Start()
 {
+	//create new GameManager
+	_gameManager = new GameManager();
 	//Create new PlayerInput
 	_playerInput = new PlayerInput(_playerID);
-
+	
 	//Get the player's RigidBody
 	_rigidbody = _gameObject->GetComponent<Rigidbody>();
 
@@ -77,6 +79,46 @@ void PlayerController::Update(float deltaTime)
 	{
 		_activeJumpTimer += deltaTime;
 	}
+
+	//Increment animation timer
+	if (_activeFrameDelay >= _animationFrameDelay)
+	{
+		_currentFrame++;
+		_activeFrameDelay = 0.0f;
+	}
+	else
+	{
+		_activeFrameDelay += deltaTime;
+	}
+
+	switch (_playerState)
+	{
+	case Idle:
+	{
+		_currentFrame = _currentFrame % 4;
+		_gameObject->GetComponent<Appearance>()->SetTexPos(_currentFrame, 1.0f);
+	}
+	break;
+	case Walking:
+	{
+		_currentFrame =	_currentFrame % 6;
+		_gameObject->GetComponent<Appearance>()->SetTexPos(_currentFrame, 0.0f);
+	}
+	break;
+	case Jumping:
+	{
+		_currentFrame = _currentFrame & 1;
+		_gameObject->GetComponent<Appearance>()->SetTexPos(0.0f, 2.0f);
+	}
+	break;
+	case Falling:
+	{
+		_currentFrame = _currentFrame & 1;
+		_gameObject->GetComponent<Appearance>()->SetTexPos(0.0f, 3.0f);
+	}
+		break;
+	}
+
 }
 
 void PlayerController::FixedUpdate(float timeStep)
@@ -88,6 +130,7 @@ void PlayerController::FixedUpdate(float timeStep)
 		if (!_isWalking)
 		{
 			_moveSoundEffect->Play();
+			_playerState = Walking;
 		}
 		_isWalking = true;
 	}
@@ -95,6 +138,7 @@ void PlayerController::FixedUpdate(float timeStep)
 	{
 		_isWalking = false;
 		_moveSoundEffect->Stop();
+		_playerState = Idle;
 	}
 
 	if (_currentMovement.x < 0.0f)
@@ -161,10 +205,14 @@ void PlayerController::MagnetReleased()
 void PlayerController::PausePressed()
 {
 	//TODO: Link to Ewan's game manager class
+	//GameManager::Pause;
+	//GameManager::UnPause;
+	_gameManager->Pause();
 }
 
 void PlayerController::Stop()
 {
+	delete _gameManager;
 	delete _playerInput;
 	delete _jumpSoundEffect;
 	delete _moveSoundEffect;
