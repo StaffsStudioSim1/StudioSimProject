@@ -505,7 +505,6 @@ void Graphics::RenderFrame(Scene* scene)
 		TextureInfo levelSelectText = ObjectHandler::GetInstance().LoadDDSTextureFile(levelSelect);
 		TextureInfo exitButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitButton);
 
-
 		ImVec2 size = ImVec2(playButtonText.width * 2 * (float)(_windowWidth / 1280.0f), playButtonText.height * 2 * (float)(_windowHeight / 720.0f));
 
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight});
@@ -630,7 +629,6 @@ void Graphics::RenderFrame(Scene* scene)
 
 		ImVec2 size = ImVec2(resumeButtonText.width * 1.5 * (float)(_windowWidth / 1280.0f), resumeButtonText.height * 1.5 * (float)(_windowHeight / 720.0f));
 		ImVec2 sizeP = ImVec2(pauseMenuText.width * 1.5 * (float)(_windowWidth / 1280.0f), pauseMenuText.height * 1.5 * (float)(_windowHeight / 720.0f));
-
 
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
 		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (sizeP.x / 2), (float)(_windowHeight / 2) - (sizeP.y / 2)});
@@ -784,17 +782,6 @@ void Graphics::RenderFrame(Scene* scene)
 				break;
 			}
 
-			//MONITORINFO mi = { sizeof(mi) };
-			//GetMonitorInfo(MonitorFromWindow(GetActiveWindow(), MONITOR_DEFAULTTONEAREST), &mi);
-			//UINT monitorX = mi.rcMonitor.right - mi.rcMonitor.left;
-			//UINT monitorY = mi.rcMonitor.bottom - mi.rcMonitor.top;
-
-			//if (_useFullscreen && (_resolutionWidth != monitorX || _resolutionHeight != monitorY))
-			//{
-			//	_resolutionWidth = monitorX;
-			//	_resolutionHeight = monitorY;
-			//}
-
 			AudioManager::GetInstance().SetMasterVolume(_soundVol);
 
 			json settings;
@@ -808,7 +795,6 @@ void Graphics::RenderFrame(Scene* scene)
 
 #if !EDIT_MODE
 			ResizeWindow();
-			//ResizeWindow();
 #endif
 		}
 		ImGui::Dummy(ImVec2(0.0f, 5.0f));
