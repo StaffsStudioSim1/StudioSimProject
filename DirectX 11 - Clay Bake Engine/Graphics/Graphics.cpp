@@ -596,11 +596,32 @@ void Graphics::RenderFrame(Scene* scene)
 
 	if (ObjectHandler::GetInstance().IsOptionsMenuUIEnabled()) // Options UI
 	{
+		const char* applyButton = "Resources/Sprites/ApplyIcon.dds";
+		const char* backButton = "Resources/Sprites/BackIcon.dds";
+		const char* leftButton = "Resources/Sprites/LeftIcon.dds";
+		const char* rightButton = "Resources/Sprites/RightIcon.dds";
+
+
+		TextureInfo applyButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(applyButton);
+		TextureInfo backButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(backButton);
+		TextureInfo leftButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(leftButton);
+		TextureInfo rightButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(rightButton);
+
+
+		ImVec2 size = ImVec2(applyButtonText.width * (float)(_windowWidth / 1280.0f), applyButtonText.height * (float)(_windowHeight / 720.0f));
+		ImVec2 sizeLR = ImVec2(leftButtonText.width * (float)(_windowWidth / 1280.0f), leftButtonText.height * (float)(_windowHeight / 720.0f));
+
+
 		std::vector<std::string> resolution = { "1280x720","1600x900","1920x1080" };
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
 		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
 		ImGui::Begin("Options Menu", NULL, window_flags);
-		if (ImGui::ArrowButton("leftArrow", ImGuiDir_Left))
+
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.55f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
+
+		if (ImGui::ImageButton(leftButton, leftButtonText.texture, sizeLR))
 		{
 			if (_currentResolution > 0)
 				_currentResolution -= 1;
@@ -608,7 +629,7 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::SameLine();
 		ImGui::Text(resolution[_currentResolution].c_str());
 		ImGui::SameLine();
-		if (ImGui::ArrowButton("rightArrow", ImGuiDir_Right))
+		if (ImGui::ImageButton(rightButton, rightButtonText.texture, sizeLR))
 		{
 			if (_currentResolution < resolution.size()-1)
 				_currentResolution += 1;
@@ -620,7 +641,8 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::PushItemWidth(250);
 		ImGui::SliderInt("Music Volume", &_musicVol, 0, 100);
 		ImGui::SliderInt("Sound Volume", &_soundVol, 0, 100);
-		if (ImGui::Button("Apply"))
+
+		if (ImGui::ImageButton(applyButton, applyButtonText.texture, size))
 		{
 			// Apply setting changes
 			switch (_currentResolution)
@@ -664,7 +686,7 @@ void Graphics::RenderFrame(Scene* scene)
 			_swapChain->SetFullscreenState(_useFullscreen, NULL); // Toggle fullscreen
 #endif
 		}
-		if (ImGui::Button("Back"))
+		if (ImGui::ImageButton(backButton, backButtonText.texture, size))
 		{
 			ObjectHandler::GetInstance().EnableOptionsMenuUI(false);
 			if (SceneManager::GetInstance().GetCurrentSceneID() == 0)
@@ -672,6 +694,7 @@ void Graphics::RenderFrame(Scene* scene)
 			else
 				ObjectHandler::GetInstance().EnablePauseMenuUI(true);
 		}
+		ImGui::PopStyleColor(3);
 		ImGui::End();
 	}
 #if EDIT_MODE
