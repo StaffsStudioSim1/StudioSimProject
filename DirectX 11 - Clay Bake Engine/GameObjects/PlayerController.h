@@ -42,6 +42,7 @@ private:
     //Variables
     PlayerInput* _playerInput;
     Rigidbody* _rigidbody;
+    Transform* _playerTransform;
     Appearance* _playerAppearance;
     SoundEffect* _jumpSoundEffect;
     SoundEffect* _moveSoundEffect;

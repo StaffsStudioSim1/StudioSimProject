@@ -27,6 +27,9 @@ void PlayerController::Start()
 	//Get the player's RigidBody
 	_rigidbody = _gameObject->GetComponent<Rigidbody>();
 
+	// Get the player's transformation info
+	_playerTransform = _gameObject->GetTransform();
+
 	//Get the player's Appearance
 	_playerAppearance = _gameObject->GetComponent<Appearance>();
 
@@ -154,7 +157,8 @@ void PlayerController::FixedUpdate(float timeStep)
 	{
 		if (_facingDirection == Right)
 		{
-			_playerAppearance->FlipTextureOnYAxis();
+			//_playerAppearance->FlipTextureOnYAxis();
+			_playerTransform->FlipHorizontal(true);
 			OutputDebugStringA("Turn Left\n");
 		}
 		_facingDirection = Left;
@@ -163,7 +167,8 @@ void PlayerController::FixedUpdate(float timeStep)
 	{
 		if (_facingDirection == Left)
 		{
-			_playerAppearance->FlipTextureOnYAxis();
+			//_playerAppearance->FlipTextureOnYAxis();
+			_playerTransform->FlipHorizontal(false);
 			OutputDebugStringA("Turn Right\n");
 		}
 		_facingDirection = Right;
