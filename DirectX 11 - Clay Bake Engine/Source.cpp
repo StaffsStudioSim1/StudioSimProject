@@ -18,7 +18,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #endif
 
 	ClayEngine engine;
-	if (engine.Initialize(hInstance, "title", "myWindowClass", (UINT)resolution.x, (UINT)resolution.y))
+	if (engine.Initialize(hInstance, "ClayBakeEngine", "myWindowClass", (UINT)resolution.x, (UINT)resolution.y))
 	{
 		while (engine.ProcessMessages() == true)
 		{
