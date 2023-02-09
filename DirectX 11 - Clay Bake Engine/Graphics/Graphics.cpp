@@ -179,8 +179,8 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		D3D11_SAMPLER_DESC sampDesc;
 		ZeroMemory(&sampDesc, sizeof(sampDesc));
 		sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
+		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
 		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 		sampDesc.MinLOD = 0;
@@ -525,13 +525,13 @@ void Graphics::RenderFrame(Scene* scene)
 
 				int bodyType;
 				float density, friction;
-				if (object->GetComponent<Physics>())
-				{
-					hasPhysics = true;
-					bodyType = object->GetComponent<Physics>()->GetBodyType();
-					density = object->GetComponent<Physics>()->GetDensity();
-					friction = object->GetComponent<Physics>()->GetFriction();
-				}
+				//if (object->GetComponent<Physics>())
+				//{
+				//	hasPhysics = true;
+				//	bodyType = object->GetComponent<Physics>()->GetBodyType();
+				//	density = object->GetComponent<Physics>()->GetDensity();
+				//	friction = object->GetComponent<Physics>()->GetFriction();
+				//}
 
 				ImGui::PushItemWidth(250); // Sets the pixel width of the input boxes
 
@@ -556,18 +556,18 @@ void Graphics::RenderFrame(Scene* scene)
 					}
 					ImGui::DragFloat4("Texture Coords", texCoords, 1.0f, 0.0f, 10.0f);
 				}
-				if (hasPhysics)
-				{
-					ImGui::ListBox("Body Type", &bodyType, boxBodyChoices, IM_ARRAYSIZE(boxBodyChoices), 3);
-					ImGui::DragFloat("Density", &density, 0.025f, 0.0f, 100.0f);
-					ImGui::DragFloat("Friction", &friction, 0.0025f, 0.0f, 1.0f);
+				//if (hasPhysics)
+				//{
+				//	ImGui::ListBox("Body Type", &bodyType, boxBodyChoices, IM_ARRAYSIZE(boxBodyChoices), 3);
+				//	ImGui::DragFloat("Density", &density, 0.025f, 0.0f, 100.0f);
+				//	ImGui::DragFloat("Friction", &friction, 0.0025f, 0.0f, 1.0f);
 
-					if (ImGui::Button("Remove Physics")) // Remove physics from object
-					{
-						object->RemoveComponent(object->GetComponent<Physics>());
-						hasPhysics = false;
-					}
-				}
+				//	if (ImGui::Button("Remove Physics")) // Remove physics from object
+				//	{
+				//		object->RemoveComponent(object->GetComponent<Physics>());
+				//		hasPhysics = false;
+				//	}
+				//}
 				else
 				{
 					if (ImGui::Button("Add Physics")) // Add physics to object
@@ -607,12 +607,12 @@ void Graphics::RenderFrame(Scene* scene)
 				{
 					object->GetComponent<Appearance>()->SetTexCoords(texCoords[0], texCoords[1], texCoords[2], texCoords[3]);
 				}
-				if (hasPhysics)
-				{
-					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.bodyDef.type = (b2BodyType)bodyType;
-					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.density = density;
-					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.friction = friction;
-				}
+				//if (hasPhysics)
+				//{
+				//	object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.bodyDef.type = (b2BodyType)bodyType;
+				//	object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.density = density;
+				//	object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.friction = friction;
+				//}
 			}
 			loopNum++;
 		}
