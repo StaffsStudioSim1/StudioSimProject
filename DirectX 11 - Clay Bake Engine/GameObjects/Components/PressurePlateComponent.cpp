@@ -53,18 +53,11 @@ void PressurePlateComponent::Update()
 	//check hitbox state
 	for (GameObject* object : areaCheck)
 	{
-		if (object->GetComponent<MagnetismObject>() != nullptr || object->GetComponent<PlayerController>())
+		if (object->GetComponent<MagnetismObject>() != nullptr || object->GetComponent<PlayerController>() != nullptr)
 		{
 			WeighedDown();
 			ObjectFound = true;
 		}
-		if (object->GetComponent<PlayerController>())
-		{
-			// if volume occupied call weighed down,
-			WeighedDown();
-			ObjectFound = true;
-		}
-
 	}
 
 	if (ObjectFound != true)
