@@ -13,6 +13,14 @@ enum FacingDirection
     Right
 };
 
+enum PlayerState
+{
+    Idle,
+    Walking,
+    Jumping,
+    Falling
+};
+
 class PlayerController : public Component
 {
 public:
@@ -41,6 +49,10 @@ private:
     float _jumpTimer = 2.0f;
     float _activeJumpTimer = 0.0f;
 
+    float _animationFrameDelay = 0.5f;
+    float _activeFrameDelay = 0.0f;
+    int _currentFrame = 0;
+
     bool _jumpReset = true;
     bool _movementEnabled = true;
     bool _isWalking = false;
@@ -48,6 +60,7 @@ private:
     Vector2 _currentMovement;
     Vector2 _jumpForce = {0.0f, 7000.0f};
     FacingDirection _facingDirection;
+    PlayerState _playerState = Idle;
 
     //Functions
     void JumpPressed();

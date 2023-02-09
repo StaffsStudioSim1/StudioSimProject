@@ -7,41 +7,6 @@
                 {
                     "class": "Appearance",
                     "constructors": [
-                        "Resources/Textures/Test.dds",
-                        1.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "class": "PlayerController",
-                    "constructors": [
-                        1
-                    ]
-                },
-                {
-					"class" : "Rigidbody"
-                }
-            ],
-            "name": "test",
-            "position": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "rotation": 0.0,
-            "scale": [
-                1.0,
-                1.0
-            ]
-        },
-        {
-            "components": [
-                {
-                    "class": "Appearance",
-                    "constructors": [
                         "Resources/Textures/Test2.dds",
                         3.0,
                         2.0,
@@ -50,9 +15,11 @@
                         1.0
                     ]
                 },
-                {
-					"class" : "Rigidbody"
-                }
+				{
+					"class" : "AABB",
+					"constructors" : [10.0, 10.0]
+				}
+				
             ],
             "name": "test2",
             "position": [
@@ -78,9 +45,6 @@
                         0.0,
                         1.0
                     ]
-                },
-                {
-					"class" : "Rigidbody"
                 }
             ],
             "name": "test3",
@@ -109,8 +73,9 @@
                     ]
                 },
                 {
-					"class" : "Rigidbody"
-                }
+					"class" : "AABB",
+					"constructors" : [10.0, 10.0]
+				}
             ],
             "name": "test4",
             "position": [
@@ -137,9 +102,10 @@
                         1.0
                     ]
                 },
-                {
-					"class" : "Rigidbody"
-                }
+               {
+					"class" : "AABB",
+					"constructors" : [10.0, 10.0]
+				}
             ],
             "name": "test5",
             "position": [
@@ -166,9 +132,10 @@
                         1.0
                     ]
                 },
-                {
-					"class" : "Rigidbody"
-                }
+				{
+					"class" : "AABB",
+					"constructors" : [10.0, 10.0]
+				}
             ],
             "name": "test6",
             "position": [
