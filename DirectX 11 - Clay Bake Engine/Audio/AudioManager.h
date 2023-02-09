@@ -17,6 +17,8 @@ public:
 
 	void Update();
 
+	void SetMasterVolume(int volume);
+
 	void AddLoopingSound(SoundEffect* sound);
 	void RemoveLoopingSound(SoundEffect* sound);
 	bool IsLooping(SoundEffect* sound);

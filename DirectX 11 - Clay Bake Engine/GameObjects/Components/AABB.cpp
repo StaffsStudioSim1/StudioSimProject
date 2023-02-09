@@ -20,6 +20,7 @@ json AABB::Write()
 	me[JSON_COMPONENT_CLASS] = "AABB";
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_width);
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_height);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_trigger);
 	return me;
 }
 
