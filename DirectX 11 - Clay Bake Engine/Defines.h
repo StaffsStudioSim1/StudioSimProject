@@ -2,7 +2,7 @@
 
 #define EDIT_MODE false
 
-#define DEBUG true
+#define DEBUG false
 
 #define FPS_5 1.0f/5.0f
 #define FPS_30 1.0f/30.0f
@@ -29,3 +29,5 @@
 
 #define JSON_TAG_GAMEOBJECT "GameObject"
 #define JSON_TAG_STAGECOLLISION "StageCollision"
+
+#define GRAVITY 980.7f

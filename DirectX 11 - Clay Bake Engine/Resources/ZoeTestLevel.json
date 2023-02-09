@@ -1,5 +1,5 @@
 {
-    "backgroundImage": "Resources/Textures/ZoeLevel.dds",
+    "backgroundImage": "Resources/Sprites/ZoeLevel.dds",
     "gameObjects": [
         {
             "components": [
@@ -20,6 +20,9 @@
                         1
                     ]
                 },
+				{
+                "class": "PlayerMagnetism"
+				},
                 {
                     "class": "AABB",
                     "constructors": [

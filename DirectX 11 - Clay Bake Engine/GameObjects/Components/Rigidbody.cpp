@@ -18,13 +18,13 @@ void Rigidbody::FixedUpdate(float timeStep)
 {
 	// Update Net Force
 	if (GameManager::GetInstance().IsGravityFlipped())
-		_netForce.y += 98.1f;
+		_netForce.y += GRAVITY;
 	else
-		_netForce.y -= 98.1f;
+		_netForce.y -= GRAVITY;
 
 	float mag = Magnitude(_velocity);
 	if (mag != 0.0f)
-		_netForce -= Normalized(_velocity) * min(_mass * 98.1f * _frictionCoefficient, mag);
+		_netForce -= Normalized(_velocity) * min(_mass * GRAVITY * _frictionCoefficient, mag);
 
 	// Update Acceleration
 	_acceleration.x = _netForce.x / _mass;
@@ -36,7 +36,6 @@ void Rigidbody::FixedUpdate(float timeStep)
 	_gameObject->GetTransform()->SetPosition(
 		oldPos.x + _velocity.x * timeStep + 0.5f * _acceleration.x * timeStep * timeStep,
 		oldPos.y + _velocity.y * timeStep + 0.5f * _acceleration.y * timeStep * timeStep);
-	//Vector2 newPos = _gameObject->GetTransform()->GetPosition();
 	// Update Velocity
 	_velocity.x = _velocity.x + _acceleration.x * timeStep;
 	_velocity.y = _velocity.y + _acceleration.y * timeStep;
@@ -119,8 +118,6 @@ void Rigidbody::Collide(GameObject* victim)
 	Vector2 result = _velocity - normal * Dot(normal, _velocity);
 	_velocity = result;
 
-	//float penetrationMultiplier = 1 + min_penetration * 10.0;
-	//AddForce(normal * penetrationMultiplier);
 	_gameObject->GetTransform()->SetPosition(_gameObject->GetTransform()->GetPosition() - normal * min_penetration);
 }
 
