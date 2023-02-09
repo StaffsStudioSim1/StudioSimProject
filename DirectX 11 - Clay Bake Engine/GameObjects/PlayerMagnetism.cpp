@@ -30,7 +30,6 @@ void PlayerMagnetism::FixedUpdate(float timeStep)
 			}
 		}
 
-		//TODO
 		//Pysiics Cheack area to find colliders
 		//GameObject* foundObjects[] = 
 		//For each collider found]
