@@ -92,18 +92,6 @@ void Appearance::NextYFrame(bool moveDown)
 	SetTexCoords(texInfo);
 }
 
-void Appearance::FlipTextureOnYAxis()
-{
-	_texCoords.z += 1;
-	UpdateMatrix();
-}
-
-void Appearance::FlipTextureOnXAxis()
-{
-	_texCoords.w += 1;
-	UpdateMatrix();
-}
-
 void Appearance::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
 {
 	if (!_active)

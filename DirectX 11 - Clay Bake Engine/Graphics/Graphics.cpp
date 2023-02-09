@@ -223,7 +223,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		rasterDesc1.MultisampleEnable = true;
 		rasterDesc1.AntialiasedLineEnable = true;
 		rasterDesc1.FillMode = D3D11_FILL_SOLID;
-		rasterDesc1.CullMode = D3D11_CULL_BACK;
+		rasterDesc1.CullMode = D3D11_CULL_NONE; // Leave as none due to the way we're using scale
 		hr = this->_device->CreateRasterizerState(&rasterDesc1, _solidRasterState.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create solid rasteriser state\n");
@@ -703,6 +703,17 @@ void Graphics::RenderFrame(Scene* scene)
 				break;
 			}
 
+			MONITORINFO mi = { sizeof(mi) };
+			GetMonitorInfo(MonitorFromWindow(GetActiveWindow(), MONITOR_DEFAULTTONEAREST), &mi);
+			UINT monitorX = mi.rcMonitor.right - mi.rcMonitor.left;
+			UINT monitorY = mi.rcMonitor.bottom - mi.rcMonitor.top;
+
+			if (_useFullscreen && (_resolutionWidth != monitorX || _resolutionHeight != monitorY))
+			{
+				_resolutionWidth = monitorX;
+				_resolutionHeight = monitorY;
+			}
+
 			json settings;
 			settings["Resolution"] = { _resolutionWidth, _resolutionHeight };
 			settings["Fullscreen"] = _useFullscreen;
@@ -714,6 +725,7 @@ void Graphics::RenderFrame(Scene* scene)
 			outFile.close();
 
 #if !EDIT_MODE
+			ResizeWindow();
 			ResizeWindow();
 #endif
 		}

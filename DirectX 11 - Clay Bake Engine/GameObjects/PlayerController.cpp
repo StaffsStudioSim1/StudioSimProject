@@ -1,4 +1,5 @@
 #include "PlayerController.h"
+#include "PlayerMagnetism.h"
 
 
 PlayerController::PlayerController(int id)
@@ -27,6 +28,9 @@ void PlayerController::Start()
 	//Get the player's RigidBody
 	_rigidbody = _gameObject->GetComponent<Rigidbody>();
 
+	// Get the player's transformation info
+	_playerTransform = _gameObject->GetTransform();
+
 	//Get the player's Appearance
 	_playerAppearance = _gameObject->GetComponent<Appearance>();
 
@@ -35,6 +39,10 @@ void PlayerController::Start()
 	_jumpSoundEffect->SetVolume(0.25f);
 	_moveSoundEffect = new SoundEffect("Resources/SoundEffects/MetalWalkNoise.wav", true);
 	_moveSoundEffect->SetVolume(0.25f);
+	_magnet = _gameObject->GetComponent<PlayerMagnetism>();
+	
+	_magnet->SetMagnetPushPull(_playerID);
+
 }
 
 void PlayerController::Update(float deltaTime)
@@ -154,19 +162,23 @@ void PlayerController::FixedUpdate(float timeStep)
 	{
 		if (_facingDirection == Right)
 		{
-			_playerAppearance->FlipTextureOnYAxis();
+			//_playerAppearance->FlipTextureOnYAxis();
+			_playerTransform->FlipHorizontal(true);
 			OutputDebugStringA("Turn Left\n");
 		}
 		_facingDirection = Left;
+		_magnet->ChangeDirection(_facingDirection);		
 	}
 	else if (_currentMovement.x > 0.0f)
 	{
 		if (_facingDirection == Left)
 		{
-			_playerAppearance->FlipTextureOnYAxis();
+			//_playerAppearance->FlipTextureOnYAxis();
+			_playerTransform->FlipHorizontal(false);
 			OutputDebugStringA("Turn Right\n");
 		}
 		_facingDirection = Right;
+		_magnet->ChangeDirection(_facingDirection);		
 	}
 }
 
@@ -209,12 +221,12 @@ void PlayerController::InteractPressed()
 
 void PlayerController::MagnetPressed()
 {
-	//TODO: Link to Will's magnet class
+	_magnet->MagnetOn();
 }
 
 void PlayerController::MagnetReleased()
 {
-	//TODO: Link to Will's magnet class
+	_magnet->MagnetOff();
 }
 
 void PlayerController::Stop()
