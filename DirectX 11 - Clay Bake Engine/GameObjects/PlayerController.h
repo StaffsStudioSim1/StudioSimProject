@@ -54,7 +54,7 @@ private:
     int _playerID;
     float _moveSpeed = 100.0f;
     float _topSpeed = 10000.0f;
-    float _jumpTimer = 2.0f;
+    float _jumpTimer = 1.0f;
     float _activeJumpTimer = 0.0f;
     float _animationFrameDelay = 0.1f;
     float _activeFrameDelay = 0.0f;
@@ -63,6 +63,7 @@ private:
     bool _jumpReset = true;
     bool _movementEnabled = true;
     bool _isWalking = false;
+    bool _isJumping = false;
 
     Vector2 _interactArea = Vector2{ 5.0f ,5.0f };
     Vector2 _currentMovement;
