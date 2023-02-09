@@ -8,12 +8,15 @@ void DoorComponent::start()
 
 void DoorComponent::Open()
 {
-	//TODO: disable renderer if enabled
-
+	//disable renderer if enabled
 	_gameObject->GetComponent<Appearance>()->SetAlphaMultiplier(0.0f);
 
 
-	//TODO: disable collider if enabled
+	//disable collider if enabled
+	if (_gameObject->GetComponent<AABB>()->IsActive())
+	{
+		_gameObject->GetComponent<AABB>()->SetActive(false);
+	}
 
 	m_Opened = true;
 }
@@ -23,7 +26,11 @@ void DoorComponent::Close()
 	//TODO: enable renderer if disabled
 	_gameObject->GetComponent<Appearance>()->SetAlphaMultiplier(1.0f);
 
-	//TODO: enable collider if disabled
+	//disable collider if enabled
+	if (!_gameObject->GetComponent<AABB>()->IsActive())
+	{
+		_gameObject->GetComponent<AABB>()->SetActive(true);
+	}
 
 	m_Opened = false;
 }

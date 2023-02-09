@@ -18,6 +18,8 @@ public:
 
 	GameObject* linkedObject;
 	void Start();
+	void Update();
+
 	//member variables
 	InteractableLink interactableLink; //InteractableLink chooses what the function of each interactable is
 	std::string _linkedObjectName; //name of object the signal is sent to
