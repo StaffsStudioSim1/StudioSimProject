@@ -1,6 +1,6 @@
 {
+    "backgroundAudio": "",
     "backgroundImage": "Resources/Sprites/ZoeLevel.dds",
-	"backgroundAudio": "Resources/SoundEffects/FactoryMusicConverted.wav",
     "gameObjects": [
         {
             "components": [
@@ -21,14 +21,15 @@
                         1
                     ]
                 },
-				{
-                "class": "PlayerMagnetism"
-				},
+                {
+                    "class": "PlayerMagnetism"
+                },
                 {
                     "class": "AABB",
                     "constructors": [
                         11.0,
-                        16.0
+                        16.0,
+                        false
                     ]
                 },
                 {
@@ -47,8 +48,242 @@
                 1.75
             ],
             "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Gold Goal.dds",
+                        1.0,
+                        6.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "Goal",
+                    "constructors": [
+                        ""
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        36.0,
+                        36.0,
+                        true
+                    ]
+                }
+            ],
+            "name": "Goal [190]",
+            "position": [
+                -279.0,
+                117.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                0.25,
+                0.25
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player1.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        1
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0,
+                        false
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Blue [191]",
+            "position": [
+                243.0,
+                -153.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.75,
+                1.75
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player2.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        2
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0,
+                        false
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Red [192]",
+            "position": [
+                279.0,
+                -153.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.75,
+                1.75
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Door.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "DoorComponent"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        16.0,
+                        32.0,
+                        false
+                    ]
+                }
+            ],
+            "name": "Door [193]",
+            "position": [
+                -99.0,
+                99.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Door.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "DoorComponent"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        16.0,
+                        32.0,
+                        false
+                    ]
+                }
+            ],
+            "name": "Door [194]",
+            "position": [
+                -243.0,
+                117.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Lamp.dds",
+                        2.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        18.0
+                    ]
+                }
+            ],
+            "name": "Lamp [195]",
+            "position": [
+                -297.0,
+                117.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
         }
     ],
     "sceneID": 98,
-    "stageCollision": "111111111111111111111111111111111111100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000111111000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000011111100000000000000000001100000000000000000000000000000000001100000000000000000000001111110000001100000000000000000000000000000000001100000000000000000000000000000000001100000000111000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001111111111111111111111111111111111111"
+    "stageCollision": "111111111111111111111111111111111111100000000001000010000000000000000001100000000001111110000000000000000001100000000000000000000000000000000001100011111000000000000111111000000001100000000000000000000000000000000001100000000000000000000000000000011111100000000011111100000000000000000001100000000000000000000000000000000001101111100000000000000001111110000001100000000000000000000000000000000001100000000000000000000000000000000111100000000111000000000000000000000001100000000000000000000000000111000001100000000000111111111111100000000001111111000000000001100000000000000001100000000000000001100000000000000111100000000000100001100001000000000001100010000000100001100001000000000001111111111111111111111111111111111111"
 }
