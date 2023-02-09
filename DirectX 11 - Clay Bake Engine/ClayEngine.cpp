@@ -3,6 +3,7 @@
 #include "Audio/AudioManager.h"
 #include "SceneManager.h"
 #include "GameObjects/ObjectHandler.h"
+#include "Defines.h"
 
 
 bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)

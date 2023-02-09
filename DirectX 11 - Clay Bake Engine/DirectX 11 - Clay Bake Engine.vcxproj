@@ -195,6 +195,7 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Defines.h" />
     <ClInclude Include="GameObjects\Components\AABB.h" />
     <ClInclude Include="GameObjects\GameManager.h" />
     <ClInclude Include="GameObjects\MagnetBox.h" />
