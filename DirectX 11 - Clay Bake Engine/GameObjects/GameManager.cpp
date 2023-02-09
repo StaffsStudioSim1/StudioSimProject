@@ -1,10 +1,4 @@
 #include "GameManager.h"
-#include "../SceneManager.h"
-#include "ObjectHandler.h"
-#include "../Input/PlayerInput.h"
-#include "../nlohmann/json.hpp"
-using nlohmann::json;
-
 
 GameManager::GameManager()
 {
@@ -48,34 +42,14 @@ void GameManager::LevelLose()
 	SceneManager::GetInstance().LoadScene("Resources/LoseScreen.json");
 }
 
-void GameManager::LevelReset()
-{
-	//reset the current level
-	//restart time
-	SceneManager::GetInstance().LoadScene(_currentScene->GetFilePath());
-}
-
 void GameManager::Pause()
 {
 	//pause the game
-	if (isPaused)
-		return;
-	isPaused = true;
+	isPaused = !isPaused;
 	//set time to 0 - pause time
 	//freeze all input
 	//bring up pause menu
-	ObjectHandler::GetInstance().EnablePauseMenuUI(true);
-}
-
-void GameManager::UnPause()
-{
-	//resume the game
-	if (!isPaused)
-		return;
-	isPaused = false;
-	//close pause menu
-	ObjectHandler::GetInstance().EnablePauseMenuUI(false);
-	//continue time
+	ObjectHandler::GetInstance().EnablePauseMenuUI(isPaused);
 }
 
 void GameManager::GravityFlip()

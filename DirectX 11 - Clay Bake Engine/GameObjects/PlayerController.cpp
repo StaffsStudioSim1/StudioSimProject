@@ -166,11 +166,11 @@ void PlayerController::PausePressed()
 	//GameManager::Pause;
 	//GameManager::UnPause;
 	_gameManager->Pause();
-	_gameManager->UnPause();
 }
 
 void PlayerController::Stop()
 {
+	delete _gameManager;
 	delete _playerInput;
 	delete _jumpSoundEffect;
 	delete _moveSoundEffect;

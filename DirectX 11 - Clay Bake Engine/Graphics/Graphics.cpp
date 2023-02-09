@@ -579,6 +579,7 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::ImageButton(resetButton, resetButtonText.texture, size))
 		{
+			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
 			SceneManager::GetInstance().LoadScene(SceneManager::GetInstance().GetCurrentSceneFilePath());
 		}
 		if (ImGui::ImageButton(pOptionsButton, pOptionsButtonText.texture, size))
