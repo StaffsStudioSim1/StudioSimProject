@@ -108,17 +108,7 @@ void ClayEngine::Update()
 	if (_scene != nullptr)
 		_scene->Update(deltaTime);
 
-	// Example message for object collision
-	if (ObjectHandler::GetInstance().GetAllObjects().size() > 2)
-	{
-		if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>() && ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()) // Checks both objects have physics
-		{
-			if (ObjectHandler::GetInstance().GetGameObject(1)->GetComponent<Physics>()->IsObjectCollidingwith(*ObjectHandler::GetInstance().GetGameObject(2)->GetComponent<Physics>()->GetPhysicsBody()))
-			{
-				OutputDebugStringA("obj 1 and 2 have collided \n");
-			}
-		}
-	}
+
 
 	dwTimeStart = dwTimeCur;
 #endif
