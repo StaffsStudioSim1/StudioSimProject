@@ -29,3 +29,10 @@ void MagnetBox::Stop()
 {
 	
 }
+
+json MagnetBox::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "MagnetBox";
+	return me;
+}

@@ -12,6 +12,7 @@ public:
     void Stop();
 
     Rigidbody* m_rigidbody;
+    json Write();
 
     float m_PushForce = 2.5f;
 };

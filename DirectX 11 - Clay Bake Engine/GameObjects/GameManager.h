@@ -17,10 +17,14 @@ class GameManager
     bool isGravityFlipped;
     vector <int> levelList;
     Scene* _currentScene;
+    SoundEffect* _pauseSound;
+    string _pauseFilePath;
     string Levels[5] = { "Level1", "Level2", "Level3", "Level4", "Level5" };
 
 public:
     GameManager();
+    ~GameManager();
+
     // Singleton Code
     static GameManager& GetInstance()
     {

@@ -6,6 +6,12 @@ GameManager::GameManager()
 	isPaused = false;
 	isGravityFlipped = false;
 	_currentScene = nullptr;
+	_pauseSound = new SoundEffect("Resources/SoundEffects/PauseSound.wav");
+}
+
+GameManager::~GameManager()
+{
+	delete _pauseSound;
 }
 
 void GameManager::SceneChanged(Scene* scene)
@@ -48,6 +54,8 @@ void GameManager::Pause()
 	isPaused = !isPaused;
 	//set time to 0 - pause time
 	//freeze all input
+	//play pause sound
+	_pauseSound->Play();
 	//bring up pause menu
 	ObjectHandler::GetInstance().EnablePauseMenuUI(isPaused);
 }

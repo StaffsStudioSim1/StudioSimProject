@@ -282,6 +282,9 @@
   <ItemGroup>
     <ResourceCompile Include="DirectX 11 - Clay Bake Engine.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="Resources\SoundEffects\MagnetBuzzSound.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\directxtk_desktop_win10.2022.12.16.1\build\native\directxtk_desktop_win10.targets" Condition="Exists('..\packages\directxtk_desktop_win10.2022.12.16.1\build\native\directxtk_desktop_win10.targets')" />
