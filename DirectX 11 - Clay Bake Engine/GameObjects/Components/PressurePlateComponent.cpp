@@ -18,7 +18,7 @@ void PressurePlateComponent::Start()
 
 
 	m_Position.x = _gameObject->GetTransform()->GetPosition().x;
-	m_Position.y = _gameObject->GetTransform()->GetPosition().y + 0.5*m_Boxsize.y;
+	m_Position.y = _gameObject->GetTransform()->GetPosition().y + 0.5 * m_Boxsize.y;
 	m_WeighedDown = false;
 }
 
@@ -37,15 +37,15 @@ void PressurePlateComponent::WeightReleased()
 json PressurePlateComponent::Write()
 {
 	json me;
-	me[JSON_COMPONENT_CLASS] = "PressurePlate";
+	me[JSON_COMPONENT_CLASS] = "PressurePlateComponent";
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(interactableLink);
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_linkedObjectName);
 	return me;
 }
 
-void PressurePlateComponent::Update()
+void PressurePlateComponent::Update(float deltaTime)
 {
-	
+
 	std::vector<GameObject*> areaCheck = ObjectHandler::GetInstance().GetObjectsInArea(m_Position, m_Boxsize);
 
 	bool ObjectFound = false;
@@ -55,12 +55,13 @@ void PressurePlateComponent::Update()
 	{
 		if (object->GetComponent<MagnetismObject>() != nullptr || object->GetComponent<PlayerController>() != nullptr)
 		{
-			WeighedDown();
+			if (!m_WeighedDown)
+				WeighedDown();
 			ObjectFound = true;
 		}
 	}
 
-	if (ObjectFound != true)
+	if (!ObjectFound && m_WeighedDown)
 	{
 		// call weight released on volume not being occupied
 		WeightReleased();
