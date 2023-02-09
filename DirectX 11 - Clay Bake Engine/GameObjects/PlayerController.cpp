@@ -95,6 +95,17 @@ void PlayerController::FixedUpdate(float timeStep)
 		_isWalking = false;
 		_moveSoundEffect->Stop();
 	}
+
+	if (_currentMovement.x < 0.0f)
+	{
+		_facingDirection = Left;
+		//Magnet code
+	}
+	else if (_currentMovement.x > 0.0f)
+	{
+		_facingDirection = Right;
+		//Magnet code
+	}
 }
 
 
