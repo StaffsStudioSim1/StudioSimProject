@@ -202,8 +202,8 @@ void PlayerController::JumpPressed()
 	else
 	_isJumping = true;
 
-	if (!_jumpReset)
-		return;
+	//if (!_jumpReset)
+	//	return;
 
 	_jumpReset = false;
 
