@@ -42,10 +42,9 @@ private:
     //Variables
     PlayerInput* _playerInput;
     Rigidbody* _rigidbody;
-
+    Appearance* _playerAppearance;
     SoundEffect* _jumpSoundEffect;
     SoundEffect* _moveSoundEffect;
-    GameManager* _gameManager;
 
     int _playerID;
     float _moveSpeed = 100.0f;
@@ -64,7 +63,7 @@ private:
     Vector2 _interactArea = Vector2{ 100000.0f ,1000000.0f };
     Vector2 _currentMovement;
     Vector2 _jumpForce = {0.0f, 7000.0f};
-    FacingDirection _facingDirection;
+    FacingDirection _facingDirection = Right;
     PlayerState _playerState = Idle;
 
     //Functions
