@@ -183,7 +183,6 @@
     <ClCompile Include="Input\Mouse\MouseEvent.cpp" />
     <ClCompile Include="Examples.cpp" />
     <ClCompile Include="GameObjects\PlayerController.cpp" />
-    <ClCompile Include="Physics\PhysicsInterface.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Graphics\Shaders.cpp" />
     <ClCompile Include="Audio\SoundEffect.cpp" />
@@ -243,7 +242,6 @@
     <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="GameObjects\PlayerController.h" />
     <ClInclude Include="PhysicsStructs.h" />
-    <ClInclude Include="Physics\PhysicsInterface.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Graphics\Shaders.h" />
     <ClInclude Include="Audio\SoundEffect.h" />

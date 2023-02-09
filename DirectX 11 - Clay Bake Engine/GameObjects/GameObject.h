@@ -2,7 +2,6 @@
 
 #include "Components/Component.h"
 #include "Transform.h"
-#include "Components/Physics.h"
 #include "../Graphics/ConstantBuffer.h"
 #include "../nlohmann/json.hpp"
 using json = nlohmann::json;
