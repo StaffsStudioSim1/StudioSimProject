@@ -35,8 +35,6 @@ public:
 	void UpdateMatrix();
 	void NextXFrame(bool direction);
 	void NextYFrame(bool direction);
-	void FlipTextureOnYAxis(); // i.e. looking left to right
-	void FlipTextureOnXAxis(); // i.e. switching gravity
 
 	float GetAlphaMultiplier() const noexcept { return _alphaMultiplier; }
 	void SetAlphaMultiplier(float alpha) { _alphaMultiplier = alpha; }

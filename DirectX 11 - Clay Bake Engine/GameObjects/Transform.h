@@ -21,6 +21,9 @@ public:
 	void SetPositionChange(Vector2 change) { _position.x += change.x; _position.y += change.y; }
 	void SetPositionChange(float x, float y) { _position.x += x; _position.y += y; }
 
+	void FlipHorizontal() { _scale.x = -_scale.x; }
+	void FlipVertical() { _scale.y = -_scale.y; }
+
 	float GetDepthPos() const noexcept { return _depthPos; }
 	void SetDepthPos(float depth) { _depthPos = depth; }
 
@@ -28,8 +31,8 @@ public:
 	void SetRotation(float rotation) { _rotation = rotation; }
 	void SetRotationChange(float change) { _rotation += change; }
 
-	DirectX::XMFLOAT2 GetScale() const noexcept { return _scale; }
-	Vector2 GetVectorScale() { Vector2 vScale; vScale.x = _scale.x; vScale.y = _scale.y; return vScale; }
+	DirectX::XMFLOAT2 GetScale() const noexcept { DirectX::XMFLOAT2 absScale = _scale; return DirectX::XMFLOAT2(fabsf(absScale.x), fabsf(absScale.y)); }
+	Vector2 GetVectorScale() { Vector2 vScale = {_scale.x, _scale.y }; vScale.x = fabsf(vScale.x); vScale.y = fabsf(vScale.y); return vScale; }
 	void SetScale(DirectX::XMFLOAT2 scale) { _scale = scale; }
 	void SetScale(Vector2 scale) { _scale.x = scale.x; _scale.y = scale.y; }
 	void SetScale(float x, float y) { _scale.x = x; _scale.y = y; }
