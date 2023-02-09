@@ -22,12 +22,17 @@ void Rigidbody::FixedUpdate(float timeStep)
 	else
 		_netForce.y -= 98.1f;
 
+	float mag = Magnitude(_velocity);
+	if (mag != 0.0f)
+		_netForce -= Normalized(_velocity) * min(_mass * 98.1f * _frictionCoefficient, mag);
+
 	// Update Acceleration
 	_acceleration.x = _netForce.x / _mass;
 	_acceleration.y = _netForce.y / _mass;
 
 	// Update Position
 	Vector2 oldPos = _gameObject->GetTransform()->GetPosition();
+	oldPos += _input * timeStep;
 	_gameObject->GetTransform()->SetPosition(
 		oldPos.x + _velocity.x * timeStep + 0.5f * _acceleration.x * timeStep * timeStep,
 		oldPos.y + _velocity.y * timeStep + 0.5f * _acceleration.y * timeStep * timeStep);
@@ -42,6 +47,11 @@ void Rigidbody::FixedUpdate(float timeStep)
 void Rigidbody::AddForce(Vector2 force)
 {
 	_netForce += force;
+}
+
+void Rigidbody::SetInput(Vector2 input)
+{
+	_input = input;
 }
 
 void Rigidbody::Collide(GameObject* victim)

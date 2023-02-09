@@ -38,14 +38,50 @@ Scene::Scene(std::string filePath, int width, int height)
 #if !EDIT_MODE
 	if (map != "")
 	{
-		for (int x = 0; x < 36; x++)
-			for (int y = 0; y < 20; y++)
-				if (map[x + y * 36] == '1')
+		// y, x
+		int matrix[20][36];
+		for (int i = 0; i < map.length(); i++)
+		{
+			matrix[i / 36][i % 36] = map[i] - 48;
+		}
+		for (int y = 0; y < 20; y++)
+			for (int x = 0; x < 36; x++)
+				if (matrix[y][x] == 1)
 				{
+					matrix[y][x] = 2;
+					Vector2 rect = Vector2(1, 1);
+
+					// Attempt to expand the box sideways
+					for (int x2 = x + 1; x2 < 36; x2++)
+					{
+						if (matrix[y][x2] == 1)
+						{
+							rect.x++;
+							matrix[y][x2] = 2;
+						}
+						else
+							break;
+					}
+
+					// If that failed, try and expand upwards
+					if (rect.x == 1)
+						for (int y2 = y + 1; y2 < 20; y2++)
+						{
+							if (matrix[y2][x] == 1)
+							{
+								rect.y++;
+								matrix[y2][x] = 2;
+							}
+							else
+								break;
+						}
+
+
 					GameObject* go = new GameObject("Stage Collision (" + std::to_string(x) + "," + std::to_string(y) + ")");
 					go->SetTag(JSON_TAG_STAGECOLLISION);
-					go->GetTransform()->SetPosition(GridToWorld(Vector2(x, y)));
-					go->AddComponent(new AABB(_snapScale, _snapScale));
+
+					go->GetTransform()->SetPosition(GridToWorld(Vector2(x, y)) + (rect - Vector2(1, 1)) * _snapScale / 2.0f);
+					go->AddComponent(new AABB(_snapScale * rect.x, _snapScale * rect.y));
 
 					_children.push_back(go);
 				}
@@ -79,12 +115,12 @@ Scene::Scene(std::string filePath, int width, int height)
 					tempJson[JSON_GO_POSITION].push_back(0.0f);
 					GameObject* tempObj = new GameObject(tempJson);
 					_children.push_back(tempObj);
-				}
+					}
 
 		_objNum = _children.size();
-	}
+				}
 #endif
-}
+	}
 
 Scene::~Scene()
 {
@@ -117,7 +153,7 @@ void Scene::Save()
 			Vector2 gridPos = WorldToGrid(obj->GetTransform()->GetPosition());
 			// For each 1 y, 36 x's have to be added
 			map = map.replace(gridPos.x + gridPos.y * 36, 1, "1");
-		}
+}
 	}
 
 	scene[JSON_SCENE_GAMEOBJECTS] = gameObjects;
@@ -248,7 +284,7 @@ void Scene::Update(float deltaTime)
 				_texture = ObjectHandler::GetInstance().LoadDDSTextureFile(_prefabs[_prefabNum].ghostImageFilepath);
 			}
 			break;
-		}
+}
 	}
 #else
 	for (GameObject* obj : _children)

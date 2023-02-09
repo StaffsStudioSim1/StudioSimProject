@@ -80,9 +80,7 @@ void PlayerController::Update(float deltaTime)
 
 void PlayerController::FixedUpdate(float timeStep)
 {
-	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
-	{
-		_rigidbody->AddForce(_currentMovement * _moveSpeed);
+	_rigidbody->SetInput(_currentMovement * _moveSpeed);
 
 		if (!_isWalking)
 		{
