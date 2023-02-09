@@ -37,12 +37,10 @@ void Goal::Update()
 
 	if(_playerCount >= 2)
 	{
-		LevelWin();
+		//LevelWin();
+		GameManager::GetInstance().LevelWin();
 	}
 	
 }
 
-void Goal::LevelWin()
-{
-	SceneManager::GetInstance().LoadScene(_NextLevelName);
-}
+
