@@ -82,12 +82,10 @@ void PlayerController::FixedUpdate(float timeStep)
 {
 	_rigidbody->SetInput(_currentMovement * _moveSpeed);
 
-		if (!_isWalking)
-		{
-			_moveSoundEffect->Play();
-		}
+	if (!_isWalking)
+	{
+		_moveSoundEffect->Play();
 		_isWalking = true;
-
 	}
 	else
 	{
