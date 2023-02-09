@@ -28,10 +28,18 @@ private:
 	bool InitializeShaders();
 	bool InitializeScene();
 
+	void ResizeWindow();
+
+	void LoadSettingsFromFile();
+
+	bool _initialStart = true; // used to prevent memory leaks when resizing the window
 	int _windowWidth, _windowHeight;
 
-	// For options resolution
+	// For options - here for the time being
 	int _currentResolution = 0;
+	int _resolutionWidth, _resolutionHeight;
+	bool _useFullscreen = false;
+	int _musicVol, _soundVol;
 
 	Microsoft::WRL::ComPtr <ID3D11Device>				_device;
 	Microsoft::WRL::ComPtr <ID3D11DeviceContext>		_deviceContext;
@@ -58,5 +66,4 @@ private:
 	DirectX::XMFLOAT4X4									_world;
 	DirectX::XMFLOAT4X4									_view;
 	DirectX::XMFLOAT4X4									_projection;
-
 };

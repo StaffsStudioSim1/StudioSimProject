@@ -10,6 +10,9 @@
 #include "PlayerController.h"
 #include "../Input/PlayerInput.h"
 #include "GameManager.h"
+#include "PlayerMagnetism.h"
+#include "MovingPlatform.h"
+#include "MagnetBox.h"
 
 GameObject::GameObject(std::string name) : GameObject(name, Vector3(0.0f, 0.0f, 0.0f), Vector2(1.0f, 1.0f), 0.0f)
 {
@@ -100,6 +103,29 @@ GameObject::GameObject(json objectJson)
 			float width = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
 			float height = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
 			component = new AABB(width, height);
+		}
+
+		else if (type == "MagnetBox")
+		{
+			component = new MagnetBox();
+		}
+		else if (type == "MovingPlatform")
+		{
+
+			if (componentJson.contains(JSON_COMPONENT_CONSTRUCTORS))
+			{
+				component = new MovingPlatform(componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(2), componentJson[JSON_COMPONENT_CONSTRUCTORS].at(3));
+			}
+			else
+			{
+				component = new MovingPlatform(100.0f, 0, 100.0f, 0);
+
+			}
+
+		}
+		else if (type == "PlayerMagnetism")
+		{
+			component = new PlayerMagnetism();
 		}
 
 		if (component != nullptr)

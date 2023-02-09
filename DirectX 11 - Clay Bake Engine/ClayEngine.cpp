@@ -3,6 +3,7 @@
 #include "Audio/AudioManager.h"
 #include "SceneManager.h"
 #include "GameObjects/ObjectHandler.h"
+#include "Defines.h"
 
 
 bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
@@ -33,7 +34,7 @@ bool ClayEngine::Initialize(HINSTANCE hInstance, std::string window_title, std::
 
 	_initialised = true;
 #if EDIT_MODE
-	SceneManager::GetInstance().LoadScene("Resources/SaveTest.json");
+	SceneManager::GetInstance().LoadScene("Resources/demo.json");
 #else
 	SceneManager::GetInstance().LoadScene("Resources/MainMenu.json");
 #endif
