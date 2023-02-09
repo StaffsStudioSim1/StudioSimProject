@@ -1,6 +1,8 @@
 #pragma once
 #include "DoorComponent.h"
+#include "../GameObject.h"
 #include "AABB.h"
+#include "Appearance.h"
 
 void DoorComponent::Start()
 {
