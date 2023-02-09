@@ -1,18 +1,17 @@
 #pragma once
-#include "Interactable.h"
-#include "AABB.h"
-
+#include "Component.h"
 
 class DoorComponent : public Component
 {
 public:
 	bool m_Opened;
-	void start();
-	
+
+	void Start();
+
+	json Write();
+
 	void Open();
 	void Close();
-
-	DoorComponent();
 
 	void SwitchState();
 

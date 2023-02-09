@@ -10,9 +10,10 @@ public:
 	Vector2 m_Boxsize;
 	Vector2 m_Position;
 	
-	
 	void WeighedDown();
 	void WeightReleased();
+
+	json Write();
 
 	void Start();
 	void Update();

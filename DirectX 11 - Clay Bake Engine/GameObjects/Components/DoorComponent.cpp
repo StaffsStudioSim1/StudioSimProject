@@ -1,9 +1,18 @@
 #pragma once
 #include "DoorComponent.h"
+#include "AABB.h"
 
-void DoorComponent::start()
+void DoorComponent::Start()
 {
 	m_Opened = false;
+	_gameObject->GetTransform()->SetPosition(_gameObject->GetTransform()->GetPosition() + Vector2(0.0f, 7.0f));
+}
+
+json DoorComponent::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "DoorComponent";
+	return me;
 }
 
 void DoorComponent::Open()
@@ -33,11 +42,6 @@ void DoorComponent::Close()
 	}
 
 	m_Opened = false;
-}
-
-DoorComponent::DoorComponent()
-{
-	start();
 }
 
 
