@@ -79,7 +79,7 @@ void PlayerController::FixedUpdate(float timeStep)
 {
 	//Vector2 currentVelocity = _rigidbody->GetVelocity();
 
-	_rigidbody->AddInput(_currentMovement * _moveSpeed);
+	_rigidbody->SetInput(_currentMovement * _moveSpeed);
 
 	/*if (_isJumping)
 	{
