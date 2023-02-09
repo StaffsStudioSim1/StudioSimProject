@@ -601,21 +601,36 @@ void Graphics::RenderFrame(Scene* scene)
 		const char* backButton = "Resources/Sprites/BackIcon.dds";
 		const char* leftButton = "Resources/Sprites/LeftIcon.dds";
 		const char* rightButton = "Resources/Sprites/RightIcon.dds";
+		const char* fullscreenIcon = "Resources/Sprites/FullScreenIcon.dds";
+		const char* res720Icon = "Resources/Sprites/720pIcon.dds";
+		const char* res900Icon = "Resources/Sprites/900pIcon.dds";
+		const char* res1080Icon = "Resources/Sprites/1080pIcon.dds";
+		const char* soundIcon = "Resources/Sprites/SoundIcon.dds";
+		const char* musicIcon = "Resources/Sprites/MusicIcon.dds";
+
 
 
 		TextureInfo applyButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(applyButton);
 		TextureInfo backButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(backButton);
 		TextureInfo leftButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(leftButton);
 		TextureInfo rightButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(rightButton);
+		TextureInfo fullscreenIconText = ObjectHandler::GetInstance().LoadDDSTextureFile(fullscreenIcon);
+		TextureInfo res720IconText = ObjectHandler::GetInstance().LoadDDSTextureFile(res720Icon);
+		TextureInfo res900IconText = ObjectHandler::GetInstance().LoadDDSTextureFile(res900Icon);
+		TextureInfo res1080IconText = ObjectHandler::GetInstance().LoadDDSTextureFile(res1080Icon);
+		TextureInfo soundIconText = ObjectHandler::GetInstance().LoadDDSTextureFile(soundIcon);
+		TextureInfo musicIconText = ObjectHandler::GetInstance().LoadDDSTextureFile(musicIcon);
 
 
 		ImVec2 size = ImVec2(applyButtonText.width * (float)(_windowWidth / 1280.0f), applyButtonText.height * (float)(_windowHeight / 720.0f));
+		ImVec2 sizeFS = ImVec2(fullscreenIconText.width * (float)(_windowWidth / 1280.0f), fullscreenIconText.height * (float)(_windowHeight / 720.0f));
 		ImVec2 sizeLR = ImVec2(leftButtonText.width * (float)(_windowWidth / 1280.0f), leftButtonText.height * (float)(_windowHeight / 720.0f));
 
 
-		std::vector<std::string> resolution = { "1280x720","1600x900","1920x1080" };
+		std::vector<TextureInfo> resolutionText = { res720IconText,res900IconText,res1080IconText };
+
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
-		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2), (float)(_windowHeight / 2) });
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (sizeFS.x / 2), (float)(_windowHeight / 2) - (sizeFS.y / 2) });
 		ImGui::Begin("Options Menu", NULL, window_flags);
 
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
@@ -628,20 +643,27 @@ void Graphics::RenderFrame(Scene* scene)
 				_currentResolution -= 1;
 		}
 		ImGui::SameLine();
-		ImGui::Text(resolution[_currentResolution].c_str());
+		ImGui::Image(resolutionText[_currentResolution].texture, sizeFS);
 		ImGui::SameLine();
 		if (ImGui::ImageButton(rightButton, rightButtonText.texture, sizeLR))
 		{
-			if (_currentResolution < resolution.size()-1)
+			if (_currentResolution < resolutionText.size()-1)
 				_currentResolution += 1;
 		}
 #if EDIT_MODE
 		ImGui::SetTooltip("Resolution and fullscreen settings are disabled in edit mode");
 #endif
-		ImGui::Checkbox("Fullscreen", &_useFullscreen);
+		ImGui::Checkbox(" ", &_useFullscreen);
+		ImGui::SameLine();
+		ImGui::Image(fullscreenIconText.texture, sizeFS);
 		ImGui::PushItemWidth(250);
-		ImGui::SliderInt("Music Volume", &_musicVol, 0, 100);
-		ImGui::SliderInt("Sound Volume", &_soundVol, 0, 100);
+		ImGui::SliderInt(" ", &_musicVol, 0, 100);
+		ImGui::SameLine();
+		ImGui::Image(musicIconText.texture, size);
+		ImGui::SliderInt(" ", &_soundVol, 0, 100);
+		ImGui::SameLine();
+		ImGui::Image(soundIconText.texture, size);
+
 
 		if (ImGui::ImageButton(applyButton, applyButtonText.texture, size))
 		{
