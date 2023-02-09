@@ -18,13 +18,13 @@ void Rigidbody::FixedUpdate(float timeStep)
 {
 	// Update Net Force
 	if (GameManager::GetInstance().IsGravityFlipped())
-		_netForce.y += 98.1f;
+		_netForce.y += GRAVITY;
 	else
-		_netForce.y -= 98.1f;
+		_netForce.y -= GRAVITY;
 
 	float mag = Magnitude(_velocity);
 	if (mag != 0.0f)
-		_netForce -= Normalized(_velocity) * min(_mass * 98.1f * _frictionCoefficient, mag);
+		_netForce -= Normalized(_velocity) * min(_mass * GRAVITY * _frictionCoefficient, mag);
 
 	// Update Acceleration
 	_acceleration.x = _netForce.x / _mass;
