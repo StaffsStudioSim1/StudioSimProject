@@ -35,6 +35,7 @@ private:
     Rigidbody* _rigidbody;
     SoundEffect* _jumpSoundEffect;
     SoundEffect* _moveSoundEffect;
+    GameManager* _gameManager;
 
     int _playerID;
     float _moveSpeed = 100.0f;
