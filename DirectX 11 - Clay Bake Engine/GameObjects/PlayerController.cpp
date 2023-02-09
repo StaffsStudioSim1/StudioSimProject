@@ -21,8 +21,6 @@ json PlayerController::Write()
 
 void PlayerController::Start()
 {
-	//create new GameManager
-	_gameManager = new GameManager();
 	//Create new PlayerInput
 	_playerInput = new PlayerInput(_playerID);
 
@@ -69,7 +67,7 @@ void PlayerController::Update(float deltaTime)
 	//Pause
 	if (_playerInput->IsActionDown(Pause))
 	{
-		PausePressed();
+		GameManager::GetInstance().Pause();
 	}
 
 	//Increment jump timer
@@ -219,15 +217,8 @@ void PlayerController::MagnetReleased()
 	//TODO: Link to Will's magnet class
 }
 
-void PlayerController::PausePressed()
-{
-	//TODO: Link to Ewan's game manager class
-	_gameManager->Pause();
-}
-
 void PlayerController::Stop()
 {
-	delete _gameManager;
 	delete _playerInput;
 	delete _jumpSoundEffect;
 	delete _moveSoundEffect;
