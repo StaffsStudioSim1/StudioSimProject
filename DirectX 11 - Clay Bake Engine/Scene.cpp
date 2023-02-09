@@ -31,6 +31,9 @@ Scene::Scene(std::string filePath, int width, int height)
 	_backgroundImage->GetTransform()->SetDepthPos(1.0f);
 	_backgroundImage->AddComponent(new Appearance(imagePath));
 
+	std::string audioFilePath = data[JSON_SCENE_BACKGROUNDAUDIO];
+	_backgroundAudio = new SoundEffect(audioFilePath, true);
+
 	for (json objectData : data[JSON_SCENE_GAMEOBJECTS])
 		_children.push_back(new GameObject(objectData));
 
@@ -133,6 +136,7 @@ Scene::~Scene()
 	_children.clear();
 
 	delete _backgroundImage;
+	delete _backgroundAudio;
 }
 
 void Scene::Save()
@@ -143,6 +147,7 @@ void Scene::Save()
 
 	scene[JSON_SCENE_ID] = _id;
 	scene[JSON_SCENE_BACKGROUND] = ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Appearance>()->GetTexture().filePath; // Presumes that the first object is the background
+	scene[JSON_SCENE_BACKGROUNDAUDIO] = _audioFilePath;
 
 	std::string map;
 	for (int i = 0; i < 36 * 20; i++)
@@ -178,6 +183,9 @@ void Scene::Start()
 {
 	for (GameObject* obj : _children)
 		obj->Start();
+#if !EDIT_MODE
+	_backgroundAudio->Play();
+#endif
 }
 
 void Scene::Update(float deltaTime)
@@ -324,6 +332,7 @@ void Scene::Stop()
 {
 	for (GameObject* obj : _children)
 		obj->Stop();
+	_backgroundAudio->Stop();
 }
 
 void Scene::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)

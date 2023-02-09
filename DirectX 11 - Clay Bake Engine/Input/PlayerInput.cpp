@@ -168,7 +168,7 @@ void PlayerInput::SetDeviceType(DeviceType deviceType)
 		_actionMap.jumpKeyCode = 72;
 		_actionMap.interactKeyCode = 29;
 		_actionMap.magnetKeyCode = 54;
-		_actionMap.pauseKeyCode = 1;
+		_actionMap.pauseKeyCode = 109;
 		break;
 	case Unassigned:
 	case Controller:
