@@ -1,6 +1,7 @@
 #include "PlayerMagnetism.h"
 #include "ObjectHandler.h"
 
+
 void PlayerMagnetism::Start()
 {
 	m_magnetActive = false;
@@ -9,11 +10,17 @@ void PlayerMagnetism::Start()
 	m_boxSize =  Vector2();
 	//m_magnetDirection = MagnetDirection::PullTowards;
 	m_factingVector = Vector2(1, 1);
+	m_activeSound = new SoundEffect("Resources/SoundEffects/MagnetBuzzSound.wav",true);
+	m_activeSound->SetVolume(0.25f);
+	if (m_magnetDirection == PullTowards)
+	{
+		m_activeSound->SetPitch(0.5f);
+	}
 }
 
 void PlayerMagnetism::Stop()
 {
-	
+	delete m_activeSound;
 }
 
 void PlayerMagnetism::FixedUpdate(float timeStep)
@@ -66,11 +73,13 @@ void PlayerMagnetism::ChangeDirection(FacingDirection direction)
 void PlayerMagnetism::MagnetOn()
 {
 	m_magnetActive = true;
+	m_activeSound->Play();
 }
 
 void PlayerMagnetism::MagnetOff()
 {
 	m_magnetActive = false;
+	m_activeSound->Stop();
 }
 
 void PlayerMagnetism::SetMagnetPushPull(int playerID)
