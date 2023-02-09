@@ -73,4 +73,6 @@ private:
     //Functions
     void JumpPressed();
     void InteractPressed();
+
+    bool CheckForCollisionsBelowDirect();
 };
