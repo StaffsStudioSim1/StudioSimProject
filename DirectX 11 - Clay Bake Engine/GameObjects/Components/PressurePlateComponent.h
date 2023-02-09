@@ -8,9 +8,10 @@ public:
 	Vector2 m_Boxsize;
 	Vector2 m_Position;
 
-	void start();
 	void WeighedDown();
 	void WeightReleased();
+
+	void Start();
 	void Update();
 	
 	PressurePlateComponent(InteractableLink switchType = Default, std::string linkedObjectName = "");

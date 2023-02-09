@@ -1,0 +1,270 @@
+{
+    "backgroundImage": "Resources/Textures/ZoeLevel.dds",
+    "gameObjects": [
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Textures/Test.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        10.0,
+                        10.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        1
+                    ]
+                }
+            ],
+            "name": "test",
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Textures/Test.dds",
+                        3.0,
+                        2.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        10.0,
+                        10.0
+                    ]
+                },
+                {
+                    "class": "NOT_OVERRIDDEN"
+                }
+            ],
+            "name": "Door1",
+            "position": [
+                40.0,
+                -50.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Textures/Test2.dds",
+                        3.0,
+                        2.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        10.0,
+                        10.0
+                    ]
+                },
+                {
+                    "class": "LeverComponent",
+                    "constructors": [
+                        1,
+                        "Door1"
+                    ]
+                }
+            ],
+            "name": "Lever1",
+            "position": [
+                10.0,
+                -50.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player1.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        1
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        5.0,
+                        5.0
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Blue [136]",
+            "position": [
+                -207.0,
+                9.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Lamp.dds",
+                        2.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        18.0
+                    ]
+                }
+            ],
+            "name": "Lamp [137]",
+            "position": [
+                189.0,
+                9.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Box.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ],
+            "name": "Box [138]",
+            "position": [
+                117.0,
+                -9.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player2.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        2
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        5.0,
+                        5.0
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Red [139]",
+            "position": [
+                99.0,
+                -81.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        }
+    ],
+    "sceneID": 99,
+    "stageCollision": "111111111111111111111111111111111111100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100011111000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000001101110110000000000000000001100000001001010100000000000000000001100000001001010100000000000000000001100000001001110100000000000000000001100000000000000000000000000000000001100000000101000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001100000000000000000000000000000000001111111111111111111111111111111111111"
+}

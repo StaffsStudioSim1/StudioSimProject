@@ -64,20 +64,21 @@ GameObject::GameObject(json objectJson)
 		}
 		else if (type == "LeverComponent")
 		{
-			int switchType = 0;
-			std::string linkedObject = "";
+			int switchType = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+			std::string linkedObject = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
+
 			component = new LeverComponent((Interactable::InteractableLink)switchType, linkedObject);
 		}
 		else if (type == "DoorComponent")
 		{
 			component = new DoorComponent();
 		}
-		else if (type == "Interactable")
-		{
-			int switchType = 0;
-			std::string linkedObject = "";
-			component = new Interactable();
-		}
+		//else if (type == "Interactable")
+		//{
+		//	int switchType = 0;
+		//	std::string linkedObject = "";
+		//	component = new Interactable();
+		//}
 		else if (type == "ButtonComponent")
 		{
 			int switchType = 0;

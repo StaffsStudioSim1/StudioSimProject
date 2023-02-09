@@ -525,13 +525,13 @@ void Graphics::RenderFrame(Scene* scene)
 
 				int bodyType;
 				float density, friction;
-				if (object->GetComponent<Physics>())
+				/*if (object->GetComponent<Physics>())
 				{
 					hasPhysics = true;
 					bodyType = object->GetComponent<Physics>()->GetBodyType();
 					density = object->GetComponent<Physics>()->GetDensity();
 					friction = object->GetComponent<Physics>()->GetFriction();
-				}
+				}*/
 
 				ImGui::PushItemWidth(250); // Sets the pixel width of the input boxes
 
@@ -556,7 +556,7 @@ void Graphics::RenderFrame(Scene* scene)
 					}
 					ImGui::DragFloat4("Texture Coords", texCoords, 1.0f, 0.0f, 10.0f);
 				}
-				if (hasPhysics)
+				/*if (hasPhysics)
 				{
 					ImGui::ListBox("Body Type", &bodyType, boxBodyChoices, IM_ARRAYSIZE(boxBodyChoices), 3);
 					ImGui::DragFloat("Density", &density, 0.025f, 0.0f, 100.0f);
@@ -572,7 +572,7 @@ void Graphics::RenderFrame(Scene* scene)
 				{
 					if (ImGui::Button("Add Physics")) // Add physics to object
 					{
-						/*Component* component = nullptr;
+						Component* component = nullptr;
 						PhysicsBody* body = new PhysicsBody();
 						body->bodyDef.startPos = object->GetTransform()->GetPosition();
 						body->bodyDef.startingRoatation = object->GetTransform()->GetRotation();
@@ -585,9 +585,9 @@ void Graphics::RenderFrame(Scene* scene)
 
 						PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
 						component = new Physics(body, physicsWorld);
-						object->AddComponent(component);*/
+						object->AddComponent(component);
 					}
-				}
+				}*/
 				if (ImGui::Button("Reset"))
 				{
 					depth = 0.0f;
@@ -607,12 +607,12 @@ void Graphics::RenderFrame(Scene* scene)
 				{
 					object->GetComponent<Appearance>()->SetTexCoords(texCoords[0], texCoords[1], texCoords[2], texCoords[3]);
 				}
-				if (hasPhysics)
+				/*if (hasPhysics)
 				{
 					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.bodyDef.type = (b2BodyType)bodyType;
 					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.density = density;
 					object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.friction = friction;
-				}
+				}*/
 			}
 			loopNum++;
 		}

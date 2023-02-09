@@ -6,7 +6,7 @@
 
 #include "../ObjectHandler.h"
 
-PressurePlateComponent::PressurePlateComponent(InteractableLink switchType, std::string linkedObjectName)
+PressurePlateComponent::PressurePlateComponent(InteractableLink switchType, std::string linkedObjectName) : Interactable(switchType, linkedObjectName)
 {
 	interactableLink = switchType;
 
@@ -16,8 +16,9 @@ PressurePlateComponent::PressurePlateComponent(InteractableLink switchType, std:
 	}
 }
 
-void PressurePlateComponent::start()
+void PressurePlateComponent::Start()
 {
+	Interactable::Start();
 	m_Boxsize.x = 1.0f;
 	m_Boxsize.y = 1.0f;
 
@@ -53,6 +54,12 @@ void PressurePlateComponent::Update()
 		//	WeighedDown();
 		//	ObjectFound = true;
 		//}
+		if (object->GetComponent<PlayerController>())
+		{
+			WeighedDown();
+			ObjectFound = true;
+		}
+
 	}
 
 	if (ObjectFound != true)
