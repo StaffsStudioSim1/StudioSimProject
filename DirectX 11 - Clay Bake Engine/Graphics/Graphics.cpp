@@ -114,7 +114,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 			scd.BufferCount = 2;
 
 			scd.OutputWindow = hwnd;
-			scd.Windowed = isWindowed;
+			scd.Windowed = true;
 			scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 			scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
@@ -385,11 +385,20 @@ void Graphics::ResizeWindow()
 	UINT monitorX = mi.rcMonitor.right - mi.rcMonitor.left;
 	UINT monitorY = mi.rcMonitor.bottom - mi.rcMonitor.top;
 
+	if (_useFullscreen && (monitorX != _resolutionWidth || monitorY != _resolutionHeight))
+		_useFullscreen = false;
+
 	int centreOfScreenX = mi.rcMonitor.left + (monitorX / 2 - _resolutionWidth / 2);
-	int centreOfScreenY = mi.rcMonitor.top + (monitorY / 2 - _resolutionHeight / 2);
+	int centreOfScreenY = mi.rcMonitor.top + (monitorY / 2 - _resolutionHeight / 2) + 30;
+
+	if (_useFullscreen)
+		centreOfScreenY = mi.rcMonitor.top;
 
 	RECT rc = { (LONG)centreOfScreenX, (LONG)centreOfScreenY, (LONG)centreOfScreenX + (LONG)_resolutionWidth, (LONG)centreOfScreenY + (LONG)_resolutionHeight };
-	AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+	if (_useFullscreen)
+		AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_POPUP, FALSE);
+	else
+		AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
 	SetWindowPos(GetActiveWindow(), NULL, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
 	
 	POINT pt;
@@ -410,9 +419,8 @@ void Graphics::ResizeWindow()
 	_stencilState.Reset();
 
 	_deviceContext->Flush();
-
+	 
 	_swapChain->ResizeBuffers(0, _resolutionWidth, _resolutionHeight, DXGI_FORMAT_UNKNOWN, 0);
-	_swapChain->SetFullscreenState(_useFullscreen, NULL);
 
 	InitializeDirectX(GetActiveWindow(), _resolutionWidth, _resolutionHeight);
 }
@@ -496,7 +504,6 @@ void Graphics::RenderFrame(Scene* scene)
 		TextureInfo optionsButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(optionsButton);
 		TextureInfo levelSelectText = ObjectHandler::GetInstance().LoadDDSTextureFile(levelSelect);
 		TextureInfo exitButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(exitButton);
-
 
 		ImVec2 size = ImVec2(playButtonText.width * 2 * (float)(_windowWidth / 1280.0f), playButtonText.height * 2 * (float)(_windowHeight / 720.0f));
 
@@ -623,7 +630,6 @@ void Graphics::RenderFrame(Scene* scene)
 		ImVec2 size = ImVec2(resumeButtonText.width * 1.5 * (float)(_windowWidth / 1280.0f), resumeButtonText.height * 1.5 * (float)(_windowHeight / 720.0f));
 		ImVec2 sizeP = ImVec2(pauseMenuText.width * 1.5 * (float)(_windowWidth / 1280.0f), pauseMenuText.height * 1.5 * (float)(_windowHeight / 720.0f));
 
-
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
 		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (sizeP.x / 2), (float)(_windowHeight / 2) - (sizeP.y / 2) });
 		ImGui::Begin("PauseMenuBG", NULL, window_flags | ImGuiWindowFlags_NoBringToFrontOnFocus);
@@ -739,10 +745,6 @@ void Graphics::RenderFrame(Scene* scene)
 
 		ImGui::Dummy(ImVec2(0.0f, 5.0f));
 
-		//ImGui::SliderInt("  ", &_musicVol, 0, 100);
-		//ImGui::SameLine();
-		//ImGui::Image(musicIconText.texture, size);
-
 		ImGui::PushItemWidth(250);
 		ImGui::Image(soundIconText.texture, size);
 		ImGui::SameLine();
@@ -780,23 +782,11 @@ void Graphics::RenderFrame(Scene* scene)
 				break;
 			}
 
-			MONITORINFO mi = { sizeof(mi) };
-			GetMonitorInfo(MonitorFromWindow(GetActiveWindow(), MONITOR_DEFAULTTONEAREST), &mi);
-			UINT monitorX = mi.rcMonitor.right - mi.rcMonitor.left;
-			UINT monitorY = mi.rcMonitor.bottom - mi.rcMonitor.top;
-
-			if (_useFullscreen && (_resolutionWidth != monitorX || _resolutionHeight != monitorY))
-			{
-				_resolutionWidth = monitorX;
-				_resolutionHeight = monitorY;
-			}
-
 			AudioManager::GetInstance().SetMasterVolume(_soundVol);
 
 			json settings;
 			settings["Resolution"] = { _resolutionWidth, _resolutionHeight };
 			settings["Fullscreen"] = _useFullscreen;
-			//settings["MusicVol"] = _musicVol;
 			settings["SoundVol"] = _soundVol;
 
 			std::ofstream outFile("Resources/Settings.json");
@@ -804,7 +794,6 @@ void Graphics::RenderFrame(Scene* scene)
 			outFile.close();
 
 #if !EDIT_MODE
-			ResizeWindow();
 			ResizeWindow();
 #endif
 		}
