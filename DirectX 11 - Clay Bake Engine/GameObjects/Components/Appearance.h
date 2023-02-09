@@ -32,8 +32,11 @@ public:
 	void SetTexCoords(float numOfXFrames, float numOfYFrames, float xFramePos, float yFramePos); // number of frames contained in texture file and then the position of which frame you want to use
 	void SetTexCoords(DirectX::XMFLOAT4 coords) { SetTexCoords(coords.x, coords.y, coords.z, coords.w); }
 	void SetTexPosChange(float xPos, float yPos) { SetTexCoords(_texCoords.x, _texCoords.y, _texCoords.z += xPos, _texCoords.w += yPos); }
+	void UpdateMatrix();
 	void NextXFrame(bool direction);
 	void NextYFrame(bool direction);
+	void FlipTextureOnYAxis(); // i.e. looking left to right
+	void FlipTextureOnXAxis(); // i.e. switching gravity
 
 	float GetAlphaMultiplier() const noexcept { return _alphaMultiplier; }
 	void SetAlphaMultiplier(float alpha) { _alphaMultiplier = alpha; }
