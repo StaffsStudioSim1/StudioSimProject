@@ -110,7 +110,10 @@ GameObject::GameObject(json objectJson)
 		{
 			float width = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
 			float height = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(1);
-			component = new AABB(width, height);
+			bool trigger = false;
+			if (componentJson[JSON_COMPONENT_CONSTRUCTORS].size() > 2)
+				trigger = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(2);
+			component = new AABB(width, height, trigger);
 		}
 
 		else if (type == "MagnetBox")

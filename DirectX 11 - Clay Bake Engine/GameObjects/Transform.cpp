@@ -9,6 +9,22 @@ Transform::Transform()
 	_pParent = nullptr;
 }
 
+void Transform::FlipHorizontal(bool isFlipped)
+{
+	if (isFlipped != IsFlipTest)
+		_scale.x = -_scale.x;
+	
+	IsFlipTest = isFlipped;
+}
+
+void Transform::FlipVertical(bool isFlipped)
+{
+	if (isFlipped != IsFlipTest)
+		_scale.y = -_scale.y;
+
+	IsFlipTest = isFlipped;
+}
+
 void Transform::Update()
 {
 	// For model

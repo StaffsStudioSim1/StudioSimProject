@@ -1,5 +1,18 @@
 #include "Goal.h"
 
+Goal::Goal(std::string levelName)
+{
+	_NextLevelName = levelName;
+}
+
+json Goal::Write()
+{
+	json me;
+	me[JSON_COMPONENT_CLASS] = "Goal";
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_NextLevelName);
+	return me;
+}
+
 void Goal::Start()
 {
 	_Position = _gameObject->GetTransform()->GetPosition();
@@ -32,9 +45,4 @@ void Goal::Update()
 void Goal::LevelWin()
 {
 	SceneManager::GetInstance().LoadScene(_NextLevelName);
-}
-
-Goal::Goal(std::string levelName)
-{
-	_NextLevelName = levelName;
 }

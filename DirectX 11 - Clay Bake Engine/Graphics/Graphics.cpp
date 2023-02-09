@@ -223,7 +223,7 @@ bool Graphics::InitializeDirectX(HWND hwnd, int width, int height)
 		rasterDesc1.MultisampleEnable = true;
 		rasterDesc1.AntialiasedLineEnable = true;
 		rasterDesc1.FillMode = D3D11_FILL_SOLID;
-		rasterDesc1.CullMode = D3D11_CULL_BACK;
+		rasterDesc1.CullMode = D3D11_CULL_NONE; // Leave as none due to the way we're using scale
 		hr = this->_device->CreateRasterizerState(&rasterDesc1, _solidRasterState.GetAddressOf());
 		if (FAILED(hr))
 			ErrorLogger::Log(hr, "Failed to create solid rasteriser state\n");
@@ -703,6 +703,17 @@ void Graphics::RenderFrame(Scene* scene)
 				break;
 			}
 
+			MONITORINFO mi = { sizeof(mi) };
+			GetMonitorInfo(MonitorFromWindow(GetActiveWindow(), MONITOR_DEFAULTTONEAREST), &mi);
+			UINT monitorX = mi.rcMonitor.right - mi.rcMonitor.left;
+			UINT monitorY = mi.rcMonitor.bottom - mi.rcMonitor.top;
+
+			if (_useFullscreen && (_resolutionWidth != monitorX || _resolutionHeight != monitorY))
+			{
+				_resolutionWidth = monitorX;
+				_resolutionHeight = monitorY;
+			}
+
 			json settings;
 			settings["Resolution"] = { _resolutionWidth, _resolutionHeight };
 			settings["Fullscreen"] = _useFullscreen;
@@ -714,6 +725,7 @@ void Graphics::RenderFrame(Scene* scene)
 			outFile.close();
 
 #if !EDIT_MODE
+			ResizeWindow();
 			ResizeWindow();
 #endif
 		}
@@ -730,7 +742,7 @@ void Graphics::RenderFrame(Scene* scene)
 	}
 #if EDIT_MODE
 	static bool linkScaling = true;
-	char fileName[30]; // For saving the file
+	char fileName[40]; // For saving the file
 	strcpy_s(fileName, scene->GetFilePath().c_str());
 	const char* boxBodyChoices[] = { "Static", "Kinematic", "Dynamic" };
 	
@@ -757,7 +769,7 @@ void Graphics::RenderFrame(Scene* scene)
 			if (ImGui::TreeNode(object->GetName().c_str()))
 			{
 				std::string name = object->GetName();
-				char nameChar[20];
+				char nameChar[40];
 				strcpy_s(nameChar, name.c_str());
 
 				float position[2] = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y };
@@ -788,7 +800,7 @@ void Graphics::RenderFrame(Scene* scene)
 
 				ImGui::PushItemWidth(250); // Sets the pixel width of the input boxes
 
-				if (ImGui::InputText("Name", nameChar, 20, ImGuiInputTextFlags_EnterReturnsTrue))
+				if (ImGui::InputText("Name", nameChar, 40, ImGuiInputTextFlags_EnterReturnsTrue))
 				{
 					object->SetName(nameChar);
 				}
@@ -835,7 +847,7 @@ void Graphics::RenderFrame(Scene* scene)
 	}
 	ImGui::PushItemWidth(200);
 
-	if(ImGui::InputText("File Name", fileName, 30))
+	if(ImGui::InputText("File Name", fileName, 40))
 		scene->SetFileName(fileName);
 
 

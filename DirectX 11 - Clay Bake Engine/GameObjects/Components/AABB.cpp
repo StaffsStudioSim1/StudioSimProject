@@ -2,10 +2,11 @@
 #include "Rigidbody.h"
 #include "../GameObject.h"
 
-AABB::AABB(float width, float height)
+AABB::AABB(float width, float height, bool trigger)
 {
 	_width = width;
 	_height = height;
+	_trigger = trigger;
 
 #if DEBUG
 	_debugGeo = ObjectHandler::GetInstance().GetSquareGeometry();
@@ -25,6 +26,9 @@ json AABB::Write()
 bool AABB::Overlaps(AABB* collider, float deltaTime)
 {
 	if (!_active || !collider->_active)
+		return false;
+
+	if (IsTrigger() || collider->IsTrigger())
 		return false;
 
 	DirectX::BoundingBox me;
@@ -48,7 +52,10 @@ bool AABB::Overlaps(AABB* collider, float deltaTime)
 
 Vector2 AABB::GetSize()
 {
-	return Vector2(_width, _height) * _gameObject->GetTransform()->GetVectorScale();
+	Vector2 size = Vector2(_width, _height) * _gameObject->GetTransform()->GetVectorScale();
+	size.x = fabsf(size.x);
+	size.y = fabsf(size.y);
+	return size;
 }
 
 void AABB::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)

@@ -14,12 +14,14 @@ public:
     Vector2 _Position;
     std::string _NextLevelName;
 
+    Goal(std::string levelName);
+
+    json Write();
+
     void Start();
-    
     void Update();
 
     void LevelWin();
 
-    Goal(std::string);
 };
 

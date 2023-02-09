@@ -418,6 +418,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\Will.json" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX 11 - Clay Bake Engine.rc">
