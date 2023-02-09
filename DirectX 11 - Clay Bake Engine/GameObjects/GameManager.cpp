@@ -22,8 +22,6 @@ void GameManager::SceneChanged(Scene* scene)
 void GameManager::LevelWin()
 {
 	//what the game does when win condition is met
-	//load win screen
-	SceneManager::GetInstance().LoadScene("Resources/WinScreen.json");
 	//save level progress
 	ifstream file;
 	file.open("Resources/SaveFiles/LevelSaves.txt");
@@ -38,6 +36,8 @@ void GameManager::LevelWin()
 			fw.close();
 		}
 	}
+	//load win screen
+	SceneManager::GetInstance().LoadScene("Resources/WinScreen.json");
 }
 
 void GameManager::LevelLose()
