@@ -572,7 +572,7 @@ void Graphics::RenderFrame(Scene* scene)
 				{
 					if (ImGui::Button("Add Physics")) // Add physics to object
 					{
-						Component* component = nullptr;
+						/*Component* component = nullptr;
 						PhysicsBody* body = new PhysicsBody();
 						body->bodyDef.startPos = object->GetTransform()->GetPosition();
 						body->bodyDef.startingRoatation = object->GetTransform()->GetRotation();
@@ -585,7 +585,7 @@ void Graphics::RenderFrame(Scene* scene)
 
 						PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
 						component = new Physics(body, physicsWorld);
-						object->AddComponent(component);
+						object->AddComponent(component);*/
 					}
 				}
 				if (ImGui::Button("Reset"))

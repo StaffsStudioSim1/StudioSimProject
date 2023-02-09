@@ -82,6 +82,8 @@ void PlayerController::FixedUpdate(float timeStep)
 {
 	_rigidbody->SetInput(_currentMovement * _moveSpeed);
 
+	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
+	{
 		if (!_isWalking)
 		{
 			_moveSoundEffect->Play();
