@@ -243,7 +243,7 @@ bool PlayerController::CheckForCollisionsBelowDirect()
 	}
 	else if (GameManager::GetInstance().IsGravityFlipped())
 	{
-		payerpositionoffset.y -= yOffSet;
+		payerpositionoffset.y += yOffSet;
 	}
 	auto list = ObjectHandler::GetInstance().GetObjectsInArea(payerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x, 5));
 
