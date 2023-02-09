@@ -406,6 +406,7 @@ void Graphics::ResizeWindow()
 	_deviceContext->Flush();
 
 	_swapChain->ResizeBuffers(0, _resolutionWidth, _resolutionHeight, DXGI_FORMAT_UNKNOWN, 0);
+	_swapChain->SetFullscreenState(_useFullscreen, NULL);
 
 	InitializeDirectX(GetActiveWindow(), _resolutionWidth, _resolutionHeight);
 }
@@ -579,6 +580,7 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::ImageButton(resetButton, resetButtonText.texture, size))
 		{
+			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
 			SceneManager::GetInstance().LoadScene(SceneManager::GetInstance().GetCurrentSceneFilePath());
 		}
 		if (ImGui::ImageButton(pOptionsButton, pOptionsButtonText.texture, size))
@@ -713,7 +715,6 @@ void Graphics::RenderFrame(Scene* scene)
 
 #if !EDIT_MODE
 			ResizeWindow();
-			_swapChain->SetFullscreenState(_useFullscreen, NULL); // Toggle fullscreen
 #endif
 		}
 		if (ImGui::ImageButton(backButton, backButtonText.texture, size))
@@ -746,6 +747,8 @@ void Graphics::RenderFrame(Scene* scene)
 		int loopNum = 0;
 		for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 		{
+			if (object->GetTag() != JSON_TAG_GAMEOBJECT)
+				continue;
 			// Use SetNextItemOpen() so set the default state of a node to be open. We could
 			// also use TreeNodeEx() with the ImGuiTreeNodeFlags_DefaultOpen flag to achieve the same thing!
 			if (loopNum == 0)
