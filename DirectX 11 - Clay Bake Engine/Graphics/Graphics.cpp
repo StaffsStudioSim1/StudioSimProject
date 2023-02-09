@@ -746,6 +746,8 @@ void Graphics::RenderFrame(Scene* scene)
 		int loopNum = 0;
 		for (GameObject* object : ObjectHandler::GetInstance().GetAllObjects())
 		{
+			if (object->GetTag() != JSON_TAG_GAMEOBJECT)
+				continue;
 			// Use SetNextItemOpen() so set the default state of a node to be open. We could
 			// also use TreeNodeEx() with the ImGuiTreeNodeFlags_DefaultOpen flag to achieve the same thing!
 			if (loopNum == 0)
