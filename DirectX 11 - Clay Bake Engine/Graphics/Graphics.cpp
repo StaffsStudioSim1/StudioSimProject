@@ -538,6 +538,7 @@ void Graphics::RenderFrame(Scene* scene)
 		const char* level5Button = "Resources/Sprites/Level5Button.dds";
 		const char* level6Button = "Resources/Sprites/Level6Button.dds";
 		const char* level7Button = "Resources/Sprites/Level7Button.dds";
+		const char* backButton = "Resources/Sprites/BackIcon.dds";
 
 
 		TextureInfo level1ButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(level1Button);
@@ -547,6 +548,8 @@ void Graphics::RenderFrame(Scene* scene)
 		TextureInfo level5ButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(level5Button);
 		TextureInfo level6ButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(level6Button);
 		TextureInfo level7ButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(level7Button);
+		TextureInfo backButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(backButton);
+
 
 		ImVec2 size = ImVec2(level1ButtonText.width * 2 * (float)(_windowWidth / 1280.0f), level1ButtonText.height * 2 * (float)(_windowHeight / 720.0f));
 
@@ -591,11 +594,12 @@ void Graphics::RenderFrame(Scene* scene)
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/demo.json");
 		}
-		if (ImGui::Button("Back"))
+		if (ImGui::ImageButton(backButton, backButtonText.texture, size))
 		{
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
 			ObjectHandler::GetInstance().EnableMainMenuUI(true);
 		}
+
 		ImGui::PopStyleColor(3);
 		ImGui::End();
 	}
