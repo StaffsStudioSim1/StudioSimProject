@@ -21,9 +21,11 @@ json PlayerController::Write()
 
 void PlayerController::Start()
 {
+	//create new GameManager
+	_gameManager = new GameManager();
 	//Create new PlayerInput
 	_playerInput = new PlayerInput(_playerID);
-
+	
 	//Get the player's RigidBody
 	_rigidbody = _gameObject->GetComponent<Rigidbody>();
 
@@ -203,10 +205,14 @@ void PlayerController::MagnetReleased()
 void PlayerController::PausePressed()
 {
 	//TODO: Link to Ewan's game manager class
+	//GameManager::Pause;
+	//GameManager::UnPause;
+	_gameManager->Pause();
 }
 
 void PlayerController::Stop()
 {
+	delete _gameManager;
 	delete _playerInput;
 	delete _jumpSoundEffect;
 	delete _moveSoundEffect;

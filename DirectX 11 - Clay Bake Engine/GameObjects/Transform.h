@@ -29,7 +29,7 @@ public:
 	void SetRotationChange(float change) { _rotation += change; }
 
 	DirectX::XMFLOAT2 GetScale() const noexcept { return _scale; }
-	Vector2 GetVectorScale() { Vector2 vScale; vScale.x = _scale.x; vScale.y = _scale.y; return vScale; }
+	Vector2 GetVectorScale() { return Vector2(_scale.x, _scale.y); }
 	void SetScale(DirectX::XMFLOAT2 scale) { _scale = scale; }
 	void SetScale(Vector2 scale) { _scale.x = scale.x; _scale.y = scale.y; }
 	void SetScale(float x, float y) { _scale.x = x; _scale.y = y; }
