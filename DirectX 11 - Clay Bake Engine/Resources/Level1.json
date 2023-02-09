@@ -7,94 +7,6 @@
                 {
                     "class": "Appearance",
                     "constructors": [
-                        "Resources/Sprites/Player2.dds",
-                        6.0,
-                        8.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "class": "PlayerController",
-                    "constructors": [
-                        2
-                    ]
-                },
-                {
-                    "class": "AABB",
-                    "constructors": [
-                        11.0,
-                        16.0,
-                        false
-                    ]
-                },
-                {
-                    "class": "Rigidbody"
-                }
-            ],
-            "name": "Player Red [195]",
-            "position": [
-                -261.0,
-                -81.0,
-                0.0
-            ],
-            "rotation": 0.0,
-            "scale": [
-                1.75,
-                1.75
-            ],
-            "tag": "GameObject"
-        },
-        {
-            "components": [
-                {
-                    "class": "Appearance",
-                    "constructors": [
-                        "Resources/Sprites/Player1.dds",
-                        6.0,
-                        8.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "class": "PlayerController",
-                    "constructors": [
-                        1
-                    ]
-                },
-                {
-                    "class": "AABB",
-                    "constructors": [
-                        11.0,
-                        16.0,
-                        false
-                    ]
-                },
-                {
-                    "class": "Rigidbody"
-                }
-            ],
-            "name": "Player Blue [196]",
-            "position": [
-                -225.0,
-                -81.0,
-                0.0
-            ],
-            "rotation": 0.0,
-            "scale": [
-                1.75,
-                1.75
-            ],
-            "tag": "GameObject"
-        },
-        {
-            "components": [
-                {
-                    "class": "Appearance",
-                    "constructors": [
                         "Resources/Sprites/Gold Goal.dds",
                         1.0,
                         6.0,
@@ -159,7 +71,7 @@
             "name": "Door Left",
             "position": [
                 81.0,
-                -27.0,
+                -20.0,
                 0.0
             ],
             "rotation": 0.0,
@@ -197,7 +109,7 @@
             "name": "Door Middle",
             "position": [
                 27.0,
-                -63.0,
+                -56.0,
                 0.0
             ],
             "rotation": 0.0,
@@ -235,7 +147,7 @@
             "name": "Door Right",
             "position": [
                 171.0,
-                9.0,
+                16.0,
                 0.0
             ],
             "rotation": 0.0,
@@ -261,7 +173,7 @@
                 {
                     "class": "PressurePlateComponent",
                     "constructors": [
-                        0,
+                        1,
                         "Door Middle"
                     ]
                 },
@@ -303,8 +215,8 @@
                 {
                     "class": "PressurePlateComponent",
                     "constructors": [
-                        0,
-                        "g"
+                        1,
+                        "Door Left"
                     ]
                 },
                 {
@@ -334,6 +246,100 @@
                 {
                     "class": "Appearance",
                     "constructors": [
+                        "Resources/Sprites/Player2.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        2
+                    ]
+                },
+                {
+                    "class": "PlayerMagnetism"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0,
+                        false
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Red [198]",
+            "position": [
+                -261.0,
+                -81.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.75,
+                1.75
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player1.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        1
+                    ]
+                },
+                {
+                    "class": "PlayerMagnetism"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0,
+                        false
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player Blue [199]",
+            "position": [
+                -225.0,
+                -81.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.75,
+                1.75
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
                         "Resources/Sprites/PressurePlate.dds",
                         1.0,
                         1.0,
@@ -345,8 +351,8 @@
                 {
                     "class": "PressurePlateComponent",
                     "constructors": [
-                        0,
-                        "g"
+                        1,
+                        "Door Right"
                     ]
                 },
                 {
@@ -358,7 +364,7 @@
                     ]
                 }
             ],
-            "name": "Pressure Plate set12",
+            "name": "Pressure Plate set13",
             "position": [
                 -63.0,
                 -99.0,
@@ -370,8 +376,134 @@
                 1.0
             ],
             "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/PressurePlate.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PressurePlateComponent",
+                    "constructors": [
+                        1,
+                        "Door Left"
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        5.0,
+                        true
+                    ]
+                }
+            ],
+            "name": "Pressure Plate set21",
+            "position": [
+                207.0,
+                9.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/PressurePlate.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PressurePlateComponent",
+                    "constructors": [
+                        1,
+                        "Door Middle"
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        5.0,
+                        true
+                    ]
+                }
+            ],
+            "name": "Pressure Plate set22",
+            "position": [
+                225.0,
+                9.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/PressurePlate.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PressurePlateComponent",
+                    "constructors": [
+                        1,
+                        "Door Right"
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        5.0,
+                        true
+                    ]
+                }
+            ],
+            "name": "Pressure Plate set23",
+            "position": [
+                243.0,
+                9.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
         }
     ],
     "sceneID": 4,
-    "stageCollision": "111111111111111111111111111111111111100000000000000000010000000000000001100000000000000000010000000000000001111111111111111111110000000000000001100000000000000000010000000000000001100000000000000001111111000100000001100000000000000000000100000100000001100000000000000000000111111100000001100000000000000000010000000100000001100000000000000000010000001111111111100000000000000000010010000000000001100000000000000000010010000000000001100000000000000000111111100100000001100000000000000000010001000100000001100000000000000000010001000100000001100000000000000000010001000100000001100000000000000000010001000100000001100000000000000000010001000100000001100000000000000000010001000100000001111111111111111111111111111111111111"
+    "stageCollision": "111111111111111111111111111111111111100000000000000000010000000000000001100000000000000000010000000000000001111111111111111111110000000000000001100000000000000000010000000000000001100000000000000001111111000100000001100000000000000000000100000100000001100000000000000000000111111100000001100000000000000000010000000100000001100000000000000000010000001111111111100000000000000000010010000000000001100000000000000000010010000000000001100000000000000000111111100100000001100000000000000000010001000100000001100000000000000000010001000100000001100000000000000000010001000100000001100000000000000000010001000100000001100000000000000000000001000100000001100000000000000000010001000100000001111111111111111111111111111111111111"
 }
