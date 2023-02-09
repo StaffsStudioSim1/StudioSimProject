@@ -262,7 +262,7 @@ bool PlayerController::CheckForCollisionsBelowDirect()
 
 	for (int i = 0; i <= list.size(); i++)
 	{
-		if(list.at(i)->GetTag() == JSON_TAG_STAGECOLLISION);
+		if(list.at(i)->GetTag() == JSON_TAG_STAGECOLLISION)
 		return true;
 	}
 
