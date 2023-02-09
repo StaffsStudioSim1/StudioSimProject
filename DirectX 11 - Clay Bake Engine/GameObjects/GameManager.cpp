@@ -64,17 +64,17 @@ void GameManager::Pause()
 	//set time to 0 - pause time
 	//freeze all input
 	//bring up pause menu
-	SceneManager::GetInstance().LoadScene("Resources/PauseMenu.json");
-
+	ObjectHandler::GetInstance().EnablePauseMenuUI(true);
 }
 
 void GameManager::UnPause()
 {
+	//resume the game
 	if (!isPaused)
 		return;
 	isPaused = false;
 	//close pause menu
-	
+	ObjectHandler::GetInstance().EnablePauseMenuUI(false);
 	//continue time
 }
 

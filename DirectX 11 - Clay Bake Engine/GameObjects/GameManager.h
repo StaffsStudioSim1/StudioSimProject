@@ -14,8 +14,8 @@ class GameManager
     Scene* _currentScene;
     string Levels[5] = { "Level1", "Level2", "Level3", "Level4", "Level5" };
 
-    GameManager();
 public:
+    GameManager();
     // Singleton Code
     static GameManager& GetInstance()
     {
