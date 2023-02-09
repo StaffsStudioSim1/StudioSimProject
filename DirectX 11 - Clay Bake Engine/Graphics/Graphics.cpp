@@ -782,13 +782,6 @@ void Graphics::RenderFrame(Scene* scene)
 
 				int bodyType;
 				float density, friction;
-				//if (object->GetComponent<Physics>())
-				//{
-				//	hasPhysics = true;
-				//	bodyType = object->GetComponent<Physics>()->GetBodyType();
-				//	density = object->GetComponent<Physics>()->GetDensity();
-				//	friction = object->GetComponent<Physics>()->GetFriction();
-				//}
 
 				ImGui::PushItemWidth(250); // Sets the pixel width of the input boxes
 
@@ -813,38 +806,6 @@ void Graphics::RenderFrame(Scene* scene)
 					}
 					ImGui::DragFloat4("Texture Coords", texCoords, 1.0f, 0.0f, 10.0f);
 				}
-				//if (hasPhysics)
-				//{
-				//	ImGui::ListBox("Body Type", &bodyType, boxBodyChoices, IM_ARRAYSIZE(boxBodyChoices), 3);
-				//	ImGui::DragFloat("Density", &density, 0.025f, 0.0f, 100.0f);
-				//	ImGui::DragFloat("Friction", &friction, 0.0025f, 0.0f, 1.0f);
-
-				//	if (ImGui::Button("Remove Physics")) // Remove physics from object
-				//	{
-				//		object->RemoveComponent(object->GetComponent<Physics>());
-				//		hasPhysics = false;
-				//	}
-				//}
-				else
-				{
-					if (ImGui::Button("Add Physics")) // Add physics to object
-					{
-						/*Component* component = nullptr;
-						PhysicsBody* body = new PhysicsBody();
-						body->bodyDef.startPos = object->GetTransform()->GetPosition();
-						body->bodyDef.startingRoatation = object->GetTransform()->GetRotation();
-						body->hitboxdef.bodyType = Dynmaic;
-						body->bodyDef.density = 0.1f;
-						body->bodyDef.friction = 1.0f;
-						body->hitboxdef.scaleX = object->GetTransform()->GetScale().x;
-						body->hitboxdef.scaleY = object->GetTransform()->GetScale().y;
-						body->hitboxdef.shape = Box;
-
-						PhysicsWorld* physicsWorld = ObjectHandler::GetInstance().GetPhysicsWorld();
-						component = new Physics(body, physicsWorld);
-						object->AddComponent(component);*/
-					}
-				}
 				if (ImGui::Button("Reset"))
 				{
 					depth = 0.0f;
@@ -864,12 +825,6 @@ void Graphics::RenderFrame(Scene* scene)
 				{
 					object->GetComponent<Appearance>()->SetTexCoords(texCoords[0], texCoords[1], texCoords[2], texCoords[3]);
 				}
-				//if (hasPhysics)
-				//{
-				//	object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.bodyDef.type = (b2BodyType)bodyType;
-				//	object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.density = density;
-				//	object->GetComponent<Physics>()->GetPhysicsBody()->bodyDef.friction = friction;
-				//}
 			}
 			loopNum++;
 		}

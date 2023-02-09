@@ -4,8 +4,7 @@
 #include "GameObjects/GameObject.h"
 #include "Graphics/ConstantBuffer.h"
 #include "Graphics/TextureInfo.h"
-
-#define EDIT_MODE false
+#include "Defines.h"
 
 #if EDIT_MODE
 #include "Graphics/Geometry.h"

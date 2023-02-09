@@ -17,11 +17,10 @@ public:
 	};
 
 	GameObject* linkedObject;
-
-public: 
+	void Start();
 	//member variables
 	InteractableLink interactableLink; //InteractableLink chooses what the function of each interactable is
-	std::string linkedObjectName; //name of object the signal is sent to
+	std::string _linkedObjectName; //name of object the signal is sent to
 
 	//void functions overridden by child interactables
 	virtual void Interact(); //virtual method for interacting
@@ -30,7 +29,8 @@ public:
 	void SendSignal(); //send signal function for linked objects to open close etc.
 
 	//constructors
-	Interactable(InteractableLink switchType = Default, std::string linkedObjectName = "");
+	//Interactable();
+	Interactable(InteractableLink switchType, std::string linkedObjectName);
 	Interactable(InteractableLink switchType);	
 };
 
