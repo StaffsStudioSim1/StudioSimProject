@@ -21,7 +21,7 @@ private:
 
 	bool _loop = false;
 	float _volume = 1.0f;
-	float _pitch = 1.0f;
+	float _pitch = 0.0f;
 	float _pan = 0.0f;
 };
 

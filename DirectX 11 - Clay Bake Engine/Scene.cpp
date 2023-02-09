@@ -183,7 +183,9 @@ void Scene::Start()
 {
 	for (GameObject* obj : _children)
 		obj->Start();
+#if !EDIT_MODE
 	_backgroundAudio->Play();
+#endif
 }
 
 void Scene::Update(float deltaTime)
