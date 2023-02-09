@@ -42,6 +42,11 @@ void AudioManager::Update()
 	}
 }
 
+void AudioManager::SetMasterVolume(int volume)
+{
+	_audioEngine->SetMasterVolume(volume);
+}
+
 void AudioManager::AddLoopingSound(SoundEffect* sound)
 {
 	if (IsLooping(sound))
