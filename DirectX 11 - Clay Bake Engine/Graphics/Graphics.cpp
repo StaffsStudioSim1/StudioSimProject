@@ -385,6 +385,11 @@ void Graphics::ResizeWindow()
 	RECT rc = { (LONG)centreOfScreenX, (LONG)centreOfScreenY, (LONG)centreOfScreenX + (LONG)_resolutionWidth, (LONG)centreOfScreenY + (LONG)_resolutionHeight };
 	AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
 	SetWindowPos(GetActiveWindow(), NULL, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+	
+	POINT pt;
+	pt.x = centreOfScreenX;
+	pt.y = centreOfScreenY;
+	ClientToScreen(GetActiveWindow(), &pt);
 
 	// Destroy and recreate graphics buffers
 	_deviceContext->OMSetRenderTargets(0, 0, 0);
@@ -656,11 +661,13 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::Checkbox(" ", &_useFullscreen);
 		ImGui::SameLine();
 		ImGui::Image(fullscreenIconText.texture, sizeFS);
+
 		ImGui::PushItemWidth(250);
-		ImGui::SliderInt(" ", &_musicVol, 0, 100);
+		ImGui::SliderInt("  ", &_musicVol, 0, 100);
 		ImGui::SameLine();
 		ImGui::Image(musicIconText.texture, size);
-		ImGui::SliderInt(" ", &_soundVol, 0, 100);
+
+		ImGui::SliderInt("   ", &_soundVol, 0, 100);
 		ImGui::SameLine();
 		ImGui::Image(soundIconText.texture, size);
 
