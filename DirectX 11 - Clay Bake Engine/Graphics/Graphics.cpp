@@ -500,7 +500,7 @@ void Graphics::RenderFrame(Scene* scene)
 
 		ImVec2 size = ImVec2(playButtonText.width * 2 * (float)(_windowWidth / 1280.0f), playButtonText.height * 2 * (float)(_windowHeight / 720.0f));
 
-		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight});
+		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
 		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (size.x / 2), (float)(_windowHeight / 2) - (size.y * 3) });
 		ImGui::Begin("Menu", NULL, window_flags);
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.75f));
@@ -625,7 +625,7 @@ void Graphics::RenderFrame(Scene* scene)
 
 
 		ImGui::SetNextWindowSize({ (float)_windowWidth, (float)_windowHeight });
-		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (sizeP.x / 2), (float)(_windowHeight / 2) - (sizeP.y / 2)});
+		ImGui::SetNextWindowPos({ (float)(_windowWidth / 2) - (sizeP.x / 2), (float)(_windowHeight / 2) - (sizeP.y / 2) });
 		ImGui::Begin("PauseMenuBG", NULL, window_flags | ImGuiWindowFlags_NoBringToFrontOnFocus);
 		ImGui::Image(pauseMenuText.texture, sizeP);
 		ImGui::End();
@@ -726,7 +726,7 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::SameLine();
 		if (ImGui::ImageButton(rightButton, rightButtonText.texture, sizeLR))
 		{
-			if (_currentResolution < resolutionText.size()-1)
+			if (_currentResolution < resolutionText.size() - 1)
 				_currentResolution += 1;
 		}
 		ImGui::Dummy(ImVec2(0.0f, 5.0f));
@@ -822,11 +822,15 @@ void Graphics::RenderFrame(Scene* scene)
 	}
 #if EDIT_MODE
 	static bool linkScaling = true;
-	char fileName[40]; // For saving the file
+	char fileName[40];// For saving the file
+	
+	char bgName[40];
 	strcpy_s(fileName, scene->GetFilePath().c_str());
+	strcpy_s(bgName, ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Appearance>()->GetTexture().filePath.c_str());
+
 
 	const char* interactableStates[] = { "Default", "SwitchState", "SwitchGravity", "Signal3", "Signal4" };
-	
+
 	ImGui::Begin("Inspector");
 	if (SceneManager::GetInstance().GetCurrentSceneID() != 0)
 	{
@@ -937,7 +941,7 @@ void Graphics::RenderFrame(Scene* scene)
 				if (hasButton || hasLever || hasPressurePlate)
 				{
 					if (ImGui::InputText("Linked Object", linkedObjectChar, 40, ImGuiInputTextFlags_EnterReturnsTrue))
-					switchState = object->GetComponent<Interactable>()->interactableLink;
+						switchState = object->GetComponent<Interactable>()->interactableLink;
 					ImGui::ListBox("Switch State", &switchState, interactableStates, 5);
 				}
 				if (hasGoal)
@@ -979,25 +983,38 @@ void Graphics::RenderFrame(Scene* scene)
 	}
 	ImGui::PushItemWidth(200);
 
-	if(ImGui::InputText("File Name", fileName, 40))
+	if (ImGui::InputText("File Name", fileName, 40))
 		scene->SetFileName(fileName);
 
 
-	ImGui::SameLine();
-	if (ImGui::Button("Save"))
-		scene->Save();
+
 
 	if (ImGui::Button("Load"))
 	{
 		std::string sFileName = fileName;
-		
+
 
 		SceneManager::GetInstance().LoadScene(fileName);
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Save"))
+	{
+		scene->Save();
+	}
+
+
+	if(ImGui::InputText("Background Name", bgName, 40))
+		tempBackgroundTexture = bgName;
+
+		
 
 	ImGui::SameLine();
-	if (ImGui::Button("Create New Scene"))
-		scene->Save();
+	if (ImGui::Button("apply"))
+	{
+		scene->SetBackgound(tempBackgroundTexture);
+	}
+	
+
 
 	ImGui::End();
 #endif
