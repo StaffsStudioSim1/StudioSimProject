@@ -4,6 +4,7 @@
 #include "../Input/PlayerInput.h"
 #include "../Physics/Vectors.h"
 #include "../Audio/SoundEffect.h"
+#include "../GameObjects/Components/Interactable.h"
 #include "GameObject.h"
 #include "GameManager.h"
 
@@ -41,11 +42,13 @@ private:
     float _topSpeed = 10000.0f;
     float _jumpTimer = 2.0f;
     float _activeJumpTimer = 0.0f;
-
+  
+    
     bool _jumpReset = true;
     bool _movementEnabled = true;
     bool _isWalking = false;
 
+    Vector2 _interactArea = Vector2{ 100000.0f ,1000000.0f };
     Vector2 _currentMovement;
     Vector2 _jumpForce = {0.0f, 7000.0f};
     FacingDirection _facingDirection;

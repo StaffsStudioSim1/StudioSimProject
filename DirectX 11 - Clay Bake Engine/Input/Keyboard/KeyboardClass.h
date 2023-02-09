@@ -19,8 +19,8 @@ public:
 	bool IsCharBufferEmpty();
 	KeyboardEvent ReadKey();
 	unsigned char ReadChar();
-	void OnKeyPressed(const unsigned char key);
-	void OnKeyReleased(const unsigned char key);
+	void OnKeyPressed(const unsigned int scanCode);
+	void OnKeyReleased(const unsigned int scanCode);
 	void OnChar(const unsigned char key);
 	void EnableAutoRepeatKeys();
 	void DisableAutoRepeatKeys();

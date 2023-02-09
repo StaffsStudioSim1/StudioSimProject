@@ -94,8 +94,8 @@ Scene::Scene(std::string filePath, int width, int height)
 	_geometry = ObjectHandler::GetInstance().GetSquareGeometry();
 
 	_prefabs.push_back(Prefab("Collision",		"Resources/Sprites/StageCollision.dds", { 1.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"tag\" : \"StageCollision\", \"scale\" : [1.0, 1.0], \"components\" : [ { \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/StageCollision.dds\", 1.0, 1.0, 0.0, 0.0, 1.0] } ] }"));
-	_prefabs.push_back(Prefab("Player Blue",	"Resources/Sprites/Player1.dds", { 6.0f, 8.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Player1.dds\", 6.0, 8.0, 0.0, 0.0, 1.0] }, { \"class\" : \"PlayerController\", \"constructors\" : [1] }, { \"class\" : \"AABB\", \"constructors\": [ 5, 5 ] }, { \"class\" : \"Rigidbody\" }] }"));
-	_prefabs.push_back(Prefab("Player Red",		"Resources/Sprites/Player2.dds", { 6.0f, 8.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Player2.dds\", 6.0, 8.0, 0.0, 0.0, 1.0] }, { \"class\" : \"PlayerController\", \"constructors\" : [2] }, { \"class\" : \"AABB\", \"constructors\": [ 5, 5 ] }, { \"class\" : \"Rigidbody\" }] }"));
+	_prefabs.push_back(Prefab("Player Blue",	"Resources/Sprites/Player1.dds", { 6.0f, 8.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Player1.dds\", 6.0, 8.0, 0.0, 0.0, 1.0] }, { \"class\" : \"PlayerController\", \"constructors\" : [1] }, { \"class\" : \"AABB\", \"constructors\": [ 11, 16 ] }, { \"class\" : \"Rigidbody\" }] }"));
+	_prefabs.push_back(Prefab("Player Red",		"Resources/Sprites/Player2.dds", { 6.0f, 8.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Player2.dds\", 6.0, 8.0, 0.0, 0.0, 1.0] }, { \"class\" : \"PlayerController\", \"constructors\" : [2] }, { \"class\" : \"AABB\", \"constructors\": [ 11, 16 ] }, { \"class\" : \"Rigidbody\" }] }"));
 	_prefabs.push_back(Prefab("Box",			"Resources/Sprites/Box.dds", { 1.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Box.dds\", 1.0, 1.0, 0.0, 0.0, 1.0] }] }"));
 	_prefabs.push_back(Prefab("Lamp",			"Resources/Sprites/Lamp.dds", { 2.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"scale\" : [1.0, 1.0] , \"components\" : [{ \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/Lamp.dds\", 2.0, 1.0, 0.0, 0.0, 1.0, 0.0, 18.0] }] }"));
 
@@ -330,7 +330,7 @@ void Scene::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, Constant
 #if EDIT_MODE
 	DirectX::XMMATRIX world =
 		DirectX::XMMatrixScaling(_texture.width * _prefabs[_prefabNum].ghostTexCoords.x / 2, _texture.height * _prefabs[_prefabNum].ghostTexCoords.y / 2, 1.0f)
-		* DirectX::XMMatrixTranslation(_ghost.x, _ghost.y, 0.0f);
+		* DirectX::XMMatrixTranslation(_ghost.x + _prefabs[_prefabNum].ghostOffset.x, _ghost.y + _prefabs[_prefabNum].ghostOffset.y, 0.0f);
 
 	constantBuffer.mWorld = DirectX::XMMatrixTranspose(world);
 	constantBuffer.mTexCoord = _prefabs[_prefabNum].ghostTexMatrix;
