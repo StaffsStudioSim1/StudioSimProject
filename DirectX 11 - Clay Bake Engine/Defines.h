@@ -1,6 +1,6 @@
 #pragma once
 
-#define EDIT_MODE false
+#define EDIT_MODE true
 
 #define DEBUG true
 

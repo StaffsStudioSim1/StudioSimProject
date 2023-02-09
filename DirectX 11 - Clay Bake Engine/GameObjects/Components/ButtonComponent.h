@@ -13,6 +13,5 @@ public:
 	void Start();
 
 	ButtonComponent(InteractableLink switchType = Default, std::string linkedObjectName = "");
-		
 };
 
