@@ -1,8 +1,8 @@
 #pragma once
-#include "Component.h"
+#include "Components/Component.h"
 #include "../Physics/Vectors.h"
 #include "GameObject.h"
-#include "Physics.h"
+#include "Components/Rigidbody.h"
 
 enum PlatformDirection
 {

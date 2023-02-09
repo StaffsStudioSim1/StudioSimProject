@@ -28,7 +28,7 @@ void MovingPlatform::Update(float deltaTime)
 	{
 		/*Vector2 toMoveTo = MoveTowards(_gameObject->GetComponent<Physics>()->GetPosition(), m_origin + m_limit1, deltaTime);
 		_gameObject->GetComponent<Physics>()->SetLinearVelocity(toMoveTo);*/
-		_gameObject->GetComponent<Physics>()->SetLinearVelocity(Vector2(-10, 0));
+		_gameObject->GetComponent<Rigidbody>()->AddForce(Vector2(-10, 0));
 		Vector2 toMove = (m_origin + m_limit1) - _gameObject->GetTransform()->GetPosition();
 		if (std::pow(toMove.x, 2) + std::pow(toMove.y, 2) < 0.01)
 		{
@@ -39,7 +39,7 @@ void MovingPlatform::Update(float deltaTime)
 	{
 		/*Vector2 toMoveTo = MoveTowards(_gameObject->GetComponent<Physics>()->GetPosition(), m_origin + m_limit2, deltaTime);
 		_gameObject->GetComponent<Physics>()->SetLinearVelocity(-toMoveTo);*/
-		_gameObject->GetComponent<Physics>()->SetLinearVelocity(Vector2(10, 0));
+		_gameObject->GetComponent<Rigidbody>()->AddForce(Vector2(10, 0));
 		Vector2 toMove = (m_origin + m_limit2) - _gameObject->GetTransform()->GetPosition();
 		if (std::pow(toMove.x, 2) + std::pow(toMove.y, 2) < 0.01)
 		{
@@ -53,7 +53,7 @@ void MovingPlatform::Update(float deltaTime)
 void MovingPlatform::Start()
 {
 	
-	m_origin = Vector2(_gameObject->GetComponent<Physics>()->GetPosition());
+	m_origin = Vector2(_gameObject->GetTransform()->GetPosition());
 	
 }
 
