@@ -38,7 +38,7 @@ private:
     int _playerID;
     float _moveSpeed = 100.0f;
     float _topSpeed = 10000.0f;
-    float _jumpTimer = 1.5f;
+    float _jumpTimer = 2.0f;
     float _activeJumpTimer = 0.0f;
 
     bool _jumpReset = true;
@@ -46,7 +46,7 @@ private:
     bool _isWalking = false;
 
     Vector2 _currentMovement;
-    Vector2 _jumpForce = {0.0f, 5000.0f};
+    Vector2 _jumpForce = {0.0f, 7000.0f};
     FacingDirection _facingDirection;
 
     //Functions

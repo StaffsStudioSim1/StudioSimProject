@@ -89,7 +89,6 @@ void PlayerController::FixedUpdate(float timeStep)
 			_moveSoundEffect->Play();
 		}
 		_isWalking = true;
-
 	}
 	else
 	{
