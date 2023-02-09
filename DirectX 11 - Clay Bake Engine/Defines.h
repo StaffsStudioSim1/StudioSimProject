@@ -2,7 +2,7 @@
 
 #define EDIT_MODE false
 
-#define DEBUG true
+#define DEBUG false
 
 #define FPS_5 1.0f/5.0f
 #define FPS_30 1.0f/30.0f
@@ -13,6 +13,7 @@
 
 #define JSON_SCENE_ID "sceneID"
 #define JSON_SCENE_BACKGROUND "backgroundImage"
+#define JSON_SCENE_BACKGROUNDAUDIO "backgroundAudio"
 #define JSON_SCENE_GAMEOBJECTS "gameObjects"
 #define JSON_SCENE_STAGECOLLISION "stageCollision"
 

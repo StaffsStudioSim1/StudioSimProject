@@ -1,6 +1,7 @@
 {
 	"sceneID" : 0,
     "backgroundImage": "Resources/Sprites/MainMenuBG.dds",
+    "backgroundAudio": "Resources/SoundEffects/FactoryAmbience.wav",
     "gameObjects": null,
 	"stageCollision" : ""
 }

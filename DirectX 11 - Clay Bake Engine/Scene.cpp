@@ -31,6 +31,9 @@ Scene::Scene(std::string filePath, int width, int height)
 	_backgroundImage->GetTransform()->SetDepthPos(1.0f);
 	_backgroundImage->AddComponent(new Appearance(imagePath));
 
+	std::string audioFilePath = data[JSON_SCENE_BACKGROUNDAUDIO];
+	_backgroundAudio = new SoundEffect(audioFilePath, true);
+
 	for (json objectData : data[JSON_SCENE_GAMEOBJECTS])
 		_children.push_back(new GameObject(objectData));
 
@@ -87,10 +90,6 @@ Scene::Scene(std::string filePath, int width, int height)
 				}
 	}
 #else
-	/*RECT rc;
-	GetWindowRect(GetActiveWindow(), &rc);
-	int width = (rc.right - rc.left) - 16;
-	int height = (rc.bottom - rc.top) - 39;*/
 	_geometry = ObjectHandler::GetInstance().GetSquareGeometry();
 
 	_prefabs.push_back(Prefab("Collision",		"Resources/Sprites/StageCollision.dds", { 1.0f, 1.0f, 0.0f, 0.0f }, "{ \"rotation\" : 0.0, \"tag\" : \"StageCollision\", \"scale\" : [1.0, 1.0], \"components\" : [ { \"class\" : \"Appearance\", \"constructors\" : [\"Resources/Sprites/StageCollision.dds\", 1.0, 1.0, 0.0, 0.0, 1.0] } ] }"));
@@ -133,6 +132,7 @@ Scene::~Scene()
 	_children.clear();
 
 	delete _backgroundImage;
+	delete _backgroundAudio;
 }
 
 void Scene::Save()
@@ -142,7 +142,9 @@ void Scene::Save()
 	json gameObjects;
 
 	scene[JSON_SCENE_ID] = _id;
-	scene[JSON_SCENE_BACKGROUND] = ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Appearance>()->GetTexture().filePath; // Presumes that the first object is the background
+	// Assumes that the first object is the background
+	scene[JSON_SCENE_BACKGROUND] = ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Appearance>()->GetTexture().filePath;
+	scene[JSON_SCENE_BACKGROUNDAUDIO] = _audioFilePath;
 
 	std::string map;
 	for (int i = 0; i < 36 * 20; i++)
@@ -178,6 +180,9 @@ void Scene::Start()
 {
 	for (GameObject* obj : _children)
 		obj->Start();
+#if !EDIT_MODE
+	_backgroundAudio->Play();
+#endif
 }
 
 void Scene::Update(float deltaTime)
@@ -324,6 +329,7 @@ void Scene::Stop()
 {
 	for (GameObject* obj : _children)
 		obj->Stop();
+	_backgroundAudio->Stop();
 }
 
 void Scene::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
