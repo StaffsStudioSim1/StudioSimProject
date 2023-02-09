@@ -5,10 +5,12 @@
 #include "Graphics/ConstantBuffer.h"
 #include "Graphics/TextureInfo.h"
 #include "Defines.h"
+#include "Audio/SoundEffect.h"
 
 #if EDIT_MODE
 #include "Graphics/Geometry.h"
 #include "GameObjects/ObjectHandler.h"
+
 
 struct Prefab
 {
@@ -71,6 +73,8 @@ private:
 	std::vector<GameObject*> _children;
 	GameObject* _backgroundImage;
 	std::string _filePath;
+	SoundEffect* _backgroundAudio;
+	std::string _audioFilePath;
 	int _width;
 	int _height;
 	float _snapScale = 18;
