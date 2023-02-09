@@ -20,6 +20,7 @@ public:
 	bool ShouldSceneChange();
 	Scene* ReadScene();
 	int GetCurrentSceneID();
+	std::string GetCurrentSceneFilePath();
 private:
 	SceneManager();
 	~SceneManager();
@@ -27,6 +28,7 @@ private:
 	bool _shouldSceneChange;
 	Scene* _newScene;
 	int _currentSceneID;
+	std::string _currentSceneFilePath;
 
 	int _width;
 	int _height;
