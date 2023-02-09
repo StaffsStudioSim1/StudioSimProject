@@ -52,7 +52,10 @@ bool AABB::Overlaps(AABB* collider, float deltaTime)
 
 Vector2 AABB::GetSize()
 {
-	return Vector2(_width, _height) * _gameObject->GetTransform()->GetVectorScale();
+	Vector2 size = Vector2(_width, _height) * _gameObject->GetTransform()->GetVectorScale();
+	size.x = fabsf(size.x);
+	size.y = fabsf(size.y);
+	return size;
 }
 
 void AABB::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, ConstantBuffer& constantBuffer, Microsoft::WRL::ComPtr <ID3D11Buffer> globalBuffer)
