@@ -4,7 +4,12 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "../SceneManager.h"
+#include "ObjectHandler.h"
+#include "../Input/PlayerInput.h"
+#include "../nlohmann/json.hpp"
 using namespace std;
+using nlohmann::json;
 
 class GameManager
 {
@@ -12,9 +17,10 @@ class GameManager
     bool isGravityFlipped;
     vector <int> levelList;
     Scene* _currentScene;
+    string Levels[5] = { "Level1", "Level2", "Level3", "Level4", "Level5" };
 
-    GameManager();
 public:
+    GameManager();
     // Singleton Code
     static GameManager& GetInstance()
     {
@@ -28,9 +34,7 @@ public:
     void SceneChanged(Scene* scene);
     void LevelWin();
     void LevelLose();
-    void LevelReset();
     void Pause();
-    void UnPause();
     void GravityFlip();
     bool IsGravityFlipped();
     void SaveFileCheck();
