@@ -16,7 +16,7 @@ void MovingPlatform::SetPlatfromDirection(PlatformDirection newDirection)
 	
 	m_movingDirection = newDirection;
 
-	_gameObject->GetComponent<Physics>()->SetLinearVelocity(Vector2(0, 0));
+	_gameObject->GetComponent<Rigidbody>()->AddForce(Vector2(0, 0));
 }
 
 void MovingPlatform::Update(float deltaTime)
