@@ -33,6 +33,7 @@ Scene::Scene(std::string filePath, int width, int height)
 
 	std::string audioFilePath = data[JSON_SCENE_BACKGROUNDAUDIO];
 	_backgroundAudio = new SoundEffect(audioFilePath, true);
+	_backgroundAudio->SetVolume(0.25);
 
 	for (json objectData : data[JSON_SCENE_GAMEOBJECTS])
 		_children.push_back(new GameObject(objectData));

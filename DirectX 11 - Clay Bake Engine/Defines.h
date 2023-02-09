@@ -29,3 +29,5 @@
 
 #define JSON_TAG_GAMEOBJECT "GameObject"
 #define JSON_TAG_STAGECOLLISION "StageCollision"
+
+#define GRAVITY 980.7f
