@@ -213,6 +213,9 @@
     <ClCompile Include="GameObjects\PlayerMagnetism.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\Components\Goal.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StringConverter.h">
@@ -400,6 +403,9 @@
     </ClInclude>
     <ClInclude Include="Defines.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Components\Goal.h">
+      <Filter>Header Files\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

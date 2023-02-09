@@ -1,10 +1,10 @@
 #include "PressurePlateComponent.h"
-#include "../PlayerController.h"
+
 //include PlayerMagnetism.h
 
 
 
-#include "../ObjectHandler.h"
+
 
 PressurePlateComponent::PressurePlateComponent(InteractableLink switchType, std::string linkedObjectName) : Interactable(switchType, linkedObjectName)
 {
@@ -47,6 +47,7 @@ void PressurePlateComponent::Update()
 
 	bool ObjectFound = false;
 
+	//check hitbox state
 	for (GameObject* object : areaCheck)
 	{
 		//if (object->GetComponent<MagnetismObject>() != nullptr or object->GetComponent<PlayerController>())
@@ -56,6 +57,7 @@ void PressurePlateComponent::Update()
 		//}
 		if (object->GetComponent<PlayerController>())
 		{
+			// if volume occupied call weighed down,
 			WeighedDown();
 			ObjectFound = true;
 		}
@@ -64,13 +66,14 @@ void PressurePlateComponent::Update()
 
 	if (ObjectFound != true)
 	{
+		// call weight released on volume not being occupied
 		WeightReleased();
 	}
 
 
-	//check hitbox state
-	//physics trigger volume
-	// if volume occupied call weighed down, call weight released on volume not being occupied
+	
+
+
 	
 }
 
