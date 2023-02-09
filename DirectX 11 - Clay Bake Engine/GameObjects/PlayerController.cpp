@@ -1,5 +1,6 @@
 #include "PlayerController.h"
 
+
 PlayerController::PlayerController(int id)
 {
 	_playerID = id;
@@ -119,7 +120,21 @@ void PlayerController::JumpPressed()
 
 void PlayerController::InteractPressed()
 {
-	//TODO: Link to Tony's interact class
+
+	// player position
+	Vector2 playerPosition = _gameObject->GetTransform()->GetPosition();
+
+	//check area
+	std::vector<GameObject*> areaCheck = ObjectHandler::GetInstance().GetObjectsInArea(playerPosition, _interactArea);
+
+	// call interact if component is not null
+	for (GameObject* object : areaCheck)
+	{
+		if (object->GetComponent<Interactable>() != nullptr)
+		{
+			object->GetComponent<Interactable>()->Interact();
+		}
+	}
 }
 
 void PlayerController::MagnetPressed()
