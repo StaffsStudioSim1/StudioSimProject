@@ -6,6 +6,7 @@
 #include "../SceneManager.h"
 
 #include <fstream>
+#include "../Audio/AudioManager.h"
 
 bool Graphics::Initialize(HWND hwnd, int width, int height)
 {
@@ -664,11 +665,11 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::SameLine();
 		ImGui::Image(fullscreenIconText.texture, sizeFS);
 
-		ImGui::PushItemWidth(250);
-		ImGui::SliderInt("  ", &_musicVol, 0, 100);
-		ImGui::SameLine();
-		ImGui::Image(musicIconText.texture, size);
+		//ImGui::SliderInt("  ", &_musicVol, 0, 100);
+		//ImGui::SameLine();
+		//ImGui::Image(musicIconText.texture, size);
 
+		ImGui::PushItemWidth(250);
 		ImGui::SliderInt("   ", &_soundVol, 0, 100);
 		ImGui::SameLine();
 		ImGui::Image(soundIconText.texture, size);
@@ -714,10 +715,12 @@ void Graphics::RenderFrame(Scene* scene)
 				_resolutionHeight = monitorY;
 			}
 
+			AudioManager::GetInstance().SetMasterVolume(_soundVol);
+
 			json settings;
 			settings["Resolution"] = { _resolutionWidth, _resolutionHeight };
 			settings["Fullscreen"] = _useFullscreen;
-			settings["MusicVol"] = _musicVol;
+			//settings["MusicVol"] = _musicVol;
 			settings["SoundVol"] = _soundVol;
 
 			std::ofstream outFile("Resources/Settings.json");
