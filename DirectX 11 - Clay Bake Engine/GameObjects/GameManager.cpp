@@ -3,8 +3,8 @@
 GameManager::GameManager()
 {
 	//stuff for when game starts
-	isPaused = false;
-	isGravityFlipped = false;
+	_isPaused = false;
+	_isGravityFlipped = false;
 	_currentScene = nullptr;
 	_pauseSound = new SoundEffect("Resources/SoundEffects/PauseSound.wav");
 }
@@ -17,7 +17,7 @@ GameManager::~GameManager()
 void GameManager::SceneChanged(Scene* scene)
 {
 	_currentScene = scene;
-	isPaused = false;
+	_isPaused = false;
 }
 
 void GameManager::LevelWin()
@@ -30,9 +30,9 @@ void GameManager::LevelWin()
 		ofstream fw("Resources/SaveFiles/LevelSaves.txt", ofstream::out);
 		if (fw.is_open())
 		{
-			for (int i = 0; i < levelList.size(); i++)
+			for (int i = 0; i < _levelList.size(); i++)
 			{
-				fw << Levels[i] << "\n";
+				fw << _levels[i] << "\n";
 			}
 			fw.close();
 		}
@@ -58,24 +58,24 @@ void GameManager::Pause()
 	if (!ObjectHandler::GetInstance().IsOptionsMenuUIEnabled()) // Prevents opening the pause menu while in the options menu
 	{
 		//pause the game
-		isPaused = !isPaused;
+		_isPaused = !_isPaused;
 		//set time to 0 - pause time
 		//freeze all input
 		//play pause sound
 		_pauseSound->Play();
 		//bring up pause menu
-		ObjectHandler::GetInstance().EnablePauseMenuUI(isPaused);
+		ObjectHandler::GetInstance().EnablePauseMenuUI(_isPaused);
 	}
 }
 
 void GameManager::GravityFlip()
 {
-	isGravityFlipped = !isGravityFlipped;
+	_isGravityFlipped = !_isGravityFlipped;
 }
 
 bool GameManager::IsGravityFlipped()
 {
-	return isGravityFlipped;
+	return _isGravityFlipped;
 }
 
 void GameManager::SaveFileCheck()
@@ -100,9 +100,9 @@ void GameManager::CreateSaveFile()
 
 	if (fw.is_open())
 	{
-		for (int i = 0; i < levelList.size(); i++)
+		for (int i = 0; i < _levelList.size(); i++)
 		{
-			fw << levelList[i] << "\n";
+			fw << _levelList[i] << "\n";
 		}
 		fw.close();
 	}

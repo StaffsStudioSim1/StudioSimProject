@@ -7,9 +7,9 @@
 class PressurePlateComponent : public Interactable
 {
 public:
-	bool m_WeighedDown;
-	Vector2 m_Boxsize;
-	Vector2 m_Position;
+	bool weighedDown;
+	Vector2 boxSize;
+	Vector2 position;
 	
 	void WeighedDown();
 	void WeightReleased();

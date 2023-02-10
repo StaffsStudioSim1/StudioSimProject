@@ -5,9 +5,9 @@
 class KeyboardClass
 {
 private: 
-	bool autoRepeatKeys = false; 
-	bool autoRepatChars = false;
-	bool keyStates[256];
+	bool _autoRepeatKeys = false; 
+	bool _autoRepatChars = false;
+	bool _keyStates[256];
 	std::queue<KeyboardEvent> keyBuffer;
 	std::queue<unsigned char> charBuffer;
 protected:

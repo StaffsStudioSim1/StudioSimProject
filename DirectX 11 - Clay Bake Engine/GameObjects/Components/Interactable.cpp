@@ -7,9 +7,9 @@
 void Interactable::Start()
 {
 
-	if (_linkedObjectName != "")
+	if (linkedObjectName != "")
 	{
-		linkedObject = ObjectHandler::GetInstance().FindGameObject(_linkedObjectName);
+		linkedObject = ObjectHandler::GetInstance().FindGameObject(linkedObjectName);
 	}
 }
 
@@ -56,7 +56,7 @@ void Interactable::SendSignal()
 Interactable::Interactable(InteractableLink switchType, std::string linkedObjectName)
 {
 	interactableLink = switchType;
-	_linkedObjectName = linkedObjectName;
+	linkedObjectName = linkedObjectName;
 	
 }
 

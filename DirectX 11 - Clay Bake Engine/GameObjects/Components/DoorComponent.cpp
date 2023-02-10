@@ -7,13 +7,13 @@
 
 void DoorComponent::Start()
 {
-	m_Opened = _defaultState;
+	_open = _defaultState;
 
-	if (m_Opened)
+	if (_open)
 	{
 		Open();
 	}
-	if (!m_Opened)
+	if (!_open)
 	{
 		Close();
 	}
@@ -43,7 +43,7 @@ void DoorComponent::Open()
 		_gameObject->GetComponent<AABB>()->SetActive(false);
 	}
 
-	m_Opened = true;
+	_open = true;
 }
 
 void DoorComponent::Close()
@@ -57,22 +57,22 @@ void DoorComponent::Close()
 		_gameObject->GetComponent<AABB>()->SetActive(true);
 	}
 
-	m_Opened = false;
+	_open = false;
 }
 
-DoorComponent::DoorComponent(bool DefaultState)
+DoorComponent::DoorComponent(bool defaultState)
 {
-	_defaultState = DefaultState;
+	_defaultState = defaultState;
 }
 
 
 void DoorComponent::SwitchState()
 {
-	if (m_Opened)
+	if (_open)
 	{
 		Close();
 	}
-	else if (!m_Opened)
+	else if (!_open)
 	{
 		Open();
 	}

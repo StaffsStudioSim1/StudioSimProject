@@ -10,9 +10,9 @@ class Goal :
 {
 public:
     int _playerCount;
-    Vector2 _GoalSize;
-    Vector2 _Position;
-    std::string _NextLevelName;
+    Vector2 _goalSize;
+    Vector2 _position;
+    std::string _nextLevelName;
 
     Goal(std::string levelName);
 

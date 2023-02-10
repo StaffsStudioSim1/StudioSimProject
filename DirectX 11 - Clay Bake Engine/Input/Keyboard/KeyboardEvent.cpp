@@ -1,31 +1,31 @@
 #include "KeyBoardEvent.h"
 
-KeyboardEvent::KeyboardEvent() : type(EventType::Invalid), key(0u)
+KeyboardEvent::KeyboardEvent() : _type(EventType::Invalid), _key(0u)
 {
 
 }
 
-KeyboardEvent::KeyboardEvent(const EventType type, const unsigned char key) : type(type), key(key)
+KeyboardEvent::KeyboardEvent(const EventType type, const unsigned char key) : _type(type), _key(key)
 {
 
 }
 
 bool KeyboardEvent::IsPress() const
 {
-	return this->type == EventType::Press;
+	return this->_type == EventType::Press;
 }
 
 bool KeyboardEvent::IsRelease() const
 {
-	return this->type == EventType::Release;
+	return this->_type == EventType::Release;
 }
 
 bool KeyboardEvent::IsValid() const
 {
-	return this->type != EventType::Invalid;
+	return this->_type != EventType::Invalid;
 }
 
 unsigned char KeyboardEvent::GetKeyCode() const
 {
-	return this->key;
+	return this->_key;
 }

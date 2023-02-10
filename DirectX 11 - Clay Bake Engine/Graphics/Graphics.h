@@ -44,9 +44,9 @@ private:
 	int _resolutionWidth, _resolutionHeight;
 	bool _useFullscreen = false;
 	int _musicVol, _soundVol;
-	std::string tempBackgroundTexture;
+	std::string _tempBackgroundTexture;
 
-	SoundEffect* _UISound;
+	SoundEffect* _uiSound;
 
 	Microsoft::WRL::ComPtr <ID3D11Device>				_device;
 	Microsoft::WRL::ComPtr <ID3D11DeviceContext>		_deviceContext;

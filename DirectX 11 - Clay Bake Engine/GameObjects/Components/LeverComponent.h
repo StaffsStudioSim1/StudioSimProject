@@ -4,11 +4,11 @@
 class LeverComponent : public Interactable
 {
 public:
-	bool m_State;
+	bool state;
 	std::string destinationObject;
-	void Start() override;
+	void Start();
 	void Interact();
-	json Write() override;
+	json Write();
 
 	LeverComponent(InteractableLink switchType, std::string linkedObjectName);
 };

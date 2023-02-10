@@ -55,7 +55,8 @@ private:
 	float _rotation, _depthPos;
 
 	Transform* _pParent;
-	bool IsFlipTest =  false;
+	bool _flipHorizontal =  false;
+	bool _flipVertical =  false;
 
 	DirectX::XMFLOAT4X4 _world{};
 };
