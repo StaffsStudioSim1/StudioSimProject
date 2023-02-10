@@ -498,6 +498,8 @@ void Graphics::RenderFrame(Scene* scene)
 	//CREATE FRAME
 	ImGui::NewFrame();
 	//UI WINDOWS
+	int test = SceneManager::GetInstance().GetCurrentSceneID();
+	bool test2 = ObjectHandler::GetInstance().IsMainMainUIEnabled();
 	if (SceneManager::GetInstance().GetCurrentSceneID() == 0 && ObjectHandler::GetInstance().IsMainMainUIEnabled()) // Main menu UI
 	{
 		const char* playButton = "Resources/Sprites/PlayButton.dds";
@@ -671,6 +673,7 @@ void Graphics::RenderFrame(Scene* scene)
 			_UISound->Play();
 			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/MainMenu.json");
+			ObjectHandler::GetInstance().EnableMainMenuUI(true);
 		}
 		if (ImGui::ImageButton(exitGameButton, exitGameButtonText.texture, size))
 		{

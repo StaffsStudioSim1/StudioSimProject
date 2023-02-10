@@ -17,6 +17,7 @@ GameManager::~GameManager()
 void GameManager::SceneChanged(Scene* scene)
 {
 	_currentScene = scene;
+	isPaused = false;
 }
 
 void GameManager::LevelWin()
@@ -54,14 +55,17 @@ void GameManager::LevelLose()
 
 void GameManager::Pause()
 {
-	//pause the game
-	isPaused = !isPaused;
-	//set time to 0 - pause time
-	//freeze all input
-	//play pause sound
-	_pauseSound->Play();
-	//bring up pause menu
-	ObjectHandler::GetInstance().EnablePauseMenuUI(isPaused);
+	if (!ObjectHandler::GetInstance().IsOptionsMenuUIEnabled()) // Prevents opening the pause menu while in the options menu
+	{
+		//pause the game
+		isPaused = !isPaused;
+		//set time to 0 - pause time
+		//freeze all input
+		//play pause sound
+		_pauseSound->Play();
+		//bring up pause menu
+		ObjectHandler::GetInstance().EnablePauseMenuUI(isPaused);
+	}
 }
 
 void GameManager::GravityFlip()
