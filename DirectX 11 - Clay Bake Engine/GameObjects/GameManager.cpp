@@ -37,12 +37,19 @@ void GameManager::LevelWin()
 			fw.close();
 		}
 	}
+	
+	if (_isGravityFlipped)
+	{
+		GravityFlip();
+	}
+
 	//load next level
 	if (SceneManager::GetInstance().GetCurrentSceneID() >= 5)
 		SceneManager::GetInstance().LoadScene("Resources/mainmenu.json");
 	else
 		SceneManager::GetInstance().LoadScene("Resources/Level" + std::to_string(SceneManager::GetInstance().GetCurrentSceneID() + 1) + ".json");
-}
+
+}	
 
 void GameManager::LevelLose()
 {
