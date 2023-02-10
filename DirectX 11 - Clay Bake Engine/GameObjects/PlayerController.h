@@ -52,7 +52,7 @@ private:
     PlayerMagnetism* _magnet;
 
     int _playerID;
-    float _moveSpeed = 100.0f;
+    float _moveSpeed = 150.0f;
     float _topSpeed = 10000.0f;
     float _jumpTimer = 1.0f;
     float _activeJumpTimer = 0.0f;
