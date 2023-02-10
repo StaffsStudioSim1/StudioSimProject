@@ -37,7 +37,11 @@ void GameManager::LevelWin()
 		}
 	}
 	//load next level
-	SceneManager::GetInstance().LoadScene("Resources/Levels/Level" + std::to_string(SceneManager::GetInstance().GetCurrentSceneID() + 1) + ".json");
+	if (SceneManager::GetInstance().GetCurrentSceneID() >= 5)
+	{
+		SceneManager::GetInstance().LoadScene("Resources/mainmenu.json");
+	}
+	SceneManager::GetInstance().LoadScene("Resources/" + std::to_string(SceneManager::GetInstance().GetCurrentSceneID() + 1) + ".json");
 }
 
 void GameManager::LevelLose()
