@@ -33,8 +33,9 @@ public:
 
 	//DirectX::XMFLOAT2 GetScale() const noexcept { DirectX::XMFLOAT2 absScale = _scale; return DirectX::XMFLOAT2(fabsf(absScale.x), fabsf(absScale.y)); }
 	//Vector2 GetVectorScale() { Vector2 vScale = {_scale.x, _scale.y }; vScale.x = fabsf(vScale.x); vScale.y = fabsf(vScale.y); return vScale; }
-	DirectX::XMFLOAT2 GetScale() const noexcept { return _scale; }
-	Vector2 GetVectorScale() { return Vector2(_scale.x, _scale.y); }
+	DirectX::XMFLOAT2 GetRawScale() const noexcept { return _scale; }
+	DirectX::XMFLOAT2 GetScale() const noexcept { return DirectX::XMFLOAT2(abs(_scale.x), abs(_scale.y)); }
+	Vector2 GetVectorScale() { return Vector2(abs(_scale.x), abs(_scale.y)); }
 	void SetScale(DirectX::XMFLOAT2 scale) { _scale = scale; }
 	void SetScale(Vector2 scale) { _scale.x = scale.x; _scale.y = scale.y; }
 	void SetScale(float x, float y) { _scale.x = x; _scale.y = y; }

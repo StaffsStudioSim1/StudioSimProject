@@ -98,7 +98,7 @@ void Appearance::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, Con
 		return;
 
 	DirectX::XMMATRIX world =
-		DirectX::XMMatrixScaling(_gameObject->GetTransform()->GetScale().x * _texture.width * _texCoords.x / 2, _gameObject->GetTransform()->GetScale().y * _texture.height * _texCoords.y / 2, 1.0f)
+		DirectX::XMMatrixScaling(_gameObject->GetTransform()->GetRawScale().x * _texture.width * _texCoords.x / 2, _gameObject->GetTransform()->GetRawScale().y * _texture.height * _texCoords.y / 2, 1.0f)
 		* DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, _gameObject->GetTransform()->GetRotation())
 		* DirectX::XMMatrixTranslation(_gameObject->GetTransform()->GetPosition().x + _offset.x, _gameObject->GetTransform()->GetPosition().y + _offset.y, _gameObject->GetTransform()->GetDepthPos());
 
