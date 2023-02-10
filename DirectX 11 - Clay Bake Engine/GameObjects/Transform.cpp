@@ -11,18 +11,20 @@ Transform::Transform()
 
 void Transform::FlipHorizontal(bool isFlipped)
 {
-	if (isFlipped != IsFlipTest)
-		_scale.x = -_scale.x;
-	
-	IsFlipTest = isFlipped;
+	if (isFlipped == _flipHorizontal)
+		return;
+	_scale.x = -_scale.x;
+
+	_flipHorizontal = isFlipped;
 }
 
 void Transform::FlipVertical(bool isFlipped)
 {
-	if (isFlipped != IsFlipTest)
-		_scale.y = -_scale.y;
+	if (isFlipped == _flipVertical)
+		return;
+	_scale.y = -_scale.y;
 
-	IsFlipTest = isFlipped;
+	_flipVertical = isFlipped;
 }
 
 void Transform::Update()

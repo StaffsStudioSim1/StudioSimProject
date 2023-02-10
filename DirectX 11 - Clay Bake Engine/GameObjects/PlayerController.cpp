@@ -47,6 +47,9 @@ void PlayerController::Start()
 
 void PlayerController::Update(float deltaTime)
 {
+	//Check Gravity Flip
+	_playerTransform->FlipVertical(GameManager::GetInstance().IsGravityFlipped());
+
 	//Movement
 	_currentMovement = _playerInput->ReadAxis(Movement);
 
