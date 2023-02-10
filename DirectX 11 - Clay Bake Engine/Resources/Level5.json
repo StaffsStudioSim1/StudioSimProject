@@ -57,7 +57,10 @@
                     ]
                 },
                 {
-                    "class": "DoorComponent"
+                    "class": "DoorComponent",
+                    "constructors": [
+                        false
+                    ]
                 },
                 {
                     "class": "AABB",
@@ -71,7 +74,7 @@
             "name": "Door3",
             "position": [
                 -99.0,
-                106.0,
+                99.0,
                 0.0
             ],
             "rotation": 0.0,
@@ -95,7 +98,10 @@
                     ]
                 },
                 {
-                    "class": "DoorComponent"
+                    "class": "DoorComponent",
+                    "constructors": [
+                        false
+                    ]
                 },
                 {
                     "class": "AABB",
@@ -109,7 +115,7 @@
             "name": "Door1",
             "position": [
                 99.0,
-                106.0,
+                99.0,
                 0.0
             ],
             "rotation": 0.0,
@@ -133,7 +139,10 @@
                     ]
                 },
                 {
-                    "class": "DoorComponent"
+                    "class": "DoorComponent",
+                    "constructors": [
+                        false
+                    ]
                 },
                 {
                     "class": "AABB",
@@ -147,7 +156,7 @@
             "name": "Door4",
             "position": [
                 -243.0,
-                124.0,
+                117.0,
                 0.0
             ],
             "rotation": 0.0,
@@ -255,7 +264,10 @@
                     ]
                 },
                 {
-                    "class": "DoorComponent"
+                    "class": "DoorComponent",
+                    "constructors": [
+                        false
+                    ]
                 },
                 {
                     "class": "AABB",
@@ -269,7 +281,7 @@
             "name": "Door2",
             "position": [
                 45.0,
-                34.0,
+                27.0,
                 0.0
             ],
             "rotation": 0.0,
@@ -419,7 +431,10 @@
                     ]
                 },
                 {
-                    "class": "DoorComponent"
+                    "class": "DoorComponent",
+                    "constructors": [
+                        false
+                    ]
                 },
                 {
                     "class": "AABB",
@@ -432,8 +447,8 @@
             ],
             "name": "Platform",
             "position": [
-                -135.0,
-                88.0,
+                -117.0,
+                81.0,
                 0.0
             ],
             "rotation": 90.00020599365234,

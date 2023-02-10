@@ -256,5 +256,5 @@ bool PlayerController::CheckForCollisionsBelowDirect()
 	else
 		playerpositionoffset.y += yOffSet;
 
-	return ObjectHandler::GetInstance().GetStageCollisionInArea(playerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x, 2.0f)).size() > 0;
+	return ObjectHandler::GetInstance().GetStageCollisionInArea(playerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x * 11.0f, 2.0f)).size() > 0;
 }
