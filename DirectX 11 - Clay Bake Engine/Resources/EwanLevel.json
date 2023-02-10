@@ -182,7 +182,7 @@
                 {
                     "class": "LeverComponent",
                     "constructors": [
-                        0,
+                        1,
                         "DoorTopLeft"
                     ]
                 },
@@ -195,7 +195,7 @@
                     ]
                 }
             ],
-            "name": "Lever [187]",
+            "name": "LeverToDoorTopLeft",
             "position": [
                 297.0,
                 117.0,
@@ -222,7 +222,10 @@
                     ]
                 },
                 {
-                    "class": "DoorComponent"
+                    "class": "DoorComponent",
+                    "constructors": [
+                        false
+                    ]
                 },
                 {
                     "class": "AABB",
@@ -236,6 +239,213 @@
             "name": "DoorTopLeft",
             "position": [
                 -261.0,
+                117.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Door.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "DoorComponent",
+                    "constructors": [
+                        false
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        16.0,
+                        32.0,
+                        false
+                    ]
+                }
+            ],
+            "name": "DoorTopRight",
+            "position": [
+                225.0,
+                117.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Door.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "DoorComponent",
+                    "constructors": [
+                        false
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        16.0,
+                        32.0,
+                        false
+                    ]
+                }
+            ],
+            "name": "DoorMiddleLeft",
+            "position": [
+                -261.0,
+                9.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Lever.dds",
+                        3.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "LeverComponent",
+                    "constructors": [
+                        1,
+                        "DoorTopRight"
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        5.0,
+                        false
+                    ]
+                }
+            ],
+            "name": "LeverToDoorTopRight",
+            "position": [
+                -297.0,
+                9.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/PressurePlate.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PressurePlateComponent",
+                    "constructors": [
+                        1,
+                        "DoorMiddleLeft"
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        5.0,
+                        true
+                    ]
+                }
+            ],
+            "name": "PressurePlateToDoorMiddleLeft",
+            "position": [
+                225.0,
+                -153.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Box.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "MagnetBox"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        18.0,
+                        false
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Box [190]",
+            "position": [
+                117.0,
                 117.0,
                 0.0
             ],
