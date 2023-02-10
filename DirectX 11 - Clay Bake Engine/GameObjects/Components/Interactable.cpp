@@ -38,7 +38,7 @@ void Interactable::SendSignal()
 	case (SwitchGravity):
 		//switch gravity
 
-
+		GameManager().GetInstance().GravityFlip();
 
 		break;
 	case (Signal3):
