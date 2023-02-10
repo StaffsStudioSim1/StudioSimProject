@@ -521,7 +521,7 @@ void Graphics::RenderFrame(Scene* scene)
 		if (ImGui::ImageButton(playButton, playButtonText.texture, size))
 		{
 			_UISound->Play();
-			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+			SceneManager::GetInstance().LoadScene("Resources/Level1.json");
 		}
 		if (ImGui::ImageButton(levelSelect, levelSelectText.texture, size))
 		{

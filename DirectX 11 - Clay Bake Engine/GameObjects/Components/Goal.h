@@ -19,7 +19,7 @@ public:
     json Write();
 
     void Start();
-    void Update();
+    void Update(float deltaTime);
 
     void LevelWin();
 
