@@ -26,7 +26,7 @@ void ButtonComponent::Interact()
 	SendSignal();
 }
 
-void ButtonComponent::Update()
+void ButtonComponent::Update(float deltaTime)
 {
 	if (m_Active)
 	{

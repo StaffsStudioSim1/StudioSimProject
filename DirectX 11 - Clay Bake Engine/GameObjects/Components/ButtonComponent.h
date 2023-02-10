@@ -9,7 +9,7 @@ public:
 	bool m_Active;
 
 	void Interact();
-	void Update();
+	void Update(float deltaTime);
 	void Start();
 
 	ButtonComponent(InteractableLink switchType = Default, std::string linkedObjectName = "");

@@ -17,11 +17,11 @@ void Goal::Start()
 {
 	_Position = _gameObject->GetTransform()->GetPosition();
 	_playerCount = 0;
-	_GoalSize.x = 1.0f;
-	_GoalSize.y = 1.0f;
+	_GoalSize.x = 10.0f;
+	_GoalSize.y = 10.0f;
 }
 
-void Goal::Update()
+void Goal::Update(float deltaTime)
 {
 	_playerCount = 0; //reset player count
 	std::vector<GameObject*> areaCheck = ObjectHandler::GetInstance().GetObjectsInArea(_Position, _GoalSize);

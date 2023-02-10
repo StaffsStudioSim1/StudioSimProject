@@ -35,7 +35,7 @@ void PlayerMagnetism::FixedUpdate(float timeStep)
 	if (m_magnetActive)
 	{
 		
-		std::vector<GameObject*> inFeild = ObjectHandler::GetInstance().GetObjectsInArea(_gameObject->GetTransform()->GetPosition() + m_currentHandOffset, Vector2(20,20));
+		std::vector<GameObject*> inFeild = ObjectHandler::GetInstance().GetObjectsInArea(_gameObject->GetTransform()->GetPosition() + m_currentHandOffset, Vector2(40,20));
 
 		 
 		for (GameObject* object : inFeild)
