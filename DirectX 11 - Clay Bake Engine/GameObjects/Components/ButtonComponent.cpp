@@ -11,12 +11,6 @@ void ButtonComponent::Start()
 
 ButtonComponent::ButtonComponent(InteractableLink switchType, std::string linkedObjectName) : Interactable(switchType, linkedObjectName)
 {
-	interactableLink = switchType;
-
-	if (linkedObjectName != "")
-	{
-		linkedObject = ObjectHandler::GetInstance().FindGameObject(linkedObjectName);
-	}
 }
 
 void ButtonComponent::Interact()
