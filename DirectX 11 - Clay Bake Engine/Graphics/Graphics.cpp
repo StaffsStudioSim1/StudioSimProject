@@ -498,6 +498,8 @@ void Graphics::RenderFrame(Scene* scene)
 	//CREATE FRAME
 	ImGui::NewFrame();
 	//UI WINDOWS
+	int test = SceneManager::GetInstance().GetCurrentSceneID();
+	bool test2 = ObjectHandler::GetInstance().IsMainMainUIEnabled();
 	if (SceneManager::GetInstance().GetCurrentSceneID() == 0 && ObjectHandler::GetInstance().IsMainMainUIEnabled()) // Main menu UI
 	{
 		const char* playButton = "Resources/Sprites/PlayButton.dds";
@@ -521,7 +523,7 @@ void Graphics::RenderFrame(Scene* scene)
 		if (ImGui::ImageButton(playButton, playButtonText.texture, size))
 		{
 			_UISound->Play();
-			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+			SceneManager::GetInstance().LoadScene("Resources/Level1.json");
 		}
 		if (ImGui::ImageButton(levelSelect, levelSelectText.texture, size))
 		{
@@ -538,7 +540,7 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::ImageButton(exitButton, exitButtonText.texture, size))
 		{
-			exit(0);
+			kill = true;
 		}
 		ImGui::PopStyleColor(3);
 		ImGui::End();
@@ -671,11 +673,11 @@ void Graphics::RenderFrame(Scene* scene)
 			_UISound->Play();
 			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/MainMenu.json");
+			ObjectHandler::GetInstance().EnableMainMenuUI(true);
 		}
 		if (ImGui::ImageButton(exitGameButton, exitGameButtonText.texture, size))
 		{
-			_UISound->Play();
-			exit(0);
+			kill = true;
 		}
 		ImGui::PopStyleColor(3);
 		ImGui::End();
@@ -1045,5 +1047,10 @@ void Graphics::RenderFrame(Scene* scene)
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	this->_swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
+}
+
+Graphics::~Graphics()
+{
+	delete _UISound;
 }
 

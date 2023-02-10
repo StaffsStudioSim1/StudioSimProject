@@ -17,6 +17,7 @@ protected:
 
 private:
 	bool _initialised = false;
+	bool _running = true;
 	int _width;
 	int _height;
 

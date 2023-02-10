@@ -23,6 +23,10 @@ class Graphics
 public:
 	bool Initialize(HWND hwnd, int width, int height);
 	void RenderFrame(Scene* scene);
+
+	~Graphics();
+
+	bool kill = false;
 private:
 	bool InitializeDirectX(HWND hwnd, int width, int hegiht);
 	bool InitializeShaders();

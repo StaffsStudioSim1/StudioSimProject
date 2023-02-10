@@ -45,6 +45,7 @@ void ClayEngine::Destroy()
 {
 	if (_scene)
 		delete _scene;
+	AudioManager::GetInstance().Kill();
 }
 
 LRESULT ClayEngine::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -62,11 +63,16 @@ LRESULT ClayEngine::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 bool ClayEngine::ProcessMessages()
 {
-	return this->render_window.proccessMessages();
+	return this->render_window.proccessMessages() && _running;
 }
 
 void ClayEngine::Update()
 {
+	if (gamefx.kill)
+	{
+		_running = false;
+		return;
+	}
 #if EDIT_MODE
 	if (_scene != nullptr)
 		_scene->Update(0);
