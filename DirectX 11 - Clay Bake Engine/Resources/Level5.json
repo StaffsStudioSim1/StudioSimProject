@@ -439,8 +439,8 @@
                 {
                     "class": "AABB",
                     "constructors": [
-                        16.0,
                         32.0,
+                        16.0,
                         false
                     ]
                 }
