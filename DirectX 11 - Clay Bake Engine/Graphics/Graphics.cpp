@@ -484,9 +484,13 @@ void Graphics::RenderFrame(Scene* scene)
 
 	scene->Render(this->_deviceContext, cb, _constantBuffer);
 
+
 	//UI
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBackground;
+
+	SoundEffect* _UISound = new SoundEffect("Resources/SoundEffects/PopNoise.wav");
+
 
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -515,15 +519,18 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
 		if (ImGui::ImageButton(playButton, playButtonText.texture, size))
 		{
+			_UISound->Play();
 			SceneManager::GetInstance().LoadScene("Resources/demo.json");
 		}
 		if (ImGui::ImageButton(levelSelect, levelSelectText.texture, size))
 		{
+			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(true);
 			ObjectHandler::GetInstance().EnableMainMenuUI(false);
 		}
 		if (ImGui::ImageButton(optionsButton, optionsButtonText.texture, size))
 		{
+			_UISound->Play();
 			LoadSettingsFromFile();
 			ObjectHandler::GetInstance().EnableOptionsMenuUI(true);
 			ObjectHandler::GetInstance().EnableMainMenuUI(false);
@@ -568,41 +575,38 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
 		if (ImGui::ImageButton(level1Button, level1ButtonText.texture, size))
 		{
+			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/demo.json");
 		}
 		if (ImGui::ImageButton(level2Button, level2ButtonText.texture, size))
 		{
+			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/demo.json");
 		}
 		if (ImGui::ImageButton(level3Button, level3ButtonText.texture, size))
 		{
+			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/demo.json");
 		}
 		if (ImGui::ImageButton(level4Button, level4ButtonText.texture, size))
 		{
+			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/demo.json");
 		}
 		if (ImGui::ImageButton(level5Button, level5ButtonText.texture, size))
 		{
+			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/demo.json");
 		}
-		if (ImGui::ImageButton(level6Button, level6ButtonText.texture, size))
-		{
-			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
-			SceneManager::GetInstance().LoadScene("Resources/demo.json");
-		}
-		if (ImGui::ImageButton(level7Button, level7ButtonText.texture, size))
-		{
-			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
-			SceneManager::GetInstance().LoadScene("Resources/demo.json");
-		}
+
 		if (ImGui::ImageButton(backButton, backButtonText.texture, size))
 		{
+			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
 			ObjectHandler::GetInstance().EnableMainMenuUI(true);
 		}
@@ -644,27 +648,32 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.06f, 0.45f));
 		if (ImGui::ImageButton(resumeButton, resumeButtonText.texture, size))
 		{
+			_UISound->Play();
 			GameManager::GetInstance().Pause();
 			// Code to unpause of the game here or somewhere else
 		}
 		if (ImGui::ImageButton(resetButton, resetButtonText.texture, size))
 		{
+			_UISound->Play();
 			GameManager::GetInstance().Pause();
 			SceneManager::GetInstance().LoadScene(SceneManager::GetInstance().GetCurrentSceneFilePath());
 		}
 		if (ImGui::ImageButton(pOptionsButton, pOptionsButtonText.texture, size))
 		{
+			_UISound->Play();
 			LoadSettingsFromFile();
 			ObjectHandler::GetInstance().EnableOptionsMenuUI(true);
 			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
 		}
 		if (ImGui::ImageButton(mainMenuButton, menuButtonText.texture, size))
 		{
+			_UISound->Play();
 			ObjectHandler::GetInstance().EnablePauseMenuUI(false);
 			SceneManager::GetInstance().LoadScene("Resources/MainMenu.json");
 		}
 		if (ImGui::ImageButton(exitGameButton, exitGameButtonText.texture, size))
 		{
+			_UISound->Play();
 			exit(0);
 		}
 		ImGui::PopStyleColor(3);
@@ -724,6 +733,7 @@ void Graphics::RenderFrame(Scene* scene)
 
 		if (ImGui::ImageButton(leftButton, leftButtonText.texture, sizeLR))
 		{
+			_UISound->Play();
 			if (_currentResolution > 0)
 				_currentResolution -= 1;
 		}
@@ -732,6 +742,7 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::SameLine();
 		if (ImGui::ImageButton(rightButton, rightButtonText.texture, sizeLR))
 		{
+			_UISound->Play();
 			if (_currentResolution < resolutionText.size() - 1)
 				_currentResolution += 1;
 		}
@@ -755,6 +766,7 @@ void Graphics::RenderFrame(Scene* scene)
 
 		if (ImGui::ImageButton(applyButton, applyButtonText.texture, size))
 		{
+			_UISound->Play();
 			// Apply setting changes
 			switch (_currentResolution)
 			{
@@ -800,6 +812,7 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::Dummy(ImVec2(0.0f, 5.0f));
 		if (ImGui::ImageButton(backButton, backButtonText.texture, size))
 		{
+			_UISound->Play();
 			ObjectHandler::GetInstance().EnableOptionsMenuUI(false);
 			if (SceneManager::GetInstance().GetCurrentSceneID() == 0)
 				ObjectHandler::GetInstance().EnableMainMenuUI(true);
