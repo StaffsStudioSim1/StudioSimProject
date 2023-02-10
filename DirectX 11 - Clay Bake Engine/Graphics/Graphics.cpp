@@ -9,6 +9,7 @@
 #include "../GameObjects/Components/LeverComponent.h"
 #include "../GameObjects/Components/PressurePlateComponent.h"
 #include "../GameObjects/Components/Goal.h"
+#include "../GameObjects/Components/DoorComponent.h"
 
 #include <fstream>
 #include "../Audio/AudioManager.h"
@@ -869,6 +870,7 @@ void Graphics::RenderFrame(Scene* scene)
 				bool hasLever = false;
 				bool hasPressurePlate = false;
 				bool hasGoal = false;
+				bool hasDoor = false;
 
 				std::string textureName;
 				char textureNameChar[40];
@@ -888,6 +890,7 @@ void Graphics::RenderFrame(Scene* scene)
 				int switchState = 0;
 				std::string linkedObject;
 				char linkedObjectChar[40];
+				bool isDoorOpen;
 				if (object->GetComponent<ButtonComponent>())
 				{
 					hasButton = true;
@@ -914,6 +917,11 @@ void Graphics::RenderFrame(Scene* scene)
 					hasGoal = true;
 					linkedObject = object->GetComponent<Goal>()->_NextLevelName;
 					strcpy_s(linkedObjectChar, linkedObject.c_str()); // Uses linked object string for next level name
+				}
+				else if (object->GetComponent<DoorComponent>())
+				{
+					hasDoor = true;
+					isDoorOpen = object->GetComponent<DoorComponent>()->_defaultState;
 				}
 
 				int bodyType;
@@ -948,9 +956,13 @@ void Graphics::RenderFrame(Scene* scene)
 						switchState = object->GetComponent<Interactable>()->interactableLink;
 					ImGui::ListBox("Switch State", &switchState, interactableStates, 5);
 				}
-				if (hasGoal)
+				else if (hasGoal)
 				{
 					ImGui::InputText("Next Level File Path", linkedObjectChar, 40);
+				}
+				else if (hasDoor)
+				{
+					ImGui::Checkbox("Door Is Open", &isDoorOpen);
 				}
 				if (ImGui::Button("Reset"))
 				{
@@ -976,9 +988,13 @@ void Graphics::RenderFrame(Scene* scene)
 					object->GetComponent<Interactable>()->_linkedObjectName = linkedObjectChar;
 					object->GetComponent<Interactable>()->interactableLink = (Interactable::InteractableLink)switchState;
 				}
-				if (hasGoal)
+				else if (hasGoal)
 				{
 					object->GetComponent<Goal>()->_NextLevelName = linkedObjectChar;
+				}
+				else if (hasDoor)
+				{
+					object->GetComponent<DoorComponent>()->_defaultState = isDoorOpen;
 				}
 			}
 			loopNum++;

@@ -39,7 +39,7 @@ void PlayerController::Start()
 	_magnet->SetMagnetPushPull(_playerID);
 
 	//Init SoundEffects
-	_jumpSoundEffect = new SoundEffect("Resources/Laser_Shoot3.wav");
+	_jumpSoundEffect = new SoundEffect("Resources/SoundEffects/Jump.wav");
 	_jumpSoundEffect->SetVolume(0.25f);
 	_moveSoundEffect = new SoundEffect("Resources/SoundEffects/MetalWalkNoise.wav", true);
 	_moveSoundEffect->SetVolume(0.25f);
@@ -256,5 +256,5 @@ bool PlayerController::CheckForCollisionsBelowDirect()
 	else
 		playerpositionoffset.y += yOffSet;
 
-	return ObjectHandler::GetInstance().GetStageCollisionInArea(playerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x, 2.0f)).size() > 0;
+	return ObjectHandler::GetInstance().GetStageCollisionInArea(playerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x * 11.0f, 2.0f)).size() > 0;
 }
