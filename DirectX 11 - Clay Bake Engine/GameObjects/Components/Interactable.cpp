@@ -56,7 +56,7 @@ void Interactable::SendSignal()
 Interactable::Interactable(InteractableLink switchType, std::string linkedObjectName)
 {
 	interactableLink = switchType;
-	linkedObjectName = linkedObjectName;
+	this->linkedObjectName = linkedObjectName;
 	
 }
 
