@@ -3,11 +3,14 @@
 #include "../GameObject.h"
 #include "AABB.h"
 #include "Appearance.h"
+#include "../../Defines.h"
 
 void DoorComponent::Start()
 {
 	m_Opened = false;
+#if !EDIT_MODE
 	_gameObject->GetTransform()->SetPosition(_gameObject->GetTransform()->GetPosition() + Vector2(0.0f, 7.0f));
+#endif
 }
 
 json DoorComponent::Write()
