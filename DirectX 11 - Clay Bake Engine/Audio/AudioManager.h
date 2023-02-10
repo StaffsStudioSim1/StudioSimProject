@@ -15,6 +15,8 @@ public:
 	AudioManager(AudioManager const&) = delete;
 	void operator=(AudioManager const&) = delete;
 
+	void Kill();
+
 	void Update();
 
 	void SetMasterVolume(int volume);
@@ -26,7 +28,6 @@ public:
 	std::unique_ptr<DirectX::SoundEffect> GetSoundEffect(std::string filePath);
 private:
 	AudioManager();
-	~AudioManager();
 
 	std::vector<SoundEffect*> _loopingSounds;
 	std::unique_ptr<DirectX::AudioEngine> _audioEngine;

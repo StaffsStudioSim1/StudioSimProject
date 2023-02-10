@@ -67,6 +67,7 @@ public:
 #if EDIT_MODE
 	void SetFileName(std::string fileName) { _filePath = fileName; }
 	void SetBackgound(std::string filePath) { _backgroundImage->GetComponent<Appearance>()->SetTexture(ObjectHandler::GetInstance().LoadDDSTextureFile(filePath, true)); }
+	void SetID(int sceneID) { _id = sceneID; }
 #endif
 
 private:

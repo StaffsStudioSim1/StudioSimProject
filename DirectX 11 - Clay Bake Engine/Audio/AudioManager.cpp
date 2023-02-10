@@ -12,7 +12,7 @@ AudioManager::AudioManager()
 	_retryAudio = false;
 }
 
-AudioManager::~AudioManager()
+void AudioManager::Kill()
 {
 	if (_audioEngine)
 		_audioEngine->Suspend();
