@@ -17,8 +17,8 @@ void Goal::Start()
 {
 	_Position = _gameObject->GetTransform()->GetPosition();
 	_playerCount = 0;
-	_GoalSize.x = 18.0f;
-	_GoalSize.y = 18.0f;
+	_GoalSize.x = 10.0f;
+	_GoalSize.y = 10.0f;
 }
 
 void Goal::Update(float deltaTime)

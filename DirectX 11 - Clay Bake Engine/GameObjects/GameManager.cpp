@@ -42,7 +42,7 @@ void GameManager::LevelWin()
 	{
 		SceneManager::GetInstance().LoadScene("Resources/mainmenu.json");
 	}
-	SceneManager::GetInstance().LoadScene("Resources/" + std::to_string(SceneManager::GetInstance().GetCurrentSceneID() + 1) + ".json");
+	SceneManager::GetInstance().LoadScene("Resources/Level" + std::to_string(SceneManager::GetInstance().GetCurrentSceneID() + 1) + ".json");
 }
 
 void GameManager::LevelLose()
