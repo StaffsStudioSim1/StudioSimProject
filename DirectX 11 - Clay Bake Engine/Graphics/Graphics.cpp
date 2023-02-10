@@ -902,28 +902,28 @@ void Graphics::RenderFrame(Scene* scene)
 				if (object->GetComponent<ButtonComponent>())
 				{
 					hasButton = true;
-					linkedObject = object->GetComponent<Interactable>()->_linkedObjectName;
+					linkedObject = object->GetComponent<Interactable>()->linkedObjectName;
 					strcpy_s(linkedObjectChar, linkedObject.c_str());
 					switchState = object->GetComponent<Interactable>()->interactableLink;
 				}
 				else if (object->GetComponent<LeverComponent>())
 				{
 					hasLever = true;
-					linkedObject = object->GetComponent<Interactable>()->_linkedObjectName;
+					linkedObject = object->GetComponent<Interactable>()->linkedObjectName;
 					strcpy_s(linkedObjectChar, linkedObject.c_str());
 					switchState = object->GetComponent<Interactable>()->interactableLink;
 				}
 				else if (object->GetComponent<PressurePlateComponent>())
 				{
 					hasPressurePlate = true;
-					linkedObject = object->GetComponent<Interactable>()->_linkedObjectName;
+					linkedObject = object->GetComponent<Interactable>()->linkedObjectName;
 					strcpy_s(linkedObjectChar, linkedObject.c_str());
 					switchState = object->GetComponent<Interactable>()->interactableLink;
 				}
 				else if (object->GetComponent<Goal>())
 				{
 					hasGoal = true;
-					linkedObject = object->GetComponent<Goal>()->_NextLevelName;
+					linkedObject = object->GetComponent<Goal>()->_nextLevelName;
 					strcpy_s(linkedObjectChar, linkedObject.c_str()); // Uses linked object string for next level name
 				}
 				else if (object->GetComponent<DoorComponent>())
@@ -993,12 +993,12 @@ void Graphics::RenderFrame(Scene* scene)
 				}
 				if (hasButton || hasLever || hasPressurePlate)
 				{
-					object->GetComponent<Interactable>()->_linkedObjectName = linkedObjectChar;
+					object->GetComponent<Interactable>()->linkedObjectName = linkedObjectChar;
 					object->GetComponent<Interactable>()->interactableLink = (Interactable::InteractableLink)switchState;
 				}
 				else if (hasGoal)
 				{
-					object->GetComponent<Goal>()->_NextLevelName = linkedObjectChar;
+					object->GetComponent<Goal>()->_nextLevelName = linkedObjectChar;
 				}
 				else if (hasDoor)
 				{
@@ -1029,14 +1029,14 @@ void Graphics::RenderFrame(Scene* scene)
 
 
 	if(ImGui::InputText("Background Name", bgName, 40))
-		tempBackgroundTexture = bgName;
+		_tempBackgroundTexture = bgName;
 
 		
 
 	ImGui::SameLine();
 	if (ImGui::Button("apply"))
 	{
-		scene->SetBackgound(tempBackgroundTexture);
+		scene->SetBackgound(_tempBackgroundTexture);
 	}
 	
 

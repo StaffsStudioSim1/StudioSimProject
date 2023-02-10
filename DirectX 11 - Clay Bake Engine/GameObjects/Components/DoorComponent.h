@@ -4,9 +4,10 @@
 class DoorComponent : public Component
 {
 private:
-	bool _defaultState;
 	bool _open;
 public:
+	bool _defaultState;
+
 	void Start();
 	json Write();
 
