@@ -82,7 +82,14 @@ GameObject::GameObject(json objectJson)
 		}
 		else if (type == "DoorComponent")
 		{
-			component = new DoorComponent();
+
+			bool doorOpenDefault = false;
+			if (componentJson.contains(JSON_COMPONENT_CONSTRUCTORS))
+			{
+				doorOpenDefault = componentJson[JSON_COMPONENT_CONSTRUCTORS].at(0);
+			}
+
+			component = new DoorComponent(doorOpenDefault);
 		}
 		else if (type == "Goal")
 		{

@@ -830,7 +830,6 @@ void Graphics::RenderFrame(Scene* scene)
 	strcpy_s(fileName, scene->GetFilePath().c_str());
 	strcpy_s(bgName, ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Appearance>()->GetTexture().filePath.c_str());
 
-
 	const char* interactableStates[] = { "Default", "SwitchState", "SwitchGravity", "Signal3", "Signal4" };
 
 	ImGui::Begin("Inspector");
@@ -894,18 +893,21 @@ void Graphics::RenderFrame(Scene* scene)
 					hasButton = true;
 					linkedObject = object->GetComponent<Interactable>()->_linkedObjectName;
 					strcpy_s(linkedObjectChar, linkedObject.c_str());
+					switchState = object->GetComponent<Interactable>()->interactableLink;
 				}
 				else if (object->GetComponent<LeverComponent>())
 				{
 					hasLever = true;
 					linkedObject = object->GetComponent<Interactable>()->_linkedObjectName;
 					strcpy_s(linkedObjectChar, linkedObject.c_str());
+					switchState = object->GetComponent<Interactable>()->interactableLink;
 				}
 				else if (object->GetComponent<PressurePlateComponent>())
 				{
 					hasPressurePlate = true;
 					linkedObject = object->GetComponent<Interactable>()->_linkedObjectName;
 					strcpy_s(linkedObjectChar, linkedObject.c_str());
+					switchState = object->GetComponent<Interactable>()->interactableLink;
 				}
 				else if (object->GetComponent<Goal>())
 				{
