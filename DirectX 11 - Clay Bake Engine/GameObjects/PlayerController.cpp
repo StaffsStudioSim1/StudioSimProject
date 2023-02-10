@@ -79,17 +79,6 @@ void PlayerController::Update(float deltaTime)
 		GameManager::GetInstance().Pause();
 	}
 
-	////Increment jump timer
-	//if (_activeJumpTimer >= _jumpTimer)
-	//{
-	//	_jumpReset = true;
-	//	_activeJumpTimer = 0.0f;
-	//}
-	//else
-	//{
-	//	_activeJumpTimer += deltaTime;
-	//}
-
 	//Increment animation timer
 	if (_activeFrameDelay >= _animationFrameDelay)
 	{
@@ -140,14 +129,6 @@ void PlayerController::FixedUpdate(float timeStep)
 {
 	_rigidbody->SetInput(_currentMovement * _moveSpeed);
 
-	/*if (_isJumping)
-	{
-		if (CheckForCollisionsBelowDirect())
-		{
-			_isJumping = false;
-		}
-	}*/
-
 	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
 		_isWalking = true;
@@ -197,15 +178,6 @@ void PlayerController::FixedUpdate(float timeStep)
 
 void PlayerController::JumpPressed()
 {
-	/*if (_isJumping)
-		return;
-	else
-	_isJumping = true;
-
-	//if (!_jumpReset)
-	//	return;
-
-	_jumpReset = false;*/
 	if (!CheckForCollisionsBelowDirect())
 		return;
 
@@ -256,5 +228,5 @@ bool PlayerController::CheckForCollisionsBelowDirect()
 	else
 		playerpositionoffset.y += yOffSet;
 
-	return ObjectHandler::GetInstance().GetStageCollisionInArea(playerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x * 11.0f, 2.0f)).size() > 0;
+	return ObjectHandler::GetInstance().GetStageCollisionInArea(playerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x * 10.0f, 2.0f)).size() > 0;
 }
