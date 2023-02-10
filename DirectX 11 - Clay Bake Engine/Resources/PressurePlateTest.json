@@ -124,7 +124,7 @@
             "name": "Door [132]",
             "position": [
                 99.0,
-                -146.0,
+                -139.0,
                 0.0
             ],
             "rotation": 0.0,
@@ -250,6 +250,47 @@
             "position": [
                 -27.0,
                 -153.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Box.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "MagnetBox"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        18.0,
+                        false
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Box [136]",
+            "position": [
+                -27.0,
+                45.0,
                 0.0
             ],
             "rotation": 0.0,
