@@ -848,7 +848,7 @@ void Graphics::RenderFrame(Scene* scene)
 
 				float position[2] = { object->GetTransform()->GetPosition().x, object->GetTransform()->GetPosition().y };
 				float depth = { object->GetTransform()->GetDepthPos() };
-				float rotation = { object->GetTransform()->GetRotation() };
+				float rotation = { DirectX::XMConvertToDegrees(object->GetTransform()->GetRotation()) };
 				float scale[2] = { object->GetTransform()->GetScale().x, object->GetTransform()->GetScale().y };
 
 				bool hasAppearance = false;
@@ -913,7 +913,7 @@ void Graphics::RenderFrame(Scene* scene)
 				ImGui::DragFloat("X Position", &position[0], 18.0f, -315.0f, 315.0f);
 				ImGui::DragFloat("Y Position", &position[1], 18.0f, -171.0f, 171.0f);
 				ImGui::DragFloat("Depth", &depth, 0.005f, 0.0f, 1.0f);
-				ImGui::DragFloat("Rotation", &rotation, 0.025f, 0.0f, DirectX::XM_2PI);
+				ImGui::DragFloat("Rotation", &rotation, 0.5f, 0.0f, 360.0f);
 				ImGui::DragFloat2("Scale", scale, 0.05f, -100, 100);
 				ImGui::SameLine();
 				ImGui::Checkbox("Link scaling", &linkScaling);
@@ -951,7 +951,7 @@ void Graphics::RenderFrame(Scene* scene)
 				if (linkScaling)
 					scale[1] = scale[0];
 				object->GetTransform()->SetScale(scale[0], scale[1]);
-				object->GetTransform()->SetRotation(rotation);
+				object->GetTransform()->SetRotation(DirectX::XMConvertToRadians(rotation));
 				if (hasAppearance)
 				{
 					object->GetComponent<Appearance>()->SetTexCoords(texCoords[0], texCoords[1], texCoords[2], texCoords[3]);
