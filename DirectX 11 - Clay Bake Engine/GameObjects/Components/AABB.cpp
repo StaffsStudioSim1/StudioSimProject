@@ -54,8 +54,6 @@ bool AABB::Overlaps(AABB* collider, float deltaTime)
 Vector2 AABB::GetSize()
 {
 	Vector2 size = Vector2(_width, _height) * _gameObject->GetTransform()->GetVectorScale();
-	size.x = fabsf(size.x);
-	size.y = fabsf(size.y);
 	return size;
 }
 

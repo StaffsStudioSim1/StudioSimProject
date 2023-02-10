@@ -175,9 +175,9 @@ std::vector<GameObject*> ObjectHandler::GetStageCollisionInArea(Vector2 position
 			objects.push_back(object);
 		}
 	}
-	OutputDebugStringA(std::to_string(objects.size()).c_str());
+	/*OutputDebugStringA(std::to_string(objects.size()).c_str());
 	if (objects.size() > 0)
 		OutputDebugStringA(objects.at(0)->GetName().c_str());
-	OutputDebugStringA("\n");
+	OutputDebugStringA("\n");*/
 	return objects;
 }
