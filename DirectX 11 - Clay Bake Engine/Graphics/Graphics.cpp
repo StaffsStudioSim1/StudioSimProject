@@ -540,7 +540,7 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::ImageButton(exitButton, exitButtonText.texture, size))
 		{
-			exit(0);
+			kill = true;
 		}
 		ImGui::PopStyleColor(3);
 		ImGui::End();
@@ -677,8 +677,7 @@ void Graphics::RenderFrame(Scene* scene)
 		}
 		if (ImGui::ImageButton(exitGameButton, exitGameButtonText.texture, size))
 		{
-			_UISound->Play();
-			exit(0);
+			kill = true;
 		}
 		ImGui::PopStyleColor(3);
 		ImGui::End();
@@ -1048,5 +1047,10 @@ void Graphics::RenderFrame(Scene* scene)
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	this->_swapChain->Present(1, NULL); // FIRST VALUE 1 = VSYNC ON 0 = VYSNC OFF 
+}
+
+Graphics::~Graphics()
+{
+	delete _UISound;
 }
 
