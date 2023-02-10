@@ -47,6 +47,9 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 	ImGui_ImplDX11_Init(this->_device.Get(), this->_deviceContext.Get());
 	ImGui::StyleColorsDark();
 
+	//Initialise UI sound
+	_UISound = new SoundEffect("Resources/SoundEffects/PopNoise.wav");
+
 	return true;
 }
 
@@ -488,9 +491,6 @@ void Graphics::RenderFrame(Scene* scene)
 	//UI
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBackground;
-
-	SoundEffect* _UISound = new SoundEffect("Resources/SoundEffects/PopNoise.wav");
-
 
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
