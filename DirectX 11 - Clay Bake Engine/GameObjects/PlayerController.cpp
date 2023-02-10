@@ -140,13 +140,13 @@ void PlayerController::FixedUpdate(float timeStep)
 {
 	_rigidbody->SetInput(_currentMovement * _moveSpeed);
 
-	if (_isJumping)
+	/*if (_isJumping)
 	{
 		if (CheckForCollisionsBelowDirect())
 		{
 			_isJumping = false;
 		}
-	}
+	}*/
 
 	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
@@ -197,7 +197,7 @@ void PlayerController::FixedUpdate(float timeStep)
 
 void PlayerController::JumpPressed()
 {
-	if (_isJumping)
+	/*if (_isJumping)
 		return;
 	else
 	_isJumping = true;
@@ -205,7 +205,9 @@ void PlayerController::JumpPressed()
 	//if (!_jumpReset)
 	//	return;
 
-	_jumpReset = false;
+	_jumpReset = false;*/
+	if (!CheckForCollisionsBelowDirect())
+		return;
 
 	if (!GameManager::GetInstance().IsGravityFlipped())
 	{
@@ -246,26 +248,13 @@ void PlayerController::Stop()
 
 bool PlayerController::CheckForCollisionsBelowDirect()
 {
-	float yOffSet = 9.0f;
+	float yOffSet = 18.0f;
 	Vector2 playerpositionoffset = _gameObject->GetTransform()->GetPosition();
-//	std::vector<GameObject> otherlist;
 
 	if (!GameManager::GetInstance().IsGravityFlipped())
-	{
 		playerpositionoffset.y -= yOffSet;
-	}
-	else if (GameManager::GetInstance().IsGravityFlipped())
-	{
+	else
 		playerpositionoffset.y += yOffSet;
-	}
-	auto list = ObjectHandler::GetInstance().GetObjectsInArea(playerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x, 2));
 
-	for (int i = 0; i <= list.size(); i++)
-	{
-		if(list.at(i)->GetTag() == JSON_TAG_STAGECOLLISION);
-		return true;
-	}
-
-	return false;
-
+	return ObjectHandler::GetInstance().GetStageCollisionInArea(playerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x, 2.0f)).size() > 0;
 }

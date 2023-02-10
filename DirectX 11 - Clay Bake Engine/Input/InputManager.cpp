@@ -27,8 +27,8 @@ LRESULT InputManager::WindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		unsigned char keycode = static_cast<unsigned char>(wParam);
 		unsigned int scanCode = (lParam >> 16) & 0xff;
 		// Leave these debug lines to figuire out scan codes that don't match the diagram
-		OutputDebugStringA(std::to_string(scanCode).c_str());
-		OutputDebugStringA("\n");
+		//OutputDebugStringA(std::to_string(scanCode).c_str());
+		//OutputDebugStringA("\n");
 		if (_keyboard.IsKeyAutoRepeat())
 			_keyboard.OnKeyPressed(scanCode);
 		else
