@@ -6,11 +6,11 @@ void MagnetBox::Magnetise(Vector2 pushingPlayerPos, MagnetDirection forceDirecti
 	{
 	case PullTowards:
 		//Force to add pushingPlayerPos - (Vector2)transform.position)*m_pushForce
-		_rigidbody->AddForce(pushingPlayerPos - _gameObject->GetTransform()->GetPosition() * _pushForce);
+		_rigidbody->AddForce((_gameObject->GetTransform()->GetPosition() - pushingPlayerPos) * _pushForce);
 		break;
 	case PushAway:
 		//Force to add -(pushingPlayerPos - (Vector2)transform.position)*m_pushForce
-		_rigidbody->AddForce(GetNegVer(pushingPlayerPos - _gameObject->GetTransform()->GetPosition() *_pushForce));
+		_rigidbody->AddForce(GetNegVer((_gameObject->GetTransform()->GetPosition() - pushingPlayerPos) *_pushForce));
 
 		break;
 	default:
