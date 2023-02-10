@@ -13,6 +13,6 @@ class MagnetismObject :
     public Component
 {
 public:
-    virtual void Magnetise(Vector2 pushingPlayerPos, MagnetDirection forceDirection, PlayerController* ControlingPlayer) = 0;
+    virtual void Magnetise(Vector2 pushingPlayerPos, MagnetDirection forceDirection) = 0;
 };
 

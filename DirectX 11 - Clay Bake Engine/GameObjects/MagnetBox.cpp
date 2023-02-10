@@ -1,6 +1,6 @@
 #include "MagnetBox.h"
 
-void MagnetBox::Magnetise(Vector2 pushingPlayerPos, MagnetDirection forceDirection, PlayerController* ControlingPlayer)
+void MagnetBox::Magnetise(Vector2 pushingPlayerPos, MagnetDirection forceDirection)
 {
 	switch (forceDirection)
 	{

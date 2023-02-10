@@ -42,7 +42,7 @@ void PlayerMagnetism::FixedUpdate(float timeStep)
 		{
 			if (object->GetComponent<MagnetismObject>() != nullptr)
 			{
-				object->GetComponent<MagnetismObject>()->Magnetise(_gameObject->GetTransform()->GetPosition(), _magnetDirection, object->GetComponent<PlayerController>());
+				object->GetComponent<MagnetismObject>()->Magnetise(_gameObject->GetTransform()->GetPosition(), _magnetDirection);
 			}
 		}
 

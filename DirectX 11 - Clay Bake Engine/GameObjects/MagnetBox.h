@@ -7,7 +7,7 @@ class MagnetBox :
     public MagnetismObject
 {
 public:
-    void Magnetise(Vector2 pushingPlayerPos, MagnetDirection forceDirection, PlayerController* ControlingPlayer);
+    void Magnetise(Vector2 pushingPlayerPos, MagnetDirection forceDirection);
     void Start();
     void Stop();
 
