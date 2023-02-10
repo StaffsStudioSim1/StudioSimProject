@@ -578,31 +578,31 @@ void Graphics::RenderFrame(Scene* scene)
 		{
 			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
-			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+			SceneManager::GetInstance().LoadScene("Resources/Level1.json");
 		}
 		if (ImGui::ImageButton(level2Button, level2ButtonText.texture, size))
 		{
 			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
-			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+			SceneManager::GetInstance().LoadScene("Resources/Level2.json");
 		}
 		if (ImGui::ImageButton(level3Button, level3ButtonText.texture, size))
 		{
 			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
-			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+			SceneManager::GetInstance().LoadScene("Resources/Level3.json");
 		}
 		if (ImGui::ImageButton(level4Button, level4ButtonText.texture, size))
 		{
 			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
-			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+			SceneManager::GetInstance().LoadScene("Resources/Level4.json");
 		}
 		if (ImGui::ImageButton(level5Button, level5ButtonText.texture, size))
 		{
 			_UISound->Play();
 			ObjectHandler::GetInstance().EnableLevelSelectUI(false);
-			SceneManager::GetInstance().LoadScene("Resources/demo.json");
+			SceneManager::GetInstance().LoadScene("Resources/Level5.json");
 		}
 
 		if (ImGui::ImageButton(backButton, backButtonText.texture, size))
@@ -695,8 +695,6 @@ void Graphics::RenderFrame(Scene* scene)
 		const char* musicIcon = "Resources/Sprites/MusicIcon.dds";
 		const char* opionsMenu = "Resources/Sprites/OptionsBackground.dds";
 
-
-
 		TextureInfo applyButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(applyButton);
 		TextureInfo backButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(backButton);
 		TextureInfo leftButtonText = ObjectHandler::GetInstance().LoadDDSTextureFile(leftButton);
@@ -709,12 +707,10 @@ void Graphics::RenderFrame(Scene* scene)
 		TextureInfo musicIconText = ObjectHandler::GetInstance().LoadDDSTextureFile(musicIcon);
 		TextureInfo optionsMenuText = ObjectHandler::GetInstance().LoadDDSTextureFile(opionsMenu);
 
-
 		ImVec2 size = ImVec2(applyButtonText.width * (float)(_windowWidth / 1280.0f), applyButtonText.height * (float)(_windowHeight / 720.0f));
 		ImVec2 sizeFS = ImVec2(fullscreenIconText.width * (float)(_windowWidth / 1280.0f), fullscreenIconText.height * (float)(_windowHeight / 720.0f));
 		ImVec2 sizeLR = ImVec2(leftButtonText.width * (float)(_windowWidth / 1280.0f), leftButtonText.height * (float)(_windowHeight / 720.0f));
 		ImVec2 sizeO = ImVec2(optionsMenuText.width * 1.5 * (float)(_windowWidth / 1280.0f), optionsMenuText.height * 1.5 * (float)(_windowHeight / 720.0f));
-
 
 		std::vector<TextureInfo> resolutionText = { res720IconText,res900IconText,res1080IconText };
 
@@ -845,7 +841,10 @@ void Graphics::RenderFrame(Scene* scene)
 		ImGui::InputInt("Scene ID", &currentSceneID);
 
 		if (currentSceneID != SceneManager::GetInstance().GetCurrentSceneID())
+		{
 			SceneManager::GetInstance().SetCurrentSceneID(currentSceneID);
+			scene->SetID(currentSceneID);
+		}
 
 	}
 	if (ImGui::TreeNode("Game Objects"))
