@@ -81,7 +81,7 @@ TextureInfo ObjectHandler::LoadDDSTextureFile(std::string filePath, bool changeT
 			return TextureInfo();
 		exit(EXIT_FAILURE);
 	}
-	
+
 	// Get data from loaded texture
 	D3D11_RESOURCE_DIMENSION resType = D3D11_RESOURCE_DIMENSION_UNKNOWN;
 	res->GetType(&resType);
@@ -126,7 +126,7 @@ std::vector<GameObject*> ObjectHandler::GetObjectsInArea(Vector2 position, Vecto
 	std::vector<GameObject*> objects;
 	DirectX::BoundingBox box1;
 	box1.Center = { position.x,position.y, 0.0f };
-	box1.Extents = { size.x, size.y, 0.0f };
+	box1.Extents = { size.x / 2, size.y / 2, 0.0f };
 
 
 	DirectX::BoundingBox box2;
@@ -139,7 +139,7 @@ std::vector<GameObject*> ObjectHandler::GetObjectsInArea(Vector2 position, Vecto
 		Vector2 checkPos = object->GetTransform()->GetPosition();
 		Vector2 checkSize = aabb->GetSize();
 		box2.Center = { checkPos.x, checkPos.y, 0.0f };
-		box2.Extents = { checkSize.x, checkSize.y, 0.0f };
+		box2.Extents = { checkSize.x / 2, checkSize.y / 2, 0.0f };
 
 		if (box1.Intersects(box2))
 		{
@@ -147,5 +147,37 @@ std::vector<GameObject*> ObjectHandler::GetObjectsInArea(Vector2 position, Vecto
 		}
 	}
 
+	return objects;
+}
+
+std::vector<GameObject*> ObjectHandler::GetStageCollisionInArea(Vector2 position, Vector2 size)
+{
+	std::vector<GameObject*> objects;
+	DirectX::BoundingBox box1;
+	box1.Center = { position.x,position.y, 0.0f };
+	box1.Extents = { size.x / 2, size.y / 2, 0.0f };
+
+
+	DirectX::BoundingBox box2;
+	for (GameObject* object : GetAllObjects())
+	{
+		if (object->GetTag() != JSON_TAG_STAGECOLLISION)
+			continue;
+
+		AABB* aabb = object->GetComponent<AABB>();
+		Vector2 checkPos = object->GetTransform()->GetPosition();
+		Vector2 checkSize = aabb->GetSize();
+		box2.Center = { checkPos.x, checkPos.y, 0.0f };
+		box2.Extents = { checkSize.x / 2, checkSize.y / 2, 0.0f };
+
+		if (box1.Intersects(box2))
+		{
+			objects.push_back(object);
+		}
+	}
+	OutputDebugStringA(std::to_string(objects.size()).c_str());
+	if (objects.size() > 0)
+		OutputDebugStringA(objects.at(0)->GetName().c_str());
+	OutputDebugStringA("\n");
 	return objects;
 }
