@@ -13,25 +13,25 @@ PressurePlateComponent::PressurePlateComponent(InteractableLink switchType, std:
 void PressurePlateComponent::Start()
 {
 	Interactable::Start();
-	m_Boxsize.x = 1.0f;
-	m_Boxsize.y = 1.0f;
+	boxSize.x = 1.0f;
+	boxSize.y = 1.0f;
 
 
-	m_Position.x = _gameObject->GetTransform()->GetPosition().x;
-	m_Position.y = _gameObject->GetTransform()->GetPosition().y + 0.5 * m_Boxsize.y;
-	m_WeighedDown = false;
+	position.x = _gameObject->GetTransform()->GetPosition().x;
+	position.y = _gameObject->GetTransform()->GetPosition().y + 0.5 * boxSize.y;
+	weighedDown = false;
 }
 
 void PressurePlateComponent::WeighedDown()
 {
 	SendSignal();
-	m_WeighedDown = true;
+	weighedDown = true;
 }
 
 void PressurePlateComponent::WeightReleased()
 {
 	SendSignal();
-	m_WeighedDown = false;
+	weighedDown = false;
 }
 
 json PressurePlateComponent::Write()
@@ -39,14 +39,14 @@ json PressurePlateComponent::Write()
 	json me;
 	me[JSON_COMPONENT_CLASS] = "PressurePlateComponent";
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(interactableLink);
-	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_linkedObjectName);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(linkedObjectName);
 	return me;
 }
 
 void PressurePlateComponent::Update(float deltaTime)
 {
 
-	std::vector<GameObject*> areaCheck = ObjectHandler::GetInstance().GetObjectsInArea(m_Position, m_Boxsize);
+	std::vector<GameObject*> areaCheck = ObjectHandler::GetInstance().GetObjectsInArea(position, boxSize);
 
 	bool ObjectFound = false;
 
@@ -55,13 +55,13 @@ void PressurePlateComponent::Update(float deltaTime)
 	{
 		if (object->GetComponent<MagnetismObject>() != nullptr || object->GetComponent<PlayerController>() != nullptr)
 		{
-			if (!m_WeighedDown)
+			if (!weighedDown)
 				WeighedDown();
 			ObjectFound = true;
 		}
 	}
 
-	if (!ObjectFound && m_WeighedDown)
+	if (!ObjectFound && weighedDown)
 	{
 		// call weight released on volume not being occupied
 		WeightReleased();

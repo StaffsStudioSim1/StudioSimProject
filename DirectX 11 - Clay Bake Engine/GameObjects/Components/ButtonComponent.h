@@ -3,11 +3,11 @@
 
 class ButtonComponent : public Interactable
 {
+private:
+	float _timer;
+	float _timeLimit;
+	bool _active;
 public:
-	float m_Timer;
-	float m_TimeLimit;
-	bool m_Active;
-
 	void Interact();
 	void Update(float deltaTime);
 	void Start();

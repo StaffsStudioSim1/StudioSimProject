@@ -4,14 +4,14 @@
 KeyboardClass::KeyboardClass()
 {
 	for (int i = 0; i < 256; i++)
-		this->keyStates[i] = false;
+		this->_keyStates[i] = false;
 }
 
 bool KeyboardClass::IsKeyPressed(const unsigned int scanCode)
 {
 	if (scanCode < 0)
 		return false;
-	return this->keyStates[scanCode];
+	return this->_keyStates[scanCode];
 }
 
 bool KeyboardClass::IsKeyBufferEmpty()
@@ -54,13 +54,13 @@ unsigned char KeyboardClass::ReadChar()
 
 void KeyboardClass::OnKeyPressed(const unsigned int scanCode)
 {
-	this->keyStates[scanCode] = true;
+	this->_keyStates[scanCode] = true;
 	//this->keyBuffer.push(KeyboardEvent(KeyboardEvent::EventType::Press, key));
 }
 
 void KeyboardClass::OnKeyReleased(const unsigned int scanCode)
 {
-	this->keyStates[scanCode] = false;
+	this->_keyStates[scanCode] = false;
 	//this->keyBuffer.push(KeyboardEvent(KeyboardEvent::EventType::Release, key));
 }
 
@@ -71,30 +71,30 @@ void KeyboardClass::OnChar(const unsigned char key)
 
 void KeyboardClass::EnableAutoRepeatKeys()
 {
-	this->autoRepeatKeys = true;
+	this->_autoRepeatKeys = true;
 }
 
 void KeyboardClass::DisableAutoRepeatKeys()
 {
-	this->autoRepeatKeys = false;
+	this->_autoRepeatKeys = false;
 }
 
 void KeyboardClass::EnableAutoRepeatChars()
 {
-	this->autoRepatChars = true;
+	this->_autoRepatChars = true;
 }
 
 void KeyboardClass::DisableAutoRepeatChars()
 {
-	this->autoRepatChars = false;
+	this->_autoRepatChars = false;
 }
 
 bool KeyboardClass::IsKeyAutoRepeat()
 {
-	return this->autoRepeatKeys;
+	return this->_autoRepeatKeys;
 }
 
 bool KeyboardClass::IsCharAutoRepeat()
 {
-	return this->autoRepatChars;
+	return this->_autoRepatChars;
 }

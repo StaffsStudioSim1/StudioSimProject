@@ -7,14 +7,14 @@ class MagnetBox :
     public MagnetismObject
 {
 public:
-    void isBeingMagnetised(Vector2 pushingPlayerPos, MagnetDirection forceDirection, PlayerController* ControlingPlayer);
+    void Magnetise(Vector2 pushingPlayerPos, MagnetDirection forceDirection, PlayerController* ControlingPlayer);
     void Start();
     void Stop();
 
-    Rigidbody* m_rigidbody;
     json Write();
-
-    float m_PushForce = 2.5f;
+private:
+    Rigidbody* _rigidbody;
+    float _pushForce = 2.5f;
 };
 
 

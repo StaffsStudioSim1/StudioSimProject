@@ -5,7 +5,7 @@
 void LeverComponent::Start()
 {
 	Interactable::Start();
-	m_State = false; //set state to off on start
+	state = false; //set state to off on start
 }
 
 void LeverComponent::Interact()
@@ -23,7 +23,7 @@ json LeverComponent::Write()
 	json me;
 	me[JSON_COMPONENT_CLASS] = "LeverComponent";
 	me[JSON_COMPONENT_CONSTRUCTORS].push_back(interactableLink);
-	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_linkedObjectName);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(linkedObjectName);
 	return me;
 }
 

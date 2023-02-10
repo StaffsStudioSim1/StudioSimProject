@@ -90,8 +90,6 @@ private:
 	int _objNum = 0;
 	std::vector<Prefab> _prefabs;
 	int _prefabNum = 0;
-
-	//bool _collision[36][20];
 #endif
 
 	GameObject* TestForObjectIntersection(Vector2 mousePos);

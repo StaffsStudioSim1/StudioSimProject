@@ -33,8 +33,8 @@ public:
     
 private:
 
-    Vector2 m_currentHandOffset;
-    Vector2 m_factingVector = Vector2(1,1);
-    MagnetDirection m_magnetDirection;
+    Vector2 _currentHandOffset;
+    Vector2 _facingVector = Vector2(1,1);
+    MagnetDirection _magnetDirection;
 };
 

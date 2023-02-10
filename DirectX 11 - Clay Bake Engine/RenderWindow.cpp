@@ -2,13 +2,13 @@
 
 bool RenderWindow::Initialize(WindowContainer* pWindowContainer, HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
 {
-	this->hInstance = hInstance;
-	this->width = width;
-	this->height = height;
-	this->window_title = window_title;
-	this->window_title_wide = StringConverter::StringToWide(this->window_title);
-	this->window_class = window_class;
-	this->window_class_wide = StringConverter::StringToWide(this->window_class);
+	this->_hInstance = hInstance;
+	this->_width = width;
+	this->_height = height;
+	this->_windowTitle = window_title;
+	this->_windowTitleWide = StringConverter::StringToWide(this->_windowTitle);
+	this->_windowClass = window_class;
+	this->_windowClassWide = StringConverter::StringToWide(this->_windowClass);
 
 	this->RegisterWindowClass();
 	
@@ -38,17 +38,17 @@ bool RenderWindow::Initialize(WindowContainer* pWindowContainer, HINSTANCE hInst
 
 	AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_POPUP, FALSE);
 
-	this->handle = CreateWindowEx(0, this->window_class_wide.c_str(), this->window_title_wide.c_str(), WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_POPUP, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, this->hInstance, pWindowContainer);
+	this->_handle = CreateWindowEx(0, this->_windowClassWide.c_str(), this->_windowTitleWide.c_str(), WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_POPUP, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, this->_hInstance, pWindowContainer);
 							// extended window style, class name, class title, windows style, window X pos, window Y pos, window width, window height, handle parent of window, handle child of window, handle instance, param to create window to be set later
-	if (this->handle == NULL)
+	if (this->_handle == NULL)
 	{
-		ErrorLogger::Log(GetLastError(), "CreateWindowEx Failed for window: " + this->window_title);
+		ErrorLogger::Log(GetLastError(), "CreateWindowEx Failed for window: " + this->_windowTitle);
 		return false;
 	}
 
-	ShowWindow(this->handle, SW_SHOW);
-	SetForegroundWindow(this->handle);
-	SetFocus(this->handle);
+	ShowWindow(this->_handle, SW_SHOW);
+	SetForegroundWindow(this->_handle);
+	SetFocus(this->_handle);
 
 	return true;
 }
@@ -58,7 +58,7 @@ bool RenderWindow::proccessMessages()
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));	// init msg structure
 
-	while (PeekMessage(&msg, this->handle, 0, 0, PM_REMOVE))	// msg pass, window handle, min filer value, max filter value, remove msg after capture
+	while (PeekMessage(&msg, this->_handle, 0, 0, PM_REMOVE))	// msg pass, window handle, min filer value, max filter value, remove msg after capture
 	{
 		TranslateMessage(&msg); // translate from virtual key msg to char
 		DispatchMessage(&msg);	// dispatch msg to window proc
@@ -66,10 +66,10 @@ bool RenderWindow::proccessMessages()
 
 	if (msg.message == WM_NULL)
 	{
-		if (!IsWindow(this->handle))
+		if (!IsWindow(this->_handle))
 		{
-			this->handle = NULL; // msg processing loop takes care of destroying window
-			UnregisterClass(this->window_class_wide.c_str(), this->hInstance);
+			this->_handle = NULL; // msg processing loop takes care of destroying window
+			UnregisterClass(this->_windowClassWide.c_str(), this->_hInstance);
 			return false;
 		}
 	}
@@ -79,10 +79,10 @@ bool RenderWindow::proccessMessages()
 
 RenderWindow::~RenderWindow()
 {
-	if (this->handle != NULL)
+	if (this->_handle != NULL)
 	{
-		UnregisterClass(this->window_class_wide.c_str(), this->hInstance);
-		DestroyWindow(handle);
+		UnregisterClass(this->_windowClassWide.c_str(), this->_hInstance);
+		DestroyWindow(_handle);
 	}
 }
 
@@ -137,18 +137,18 @@ void RenderWindow::RegisterWindowClass()
 	wc.lpfnWndProc = HandleMessageSetup;						// pointer to window msg handler process
 	wc.cbClsExtra = 0;									// Num of additional bytes allocated to window class structure
 	wc.cbWndExtra = 0;									// Num of additional bytes allocated to window instance
-	wc.hInstance = this->hInstance;						// pass windows instance 
+	wc.hInstance = this->_hInstance;						// pass windows instance 
 	wc.hIcon = NULL;									// class icon
 	wc.hIconSm = NULL;									// small class icon
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);			// load default cursor as general point
 	wc.hbrBackground = NULL;							// windows application background colour
 	wc.lpszMenuName = NULL;								// menus set to null as not currently in use 
-	wc.lpszClassName = this->window_class_wide.c_str();	// pointer to class name
+	wc.lpszClassName = this->_windowClassWide.c_str();	// pointer to class name
 	wc.cbSize = sizeof(WNDCLASSEX);						// strict size for cb size
 	RegisterClassEx(&wc);								// register the class
 }
 
 HWND RenderWindow::GetHWND() const
 {
-	return this->handle;
+	return this->_handle;
 }

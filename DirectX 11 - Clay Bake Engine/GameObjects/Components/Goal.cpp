@@ -2,29 +2,29 @@
 
 Goal::Goal(std::string levelName)
 {
-	_NextLevelName = levelName;
+	_nextLevelName = levelName;
 }
 
 json Goal::Write()
 {
 	json me;
 	me[JSON_COMPONENT_CLASS] = "Goal";
-	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_NextLevelName);
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_nextLevelName);
 	return me;
 }
 
 void Goal::Start()
 {
-	_Position = _gameObject->GetTransform()->GetPosition();
+	_position = _gameObject->GetTransform()->GetPosition();
 	_playerCount = 0;
-	_GoalSize.x = 10.0f;
-	_GoalSize.y = 10.0f;
+	_goalSize.x = 10.0f;
+	_goalSize.y = 10.0f;
 }
 
 void Goal::Update(float deltaTime)
 {
 	_playerCount = 0; //reset player count
-	std::vector<GameObject*> areaCheck = ObjectHandler::GetInstance().GetObjectsInArea(_Position, _GoalSize);
+	std::vector<GameObject*> areaCheck = ObjectHandler::GetInstance().GetObjectsInArea(_position, _goalSize);
 
 	//check hitbox state
 	for (GameObject* object : areaCheck)
@@ -45,5 +45,5 @@ void Goal::Update(float deltaTime)
 
 void Goal::LevelWin()
 {
-	SceneManager::GetInstance().LoadScene(_NextLevelName);
+	SceneManager::GetInstance().LoadScene(_nextLevelName);
 }

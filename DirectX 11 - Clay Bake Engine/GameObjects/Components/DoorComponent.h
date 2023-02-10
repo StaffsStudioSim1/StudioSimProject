@@ -3,11 +3,10 @@
 
 class DoorComponent : public Component
 {
-public:
-
+private:
 	bool _defaultState;
-	bool m_Opened;
-
+	bool _open;
+public:
 	void Start();
 	json Write();
 
@@ -15,5 +14,5 @@ public:
 	void Close();
 	void SwitchState();
 
-	DoorComponent(bool DefaultState);
+	DoorComponent(bool defaultState);
 };

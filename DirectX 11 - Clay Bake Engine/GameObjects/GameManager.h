@@ -13,13 +13,13 @@ using nlohmann::json;
 
 class GameManager
 {
-    bool isPaused;
-    bool isGravityFlipped;
-    vector <int> levelList;
+    bool _isPaused;
+    bool _isGravityFlipped;
+    vector <int> _levelList;
     Scene* _currentScene;
     SoundEffect* _pauseSound;
     string _pauseFilePath;
-    string Levels[5] = { "Level1", "Level2", "Level3", "Level4", "Level5" };
+    string _levels[5] = { "Level1", "Level2", "Level3", "Level4", "Level5" };
 
 public:
     GameManager();
