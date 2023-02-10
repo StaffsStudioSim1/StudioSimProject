@@ -174,7 +174,7 @@
                     "class": "LeverComponent",
                     "constructors": [
                         0,
-                        ""
+                        "Platform"
                     ]
                 },
                 {
@@ -192,7 +192,7 @@
                 81.0,
                 0.0
             ],
-            "rotation": 179.9998321533203,
+            "rotation": 179.999755859375,
             "scale": [
                 1.0,
                 1.0
@@ -216,7 +216,7 @@
                     "class": "LeverComponent",
                     "constructors": [
                         0,
-                        ""
+                        "Door1"
                     ]
                 },
                 {
@@ -296,7 +296,7 @@
                     "class": "PressurePlateComponent",
                     "constructors": [
                         0,
-                        ""
+                        "Door3"
                     ]
                 },
                 {
@@ -380,7 +380,7 @@
                     "class": "PressurePlateComponent",
                     "constructors": [
                         0,
-                        ""
+                        "Door4"
                     ]
                 },
                 {
@@ -398,7 +398,7 @@
                 153.0,
                 0.0
             ],
-            "rotation": 0.0,
+            "rotation": 180.0,
             "scale": [
                 1.0,
                 1.0
@@ -442,8 +442,185 @@
                 1.0
             ],
             "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player2.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        2
+                    ]
+                },
+                {
+                    "class": "PlayerMagnetism"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0,
+                        false
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player2",
+            "position": [
+                225.0,
+                -153.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.75,
+                1.75
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Player1.dds",
+                        6.0,
+                        8.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PlayerController",
+                    "constructors": [
+                        1
+                    ]
+                },
+                {
+                    "class": "PlayerMagnetism"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        11.0,
+                        16.0,
+                        false
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Player1",
+            "position": [
+                261.0,
+                -153.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.75,
+                1.75
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/PressurePlate.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "PressurePlateComponent",
+                    "constructors": [
+                        0,
+                        "Door2"
+                    ]
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        5.0,
+                        true
+                    ]
+                }
+            ],
+            "name": "D2PressurePlate",
+            "position": [
+                27.0,
+                99.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
+        },
+        {
+            "components": [
+                {
+                    "class": "Appearance",
+                    "constructors": [
+                        "Resources/Sprites/Box.dds",
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "class": "MagnetBox"
+                },
+                {
+                    "class": "AABB",
+                    "constructors": [
+                        18.0,
+                        18.0,
+                        false
+                    ]
+                },
+                {
+                    "class": "Rigidbody"
+                }
+            ],
+            "name": "Box",
+            "position": [
+                63.0,
+                99.0,
+                0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+                1.0,
+                1.0
+            ],
+            "tag": "GameObject"
         }
     ],
-    "sceneID": 99,
+    "sceneID": 5,
     "stageCollision": "111111111111111111111111111111111111100000000001000010000000000000000001100000000001111110000000000000000001100000000000000000000000000000000001100011111000000000000111111000000001100000000000000000000000000000000001100000000000000000000000000000011111100000000011111100000000000000000001100000000000000000000000000000000001101111100000000000000001111110000001100000000000000111111000000000000001100000000000000100000000000000000111100000000111000100000000000000000001100000000000000100001000000111000001100000000000111111111111100000000001111111000000000001100000000000000001100000000000000001100000000000000111100000000000100001100001000000000001100010000000100001100001000000000001111111111111111111111111111111111111"
 }

@@ -39,7 +39,7 @@ void PlayerController::Start()
 	_magnet->SetMagnetPushPull(_playerID);
 
 	//Init SoundEffects
-	_jumpSoundEffect = new SoundEffect("Resources/Laser_Shoot3.wav");
+	_jumpSoundEffect = new SoundEffect("Resources/SoundEffects/Jump.wav");
 	_jumpSoundEffect->SetVolume(0.25f);
 	_moveSoundEffect = new SoundEffect("Resources/SoundEffects/MetalWalkNoise.wav", true);
 	_moveSoundEffect->SetVolume(0.25f);
