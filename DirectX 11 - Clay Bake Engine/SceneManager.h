@@ -19,6 +19,7 @@ public:
 	void LoadScene(std::string filePath);
 	bool ShouldSceneChange();
 	Scene* ReadScene();
+	void SetCurrentSceneID(int id) { _currentSceneID = id; }
 	int GetCurrentSceneID();
 	std::string GetCurrentSceneFilePath();
 private:

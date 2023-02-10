@@ -827,6 +827,8 @@ void Graphics::RenderFrame(Scene* scene)
 	static bool linkScaling = true;
 	char fileName[40];// For saving the file
 	
+	int currentSceneID = SceneManager::GetInstance().GetCurrentSceneID();
+
 	char bgName[40];
 	strcpy_s(fileName, scene->GetFilePath().c_str());
 	strcpy_s(bgName, ObjectHandler::GetInstance().GetGameObject(0)->GetComponent<Appearance>()->GetTexture().filePath.c_str());
@@ -840,6 +842,11 @@ void Graphics::RenderFrame(Scene* scene)
 		{
 			ObjectHandler::GetInstance().EnablePauseMenuUI(!ObjectHandler::GetInstance().IsPauseMenuUIEnabled());
 		}
+		ImGui::InputInt("Scene ID", &currentSceneID);
+
+		if (currentSceneID != SceneManager::GetInstance().GetCurrentSceneID())
+			SceneManager::GetInstance().SetCurrentSceneID(currentSceneID);
+
 	}
 	if (ImGui::TreeNode("Game Objects"))
 	{
@@ -1005,9 +1012,6 @@ void Graphics::RenderFrame(Scene* scene)
 
 	if (ImGui::InputText("File Name", fileName, 40))
 		scene->SetFileName(fileName);
-
-
-
 
 	if (ImGui::Button("Load"))
 	{
