@@ -162,7 +162,8 @@ void PlayerInput::SetDeviceType(DeviceType deviceType)
 		_actionMap.magnetKeyCode = 16;
 		_actionMap.pauseKeyCode = 1;
 		break;
-	case KeyboardRight: // Left, Right, Up, RControl, RShift, Esc // DO NOT MATCH THE SCAN CODE DIAGRAM, use the commented out debug lines in InputManager::WindowProc
+	case KeyboardRight: // Left, Right, Up, RControl, RShift, Esc
+		// DO NOT MATCH THE SCAN CODE DIAGRAM, use the commented out debug lines in InputManager::WindowProc
 		_actionMap.leftKeyCode = 75;
 		_actionMap.rightKeyCode = 77;
 		_actionMap.jumpKeyCode = 72;

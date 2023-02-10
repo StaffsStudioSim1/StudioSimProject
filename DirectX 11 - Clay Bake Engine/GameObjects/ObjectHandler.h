@@ -50,6 +50,7 @@ public:
 	void EnablePauseMenuUI(bool showUI) { _pauseMenuUI = showUI; }
 
 	std::vector<GameObject*> GetObjectsInArea(Vector2 position, Vector2 boxSize);
+	std::vector<GameObject*> GetStageCollisionInArea(Vector2 position, Vector2 boxSize);
 private:
 	ObjectHandler();
 	~ObjectHandler();
