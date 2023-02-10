@@ -79,16 +79,16 @@ void PlayerController::Update(float deltaTime)
 		GameManager::GetInstance().Pause();
 	}
 
-	//Increment jump timer
-	if (_activeJumpTimer >= _jumpTimer)
-	{
-		_jumpReset = true;
-		_activeJumpTimer = 0.0f;
-	}
-	else
-	{
-		_activeJumpTimer += deltaTime;
-	}
+	////Increment jump timer
+	//if (_activeJumpTimer >= _jumpTimer)
+	//{
+	//	_jumpReset = true;
+	//	_activeJumpTimer = 0.0f;
+	//}
+	//else
+	//{
+	//	_activeJumpTimer += deltaTime;
+	//}
 
 	//Increment animation timer
 	if (_activeFrameDelay >= _animationFrameDelay)
@@ -140,6 +140,14 @@ void PlayerController::FixedUpdate(float timeStep)
 {
 	_rigidbody->SetInput(_currentMovement * _moveSpeed);
 
+	/*if (_isJumping)
+	{
+		if (CheckForCollisionsBelowDirect())
+		{
+			_isJumping = false;
+		}
+	}*/
+
 	if (_currentMovement.x != 0.0f || _currentMovement.y != 0.0f)
 	{
 		_isWalking = true;
@@ -189,10 +197,17 @@ void PlayerController::FixedUpdate(float timeStep)
 
 void PlayerController::JumpPressed()
 {
-	if (!_jumpReset)
+	/*if (_isJumping)
 		return;
+	else
+	_isJumping = true;
 
-	_jumpReset = false;
+	//if (!_jumpReset)
+	//	return;
+
+	_jumpReset = false;*/
+	if (!CheckForCollisionsBelowDirect())
+		return;
 
 	if (!GameManager::GetInstance().IsGravityFlipped())
 	{
@@ -233,26 +248,13 @@ void PlayerController::Stop()
 
 bool PlayerController::CheckForCollisionsBelowDirect()
 {
-	float yOffSet = 9.0f;
-	Vector2 payerpositionoffset = _gameObject->GetTransform()->GetPosition();
-//	std::vector<GameObject> otherlist;
+	float yOffSet = 18.0f;
+	Vector2 playerpositionoffset = _gameObject->GetTransform()->GetPosition();
 
 	if (!GameManager::GetInstance().IsGravityFlipped())
-	{
-		payerpositionoffset.y -= yOffSet;
-	}
-	else if (GameManager::GetInstance().IsGravityFlipped())
-	{
-		payerpositionoffset.y += yOffSet;
-	}
-	auto list = ObjectHandler::GetInstance().GetObjectsInArea(payerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x, 5));
+		playerpositionoffset.y -= yOffSet;
+	else
+		playerpositionoffset.y += yOffSet;
 
-	for (int i = 0; i <= list.size(); i++)
-	{
-		if(list.at(i)->GetTag() == JSON_TAG_STAGECOLLISION);
-		return true;
-	}
-
-	return false;
-
+	return ObjectHandler::GetInstance().GetStageCollisionInArea(playerpositionoffset, Vector2(_gameObject->GetTransform()->GetScale().x, 2.0f)).size() > 0;
 }
