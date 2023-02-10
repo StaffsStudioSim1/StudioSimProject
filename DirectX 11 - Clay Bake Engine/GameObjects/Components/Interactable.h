@@ -2,6 +2,7 @@
 #include "../GameObject.h"
 #include "Component.h"
 #include "Appearance.h"
+#include "../GameManager.h"
 
 class Interactable: public Component
 {

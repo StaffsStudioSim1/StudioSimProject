@@ -7,7 +7,17 @@
 
 void DoorComponent::Start()
 {
-	m_Opened = false;
+	m_Opened = _defaultState;
+
+	if (m_Opened)
+	{
+		Open();
+	}
+	if (!m_Opened)
+	{
+		Close();
+	}
+
 #if !EDIT_MODE
 	_gameObject->GetTransform()->SetPosition(_gameObject->GetTransform()->GetPosition() + Vector2(0.0f, 7.0f));
 #endif
@@ -17,6 +27,7 @@ json DoorComponent::Write()
 {
 	json me;
 	me[JSON_COMPONENT_CLASS] = "DoorComponent";
+	me[JSON_COMPONENT_CONSTRUCTORS].push_back(_defaultState);
 	return me;
 }
 
@@ -47,6 +58,11 @@ void DoorComponent::Close()
 	}
 
 	m_Opened = false;
+}
+
+DoorComponent::DoorComponent(bool DefaultState)
+{
+	_defaultState = DefaultState;
 }
 
 
