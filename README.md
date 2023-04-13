@@ -3,7 +3,31 @@ Staffordshire University Studio Sim Project
 Group 1 - One-der Studios
 Clay Bake Engine: The Two Magneteers
 
+# The Game
+
+## Controls
+
+|          | Blue | Red             |
+| -        | -    | -               |
+| Left     | A    | Left Arrow Key  |
+| Right    | D    | Right Arrow Key |
+| Jump     | W    | Up Arrow Key    |
+| Magnet   | Q    | Right Shift     |
+| Interact | E    | Right Control   |
+
+# The Level Editor
+
+## Controls
+
+| Action        | Key                                   |
+| -             | -                                     |
+| Cycle Prefab  | Scroll Wheel                          |
+| Place Prefab  | Right Mouse Button                    |
+| Grab Object   | Left Mouse Button                     |
+| Delete Object | (Whilst Grabbing) Middle Mouse Button |
+
 # Credits
+APIs
 - [DirectXTK](https://walbourn.github.io/directxtk/)
 - [IMGUI](https://github.com/ocornut/imgui)
 - [Nlohmann's Json API](https://json.nlohmann.me)
