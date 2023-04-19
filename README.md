@@ -27,6 +27,24 @@ Clay Bake Engine: The Two Magneteers
 | Delete Object | (Whilst Grabbing) Middle Mouse Button |
 
 # Credits
+
+## The Team
+
+Developers
+- [Ethan Hollas](https://ethanhollas.github.io)
+- Ewan D Jones
+- [Tony Wilson](https://tonywilson-dev.github.io)
+- [William Miller](http://williammiller.xyz)
+- [Zoe Ridley](https://zoe-ridley.github.io)
+
+Programmers
+- Ben R
+- [Benjamin Shaw](https://benjaminshawdev.github.io/)
+- [Kit Symes](https://kitsymes.github.io)
+- Mathew K Maile
+
+## External Assets
+
 APIs
 - [DirectXTK](https://walbourn.github.io/directxtk/)
 - [IMGUI](https://github.com/ocornut/imgui)
