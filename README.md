@@ -34,7 +34,7 @@ Developers
 - [Ethan Hollas](https://ethanhollas.github.io)
 - Ewan D Jones
 - [Tony Wilson](https://tonywilson-dev.github.io)
-- [William Miller](http://williammiller.xyz)
+- [William Miller](https://williamimiller.github.io/)
 - [Zoe Ridley](https://zoe-ridley.github.io)
 
 Programmers
